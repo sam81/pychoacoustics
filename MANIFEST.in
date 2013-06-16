@@ -1,0 +1,12 @@
+
+include pychoacoustics_pack/*.py
+include pychoacoustics_pack/default_experiments/*
+include scripts/*
+include translations/*
+include sndlib.py
+include postinstall.py
+include INSTALL.txt
+include README.txt
+include BUGS.txt
+include pychoacoustics.desktop
+include x-prm.xml

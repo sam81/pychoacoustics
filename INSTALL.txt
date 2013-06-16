@@ -1,0 +1,5 @@
+
+Dependencies:
+PyQt4
+numpy
+scipy

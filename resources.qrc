@@ -1,0 +1,34 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file>translations/pychoacoustics_it.qm</file>
+<file>translations/pychoacoustics_fr.qm</file>
+<file>translations/pychoacoustics_es.qm</file>
+<file>translations/pychoacoustics_el.qm</file>
+<file>translations/pychoacoustics_en_US.qm</file>
+<file>translations/pychoacoustics_en_GB.qm</file>
+<file alias="Machovka_Headphones.svg">icons/Machovka_Headphones.svg</file>
+<file alias="audio-headphones">icons/audio-headphones.svgz</file>
+<file alias="application-exit">icons/application-exit.svgz</file>
+<file alias="edit-delete">icons/edit-delete.svgz</file>
+<file alias="edit-undo">icons/edit-undo.svgz</file>
+<file alias="document-new">icons/document-new.svgz</file>
+<file alias="document-open">icons/document-open.svgz</file>
+<file alias="document-save">icons/document-save.svgz</file>
+<file alias="document-save-as">icons/document-save-as.svgz</file>
+<file alias="go-home">icons/go-home.svgz</file>
+<file alias="go-jump">icons/go-jump.svgz</file>
+<file alias="go-next">icons/go-next.svgz</file>
+<file alias="go-previous">icons/go-previous.svgz</file>
+<file alias="help-about">icons/help-about.svgz</file>
+<file alias="help-contextual">icons/help-contextual.svgz</file>
+<file alias="media-flash-memory-stick">icons/flash-memory-stick.svgz</file>
+<file alias="media-playback-start">icons/media-playback-start.svgz</file>
+<file alias="media-playlist-shuffle">icons/media-playlist-shuffle.svgz</file>
+<file alias="preferences-other">icons/media-preferences-other.svgz</file>
+<file alias="preferences-system">icons/preferences-system.svgz</file>
+<file alias="roll">icons/roll.svgz</file>
+<file alias="system-users">icons/system-users.svgz</file>
+<file alias="system-run">icons/system-run.svgz</file>
+<file alias="user-group-properties">icons/user-group-properties.svgz</file>
+</qresource>
+</RCC>

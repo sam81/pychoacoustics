@@ -1,0 +1,3 @@
+The pychoacoustics application icon is taken from the open clipart library http://openclipart.org/
+
+The fallback icons are taken from the Oxygen project http://www.oxygen-icons.org/ 

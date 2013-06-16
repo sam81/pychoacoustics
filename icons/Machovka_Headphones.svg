@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://web.resource.org/cc/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="668.82471" height="881.69672" id="svg2" inkscape:label="Pozadí" sodipodi:version="0.32" inkscape:version="0.44.1" sodipodi:docbase="J:\INKSCAPE\kliparty\svg\14.Vypocetni technika" sodipodi:docname="sluchatka.svg" inkscape:export-filename="C:\Documents and Settings\Šárka\Plocha\PNG\14) Výpočetní technika =)\sluchatka.png" inkscape:export-xdpi="90" inkscape:export-ydpi="90" version="1.0">
+  <defs id="defs10122"/>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="0.49032549" inkscape:cx="372.04724" inkscape:cy="524.75347" inkscape:document-units="px" inkscape:current-layer="layer1" inkscape:window-width="1024" inkscape:window-height="710" inkscape:window-x="0" inkscape:window-y="0"/>
+  <metadata id="metadata10125">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://web.resource.org/cc/PublicDomain"/>
+        <dc:title>Sluchatka</dc:title>
+        <dc:date>21.11.2006</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Sarka Slukova</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>ZS a MS Machovo namesti</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:language>CZ</dc:language>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>sluchatka</rdf:li>
+            <rdf:li>headphones</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License rdf:about="http://web.resource.org/cc/PublicDomain">
+        <cc:permits rdf:resource="http://web.resource.org/cc/Reproduction"/>
+        <cc:permits rdf:resource="http://web.resource.org/cc/Distribution"/>
+        <cc:permits rdf:resource="http://web.resource.org/cc/DerivativeWorks"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g inkscape:label="Vrstva 1" inkscape:groupmode="layer" id="layer1" transform="translate(-35.2687, -111.661)">
+    <g id="g11037" transform="translate(24.4735, -95.8547)">
+      <path sodipodi:nodetypes="csssssc" id="path11026" d="M 587.36496,647.52906 C 578.18738,683.6153 420.53297,667.49351 270.57954,621.47621 C 120.62611,575.4589 -27.815396,711.25996 -36.710285,707.6932 C -42.393734,705.4142 101.11311,558.37825 244.34535,597.19375 C 387.5776,636.00925 495.28684,657.45061 546.57573,633.25283 C 624.55076,596.46471 522.16745,377.30038 532.2995,377.30038 C 542.43154,377.30038 626.11473,491.73866 587.36496,647.52906 z " style="fill: black; fill-rule: evenodd; stroke: black; stroke-width: 1px; stroke-linecap: butt; stroke-linejoin: miter; stroke-opacity: 1;" transform="translate(81.5785, 316.116)"/>
+      <path sodipodi:nodetypes="csssc" id="path10132" d="M 373.50282,256.64223 C 233.91703,256.23214 126.62191,479.1547 108.11089,397.44565 C 104.22504,380.29324 233.35233,207.60619 372.93812,208.01627 C 512.5239,208.42636 614.88807,381.57912 613.85649,398.93147 C 607.89397,499.2282 513.08861,257.05231 373.50282,256.64223 z " style="fill: black; fill-rule: evenodd; stroke: black; stroke-width: 1px; stroke-linecap: butt; stroke-linejoin: miter; stroke-opacity: 1;"/>
+      <path transform="matrix(1.45455, 0, 0, 1, -42.6433, 2.03946)" d="M 161.11747 583.28601 A 44.868156 208.02509 0 1 1  71.381157,583.28601 A 44.868156 208.02509 0 1 1  161.11747 583.28601 z" sodipodi:ry="208.02509" sodipodi:rx="44.868156" sodipodi:cy="583.28601" sodipodi:cx="116.24931" id="path10128" style="fill: rgb(77, 77, 77); fill-rule: evenodd; stroke: black; stroke-width: 0.829156px; stroke-linecap: butt; stroke-linejoin: miter; stroke-opacity: 1;" sodipodi:type="arc"/>
+      <path transform="matrix(1.45455, 0, 0, 1, 426.765, 6.11838)" sodipodi:type="arc" style="fill: rgb(77, 77, 77); fill-rule: evenodd; stroke: black; stroke-width: 0.829156px; stroke-linecap: butt; stroke-linejoin: miter; stroke-opacity: 1;" id="path10130" sodipodi:cx="116.24931" sodipodi:cy="583.28601" sodipodi:rx="44.868156" sodipodi:ry="208.02509" d="M 161.11747 583.28601 A 44.868156 208.02509 0 1 1  71.381157,583.28601 A 44.868156 208.02509 0 1 1  161.11747 583.28601 z"/>
+      <path sodipodi:type="arc" style="fill: rgb(74, 64, 64); fill-opacity: 1; fill-rule: evenodd; stroke: black; stroke-width: 1.39841px; stroke-linecap: butt; stroke-linejoin: miter; stroke-opacity: 1;" id="path10137" sodipodi:cx="116.24931" sodipodi:cy="583.28601" sodipodi:rx="44.868156" sodipodi:ry="208.02509" d="M 161.11747 583.28601 A 44.868156 208.02509 0 1 1  71.381157,583.28601 A 44.868156 208.02509 0 1 1  161.11747 583.28601 z" transform="matrix(0.772727, 0, 0, 0.661765, 67.2095, 212.584)"/>
+      <path transform="matrix(0.772727, 0, 0, 0.661765, 473.062, 208.505)" d="M 161.11747 583.28601 A 44.868156 208.02509 0 1 1  71.381157,583.28601 A 44.868156 208.02509 0 1 1  161.11747 583.28601 z" sodipodi:ry="208.02509" sodipodi:rx="44.868156" sodipodi:cy="583.28601" sodipodi:cx="116.24931" id="path10139" style="fill: rgb(74, 64, 64); fill-opacity: 1; fill-rule: evenodd; stroke: black; stroke-width: 1.39841px; stroke-linecap: butt; stroke-linejoin: miter; stroke-opacity: 1;" sodipodi:type="arc"/>
+      <g id="g11033">
+        <rect style="opacity: 1; fill: rgb(204, 204, 204); fill-opacity: 1; stroke: black; stroke-width: 2.00136; stroke-miterlimit: 4; stroke-dasharray: none; stroke-opacity: 1;" id="rect11031" width="12.872722" height="70.646988" x="603.39319" y="859.24695" transform="matrix(0.863958, 0.503565, -0.547924, 0.836528, 0, 0)"/>
+        <path sodipodi:type="arc" style="fill: black; fill-rule: evenodd; stroke: black; stroke-width: 0.828264px; stroke-linecap: butt; stroke-linejoin: miter; stroke-opacity: 1;" id="path11029" sodipodi:cx="85.657387" sodipodi:cy="1008.5137" sodipodi:rx="14.276231" sodipodi:ry="35.690578" d="M 99.933618 1008.5137 A 14.276231 35.690578 0 1 1  71.381156,1008.5137 A 14.276231 35.690578 0 1 1  99.933618 1008.5137 z" transform="matrix(0.95981, 0.73286, -0.734087, 0.958206, 720.325, -10.4285)"/>
+      </g>
+    </g>
+  </g>
+</svg>

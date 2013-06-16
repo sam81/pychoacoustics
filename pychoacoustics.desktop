@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version = 0.2.45
+Name=pychoacoustics
+Name[en_GB]=pychoacoustics 
+GenericName=pychoacoustics
+GenericName[en_GB]=pychoacoustics
+Comment=Platform for auditory experiments
+Comment[en_GB]=Platform for auditory experiments
+MimeType=text/x-prm;
+Terminal=false
+Type=Application
+Exec=/usr/bin/pychoacoustics -f %F
+Icon=/usr/share/icons/Machovka_Headphones.svg
+Categories=Education;Science;

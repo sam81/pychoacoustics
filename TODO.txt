@@ -1,0 +1,22 @@
+ 
+To do:
+
+- add filepath widget in parameters window. By default this should be a multifile opening widget to load wav files
+- zip files before sending by e-mail
+- process results functions should be smart to recognize the paradigm (e.g. adaptive, constant etc...) and call the appropriate functions. Need to put sufficient info in table results files for this
+- edited fields and choosers change color (use on editing finished)
+- add plots for all paradigms
+- write tests, for example the output of sound generating functions could be compared to stored numpy arrays, the output of procedures could be fixed with set seed and compared with result files
+
+- block performance feedback at the end of each block? (usually not very good, participants should not know about different conditions)
+- generate html report through intermediate rst file
+- add d' calculation tools
+- vocal responses at beginning end of each block
+- Add 'Delete All' button?
+- use the logging module to do the logging
+- the full file could optionally record the start of each sound and the time the listener responded
+- replace os.system with subprocess, possibly popen for sending kill signal #partly done
+- Qthread for playing audio 
+
+
+
