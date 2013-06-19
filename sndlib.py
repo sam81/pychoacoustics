@@ -716,7 +716,7 @@ def ERBDistance(f1, f2):
 
     return deltaERB
 
-def expSinFMComplex(F0, lowHarm, highHarm, fm, deltaCents, phase, level, duration, ramp, channel, fs, maxLevel):
+def expSinFMComplex(F0, lowHarm, highHarm, harmPhase, fm, deltaCents, fmPhase, level, duration, ramp, channel, fs, maxLevel):
     """
     Generate a frequency-modulated complex tone with an exponential sinusoid.
 
@@ -729,8 +729,8 @@ def expSinFMComplex(F0, lowHarm, highHarm, fm, deltaCents, phase, level, duratio
     deltaCents : float
         Frequency excursion in cents. The instataneous frequency of the tone
          will vary from fc**(-deltaCents/1200) to fc**(+deltaCents/1200).
-    phase : float
-        Starting phase in radians.
+    fmPhase : float
+        Starting fmPhase in radians.
     level : float
         Tone level in dB SPL. 
     duration : float
@@ -752,20 +752,30 @@ def expSinFMComplex(F0, lowHarm, highHarm, fm, deltaCents, phase, level, duratio
        
     Examples
     --------
-    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, phase=0, level=55, 
+    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, fmPhase=0, level=55, 
     ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
     
     """
 
     for i in range(int(lowHarm), int(highHarm)+1):
+        if harmPhase == "Sine":
+            startPhase = 0
+        elif harmPhase == "Cosine":
+            startPhase = pi/2
+        elif harmPhase == "Alternating":
+            if i%2 > 0: #odd harmonic
+                startPhase = 0
+            else:
+                startPhase = pi/2
         if i == lowHarm:
-            snd = expSinFMTone(F0*i, fm, deltaCents, phase, level, duration, ramp, channel, fs, maxLevel)
+            snd = expSinFMTone(F0*i, fm, deltaCents, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel)
         else:
-            snd = snd + expSinFMTone(F0*i, fm, deltaCents, phase, level, duration, ramp, channel, fs, maxLevel)
+            snd = snd + expSinFMTone(F0*i, fm, deltaCents, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel)
         
     return snd
 
-def expSinFMTone(fc, fm, deltaCents, phase, level, duration, ramp, channel, fs, maxLevel):
+
+def expSinFMTone(fc, fm, deltaCents, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel):
     """
     Generate a frequency-modulated tone with an exponential sinusoid.
 
@@ -778,8 +788,8 @@ def expSinFMTone(fc, fm, deltaCents, phase, level, duration, ramp, channel, fs, 
     deltaCents : float
         Frequency excursion in cents. The instataneous frequency of the tone
          will vary from fc**(-deltaCents/1200) to fc**(+deltaCents/1200).
-    phase : float
-        Starting phase in radians.
+    fmPhase : float
+        Starting fmPhase in radians.
     level : float
         Tone level in dB SPL. 
     duration : float
@@ -801,7 +811,7 @@ def expSinFMTone(fc, fm, deltaCents, phase, level, duration, ramp, channel, fs, 
        
     Examples
     --------
-    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, phase=0, level=55, 
+    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, fmPhase=0, level=55, 
     ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
     
     """
@@ -816,81 +826,8 @@ def expSinFMTone(fc, fm, deltaCents, phase, level, duration, ramp, channel, fs, 
 
     timeAll = arange(0, nTot) / fs
     timeRamp = arange(0, nRamp)
-    fArr = 2*pi*fc*2**((deltaCents/1200)*cos(2*pi*fm*timeAll+phase))
-    ang = cumsum(fArr)/fs
-
-    snd = zeros((nTot, 2))
-
-    if channel == "Right":
-        snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
-        snd[nRamp:nRamp+nSamples, 1] = amp* sin(ang[nRamp:nRamp+nSamples])
-        snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
-    elif channel == "Left":
-        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
-        snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
-        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
-    elif channel == "Both":
-        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
-        snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
-        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
-        snd[:, 1] = snd[:, 0]
-       
-
-    return snd
-
-def camSinFMTone(fc, fm, deltaCams, phase, level, duration, ramp, channel, fs, maxLevel):
-    """
-    Generate a tone frequency modulated with an exponential sinusoid.
-
-    Parameters
-    ----------
-    fc : float
-        Carrier frequency in hertz. 
-    fm : float
-        Modulation frequency in Hz.
-    deltaCams : float
-        Frequency excursion in cam units (ERBn number scale). 
-    phase : float
-        Starting phase in radians.
-    level : float
-        Tone level in dB SPL. 
-    duration : float
-        Tone duration (excluding ramps) in milliseconds.
-    ramp : float
-        Duration of the onset and offset ramps in milliseconds.
-        The total duration of the sound will be duration+ramp*2.
-    channel : 'Right', 'Left' or 'Both'
-        Channel in which the tone will be generated.
-    fs : int
-        Samplig frequency in Hz.
-    maxLevel : float
-        Level in dB SPL output by the soundcard for a sinusoid of
-        amplitude 1.
-
-    Returns
-    -------
-    snd : 2-dimensional array of floats
-       
-    Examples
-    --------
-    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, phase=0, level=55, 
-    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
-    
-    """
-  
-    amp = 10**((level - maxLevel) / 20)
-    duration = duration / 1000 #convert from ms to sec
-    ramp = ramp / 1000
-
-    nSamples = int(round(duration * fs))
-    nRamp = int(round(ramp * fs))
-    nTot = nSamples + (nRamp * 2)
-
-    timeAll = arange(0, nTot) / fs
-    timeRamp = arange(0, nRamp)
-    #fArr = 2*pi*fc*2**((deltaCents/1200)*cos(2*pi*fm*timeAll+phase))
-    fArr = 2*pi*freqFromERBInterval(fc, deltaCams*cos(2*pi*fm*timeAll+phase))
-    ang = cumsum(fArr)/fs
+    fArr = 2*pi*fc*2**((deltaCents/1200)*cos(2*pi*fm*timeAll+fmPhase))
+    ang = (cumsum(fArr)/fs) + startPhase
 
     snd = zeros((nTot, 2))
 
@@ -912,7 +849,8 @@ def camSinFMTone(fc, fm, deltaCams, phase, level, duration, ramp, channel, fs, m
     return snd
 
 
-def camSinFMComplex(F0, lowHarm, highHarm, fm, deltaCams, phase, level, duration, ramp, channel, fs, maxLevel):
+
+def camSinFMComplex(F0, lowHarm, highHarm, harmPhase, fm, deltaCams, fmPhase, level, duration, ramp, channel, fs, maxLevel):
     """
     Generate a tone frequency modulated with an exponential sinusoid.
 
@@ -924,8 +862,8 @@ def camSinFMComplex(F0, lowHarm, highHarm, fm, deltaCams, phase, level, duration
         Modulation frequency in Hz.
     deltaCams : float
         Frequency excursion in cam units (ERBn number scale). 
-    phase : float
-        Starting phase in radians.
+    fmPhase : float
+        Starting fmPhase in radians.
     level : float
         Tone level in dB SPL. 
     duration : float
@@ -947,17 +885,102 @@ def camSinFMComplex(F0, lowHarm, highHarm, fm, deltaCams, phase, level, duration
        
     Examples
     --------
-    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, phase=0, level=55, 
+    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, fmPhase=0, level=55, 
     ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
     
     """
     for i in range(int(lowHarm), int(highHarm)+1):
+        if harmPhase == "Sine":
+            startPhase = 0
+        elif harmPhase == "Cosine":
+            startPhase = pi/2
+        elif harmPhase == "Alternating":
+            if i%2 > 0: #odd harmonic
+                startPhase = 0
+            else:
+                startPhase = pi/2
         if i == lowHarm:
-            snd = camSinFMTone(F0*i, fm, deltaCams, phase, level, duration, ramp, channel, fs, maxLevel)
+            snd = camSinFMTone(F0*i, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel)
         else:
-            snd = snd + camSinFMTone(F0*i, fm, deltaCams, phase, level, duration, ramp, channel, fs, maxLevel)
+            snd = snd + camSinFMTone(F0*i, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel)
         
     return snd
+
+
+def camSinFMTone(fc, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel):
+    """
+    Generate a tone frequency modulated with an exponential sinusoid.
+
+    Parameters
+    ----------
+    fc : float
+        Carrier frequency in hertz. 
+    fm : float
+        Modulation frequency in Hz.
+    deltaCams : float
+        Frequency excursion in cam units (ERBn number scale). 
+    fmPhase : float
+        Starting fmPhase in radians.
+    level : float
+        Tone level in dB SPL. 
+    duration : float
+        Tone duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    channel : 'Right', 'Left' or 'Both'
+        Channel in which the tone will be generated.
+    fs : int
+        Samplig frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of
+        amplitude 1.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+       
+    Examples
+    --------
+    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, fmPhase=0, level=55, 
+    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
+    
+    """
+  
+    amp = 10**((level - maxLevel) / 20)
+    duration = duration / 1000 #convert from ms to sec
+    ramp = ramp / 1000
+
+    nSamples = int(round(duration * fs))
+    nRamp = int(round(ramp * fs))
+    nTot = nSamples + (nRamp * 2)
+
+    timeAll = arange(0, nTot) / fs
+    timeRamp = arange(0, nRamp)
+    #fArr = 2*pi*fc*2**((deltaCents/1200)*cos(2*pi*fm*timeAll+fmPhase))
+    fArr = 2*pi*freqFromERBInterval(fc, deltaCams*cos(2*pi*fm*timeAll+fmPhase)) 
+    ang = (cumsum(fArr)/fs) + startPhase
+
+    snd = zeros((nTot, 2))
+
+    if channel == "Right":
+        snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
+        snd[nRamp:nRamp+nSamples, 1] = amp* sin(ang[nRamp:nRamp+nSamples])
+        snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
+    elif channel == "Left":
+        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
+        snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
+        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
+    elif channel == "Both":
+        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
+        snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
+        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
+        snd[:, 1] = snd[:, 0]
+       
+
+    return snd
+
+
 
 
 def FMTone(fc, fm, mi, phase, level, duration, ramp, channel, fs, maxLevel):
