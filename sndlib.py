@@ -716,6 +716,56 @@ def ERBDistance(f1, f2):
 
     return deltaERB
 
+def expAMNoise(F0, fm, deltaCents, fmPhase, AMDepth, spectrumLevel, duration, ramp, channel, fs, maxLevel):
+
+    amp = sqrt(fs/2)*(10**((spectrumLevel - maxLevel) / 20))
+    duration = duration / 1000 #convert from ms to sec
+    ramp = ramp / 1000
+
+    nSamples = int(round(duration * fs))
+    nRamp = int(round(ramp * fs))
+    nTot = nSamples + (nRamp * 2)
+
+    timeAll = arange(0, nTot) / fs
+    timeRamp = arange(0, nRamp) 
+
+    snd = zeros((nTot, 2))
+    #random is a numpy module
+    noise = (numpy.random.random(nTot) + numpy.random.random(nTot)) - (numpy.random.random(nTot) + numpy.random.random(nTot))
+    RMS = sqrt(mean(noise*noise))
+    #scale the noise so that the maxAmplitude goes from -1 to 1
+    #since A = RMS*sqrt(2)
+    scaled_noise = noise / (RMS * sqrt(2))
+
+    #(1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]))
+
+    fArr = 2*pi*F0*2**((deltaCents/1200)*cos(2*pi*fm*timeAll+fmPhase))
+    ang = (cumsum(fArr)/fs) #+ startPhase
+    #amp* sin(ang[nRamp:nRamp+nSamples])
+    #* (1 + AMDepth*sin(ang[0:nRamp]))
+    #* (1 + AMDepth*sin(ang[nRamp:nRamp+nSamples]))
+    #* (1 + AMDepth*sin(ang[nRamp+nSamples:len(timeAll)]))
+    if channel == "Right":
+        snd[0:nRamp, 1] = amp * (1 + AMDepth*sin(ang[0:nRamp])) * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 1] = amp * (1 + AMDepth*sin(ang[nRamp:nRamp+nSamples])) * scaled_noise[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:len(timeAll), 1] = amp * (1 + AMDepth*sin(ang[nRamp+nSamples:len(timeAll)])) * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
+    elif channel == "Left":
+        snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(ang[0:nRamp])) * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(ang[nRamp:nRamp+nSamples])) * scaled_noise[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:len(timeAll), 0] = amp * (1 + AMDepth*sin(ang[nRamp+nSamples:len(timeAll)])) * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
+    elif channel == "Both":
+        snd[0:nRamp, 1] = amp * (1 + AMDepth*sin(ang[0:nRamp])) * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 1] = amp * (1 + AMDepth*sin(ang[nRamp:nRamp+nSamples])) * scaled_noise[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:len(timeAll), 1] = amp * (1 + AMDepth*sin(ang[nRamp+nSamples:len(timeAll)])) * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
+
+        snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(ang[0:nRamp])) * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(ang[nRamp:nRamp+nSamples])) * scaled_noise[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:len(timeAll), 0] = amp * (1 + AMDepth*sin(ang[nRamp+nSamples:len(timeAll)])) * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
+    return snd
+
+
+    return snd
+
 def expSinFMComplex(F0, lowHarm, highHarm, harmPhase, fm, deltaCents, fmPhase, level, duration, ramp, channel, fs, maxLevel):
     """
     Generate a frequency-modulated complex tone with an exponential sinusoid.
