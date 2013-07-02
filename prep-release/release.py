@@ -40,8 +40,8 @@ def main(argv):
     f.close()
 
     #version specific build
-    pywvername = "pychoacoustics" + gittag.replace(".", "-")
-    thisCmd = "cp " + "pychoacoustics.pyw pychoacoustics" + pywvername
+    #pywvername = "pychoacoustics" + gittag.replace(".", "-") + ".pyw"
+    thisCmd = "cp pychoacoustics.pyw " + "pychoacoustics" + gittag.replace(".", "-") + ".pyw"
     os.system(thisCmd)
     
     for i in range(len(ln)):
