@@ -2,7 +2,7 @@
 from distutils.core import setup
 setup(
     name="pychoacoustics",
-    version="0.2.47",
+    version="0.2.48",
     url="none",
     author="Samuele Carcagno",
     author_email="sam.carcagno@google.com;",
@@ -33,7 +33,7 @@ setup(
     requires=['PyQt (>=4.8.4)', 'numpy (>=1.6.1)', 'scipy (>=0.10.1)'],
     packages=["pychoacoustics_pack", "pychoacoustics_pack.default_experiments"],
     py_modules = ['sndlib', 'pysdt'],
-    scripts = ["pychoacoustics.pyw"],#, "postinstall.py"],
+    scripts = ["pychoacoustics.pyw"],
     package_dir={"pychoacoustics_pack": "pychoacoustics_pack"},
     package_data={'pychoacoustics_pack': ["qrc_resources.py", "doc/*.pdf", "doc/modules/html/*.*",
                                           "doc/modules/html/_modules/*", "doc/modules/html/_sources/*",
