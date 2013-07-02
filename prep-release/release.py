@@ -40,6 +40,9 @@ def main(argv):
     f.close()
 
     #version specific build
+    pywvername = "pychoacoustics" + gittag.replace(".", "-")
+    thisCmd = "cp " + "pychoacoustics.pyw pychoacoustics" + pywvername
+    
     for i in range(len(ln)):
         if ln[i].strip().split('=')[0].strip() == "name":
             ln[i] = '    name="pychoacoustics' + gittag.replace(".", "-") +'",\n'
