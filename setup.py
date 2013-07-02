@@ -2,7 +2,7 @@
 from distutils.core import setup
 setup(
     name="pychoacoustics",
-    version="0.2.50",
+    version="0.2.51",
     url="none",
     author="Samuele Carcagno",
     author_email="sam.carcagno@google.com;",
