@@ -56,7 +56,7 @@ class pychControlWin(QtGui.QMainWindow):
         self.audioManager.initializeAudio()
         #
         self.prm['version'] = __version__
-        self.prm['revno'] = pychoacoustics_revno
+        #self.prm['revno'] = pychoacoustics_revno
         self.prm['builddate'] = pychoacoustics_builddate
         #
         screen = QtGui.QDesktopWidget().screenGeometry()
@@ -2884,8 +2884,7 @@ class pychControlWin(QtGui.QMainWindow):
         QtGui.QMessageBox.about(self, self.tr("About pychoacoustics"),
                                 self.tr("""<b>Python app for psychoacoustics</b> <br>
                                 - version: {0}; <br>
-                                - revno: {1}; <br>
-                                - build date: {2} <br>
+                                - build date: {1} <br>
                                 <p> Copyright &copy; 2010-2013 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 
                                 All rights reserved. <p>
                                 This program is free software: you can redistribute it and/or modify
@@ -2900,7 +2899,7 @@ class pychControlWin(QtGui.QMainWindow):
                                 <p>
                                 You should have received a copy of the GNU General Public License
                                 along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>
-                                <p>Python {3} - Qt {4} - PyQt {5} on {6}""").format(__version__, self.prm['revno'], self.prm['builddate'], platform.python_version(), QtCore.QT_VERSION_STR, QtCore.PYQT_VERSION_STR, platform.system()))
+                                <p>Python {2} - Qt {3} - PyQt {4} on {5}""").format(__version__, self.prm['builddate'], platform.python_version(), QtCore.QT_VERSION_STR, QtCore.PYQT_VERSION_STR, platform.system()))
     def closeEvent(self, event):
         #here we need to check if parameters file and temporary parameters file are the same or not
         self.compareGuiStoredParameters()

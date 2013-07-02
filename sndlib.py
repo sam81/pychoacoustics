@@ -716,8 +716,50 @@ def ERBDistance(f1, f2):
 
     return deltaERB
 
-def expAMNoise(F0, fm, deltaCents, fmPhase, AMDepth, spectrumLevel, duration, ramp, channel, fs, maxLevel):
+def expAMNoise(fc, fm, deltaCents, fmPhase, AMDepth, spectrumLevel, duration, ramp, channel, fs, maxLevel):
+    """
+    Generate a sinusoidally amplitude-modulated noise with an exponentially
+    modulated AM frequency.
 
+    Parameters
+    ----------
+    fc : float
+        Carrier AM frequency in hertz. 
+    fm : float
+        Modulation of the AM frequency in Hz.
+    deltaCents : float
+        AM frequency excursion in cents. The instataneous AM frequency of the noise
+         will vary from fc**(-deltaCents/1200) to fc**(+deltaCents/1200).
+    fmPhase : float
+        Starting phase of the AM modulation in radians.
+    AMDepth : float
+        Amplitude modulation depth.
+    spectrumLevel : float
+        Noise spectrum level in dB SPL. 
+    duration : float
+        Tone duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    channel : 'Right', 'Left' or 'Both'
+        Channel in which the tone will be generated.
+    fs : int
+        Samplig frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of
+        amplitude 1.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+       
+    Examples
+    --------
+    >>> snd = expAMNoise(fc=150, fm=2.4, deltaCents=1200, fmPhase=3.14, AMDepth = 1,
+    ...     spectrumLevel=24, duration=380, ramp=10, channel='Both', fs=48000, maxLevel=100)
+    
+    """
+    
     amp = sqrt(fs/2)*(10**((spectrumLevel - maxLevel) / 20))
     duration = duration / 1000 #convert from ms to sec
     ramp = ramp / 1000
@@ -739,7 +781,7 @@ def expAMNoise(F0, fm, deltaCents, fmPhase, AMDepth, spectrumLevel, duration, ra
 
     #(1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]))
 
-    fArr = 2*pi*F0*2**((deltaCents/1200)*cos(2*pi*fm*timeAll+fmPhase))
+    fArr = 2*pi*fc*2**((deltaCents/1200)*cos(2*pi*fm*timeAll+fmPhase))
     ang = (cumsum(fArr)/fs) #+ startPhase
     #amp* sin(ang[nRamp:nRamp+nSamples])
     #* (1 + AMDepth*sin(ang[0:nRamp]))
