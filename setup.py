@@ -35,7 +35,7 @@ setup(
     packages=["pychoacoustics", "pychoacoustics.default_experiments"],
     scripts = ["pychoacoustics.pyw"],
     package_dir={"pychoacoustics": "pychoacoustics"},
-    package_data={'pychoacoustics': ["qrc_resources.py", "doc/pychoacoustics_manual*.pdf", "doc/_build/html/*.*",
+    package_data={'pychoacoustics': ["qrc_resources.py", "doc/pychoacoustics_manual/*.pdf", "doc/_build/html/*.*",
                                           "doc/_build/html/_modules/*", "doc/_build/html/_sources/*",
                                           "doc/_build/html/_static/*"],},
 
