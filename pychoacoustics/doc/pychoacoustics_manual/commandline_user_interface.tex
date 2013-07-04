@@ -1,0 +1,31 @@
+
+
+\chapter{Command Line User Interface}
+In order to automate certain tasks, or perform some advanced operations, \texttt{pychoacoustics} can be called from the command line with certain command line options. The following is the list of possible command line options:
+\begin{itemize}
+\item \verb+-h, --help+ Show help message.
+\item \verb+-f, --file FILE+ Load parameters file \texttt{FILE}.
+\item \verb+-r, --results FILE+  Save the results to file \texttt{FILE}.
+\item \verb+-l, --listener LISTENER+ Set listener label to \texttt{LISTENER}.
+\item \verb+-s, --session SESSION+ Set session label to \texttt{SESSION}.
+\item \verb+-k, --reset+ Reset block positions.
+\item \verb+-q, --quit+ Quit after finished.
+\item \verb+-c, --conceal+ Hide Control and Parameters Windows.
+\item \verb+-p, --progbar+ Show the progress bar.
+\item \verb+-b, --blockprogbar+ Show the progress bar.
+\item \verb+-a, --autostart+ Automatically start the first stored block.
+\item \verb+-x, --recursion-depth+ Set the maximum recursion depth (this overrides the maximum recursion depth set in the preferences window).
+\item \verb+-g, --graphicssystem+ sets the backend to be used for on-screen widgets and QPixmaps. Available options are raster and opengl.
+\item \verb+-d, --display+ This option is only valid for X11 and sets the X display (default is \$DISPLAY).
+\end{itemize}
+each command line option has a short (single dash, one letter) and long (double dash, one word) form, for example to show the help message, you can use either of the two following commands:
+\begin{verbatim}
+$ pychoacoustics -h
+$ pychoacoustics --help
+\end{verbatim}
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "pychoacoustics_manual"
+%%% End: 

@@ -1,0 +1,2129 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pychoacoustics manual &mdash; pychoacoustics (&#39;0.2.52&#39;,) documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '(&#39;0.2.52&#39;,)',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="pychoacoustics (&#39;0.2.52&#39;,) documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">pychoacoustics (&#39;0.2.52&#39;,) documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pychoacoustics-manual">
+<h1>pychoacoustics manual<a class="headerlink" href="#pychoacoustics-manual" title="Permalink to this headline">¶</a></h1>
+<hr class="docutils" />
+<p>Version 0.2</p>
+<p>Samuele Carcagno</p>
+<p><a class="reference external" href="mailto:sam&#46;carcagno&#37;&#52;&#48;gmail&#46;com">mailto:sam<span>&#46;</span>carcagno<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+<p>Copyright ©2012–2013 Samuele Carcagno.
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A
+copy of the license is included in the section entitled “GNU Free
+Documentation License”.</p>
+<p><strong>Disclaimer</strong>: This document comes with NO WARRANTY whatsoever of being
+correct in any of its parts. This document is work in progress.</p>
+<p>[1]****</p>
+<p>pychoacoustics manual</p>
+<hr class="docutils" />
+<p>Version 0.2</p>
+<p>Samuele Carcagno</p>
+<p>&lt;<a class="reference external" href="mailto:sam&#46;carcagno&#37;&#52;&#48;gmail&#46;com">mailto:sam<span>&#46;</span>carcagno<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;_</p>
+<p>Copyright (c) 2012–2013 Samuele Carcagno.
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A
+copy of the license is included in the section entitled “GNU Free
+Documentation License”.</p>
+<p><strong>Disclaimer</strong>: This document comes with NO WARRANTY whatsoever of being
+correct in any of its parts. This document is work in progress.</p>
+<div class="section" id="what-is-pychoacoustics">
+<h2>What is <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt>?<a class="headerlink" href="#what-is-pychoacoustics" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> is a software for programming and running
+experiments in auditory psychophysics (psychoacoustics). The software
+contains a set of predefined experiments that can be immediately run
+after installation. Importantly <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> is designed to be
+extensible so that users can add new custom experiments with relative
+ease. Custom experiments are written in Python, a programming language
+renowned for its clarity and ease of use. The application is divided in
+two graphical windows a) the “response box”, shown in
+Figure <a class="reference internal" href="#fig-response-box"><em>The pychoacoustics response box</em></a>, with which listeners interact
+during the experiment b) the control window, shown in
+Figure, that contains a series of widgets
+(choosers, text field and buttons) that are used by the experimenter to
+set all of the relevant experimental parameters, which can also be
+stored and later reloaded into the application.</p>
+<div class="figure" id="fig-response-box">
+<a class="reference internal image-reference" href="figures/response_box.png"><img alt="The pychoacoustics response box" src="figures/response_box.png" /></a>
+<p class="caption">The pychoacoustics response box</p>
+</div>
+<p>I started writing <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> for fun and for the sake of
+learning around 2008 while doing my PhD with Professor Chris Plack at
+Lancaster University. At that time we were using in the lab a MATLAB
+program called the “Earlab” written by Professor Plack.
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> has been greatly influenced and inspired by the
+“Earlab”, and it reproposes many of the same features that the “Earlab”
+provides. For this reason, as well as for the patience he had to teach
+me audio programming I am greatly indebted to Professor Plack.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> has been successfully installed and used on Linux and
+Windows platforms, since it is entirely written in python it should be
+fully cross-platform and should work on the Mac as well, but this has
+never been tested. <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> depends on the installation of a
+handful of other programs:</p>
+<ul class="simple">
+<li>Python (version 3) <a class="reference external" href="http://www.python.org/">http://www.python.org/</a></li>
+<li>pyqt4
+<a class="reference external" href="http://www.riverbankcomputing.co.uk/software/pyqt/download">http://www.riverbankcomputing.co.uk/software/pyqt/download</a></li>
+<li>numpy
+<a class="reference external" href="http://sourceforge.net/projects/numpy/files/">http://sourceforge.net/projects/numpy/files/</a></li>
+<li>scipy
+<a class="reference external" href="http://sourceforge.net/projects/scipy/files/">http://sourceforge.net/projects/scipy/files/</a></li>
+</ul>
+<p>these programs need to be installed manually. Once these programs are
+installed you can proceed with the installtion of <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt>.</p>
+<div class="section" id="installation-on-linux">
+<h3>Installation on Linux<a class="headerlink" href="#installation-on-linux" title="Permalink to this headline">¶</a></h3>
+<p>Binary deb packages for recent debian-based distributions are provided
+(starting from Wheezy), and can be installed using gdebi which
+automatically handles dependencies. For other linux systems, once all of
+the dependencies have been installed, <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> can be
+installed as a standard python package using</p>
+<div class="highlight-python"><pre>sudo python3 setup.py install</pre>
+</div>
+<p>you can then invoke <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> from a terminal by typing the
+command</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">pychoacoustics</span><span class="o">.</span><span class="n">pyw</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installation-on-windows">
+<h3>Installation on Windows<a class="headerlink" href="#installation-on-windows" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="using-the-binary-installer">
+<h4>Using the binary installer<a class="headerlink" href="#using-the-binary-installer" title="Permalink to this headline">¶</a></h4>
+<p>After installing the dependencies (<tt class="docutils literal"><span class="pre">python</span></tt>, <tt class="docutils literal"><span class="pre">pyqt4</span></tt>, <tt class="docutils literal"><span class="pre">numpy</span></tt>, and
+<tt class="docutils literal"><span class="pre">scipy</span></tt>), simply double click on the <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> windows
+installer to start the installation procedure. Currently the installer
+does not provide a launcher. There is, however, a file called
+<tt class="docutils literal"><span class="pre">pychoacoustics-qt4.bat</span></tt> inside the source distribution of
+pychoacoustics that after some modifications can be used as a launcher.
+The content of the file is the following:</p>
+<div class="highlight-python"><pre>C:\Python32\python &quot;C:\Python32\site-packages\pychoacoustics.pyw&quot;
+%1 %2 %3 %4 %5 %6 %7 %8</pre>
+</div>
+<p>The first statement <tt class="docutils literal"><span class="pre">C:\Python32\python</span></tt> is the path to the Python
+executable. The second statement is the path to the main file of the
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> app. You simply need to replace those two statements
+to reflect the Python installation on your system.</p>
+<p>You can place the <tt class="docutils literal"><span class="pre">.bat</span></tt> launcher wherever you want, for example on
+your <tt class="docutils literal"><span class="pre">Desktop</span></tt> folder. Simply double click on it, and
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> should start.</p>
+</div>
+<div class="section" id="installing-from-source">
+<h4>Installing from source<a class="headerlink" href="#installing-from-source" title="Permalink to this headline">¶</a></h4>
+<p>After installing the dependencies, it is recommended to add the
+directory where the Python executable resides to the system <tt class="docutils literal"><span class="pre">PATH</span></tt>. In
+this way you can call <tt class="docutils literal"><span class="pre">python</span></tt> from a <tt class="docutils literal"><span class="pre">DOS</span></tt> shell by simply typing
+its name, rather than typing the full path to the Python executable.</p>
+<p>By default <tt class="docutils literal"><span class="pre">python</span></tt> is installed in <tt class="docutils literal"><span class="pre">C:</span></tt>. The name of the Python
+directory depends on its version number, for example, if you installed
+Python version 3.2, the python directory will be <tt class="docutils literal"><span class="pre">C:\Python32</span></tt>. To add
+this directory to the system path go to <tt class="docutils literal"><span class="pre">My</span> <span class="pre">Computer</span></tt> and click
+<tt class="docutils literal"><span class="pre">Properties</span></tt>, then click <tt class="docutils literal"><span class="pre">Advanced</span> <span class="pre">System</span> <span class="pre">Settings</span></tt>. In the
+<tt class="docutils literal"><span class="pre">System</span> <span class="pre">Properties</span></tt> window click <tt class="docutils literal"><span class="pre">Environment</span> <span class="pre">Variables</span></tt>. There you
+will find an entry called <tt class="docutils literal"><span class="pre">Path</span></tt>. Select it and click <tt class="docutils literal"><span class="pre">Edit</span></tt>. Be
+careful not to remove any of the entries that are already written there
+because it could corrupt your system. Simply append the name of the full
+path of the folder where <tt class="docutils literal"><span class="pre">python</span></tt> is installed, at the end of the
+other entries.</p>
+<p>To install <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> from source, unpack the <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt>
+<tt class="docutils literal"><span class="pre">.zip</span></tt> file containing the source code. Open a <tt class="docutils literal"><span class="pre">DOS</span></tt> shell and
+<tt class="docutils literal"><span class="pre">cd</span></tt> to the directory where you unzipped pychoacoustics. The program
+can then be installed as a standard python package using the following
+command:</p>
+<div class="highlight-python"><pre>python setup.py install</pre>
+</div>
+<p>If you have installed the dependencies, you can also use pychoacoustics
+without installing it. Open a <tt class="docutils literal"><span class="pre">DOS</span></tt> shell, <tt class="docutils literal"><span class="pre">cd</span></tt> to the directory
+where you unzipped pychoacoustics and launch it with the following
+command:</p>
+<div class="highlight-python"><pre>python pychoacoustics.pyw</pre>
+</div>
+<p>As mentioned in the previous section, there is also a <tt class="docutils literal"><span class="pre">.bat</span></tt> launcher
+that can be used to launch <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> without needing to open a
+<tt class="docutils literal"><span class="pre">DOS</span></tt> shell each time. You can read the previous section for further
+info.</p>
+</div>
+</div>
+</div>
+<div class="section" id="graphical-user-interface">
+<h2>Graphical User Interface<a class="headerlink" href="#graphical-user-interface" title="Permalink to this headline">¶</a></h2>
+<p>The user interface is divided in two windows: the “Control Window” and
+the “Response Box”. The “Control Window” is used to set the experimental
+parameters, while the “Response Box” is the interface that the listeners
+use to give their responses.</p>
+<div class="section" id="quickstart">
+<h3>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h3>
+<p>When <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> is launched, the “Control Window” displays the
+default parameters for the “Audiogram” experiment. You can select
+another experiment using the “Experiment” drop-down menu, and edit any
+of the parameter fields you want to modify. Once you’re satisfied with
+the parameters, you can store them by pressing the “Store” button. This
+stores one experimental block with the chosen parameters. At this point
+you can either start running the experiment by pressing the “Start”
+button on the “Response Box”, or you can add more experimental blocks by
+clicking on the “New Block” button.</p>
+<p>To save the parameters to a file click on the “Save Prm” button.
+Parameter files that have been saved in this way can be later loaded
+into the program by using the “Load Prm” button.</p>
+<p>To save the results of your experiment to a file, click on the “Save
+Results” button. If you have forgotten to specify a results file in this
+way, <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> will save the results in a file called
+<tt class="docutils literal"><span class="pre">test.txt</span></tt> in the working directory.</p>
+</div>
+<div class="section" id="the-control-window">
+<h3>The Control Window<a class="headerlink" href="#the-control-window" title="Permalink to this headline">¶</a></h3>
+<p>The control window contains a set of widgets to manage the setup of the
+experiments, running the experiments, processing results files and
+managing application preferences. Some of the widgets are general, and
+some of them are specific either to a given paradigm (e.g.&nbsp;adaptive vs
+constant stimuli paradigm) or to a given experiment.</p>
+<p>In the next section the function of these widgets will be explained,
+starting with the widgets that are general to all experiments and
+paradigms.</p>
+<div class="section" id="general-widgets-left-panel">
+<h4>General Widgets (left panel)<a class="headerlink" href="#general-widgets-left-panel" title="Permalink to this headline">¶</a></h4>
+<p>[sec:gui:sub:<cite>l</cite>eft<sub>p</sub>anel]</p>
+<ul class="simple">
+<li><strong>Listener</strong> This is simply a label that you can use to identify the
+person who is running the experiment. This label will be written in
+the header of the results file.</li>
+<li><strong>Experiment Label</strong>. This is a label to identify the experiment you
+are running. This label will be written in the header of the results
+file.</li>
+<li><strong>Session</strong> This is a label to identify the experimental session, it
+can be a number or a string. This label will be written in the header
+of the results file.</li>
+<li><strong>Condition Label</strong> This is a label to identify the experimental
+condition of the current block of trials. It is optional, but it may
+be useful when sorting the experimental results.</li>
+<li><strong>End Command</strong> Here you can write an operating system command
+(e.g.&nbsp;a bash command on Unix systems or a DOS command on Windows
+systems) to be performed at the end of the experimental session. This
+could be used to run a custom script to analyse the result files,
+make a backup of the results files or other purposes. There are some
+variables that can be accessed with a special string, such as the
+name of the results file. These are listed in
+Section&nbsp;[sec:end<sub>c</sub>md] Table&nbsp;[tab:end<sub>c</sub>md].
+Please, refer to that section for further info on how to use them.</li>
+<li><strong>Shuffling Scheme</strong> By default when you click the “Shuffle” button,
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> randomly shuffles all blocks, here you can specify
+different shuffling schemes (e.g.&nbsp;shuffle the first four blocks among
+themselves and the last four blocks among themselves). Please refer
+to Section&nbsp;[sec:shuffling] for more details.</li>
+<li><strong>Results File</strong> Select a file for saving the results. Selecting an
+existing file will never overwrite its content, it will simply append
+the new results to its content. If no file is selected, the results
+will be saved in a file called <tt class="docutils literal"><span class="pre">test.txt</span></tt> in the current working
+directory. You can select a file to save the results even after you
+have started a block of trials, the results get written to the file
+only at the end of the block.</li>
+<li><strong>Experimenter</strong> Here you can select one of the experimenters listed
+in the experimenter database. Please refer to
+Section&nbsp;[sec:experimenters<sub>d</sub>ialog] for further info on the
+experimenter database and how it can be used.</li>
+<li><strong>Experiment</strong> Selects the experiment for the current block.</li>
+<li><strong>Paradigm</strong> Selects the paradigm (e.g. adaptive, constant, etc…) for
+the current block. The list of paradigms available depends on the
+experiment that is selected.</li>
+<li><strong>Phones</strong> Choose from one of the phone models stored in the phones
+database. Please, refer to Section&nbsp;[sec:phones<sub>d</sub>ialog] for
+further info on how to enter phones and calibration values in the
+database.</li>
+<li><strong>Sample Rate (Hz)</strong> Set the sampling rate of the sounds to be
+played. Any value can be entered in the text fields. However, you
+should enter a value that is supported by your soundcard. A value
+that is not supported by your souncard may lead to issues, although
+it’s more likely that your soundcard will perform an automatic sample
+rate conversion.</li>
+<li><strong>Bits</strong> Set the bit depth that <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> uses to store
+sounds to a wav file or play them. Currently values of 16 and 32 bits
+are supported. A value of 32 bits can be used for 24-bit soundcards.
+Notice that to achieve 24-bit output requires both a 24-bit souncard
+and a play command that can output 24-bit sounds. Therefore selecting
+a value of 32 bits here does not guarantee 24-bit playback even if
+you have a 24-bit souncard. Please, refere to
+Section&nbsp;[sec:sound<sub>o</sub>utput] for further information on this
+issue.</li>
+<li><strong>Repetitions</strong> Set the number of times the sequence of blocks stored
+in memory should be repeated. If the “Shuffle Mode” (see below) is
+set to “auto”, each time a new repetition starts the block positions
+will be shuffled. If the “Shuffle Mode” is set to “Ask”, each time a
+new repetition starts the user will be asked if s/he wants to shuffle
+the block positions. The “Reset” button resets the number of
+repetitions to zero.</li>
+<li><strong>Pre-Trial Silence (ms)</strong> Set a silent time interval before the
+start of each trial.</li>
+<li><strong>Warning Interval</strong> Choose whether to present a warning light at the
+beginning of each trial.</li>
+<li><strong>Warning Interval Duration (ms)</strong> Sets the duration of the warning
+interval light. This widget is shown only if the warning interval
+chooser is set to “Yes”.</li>
+<li><strong>Warning Interval ISI (ms)</strong> Sets the duration of the silent
+interval between the end of warning interval and the start of the
+first observation interval. This widget is shown only if the warning
+interval chooser is set to “Yes”.</li>
+<li><strong>Pre-Trial Interval</strong> Choose whether to present a pre-trial
+interval. This widget is shown only for experiments that have a
+pre-trial interval option.</li>
+<li><strong>Pre-Trial Interval ISI (ms)</strong> Sets the duration of the silent
+interval between the end of pre-trial interval and the start of the
+first observation interval. This widget is shown only if the current
+experiment has a pre-trial interval option and the pre-trial interval
+chooser is set to “Yes”.</li>
+<li><strong>Response Light</strong> Set the type of response light at the end of each
+trial. &#8220;Feedback&#8221; will flash a green (correct response) or red
+(incorrect response) light. &#8220;Neutral&#8221; will flash a white light.
+&#8220;None&#8221; will not flash any light (there will nonetheless be a silent
+interval equal to the response light duration, see below).</li>
+<li><strong>Response Light Duration (ms)</strong> Set the duration of the response
+light.</li>
+<li><strong>Shuffle Mode</strong> If the “Shuffle Mode” is “auto”, the block
+presentation positions will be automatically shuffled at the
+beginning of a series of blocks. If the “Shuffle Mode” is “Ask”, at
+the beginning of a series of blocks the user will be asked if the
+block presentation positions should be shuffled or not. If the
+“Shuffle Mode” is “No”, the block presentation positions will not be
+automatically shuffled at the beginning of a series of blocks. See
+Section&nbsp;[sec:shuffling] for further information on shuffling the
+block presentation positions.</li>
+<li><strong>Response Mode</strong> When “Real Listener” is selected,
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> waits for responses from a human listener. When
+“Automatic” is selected the program will give responses by itself
+with a certain percentage correct, that can be specified in the
+“Percent Correct (%)” text field. This mode is mostly useful for
+debugging purposes, however it can also be used for experiments in
+which the participants are passively listening to the stimuli (e.g.
+some neuroimaging experiments that record cerebral responses rather
+than behavioural responses). In “Simulated Listener” mode
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> will give responses on the bases of an auditory
+model. This model needs to be specified in the experiment file, the
+“Simulated Listener” mode provides just a hook to redirect the
+control flow to your model. Please, refer to
+Section&nbsp;[sec:response<sub>m</sub>ode] for more information.</li>
+</ul>
+</div>
+<div class="section" id="general-widgets-right-panel">
+<h4>General Widgets (right panel)<a class="headerlink" href="#general-widgets-right-panel" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><strong>Load Prm</strong> Load in memory experimental parameters stored in a
+<tt class="docutils literal"><span class="pre">.prm</span></tt> file. See section&nbsp;[sec:parameters<sub>f</sub>iles] for more
+info.</li>
+<li><strong>Save Prm</strong> Save experimental parameters stored in memory in a
+<tt class="docutils literal"><span class="pre">.prm</span></tt> file. See section&nbsp;[sec:parameters<sub>f</sub>iles] for more
+info.</li>
+<li><strong>Delete</strong> Delete the current block from the blocks list.</li>
+<li><strong>Undo Unsaved</strong> Reset the parameters in the current block to the
+parameters that were last saved.</li>
+<li><strong>Store</strong> Store the parameters changes in memory.</li>
+<li><strong>Store ’n’ add</strong> Store the parameter changes in memory and add a new
+parameters block.</li>
+<li><strong>Store ’n’ go</strong> Store the parameter changes in memory and move to
+the next block storage point.</li>
+<li><strong>New Block</strong> Create a new parameters block (the parameters of the
+current block will be copied in the new one).</li>
+<li><strong>Previous</strong> Move to the previous block storage point.</li>
+<li><strong>Next</strong> Move to the next block storage point.</li>
+<li><strong>Shuffle</strong> Shuffle the block presentation positions.</li>
+<li><strong>Reset</strong> Reset the block presentation positions and move to the
+first block position.</li>
+<li><strong>Jump to Block</strong> Jump to a given block storage point.</li>
+<li><strong>Previous Position</strong> Move to the previous block presentation
+position.</li>
+<li><strong>Next Position</strong> Move to the next block presentation position.</li>
+<li><strong>Jump to Position</strong> Jump to the given block presentation position.</li>
+<li><strong>Shift Blk. Down</strong> Shift the current block to a lower storage point.</li>
+<li><strong>Shift Blk. Up</strong> Shift the current block to a higher storage point.</li>
+</ul>
+</div>
+<div class="section" id="paradigm-widgets">
+<h4>Paradigm Widgets<a class="headerlink" href="#paradigm-widgets" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="adaptive-paradigm-widgets">
+<h5>Adaptive Paradigm Widgets<a class="headerlink" href="#adaptive-paradigm-widgets" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>Procedure</strong> If “Arithmetic” the quantity defined by the step size
+will be added or subtracted to the parameter that is adaptively
+changing. If “Geometric” the parameter that is adaptively changing
+will be multiplied or divided by the quantity defined by the step
+size.</li>
+<li><strong>Initial Track Direction</strong> This determines when the first turpoint
+will be called. If the initial track direction is “Down” the first
+turnpoint will be called the first time the adaptive track turns
+upward. If the initial track direction is “Up” the first turnpoint
+will be called the first time the adaptive track turns downward.</li>
+<li><strong>Rule Down</strong> Set the number of consecutive correct responses needed
+to subtract the current step size from the adaptive parameter (for
+arithmetic procedures) or divide the adaptive parameter by the
+current step size (for geometric procedures).</li>
+<li><strong>Rule Up</strong> Set the number of consecutive incorrect responses needed
+to add the current step size to the adaptive parameter (for
+arithmetic procedures) or multiply the adaptive parameter by the
+current step size (for geometric procedures).</li>
+<li><strong>Initial Turnpoints</strong> Set the number of initial turnpoints. The
+initial turnpoints serve to bring quickly the adaptive track towards
+the listener’s threshold. These turnpoints are not included in the
+threshold estimate.</li>
+<li><strong>Total Turnpoints</strong> Set the number of total turnpoints. The number
+of total turnpoints is equal to the number of initial turnpoints that
+are not included in the threshold estimate plus the number of
+turnpoints that you want to use for the threshold estimate.</li>
+<li><strong>Step Size 1</strong> Set the step size for the initial turnpoints.</li>
+<li><strong>Step Size 2</strong> Set the step size to be used after the number of
+initial turnpoints has been reached.</li>
+</ul>
+</div>
+<div class="section" id="weighted-up-down-paradigm-widgets">
+<h5>Weighted Up/Down Paradigm Widgets<a class="headerlink" href="#weighted-up-down-paradigm-widgets" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>Procedure</strong> If “Arithmetic” the quantity defined by the step size
+will be added or subtracted to the parameter that is adaptively
+changing. If “Geometric” the parameter that is adaptively changing
+will be multiplied or divided by the quantity defined by the step
+size.</li>
+<li><strong>Initial Track Direction</strong> This determines when the first turpoint
+will be called. If the initial track direction is “Down” the first
+turnpoint will be called the first time the adaptive track turns
+upward. If the initial track direction is “Up” the first turnpoint
+will be called the first time the adaptive track turns downward.</li>
+<li><strong>Percent Correct Tracked</strong> Set the percentage correct point on the
+psychometric function to be tracked by the adaptive procedure. The
+ratio of the “Up” and “Down” steps is automatically adjusted by the
+software to satisfy this criterion.</li>
+<li><strong>Initial Turnpoints</strong> Set the number of initial turnpoints. The
+initial turnpoints serve to bring quickly the adaptive track towards
+the listener’s threshold. These turnpoints are not included in the
+threshold estimate.</li>
+<li><strong>Total Turnpoints</strong> Set the number of total turnpoints. The number
+of total turnpoints is equal to the number of initial turnpoints that
+are not included in the threshold estimate plus the number of
+turnpoints that you want to use for the threshold estimate.</li>
+<li><strong>Step Size 1</strong> Set the “Down” step size for the initial turnpoints.
+The “Up” step size is automatically calculated to satisfy the
+“Percent Correct Tracked” criterion.</li>
+<li><strong>Step Size 2</strong> Set the “Down” step size to be used after the number
+of initial turnpoints has been reached. The “Up” step size is
+automatically calculated to satisfy the “Percent Correct Tracked”
+criterion.</li>
+</ul>
+</div>
+<div class="section" id="adaptive-interleaved-paradigm-widgets">
+<h5>Adaptive Interleaved Paradigm Widgets<a class="headerlink" href="#adaptive-interleaved-paradigm-widgets" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>Procedure</strong> If “Arithmetic” the quantity defined by the step size
+will be added or subtracted to the parameter that is adaptively
+changing. If “Geometric” the parameter that is adaptively changing
+will be multiplied or divided by the quantity defined by the step
+size.</li>
+<li><strong>No. Tracks</strong> Set the number of adaptive tracks.</li>
+<li><strong>Max. Consecutive Trials x Track</strong> Set the maximum number of
+consecutive trials per track.</li>
+<li><strong>Turnpoints to Average</strong> Since track selection is pseudo-random, it
+may happen that for a track the number of total turnpoints collected
+is greater than the number of total turnpoints requested for that
+track. If “All final step size (even)” is selected, the threshold
+will be estimated using all the turnpoints collected after the
+initial turnpoints, unless the number of these turnpoints is odd, in
+which case the first of these turnpoints will be discarded. If “First
+N final step size” is selected the threshold will be estimated using
+only the number of requested turnpoints collected after the initial
+turnpoints. If “Last N final step size” is selected the threshold
+will be estimated using only the last <span class="math">\(N\)</span> turnpoints, where
+<span class="math">\(N\)</span> equals the number of requested turnpoints.</li>
+<li><strong>Initial Track X Direction</strong> This determines when the first turpoint
+will be called for track number <span class="math">\(X\)</span>. If the initial track
+direction is “Down” the first turnpoint will be called the first time
+the adaptive track turns upward. If the initial track direction is
+“Up” the first turnpoint will be called the first time the adaptive
+track turns downward.</li>
+<li><strong>Rule Down Track X</strong> Set the number of consecutive correct responses
+needed to subtract the current step size from the adaptive parameter
+(for arithmetic procedures) or divide the adaptive parameter by the
+current step size (for geometric procedures) for track number
+<span class="math">\(X\)</span>.</li>
+<li><strong>Rule Up Track X</strong> Set the number of consecutive incorrect responses
+needed to add the current step size to the adaptive parameter (for
+arithmetic procedures) or multiply the adaptive parameter by the
+current step size (for geometric procedures) for track number
+<span class="math">\(X\)</span>.</li>
+<li><strong>Initial Turnpoints Track X</strong> Set the number of initial turnpoints
+for track number <span class="math">\(X\)</span>. The initial turnpoints serve to bring
+quickly the adaptive track towards the listener’s threshold. These
+turnpoints are not included in the threshold estimate.</li>
+<li><strong>Total Turnpoints Track X</strong> Set the number of total turnpoints for
+track number <span class="math">\(X\)</span>. The number of total turnpoints is equal to
+the number of initial turnpoints that are not included in the
+threshold estimate plus the number of turnpoints that you want to use
+for the threshold estimate.</li>
+<li><strong>Step Size 1 Track X</strong> Set the step size for the initial turnpoints
+for track number <span class="math">\(X\)</span>.</li>
+<li><strong>Step Size 2 Track X</strong> Set the step size to be used after the number
+of initial turnpoints has been reached for track number <span class="math">\(X\)</span>.</li>
+</ul>
+</div>
+<div class="section" id="weighted-up-down-interleaved-paradigm-widgets">
+<h5>Weighted Up/Down Interleaved Paradigm Widgets<a class="headerlink" href="#weighted-up-down-interleaved-paradigm-widgets" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>Procedure</strong> If “Arithmetic” the quantity defined by the step size
+will be added or subtracted to the parameter that is adaptively
+changing. If “Geometric” the parameter that is adaptively changing
+will be multiplied or divided by the quantity defined by the step
+size.</li>
+<li><strong>No. Tracks</strong> Set the number of adaptive tracks.</li>
+<li><strong>Max. Consecutive Trials x Track</strong> Set the maximum number of
+consecutive trials per track.</li>
+<li><strong>Turnpoints to Average</strong> Since track selection is pseudo-random, it
+may happen that for a track the number of total turnpoints collected
+is greater than the number of total turnpoints requested for that
+track. If “All final step size (even)” is selected, the threshold
+will be estimated using all the turnpoints collected after the
+initial turnpoints, unless the number of these turnpoints is odd, in
+which case the first of these turnpoints will be discarded. If “First
+N final step size” is selected the threshold will be estimated using
+only the number of requested turnpoints collected after the initial
+turnpoints. If “Last N final step size” is selected the threshold
+will be estimated using only the last <span class="math">\(N\)</span> turnpoints, where
+<span class="math">\(N\)</span> equals the number of requested turnpoints.</li>
+<li><strong>Initial Track X Direction</strong> This determines when the first turpoint
+will be called for track number <span class="math">\(X\)</span>. If the initial track
+direction is “Down” the first turnpoint will be called the first time
+the adaptive track turns upward. If the initial track direction is
+“Up” the first turnpoint will be called the first time the adaptive
+track turns downward.</li>
+<li><strong>Percent Correct Tracked</strong> Set the percentage correct point on the
+psychometric function to be tracked by the adaptive procedure for
+track number <span class="math">\(X\)</span>. The ratio of the “Up” and “Down” steps is
+automatically adjusted by the software to satisfy this criterion.</li>
+<li><strong>Initial Turnpoints Track X</strong> Set the number of initial turnpoints
+for track number <span class="math">\(X\)</span>. The initial turnpoints serve to bring
+quickly the adaptive track towards the listener’s threshold. These
+turnpoints are not included in the threshold estimate.</li>
+<li><strong>Total Turnpoints Track X</strong> Set the number of total turnpoints for
+track number <span class="math">\(X\)</span>. The number of total turnpoints is equal to
+the number of initial turnpoints that are not included in the
+threshold estimate plus the number of turnpoints that you want to use
+for the threshold estimate.</li>
+<li><strong>Step Size 1 Track X</strong> Set the “Down” step size for the initial
+turnpoints for track number <span class="math">\(X\)</span>. The “Up” step size is
+automatically calculated to satisfy the “Percent Correct Tracked”
+criterion.</li>
+<li><strong>Step Size 2 Track X</strong> Set the “Down” step size to be used after the
+number of initial turnpoints has been reached for track number
+<span class="math">\(X\)</span>. The “Up” step size is automatically calculated to satisfy
+the “Percent Correct Tracked” criterion.</li>
+</ul>
+</div>
+<div class="section" id="constant-m-intervals-n-alternatives-paradigm-widgets">
+<h5>Constant m-Intervals n-Alternatives Paradigm Widgets<a class="headerlink" href="#constant-m-intervals-n-alternatives-paradigm-widgets" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>No. Trials</strong> Set the number of trials to be presented in the
+current block.</li>
+<li><strong>No. Practice Trials</strong> Set the number of practice trials to be
+presented in the current block. Practice trials are presented at the
+beginning of the block; the responses to these trials are not
+included in the statistics.</li>
+</ul>
+</div>
+<div class="section" id="multiple-constants-m-intervals-n-alternatives-paradigm-widgets">
+<h5>Multiple Constants m-Intervals n-Alternatives Paradigm Widgets<a class="headerlink" href="#multiple-constants-m-intervals-n-alternatives-paradigm-widgets" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>No. Trials</strong> Set the number of trials to be presented in the
+current block for each condition.</li>
+<li><strong>No. Practice Trials</strong> Set the number of practice trials to be
+presented in the current block for each condition. The responses to
+these trials are not included in the statistics.</li>
+<li><strong>No. Differences</strong> Set the number of conditions to be used in the
+current block.</li>
+</ul>
+</div>
+<div class="section" id="constant-1-interval-2-alternatives-paradigm-widgets">
+<h5>Constant 1-Interval 2-Alternatives Paradigm Widgets<a class="headerlink" href="#constant-1-interval-2-alternatives-paradigm-widgets" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>No. Trials</strong> Set the number of trials to be presented in the
+current block.</li>
+<li><strong>No. Practice Trials</strong> Set the number of practice trials to be
+presented in the current block. Practice trials are presented at the
+beginning of the block; the responses to these trials are not
+included in the statistics.</li>
+</ul>
+</div>
+<div class="section" id="multiple-constants-1-interval-2-alternatives-paradigm-widgets">
+<h5>Multiple Constants 1-Interval 2-Alternatives Paradigm Widgets<a class="headerlink" href="#multiple-constants-1-interval-2-alternatives-paradigm-widgets" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>No. Trials</strong> Set the number of trials to be presented in the
+current block for each condition.</li>
+<li><strong>No. Practice Trials</strong> Set the number of practice trials to be
+presented in the current block for each condition. The responses to
+these trials are not included in the statistics.</li>
+<li><strong>No. Differences</strong> Set the number of conditions to be used in the
+current block.</li>
+</ul>
+</div>
+<div class="section" id="pair-same-different-paradigm-widgets">
+<h5>1-Pair Same/Different Paradigm Widgets<a class="headerlink" href="#pair-same-different-paradigm-widgets" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>No. Trials</strong> Set the number of trials to be presented in the
+current block.</li>
+<li><strong>No. Practice Trials</strong> Set the number of practice trials to be
+presented in the current block. Practice trials are presented at the
+beginning of the block; the responses to these trials are not
+included in the statistics.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="the-menu-bar">
+<h4>The Menu Bar<a class="headerlink" href="#the-menu-bar" title="Permalink to this headline">¶</a></h4>
+<p>A screenshot of the menu bar is shown in Figure&nbsp;[fig:menuBar]. This bar
+is located in the upper left corner of the “Control Window”. Each menu
+will be described below.</p>
+<p>[!h] <img alt="image2" src="_images/menuBar.png" /> [fig:menuBar]</p>
+<div class="section" id="the-file-menu">
+<h5>The File Menu<a class="headerlink" href="#the-file-menu" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>Process Results</strong> Process block summary results files to obtain
+session summary results files. For more info see
+Section&nbsp;[sec:proc<sub>r</sub>es<sub>d</sub>ia].</li>
+<li><strong>Process Results Table</strong> Process block summary results table files
+to obtain session summary table results files. For more info see
+Section&nbsp;[sec:proc<sub>r</sub>es<sub>d</sub>ia].</li>
+<li><strong>Open Results File</strong> Open the file where <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> is
+currently saving data with the default text editor.</li>
+<li><strong>Exit.</strong> Close <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt>.</li>
+</ul>
+</div>
+<div class="section" id="the-edit-menu">
+<h5>The Edit Menu<a class="headerlink" href="#the-edit-menu" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>Edit Preferences</strong> Edit application preferences. See
+Section&nbsp;[sec:pref<sub>d</sub>ialog] for further info.</li>
+<li><strong>Edit Phones</strong> Edit the phones database, and set the calibration
+levels for your phones. See Section&nbsp;[sec:phones<sub>d</sub>ialog] for
+further info.</li>
+<li><strong>Edit Experimenters</strong> Edit the experimenters database. See
+Section&nbsp;[sec:experimenters<sub>d</sub>ialog] for further info.</li>
+</ul>
+</div>
+<div class="section" id="the-tools-menu">
+<h5>The Tools Menu<a class="headerlink" href="#the-tools-menu" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>Swap Blocks</strong> Swap the storage position of two parameter blocks.</li>
+</ul>
+</div>
+<div class="section" id="the-help-menu">
+<h5>The Help Menu<a class="headerlink" href="#the-help-menu" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><strong>Fortunes</strong> Show psychoacoustics fortunes. I’m always collecting new
+ones, so if you happen to know any interesting ones, please, e-mail
+them to me so that I can add them to the collection.</li>
+<li><strong>About pychoacoustics</strong> Show information about the licence, the
+version of the software and the version of the libraries it depends
+on.</li>
+</ul>
+</div>
+<div class="section" id="the-whats-this-button">
+<h5>The “what’s this?” Button.<a class="headerlink" href="#the-whats-this-button" title="Permalink to this headline">¶</a></h5>
+<p>If you click on this button, and then click on a widget, you can get
+some information about the widget (this is not implemented for all
+widgets).</p>
+</div>
+</div>
+</div>
+<div class="section" id="process-results-dialog">
+<h3>Process Results Dialog<a class="headerlink" href="#process-results-dialog" title="Permalink to this headline">¶</a></h3>
+<p>[sec:proc:sub:<cite>r</cite>es<sub>d</sub>ia]
+Figure&nbsp;[fig:proc<sub>r</sub>es<sub>d</sub>ia] show a screenshot of the
+process results dialog. The dialog is the same for all procedures,
+except that for procedures in which <em>d’</em> is computed, there is an
+additional checkbox asking whether to apply a correction to hit/false
+alarm rates of zero or one. For information on the format of the result
+files, please see Section&nbsp;[sec:results<sub>f</sub>iles].</p>
+<p>[!h] <img alt="image3" src="_images/proc_res_dia.png" /> [fig:proc:sub:<cite>r</cite>es<sub>d</sub>ia]</p>
+<ul class="simple">
+<li><strong>Input File(s)</strong> Give the filepath of one or more files to be
+processed. The “Choose File” button can be used to select the
+file(s). Multiple filepaths should be separated by a semicolon
+“<tt class="docutils literal"><span class="pre">;</span></tt>”.</li>
+<li><strong>Output File</strong> Give the filename of the output file.</li>
+<li><strong>For each condition process:</strong><ul>
+<li><strong>All Blocks</strong> If checked, all blocks in the result file(s) will
+be processd.</li>
+<li><strong>Last X Blocks</strong> If checked, only the last <span class="math">\(X\)</span> blocks will
+be processed.</li>
+<li><strong>Blocks in the following range</strong> If checked, only blocks in the
+specified range will be processed (indexing starts from 1).</li>
+</ul>
+</li>
+<li><strong>d-prime correction</strong> If checked, convert hit rates of <span class="math">\(0\)</span> and
+<span class="math">\(1\)</span> to <span class="math">\(1/2N\)</span> and <span class="math">\(1-1/(2N)\)</span> respectively, where
+<span class="math">\(N\)</span> is the number of trials, to avoid infinite values of <em>d’</em>
+&lt;see&gt;[p.&nbsp;8]Macmillan2005. This checkbox is available only for some
+paradigms.</li>
+<li><strong>When finished, open results file</strong> If checked, the output file will
+be opened in the default text editor when processing has finished.</li>
+<li><strong>When finished, open results folder</strong> If checked, the folder
+containing the output file will be opened when processing has
+finished.</li>
+<li><strong>Run!</strong> Click this button to process the result files.</li>
+</ul>
+</div>
+<div class="section" id="edit-preferences-dialog">
+<h3>Edit Preferences Dialog<a class="headerlink" href="#edit-preferences-dialog" title="Permalink to this headline">¶</a></h3>
+<p>[sec:pref:sub:<cite>d</cite>ialog] The preferences dialog is divided into several
+tabs. These are described in turn below.</p>
+<div class="section" id="general">
+<h4>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h4>
+<p>[sec:pref:sub:<cite>d</cite>ialog<sub>g</sub>en]</p>
+<ul class="simple">
+<li><strong>Language (requires restart)</strong> Choose the application language. At
+the moment and for the foreseeable future only English is supported.</li>
+<li><strong>Country (requires restart)</strong> Set the country locale to be used for
+the application. Some things (e.g.&nbsp;the way dates are written in
+result files depend on this setting.</li>
+<li><strong>Response Box Language (requires restart)</strong> Choose the language to
+be used for the “Response Box”. This set the language to be used for
+the button labels and other GUI elements that the experimental
+listener is presented with.</li>
+<li><strong>Response Box Country (requires restart)</strong> Set the country locale
+for the response box.</li>
+<li><strong>csv separator</strong> Choose the separator field to be used when writing
+the csv tabular result files.</li>
+<li><strong>Warn if listener name missing</strong> If checked, pop up a warning
+message if the listener name is missing at the beginning of a
+session.</li>
+<li><strong>Warning if session label missing</strong> If checked, pop up a warning
+message if the session label is missing at the beginning of a
+session.</li>
+<li><strong>Process results when finished</strong> If checked, process automatically
+the block summary file to generate the session summary file at the
+end of the experiment.</li>
+<li><strong>d-prime correction</strong> If checked, when automatically processing
+result files, convert hit rates of <span class="math">\(0\)</span> and <span class="math">\(1\)</span> to
+<span class="math">\(1/2N\)</span> and <span class="math">\(1-1/(2N)\)</span> respectively, where <span class="math">\(N\)</span> is
+the number of trials, to avoid infinite values of <em>d’</em>
+&lt;see&gt;[p.&nbsp;8]Macmillan2005.</li>
+<li><strong>Max Recursion Depth (requires restart)</strong> Set the maximum recursion
+depth of the Python interpreter stack. This setting should be changed
+only if you intend to run <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> in automatic or
+simulated listener response mode. Beware, setting a max recursion
+depth value smaller than the default value may cause
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> to crash or not even start. In case
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> does not start because of this, delete your
+preferences settings file to restore the default max recursion depth
+value.</li>
+</ul>
+</div>
+<div class="section" id="sound">
+<h4>Sound<a class="headerlink" href="#sound" title="Permalink to this headline">¶</a></h4>
+<p>[sec:pref:sub:<cite>d</cite>ialog<sub>s</sub>ound]</p>
+<ul class="simple">
+<li><strong>Play Command</strong> Set an internal or external command to play sounds.</li>
+<li><strong>Device</strong> Set the soundcard to be used to play sounds. This chooser
+is available only for certain internal play commands (currently
+alsaaudio and pyaudio).</li>
+<li><strong>Buffer Size (samples)</strong> Set the buffer size in number of samples to
+be used to output sounds. This chooser is available only for certain
+internal play commands (currently alsaaudio and pyaudio).</li>
+<li><strong>Default Sampling Rate</strong> Set the default sampling rate.</li>
+<li><strong>Default Bits</strong> Set the default bit depth.</li>
+<li><strong>Wav manager (requires restart)</strong> Choose the wav manager.</li>
+<li><strong>Write wav file</strong> Write wav files with the sounds played on each
+trial in the current <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> working directory.</li>
+<li><strong>Write sound sequence segment wavs</strong> For sound sequences, write a
+wav file for each segment of the sequence in the current
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> working directory.</li>
+<li><strong>Append silence to each sound (ms)</strong> Append a silence of the given
+duration at the end of each sound. This is useful on some versions of
+the Windows operating system that may cut the sound buffer before it
+has ended resulting in audible clicks.</li>
+</ul>
+</div>
+<div class="section" id="notifications">
+<h4>Notifications<a class="headerlink" href="#notifications" title="Permalink to this headline">¶</a></h4>
+<p>[sec:pref:sub:<cite>d</cite>ialog<sub>n</sub>otify]</p>
+<ul class="simple">
+<li><strong>Play End Message</strong> If checked, play a wav file at the end of the
+experiment. This could be short message to let the listeners know
+they have finished and thank them for their participation in the
+experiment. One or more wav files need to be set through the “Choose
+wav” button for this work.</li>
+<li><strong>Choose wav</strong> Choose the wav file to be played as the end message.
+Clicking on this button brings up another dialog where you can select
+the wav files to be played and their output RMS. Only one of the wav
+files listed here and with the “Use” flag set to will be randomly
+chosen and played.</li>
+<li><strong>blocks before end of experiment</strong> Set how many blocks before the
+end of the experiment the two actions listed below (send notification
+e-mail and execute custom command) should be performed.</li>
+<li><strong>Send notification e-mail</strong> If checked, send a notification e-mail
+to the experimenter to notify her that the experiment is about to
+finish.</li>
+<li><strong>Execute custom command</strong> If checked, execute an operating system
+command before the end of the experiment. This command could be used
+to automatically send an sms for example.</li>
+<li><strong>Send data via e-mail</strong> At the end of the experiment, send the
+results file to the experimenter .</li>
+<li><strong>Execute custom command</strong> At the end of the experiment, execute an
+operating system command.</li>
+<li><strong>Outgoing Server (SMTP)</strong> Set the name of the SMTP server to be used
+by <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> to send e-mails.</li>
+<li><strong>Port</strong> Set the port number for the SMTP server.</li>
+<li><strong>Security</strong> Set the security protocol for network exchanges with the
+SMTP server.</li>
+<li><strong>Server requires identification</strong> Check this if the SMTP server
+requires identification.</li>
+<li><strong>Username</strong> Set the username for the SMTP server.</li>
+<li><strong>Password</strong> Set the password for the SMTP server.</li>
+<li><strong>Send test e-mail</strong> Send a test e-mail to check that the server
+settings are OK.</li>
+</ul>
+</div>
+<div class="section" id="eeg">
+<h4>EEG<a class="headerlink" href="#eeg" title="Permalink to this headline">¶</a></h4>
+<p>[sec:pref:sub:<cite>d</cite>ialog<sub>e</sub>eg]</p>
+<ul class="simple">
+<li><strong>ON Trigger</strong> The ON trigger value (decimal).</li>
+<li><strong>OFF Trigger</strong> The OFF trigger value (decimal).</li>
+<li><strong>Trigger Duration (ms)</strong> The duration of the trigger in
+milliseconds.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="edit-phones-dialog">
+<h3>Edit Phones Dialog<a class="headerlink" href="#edit-phones-dialog" title="Permalink to this headline">¶</a></h3>
+<p>[sec:phones:sub:<cite>d</cite>ialog] A screenshot of the “Edit Phones” dialog is
+shown in Figure&nbsp;[fig:phones<sub>d</sub>ialog].</p>
+<p>[!hbt] <img alt="image4" src="_images/phones_database.png" /> [fig:phones:sub:<cite>d</cite>ialog]</p>
+<p>Most of the fields should be pretty much self-explanatory. Using this
+dialog you can add headphones/earphones models to the phones database.
+The phone with the “Default” flag set to will be selected by default
+when <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> is started. In the “Max Level” field you should
+enter the level in dB SPL that is output by the phone for a full
+amplitude sinusoid. This value will be used by <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> to
+output sounds at specific levels in dB SPL. On the rightmost panel of
+the dialog you have facilities to play a sinusoid with a specified
+level. You can use these facilities to check with a SPL meter (or a
+voltmeter depending on how you’re doing it) that the actual output level
+corresponds to the desired output level. Using these facilities you can
+also play a full amplitude sinusoid: you need to set the level of the
+sinuoid to the “Max Level” of the phone (whatever it is). Be careful
+because it can be very loud!</p>
+</div>
+<div class="section" id="edit-experimenters-dialog">
+<h3>Edit Experimenters Dialog<a class="headerlink" href="#edit-experimenters-dialog" title="Permalink to this headline">¶</a></h3>
+<p>[sec:experimenters:sub:<cite>d</cite>ialog] A screenshot of the “Edit
+Experimenters” dialog is shown in
+Figure&nbsp;[fig:experimenters<sub>d</sub>ialog].</p>
+<p>[!h] <img alt="image5" src="_images/experimenter_database.png" /> [fig:experimenters:sub:<cite>d</cite>ialog]</p>
+<p>Most of the fields should be pretty much self-explanatory. Here you can
+add the details of the experimenters that work in your lab in the
+experimenter database. The main functions of this database at the moment
+are a) writing the experimenter name in the results file; b) using the
+experimenter e-mail for sending notifications and/or results files (see
+Section&nbsp;[sec:pref<sub>d</sub>ialog<sub>n</sub>otify]).</p>
+</div>
+<div class="section" id="the-response-box">
+<h3>The Response Box<a class="headerlink" href="#the-response-box" title="Permalink to this headline">¶</a></h3>
+<p>The “response box” consists of a large button (the “status button”) that
+is used to start a block of trials, a feedback light to display trial by
+trial feedback, interval lights to mark observation intervals, and
+response buttons. The responses can be given either by means of mouse
+clicks, or using the numeric keypad (key “1” for the first button, key
+“2” for the second button etc…). Responses given before all observation
+intervals have been presented are not accepted.</p>
+<p>The status button can be activated by pressing the <tt class="docutils literal"><span class="pre">Ctrl+R</span></tt> shortcut.
+At the start of each block the label of the “Status Button” is set to
+“Start”. Once the listener starts a block of trials the label of the
+status button changes to “Running”. When a whole series of blocks is
+finished the label of the status button changes to “Finish”. If no
+blocks are stored in memory the label of the status button is set to
+“Wait”.</p>
+<p>On the top left corner of the response box there is a semi-hidden menu
+signalled by a little hyphen (“-”). If you click on it you have access
+to two functions. The “Show/Hide Control Window” function can be used to
+hide the control window while the experiment is running. This is useful
+because it prevents the listener from accidentally changing your
+experimental parameters or accidentally closing <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> (the
+response box itself has no “close” button, so it is not possible to
+close that). The “Show/Hide progress Bar” function can be used to
+display a progress bar at the bottom of the response box. The progress
+bar estimates what percentage of the experiment has been completed. This
+estimate depends on the procedure used (for constant procedures it is
+based on the number of trials done, while for adaptive procedures it is
+based on the number of turnpoints reached) and on the specific
+parameters of a given experiment (trial duration, number of trials, or
+number or turnpoints, all of which can differ between blocks), so in
+some cases the estimate can be off the mark. The “Show/Hide block
+progress Bar” can be used to show the position of the current block and
+the total number of blocks.</p>
+</div>
+</div>
+<div class="section" id="command-line-user-interface">
+<h2>Command Line User Interface<a class="headerlink" href="#command-line-user-interface" title="Permalink to this headline">¶</a></h2>
+<p>In order to automate certain tasks, or perform some advanced operations,
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> can be called from the command line with certain
+command line options. The following is the list of possible command line
+options:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">-h,</span> <span class="pre">--help</span></tt> Show help message.</li>
+<li><tt class="docutils literal"><span class="pre">-f,</span> <span class="pre">--file</span> <span class="pre">FILE</span></tt> Load parameters file <tt class="docutils literal"><span class="pre">FILE</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">-r,</span> <span class="pre">--results</span> <span class="pre">FILE</span></tt> Save the results to file <tt class="docutils literal"><span class="pre">FILE</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">-l,</span> <span class="pre">--listener</span> <span class="pre">LISTENER</span></tt> Set listener label to <tt class="docutils literal"><span class="pre">LISTENER</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">-s,</span> <span class="pre">--session</span> <span class="pre">SESSION</span></tt> Set session label to <tt class="docutils literal"><span class="pre">SESSION</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">-k,</span> <span class="pre">--reset</span></tt> Reset block positions.</li>
+<li><tt class="docutils literal"><span class="pre">-q,</span> <span class="pre">--quit</span></tt> Quit after finished.</li>
+<li><tt class="docutils literal"><span class="pre">-c,</span> <span class="pre">--conceal</span></tt> Hide Control and Parameters Windows.</li>
+<li><tt class="docutils literal"><span class="pre">-p,</span> <span class="pre">--progbar</span></tt> Show the progress bar.</li>
+<li><tt class="docutils literal"><span class="pre">-b,</span> <span class="pre">--blockprogbar</span></tt> Show the progress bar.</li>
+<li><tt class="docutils literal"><span class="pre">-a,</span> <span class="pre">--autostart</span></tt> Automatically start the first stored block.</li>
+<li><tt class="docutils literal"><span class="pre">-x,</span> <span class="pre">--recursion-depth</span></tt> Set the maximum recursion depth (this
+overrides the maximum recursion depth set in the preferences window).</li>
+<li><tt class="docutils literal"><span class="pre">-g,</span> <span class="pre">--graphicssystem</span></tt> sets the backend to be used for on-screen
+widgets and QPixmaps. Available options are raster and opengl.</li>
+<li><tt class="docutils literal"><span class="pre">-d,</span> <span class="pre">--display</span></tt> This option is only valid for X11 and sets the X
+display (default is $DISPLAY).</li>
+</ul>
+<p>each command line option has a short (single dash, one letter) and long
+(double dash, one word) form, for example to show the help message, you
+can use either of the two following commands:</p>
+<div class="highlight-python"><pre>$ pychoacoustics -h
+$ pychoacoustics --help</pre>
+</div>
+</div>
+<div class="section" id="psychophysics">
+<h2>Psychophysics<a class="headerlink" href="#psychophysics" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="available-paradigms">
+<h3>Available Paradigms<a class="headerlink" href="#available-paradigms" title="Permalink to this headline">¶</a></h3>
+<p>[sec:paradigms]</p>
+<p>This paradigm implements the “up/down” adaptive procedures described by
+. It can be used with <span class="math">\(n\)</span>-intervals, <span class="math">\(n\)</span>-alternatives forced
+choice tasks, in which <span class="math">\(n-1\)</span> “standard” stimuli and a single
+“comparison” stimulus are presented each in a different temporal
+interval. The order of the temporal intervals is randomized from trial
+to trial. The “comparison” stimulus usually differs from the “standard”
+stimuli for a single characteristic (e.g.&nbsp;pitch or loudness), and the
+listener has to tell in which temporal interval it was presented. A
+classical example is the 2-intervals 2-alternatives forced choice task.
+Tasks that present a reference stimulus in the first interval, and
+therefore have <span class="math">\(n\)</span> intervals and <span class="math">\(n-1\)</span> alternatives are also
+supported &lt;see&gt;[for an example of such tasks]Grimault2002.</p>
+<p>This paradigm implements the interleaved adaptive procedure described by
+.</p>
+<p>This paradigm implements the weighted up/down adaptive procedure
+described by .</p>
+<p>This paradigm combines the interleaved adaptive procedure described by
+with the weighted up/down method described by .</p>
+<p>This paradigm implements a constant difference method for forced choice
+tasks with <span class="math">\(m\)</span>-intervals and <span class="math">\(n\)</span>-alternatives. For example,
+it can be used for running a 2-intervals, 2-alternatives forced choice
+frequency-discrimination task with a constant difference between the
+stimuli in the standard and comparison intervals.</p>
+<p>This paradigm implements a constant difference method for tasks with a
+single observation interval and two response alternatives, such as the
+“Yes/No” signal detection task.</p>
+<p>This paradigm implements a constant difference method for
+“same/different” tasks with a single pair of stimuli to compare.</p>
+</div>
+<div class="section" id="available-experiments">
+<h3>Available Experiments<a class="headerlink" href="#available-experiments" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="the-pychoacoustics-engine">
+<h2>The <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> Engine<a class="headerlink" href="#the-pychoacoustics-engine" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="sound-output">
+<h3>Sound Output<a class="headerlink" href="#sound-output" title="Permalink to this headline">¶</a></h3>
+<p>[sec:sound:sub:<cite>o</cite>utput]</p>
+<p>On Linux systems <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> can either output sound (numpy
+arrays) directly to the soundcard, or write a wav file for each sound
+and call an external command to play it. Currently, support for sending
+sounds directly to the soundcard is possible only through the
+<a class="reference external" href="http://pyalsaaudio.sourceforge.net/">alsaaudio</a> python module. This
+module is optional, and you need to install it yourself to be able to
+use it.</p>
+<p>Once it is installed, it will be detected automatically and you will be
+able to select it as the “Play Command” in the sound preferences dialog.
+When you select &#8220;alsaaudio&#8221; as the play command, if you have multiple
+soundcards, you can select the device to which the sound will be sent.
+There will be also an option to set the size of the buffer that
+alsaaudio uses to play sounds. If the buffer is not filled completely by
+a sound (buffer size greater than number of samples in the sound), it
+will be zero padded. This may lead to some latency between the offset of
+a sound and the onset of the following one. If you set a value smaller
+than one the buffer size will be automatically set to the number of
+samples in the sound that is being played.</p>
+<p>Using an external command to play sounds generally works very well and
+is fast on modern hardware. <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> tries to detect available
+play commands on your system each time it starts up. On Linux systems,
+the recommended play command is <tt class="docutils literal"><span class="pre">aplay</span></tt>, which is installed by default
+on most Linux distributions. <tt class="docutils literal"><span class="pre">aplay</span></tt> supports 24-bit output on 24-bit
+soundcards with appropriate Linux drivers. Other possible play commands
+are <tt class="docutils literal"><span class="pre">play</span></tt>, which is provided by <a class="reference external" href="http://sox.sourceforge.net/">sox</a>
+and <tt class="docutils literal"><span class="pre">sndfile-play</span></tt>, which is provided by the
+<a class="reference external" href="http://www.mega-nerd.com/libsndfile/">libsndfile</a> tools. You can call
+another program by choosing “custom” in the “Play Command” drop-down
+menu and spelling out the name of the command in the box below.</p>
+<p>Currently, on Windows systems <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> cannot output sounds
+directly to the soundcard. It writes instead a wav file and calls an
+external play commands to output the sound. The recommended play command
+is <tt class="docutils literal"><span class="pre">winsound</span></tt>. This command supports only 16-bit output.</p>
+<p>Other possible play commands are <tt class="docutils literal"><span class="pre">play</span></tt>, which is provided by
+<a class="reference external" href="http://sox.sourceforge.net/">sox</a> and <tt class="docutils literal"><span class="pre">sndfile-play</span></tt>, which is
+provided by the <a class="reference external" href="http://www.mega-nerd.com/libsndfile/">libsndfile</a>
+tools. These programs need to be installed by the user. If they are in
+the system path, <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> will detect them automatically. I am
+not aware of any freely available play command that can output 24-bit
+sound in Windows. Portaudio could be a used, and the Python bindings
+provided by pyaudio have been recently ported to Python 3. I have not
+tried this solution (and don’t have much time to do it), if you want to
+try it, you need to be aware that in order to get 24-bit audio,
+portaudio should be probably compiled with ASIO support, and compiling
+portaudio on Windows with ASIO support is quite a complicated process.
+Note that external media players with a graphical user interface (like
+foobar2000) may not work well with <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt>.</p>
+</div>
+<div class="section" id="parameters-files">
+<h3>Parameters Files<a class="headerlink" href="#parameters-files" title="Permalink to this headline">¶</a></h3>
+<p>[sec:parameters:sub:<cite>f</cite>iles] Parameters files are plain text files,
+that can be modified through <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> or through a text
+editor. They contain a header with information that applies to all all
+the experimental blocks stored in a parameters file, and sections
+corresponding to the parameters that are specific to each experimental
+block store in a parameters file. The header contains the following
+fields:</p>
+<ul class="simple">
+<li>Phones</li>
+<li>Shuffle Mode</li>
+<li>Sample Rate</li>
+<li>Bits</li>
+<li>Experiment Label</li>
+<li>End Command</li>
+</ul>
+<p>You can refer to Section&nbsp;[sec:gui<sub>l</sub>eft<sub>p</sub>anel] to
+know what each of these fields represents.</p>
+<p>The sections that contain the parameters for each experimental block are
+subdivided into fields that are separated by one or more dots. You
+should not change this formatting when modifying parameters files.</p>
+<p>A fragment from a parameters file is shown below:</p>
+<div class="highlight-python"><pre>Paradigm: Adaptive
+Intervals: 2 :False
+Alternatives: 2 :False</pre>
+</div>
+<p>each entry here has two or three elements separated by colons. The first
+element represents the variable of interest, the second element its
+value, and the third element is a logical value that determines whether
+the <tt class="docutils literal"><span class="pre">inSummary</span></tt> checkbox will be checked or not (see Section
+[sec:tabular:sub:<cite>r</cite>esults<sub>f</sub>iles] for more info on this).
+You can have one or more spaces between each element and the colon
+separator. Each entry has to be written on a single line.</p>
+</div>
+<div class="section" id="results-files">
+<h3>Results Files<a class="headerlink" href="#results-files" title="Permalink to this headline">¶</a></h3>
+<p>[sec:results:sub:<cite>f</cite>iles] <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> outputs several types of
+results files. If you name your results file “myres”, the following
+files will be output:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">myres.txt</span></tt>, “block summary”</li>
+<li><tt class="docutils literal"><span class="pre">myres_full.txt</span></tt> “full file”</li>
+<li><tt class="docutils literal"><span class="pre">myres_table.csv</span></tt> “table block summary”</li>
+</ul>
+<p>two further files can be derived from these:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">myres_res.txt</span></tt> “session summary”</li>
+<li><tt class="docutils literal"><span class="pre">myres_table_processed.txt</span></tt> “table session summary”</li>
+</ul>
+<p>The “block summary” results file has no special suffix, and contains
+summaries for each experimental block that was run. The “full” results
+file has a “_full” suffix and contains information for each single
+trial. The “block summary” results file can be usually processed to
+obtain a “session summary” results file with a “_res” suffix, that
+contains summaries for an entire experimental session. In this file the
+results are averaged across different blocks that have exactly the same
+parameters.</p>
+<p>All these files are human and machine-readable, but they are not very
+machine-friendly for data analysis. That is, they can require quite a
+lot of either manual work or programming code to separate the headers
+and the labels from the values of interest (e.g., thresholds or <em>d’</em>
+values) before the data can be input to a statistical software package.
+For this reason, <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> outputs also a “block summary table”
+result file with a “_table” suffix that is written in a tabular format,
+and contains summaries for each experimental block that was run. This
+file can be further processed to obtain a “session summary table”
+results file with a “_table_processed” suffix, that contains summaries
+for an entire experimental session. In this file the results are
+averaged across different blocks that have exactly the same parameters
+stored in the “_table” file.</p>
+<p>In order to obtain the “_res” and “_table_processed” session summary
+files you need to use the appropriate functions that can be accessed
+from the “File” menu. Alternatively, you can check the “Process results
+when finished” checkbox in the “Preferences” window to let
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> automatically process these files at the end of an
+experimental session. If processing the result files manually, choose
+“Process Results” from the “File” menu, to convert a block summary file
+into a “_res” session summary file. Choose “Process Results Table” to
+convert a block summary table file into a “_table_processed” session
+summary file. In both cases you will need to use the appropriate
+subfunction for the paradigm (e.g., adaptive, constant 1-interval
+2-alternatives, etc…) that was used in the experiment. You can choose to
+process all blocks present in the file (default action), the last
+<span class="math">\(n\)</span> blocks (of each condition), or a range of blocks (for each
+condition). Once you have selected the file to process and specified the
+blocks to process you can click “Run!” to perform the processing.</p>
+<p>The tabular results files are comma separated value (csv) text files
+that can be opened in a text file editor or a spreadsheet application.
+The separator used by default is the semicolon “;”, but another
+separator can be specified in the <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> preferences window.
+When processing block summary table files, make sure that the csv
+separator in the “Process Results Table” window matches the separator
+used in the file.</p>
+<p>[sec:tabular:sub:<cite>r</cite>esults<sub>f</sub>iles] The tabular result files
+contain a number of default columns, that are specific to the paradigm
+used in the experiment (e.g., threshold, number of trials etc…). Columns
+with additional parameters can be stored in these files. Several text
+fields and choosers in <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> have what we will call
+<tt class="docutils literal"><span class="pre">inSummary</span></tt> check boxes. Some of these are shown marked by ellipses in
+Figure&nbsp;[fig:inSummaryCheckBoxes].</p>
+<p>[!h] <img alt="image6" src="_images/inSummaryCheckBoxes.png" /> [fig:inSummaryCheckBoxes]</p>
+<p>In the example shown in Figure&nbsp;[fig:inSummaryCheckBoxes] the frequency,
+level and ear parameters will be stored, each in a separate column, in
+the block summary table (“_table”) file, while the parameters
+corresponding to the unchecked boxes (duration, ramps and type) will be
+not. This is useful if you are running an experiment in which you are
+systematically varying only a few parameters across different blocks,
+and want to keep track of only those parameters. The <tt class="docutils literal"><span class="pre">inSummary</span></tt> check
+boxes also provide visual landmarks for quickly spotting the widgets
+with your parameters of interest in <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt>.</p>
+<p>Notice that the “Process Results Table” function, as mentioned in the
+previous section, will average the results for blocks with the same
+parameters stored in the block summary table (“_table”) file. This
+means that if you are varying a certain parameter (e.g., level) across
+blocks, but you don’t check the corresponding <tt class="docutils literal"><span class="pre">inSummary</span></tt> check box
+(for each block), the value of the parameter will not be stored in the
+block summary table (“_table”) file, and as a consequence the “Process
+Results Table” function will not be able to sort the blocks according to
+the “level” parameter, and will average the results across all blocks.
+Not all is lost, because the “level” parameter will be nonetheless
+stored in the “block summary” file, but you will need more work before
+you can process your results with a statistical software package.</p>
+<p><tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> automatically saves backup copies of the “block
+summary” and “full” files in a backup folder. On Linux systems this
+folder is located in</p>
+<div class="highlight-python"><pre>~/.local/share/data/pychoacoustics/data_backup</pre>
+</div>
+<p>on Windows systems it is located in</p>
+<div class="highlight-python"><pre>C:\\Users\username\.local\share\data\pychoacoustics\data_backup</pre>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">username</span></tt> is your account login name. A separate file is saved
+for each block of trials that is run. These files are named according to
+the date and time at which the blocks were started (the naming follows
+the YY-MM-DD-HH-MM-SS scheme). Unlike other results files, that are
+written only once a block of trials has been completed, these log
+results files get written as soon as information is available (e.g., a
+new line in the “full” results file is written at the end of each
+trial).</p>
+<div class="section" id="constant-m-intervals-n-alternatives-result-files">
+<h4>Constant m-Intervals n-Alternatives Result Files<a class="headerlink" href="#constant-m-intervals-n-alternatives-result-files" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="multiple-constants-m-intervals-n-alternatives-result-files">
+<h4>Multiple Constants m-Intervals n-Alternatives Result Files<a class="headerlink" href="#multiple-constants-m-intervals-n-alternatives-result-files" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="constant-1-intervals-2-alternatives-result-files">
+<h4>Constant 1-Intervals 2-Alternatives Result Files<a class="headerlink" href="#constant-1-intervals-2-alternatives-result-files" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="multiple-constants-1-intervals-2-alternatives-result-files">
+<h4>Multiple Constants 1-Intervals 2-Alternatives Result Files<a class="headerlink" href="#multiple-constants-1-intervals-2-alternatives-result-files" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="constant-1-pair-same-different-result-files">
+<h4>Constant 1-Pair Same/Different Result Files<a class="headerlink" href="#constant-1-pair-same-different-result-files" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+<div class="section" id="block-presentation-position">
+<h3>Block Presentation Position<a class="headerlink" href="#block-presentation-position" title="Permalink to this headline">¶</a></h3>
+<p>[sec:shuffling]</p>
+<p>We will define the serial position at which a block is presented during
+an experimental session as its “presentation position”, and the serial
+position at which a block is stored in a parameters file as its “storage
+point”.</p>
+<p>Clicking the “Shuffle” button randomises the presentation positions of
+the blocks, but leaves the order in which the blocks are stored in a
+parameters file untouched. The “Previous” and “Next” buttons, as well as
+the “Jump to Block” chooser let you navigate across the blocks storage
+points, while the “Previous Position”, and the “Next Position” buttons,
+as well as the “Jump to Position” chooser let you navigate across the
+blocks presentation positions.</p>
+<p>The block presentation positions are recorded in the parameters files.
+This is useful in case you have to interrupt an experimental session
+whose block presentation positions had been randomized, before it is
+finished, and continue it at a later date. In this case you can save the
+parameters file, reload it next time, and let the listener complete the
+experimental blocks that s/he had not run because of the interruption.
+Notice that each time you load a parameters file <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> will
+automatically move to the first block presentation position. Therefore,
+you will have to note down what was the last block that your listener
+had run in the interrupted session (or find out by looking at the
+results file) and move to the presentation position of the following
+block yourself.</p>
+<p>By default clicking on the “Shuffle” button performs a simple full
+randomization of the block presentation positions. However, you can
+specify more complex shuffling schemes in the “Shuffling Scheme” text
+field. Let’s say you want to present two tasks in your experiment, a
+frequency discrimination and an intensity discrimination task. Each task
+has four subconditions, (e.g.&nbsp;four different base frequencies for the
+frequency discrimination task and four different base intensities for
+the intensity discrimination task). Your parameters file will contain
+eight blocks in total, blocks one to four are for the frequency
+discrimination task and blocks five to eight are for the intensity
+discrimination task. During the experiment you want your participants to
+run first the four frequency discrimination conditions in random order,
+and afterwards the four intensity discrimination conditions in random
+order. To achieve this you can enter the following shuffling scheme:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>basically you specify sequences (which can be nested) with your
+experimental blocks, sequences within round parentheses <tt class="docutils literal"><span class="pre">()</span></tt> are not
+shuffled, while sequences within square brackets <tt class="docutils literal"><span class="pre">[]</span></tt> are shuffled.
+Following the previous example, if you want to present first the four
+blocks of one of the tasks (either frequency or intensity) in random
+order, and then the four blocks of the other task in random order, you
+would specify your shuffling scheme as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>on the other hand, if you want to present first the four blocks of one
+of the tasks (either frequency or intensity) in sequential order and
+then the four blocks of the other task in sequential order, you would
+specify your shuffling scheme as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>you can have any variation you like on the theme, and the lists can be
+nested ad libitum, so for example you could have:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>this would instruct <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> to present first either the four
+frequency conditions or the four intensity conditions. The first two
+frequency conditions are presented sequentially, while the last two are
+shuffled. To save typing you can give ranges rather than listing all
+blocks individually. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">([</span><span class="mi">1</span><span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="o">-</span><span class="mi">8</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>is equivalent to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="os-commands">
+<h3>OS Commands<a class="headerlink" href="#os-commands" title="Permalink to this headline">¶</a></h3>
+<p>[sec:end:sub:<cite>c</cite>md]</p>
+<p><tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> can be instructed to run operating system (OS)
+commands at the end of an experiment. This may be useful to run custom
+scripts that may analyse the result files, backup result files or
+perform other operations.</p>
+<p>In the control window, you can enter commands that you want to be
+executed at the end of a specific experiment in the &#8220;End Command&#8221; box.
+This command will be saved in the parameters file of the experiment.</p>
+<p>In the &#8220;Preferences Dialog&#8221;, under the &#8220;Notifications&#8221; tab you can
+instead set a command that will be executed at the end of each
+experiment you run, or <span class="math">\(n\)</span> blocks before the end of each
+experiment you run. These commands should be entered in the &#8220;Execute
+custom command&#8221; boxes.</p>
+<p>The commands that you can execute are OS commands, therefore they are
+different on Linux and Windows platforms. On Linux, for example,
+assuming that you store all your experimental results in the directory
+&#8220;/home/foo/exp/&#8221;, you could automatically make a backup of these files
+in the directory &#8220;/home/foo/backup/exp/&#8221; by using the command</p>
+<div class="highlight-python"><pre>rsync -r -t -v --progress -s /home/foo/exp/ /home/foo/backup/exp/</pre>
+</div>
+<p>To make things more interesting, you can use some special strings to
+pass <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> internal variables to your commands. For
+example, if you want to copy the results file of the current experiment
+to the directory &#8220;/home/foo/res/&#8221;, you can use the command</p>
+<div class="highlight-python"><pre>cp [resFile] /home/foo/backup/exp/</pre>
+</div>
+<p>here the special string <tt class="docutils literal"><span class="pre">[resFile]</span></tt> will be converted to the name of
+the file where <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> has saved the data. A full listing of
+these special strings is given in Table&nbsp;[tab:end<sub>c</sub>md].</p>
+<p>[htbp]</p>
+<p>ll</p>
+<p><strong>String</strong> &amp; <strong>Variable</strong>
+<tt class="docutils literal"><span class="pre">[resDir]</span></tt> &amp; Results file directory
+<tt class="docutils literal"><span class="pre">[resFile]</span></tt> &amp; Block summary results file
+<tt class="docutils literal"><span class="pre">[resFileFull]</span></tt> &amp; Full results file
+<tt class="docutils literal"><span class="pre">[resFileRes]</span></tt> &amp; Session summary results file
+<tt class="docutils literal"><span class="pre">[resTable]</span></tt> &amp; Block summary table results file
+<tt class="docutils literal"><span class="pre">[listener]</span></tt> &amp; Listener label
+<tt class="docutils literal"><span class="pre">[experimenter]</span></tt> &amp; Experimenter ID</p>
+<p>[tab:end:sub:<cite>c</cite>md]</p>
+</div>
+<div class="section" id="preferences-settings">
+<h3>Preferences Settings<a class="headerlink" href="#preferences-settings" title="Permalink to this headline">¶</a></h3>
+<p>[sec:preferences] All the settings that can be manipulated in the
+“Preferences” dialog, as well as the “Phones” and “Experimenters”
+dialogs are stored in a file in the user home directory. On Linux this
+file is located in:</p>
+<div class="highlight-python"><pre>~/.config/pychoacoustics/preferences.py</pre>
+</div>
+<p>On Windows, assuming the root drive is “C” it is located in:</p>
+<div class="highlight-python"><pre>C:\\Users\username\.config/pychoacoustics\preferences.py</pre>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">username</span></tt> is your Windows login username. Although I strive to
+avoid this, the way in which the preferences settings are stored may
+change in newer versions of pychoacoustics. This means that when
+pychoacoustics is upgraded to a newer version it may sometimes not start
+or throw out errors. To address these issues, please, try removing the
+old preferences file. Of course this means that you’re going to lose all
+the settings that you had previously saved. To avoid loosing any
+precious information, such as the calibration values of your headphones,
+write down all important info before removing the preferences file.</p>
+</div>
+<div class="section" id="response-mode">
+<h3>Response Mode<a class="headerlink" href="#response-mode" title="Permalink to this headline">¶</a></h3>
+<p>[sec:response:sub:<cite>m</cite>ode]</p>
+<p><tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> was designed to run interactive experiments in which
+a listener hears some stimuli and gives a response through a button or
+key press. This is the default mode, called “Real Listener” mode.
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> provides two additional response modes, “Automatic”
+and “Simulated Listener”. These modes can be set through the control
+window.</p>
+<p>In “Automatic” response mode, rather than waiting for the listener to
+give a response, <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> gives itself a response and proceeds
+to the next trial. The probability that this automatic response is
+correct can also be set through the control window. The “Automatic”
+response mode has two main functions. The first is testing and debugging
+an experiment. Rather than running the experiment yourself, you can
+launch <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> in “Automatic” response mode and check that
+everything runs smoothly, the program doesn’t crash, and the result
+files are saved correctly. The second function of the automatic response
+mode is to allow passive presentation of the stimuli. Some neuroimaging
+experiments (e.g.&nbsp;electroencephalographic or functional magnetic
+resonance recordings) are performed with listeners passively listening
+to the stimuli. These experiments usually also require that the program
+presenting the stimuli sends triggers to the recording equipment to flag
+the start of a trial. Potentially this can also be done in
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> (and we’ve done it in our lab for
+electroencephalographic recordings), but at the moment this
+functionality is not implemented in a general way in the program.</p>
+<p>The “Simulated Listener” mode is simply a hook that allows you to
+redirect the control flow of the program to some code that simulates a
+listener and provides a response. Notice that <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> does
+not provide any simulation code in itself, the simulation code has to be
+written by you for a specific experiment. If no simulation code is
+written in the experiment file, <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> will do nothing in
+simulated listenr mode. Further details on how to use the “Simulated
+Listener” mode are provided in Section&nbsp;[sec:simulations].</p>
+<p>Both the “Automatic” and the “Simulated Listener” make recursive
+function calls. In Python the number of recursive function calls that
+you can make is limited. If your experiment passes this limit
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> will crash. The limit can be raised, up to a certain
+extent (which is dependent on your operating system, see the
+documentation for the setrecursionlimit function in the Python <tt class="docutils literal"><span class="pre">sys</span></tt>
+module) through the “Max Recursion Depth” setting that you can find in
+the preferences window, or set through a command line option when
+running <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> from the command line. Notice that the total
+number of recursive calls that your program will make to complete an
+experiments will be higher than the number of trials in the experiment,
+so you should set the “Max Recursion Depth” to a value higher than the
+number of trials you’re planning to perform (how much higher I don’t
+know, you should find out by trial and error, a few hundred points
+higher is usually sufficient). If you’re planning to run a very high
+number of trials in “Automatic” or “Simulated Listener” mode, rather
+than raising the max recursion depth, it may be better to split the
+experiment in several parts. You can always write a script that
+automatically launches <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> from the command line
+instructing it to load a given parameters file. On UNIX machines you
+could write a shell script to do that, but an easier way is perhaphs to
+use python itself to write the script. For example, the <tt class="docutils literal"><span class="pre">python</span></tt>
+script could be:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#! /usr/bin/env python</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+   <span class="n">cmd</span> <span class="o">=</span> <span class="s">&quot;pychoacoustics --file prms.prm -l L1 -s s1 -q -a </span><span class="se">\</span>
+<span class="s">         --recursion-depth 3000&quot;</span>
+</pre></div>
+</div>
+<p>here we’re telling <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> to load the parameters file
+<tt class="docutils literal"><span class="pre">prms.prm</span></tt>, set the listener identifier to “L1” and the session label
+to s1. The <tt class="docutils literal"><span class="pre">-q</span></tt> option instructs the program to exit at the end of the
+experiment. This way the recursion depth count is effectively restarted
+each time <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> is closed and launched again from the
+script. When the <tt class="docutils literal"><span class="pre">--recursion-depth</span></tt> option is passed as a command
+line argument, as in the example above, it overrides the max recursion
+depth value set in the preferences window. If the <tt class="docutils literal"><span class="pre">-a</span></tt> option is
+passed, as in the examples above, <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> will start
+automatically at the beginning of each of the five series . This is
+useful for debugging or simulations, so that you can start the script
+and leave the program complete unattended (you need to make sure that
+the “Shuffling Mode” is not set to “Ask” and that you pass listener and
+session labels if you want the program to run completely unattended).</p>
+</div>
+</div>
+<div class="section" id="designing-custom-experiments">
+<h2>Designing Custom Experiments<a class="headerlink" href="#designing-custom-experiments" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>[sec:cutom:sub:<cite>e</cite>xp]</p>
+<p>In order to add a new experiment to</p>
+</div></blockquote>
+<p><tt class="docutils literal"><span class="pre">pychoacoustics</span></tt>, create a directory in your home folder called
+<tt class="docutils literal"><span class="pre">pychoacoustics_experiments</span></tt>, inside this folder create a subfolder
+called <tt class="docutils literal"><span class="pre">custom_experiments</span></tt>. Each experiment is written in a single
+file contained in this folder. Let’s imagine we want to create an
+experiment for a simple frequency discrimination task. We create a file
+named <tt class="docutils literal"><span class="pre">freq.py</span></tt> in the <tt class="docutils literal"><span class="pre">custom_experiments</span></tt> folder. In addition to
+the experiment file we need an additional file that lists all the
+experiments contained in the <tt class="docutils literal"><span class="pre">custom_experiments</span></tt> directory. This file
+must be named <tt class="docutils literal"><span class="pre">__init__.py</span></tt>, and in our case it will have the
+following content:</p>
+<div class="highlight-python"><pre>   __all__ = [&quot;freq&quot;]
+
+
+here the variable ``__all__`` is simply a python list with the name of</pre>
+</div>
+<p>the experiment files. So, if one day we decide to write a new experiment
+on, let’s say, level discrimination, in a file called <tt class="docutils literal"><span class="pre">lev.py</span></tt> we
+would simply add it to the list in <tt class="docutils literal"><span class="pre">__init__.py</span></tt>:</p>
+<div class="highlight-python"><pre>   __all__ = [&quot;freq&quot;,
+              &quot;lev&quot;]
+
+
+For people familiar with packaging Python modules it should be clear</pre>
+</div>
+<p>by now that the custom experiments folder is basically a Python package
+containing various modules (the experiment files). If at some point we
+want to remove an experiment from <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt>, for example
+because it contains a bug that does not allow the program to start, we
+can simply remove it from the list in <tt class="docutils literal"><span class="pre">__init__.py</span></tt></p>
+<blockquote>
+<div>Let’s go back</div></blockquote>
+<p>to the <tt class="docutils literal"><span class="pre">freq.py</span></tt> file. Here we need to define four functions. For our
+example the names of these functions would be:</p>
+<div class="highlight-python"><pre>   initialize_freq()
+   select_default_parameters_freq()
+   get_fields_to_hide_freq()
+   doTrial_freq()
+
+
+basically the function names consist of a fixed prefix, followed by</pre>
+</div>
+<p>the name of the experiment file. So in the case of the level experiment
+example written in the file <tt class="docutils literal"><span class="pre">lev.py</span></tt>, our four functions would be
+called:</p>
+<div class="highlight-python"><pre>   initialize_lev()
+   select_default_parameters_lev()
+   get_fields_to_hide_lev()
+   doTrial_lev()
+
+
+we’ll look at each function in details shortly. Briefly, the</pre>
+</div>
+<p><tt class="docutils literal"><span class="pre">initialize_</span></tt> function is used to set some general parameters and
+options for our experiment; the <tt class="docutils literal"><span class="pre">select_default_parameters_</span></tt> function
+lists all the widgets (text fields and choosers) of our experiment and
+their default values; the <tt class="docutils literal"><span class="pre">get_field_to_hide_</span></tt> function is used to
+dinamically hide or show certain widgets depending on the status of
+other widgets; finally, the <tt class="docutils literal"><span class="pre">doTrial_</span></tt> function contains the code that
+generates the sounds and plays them during the experiment.</p>
+<blockquote>
+<div>The <tt class="docutils literal"><span class="pre">initialize_</span></tt> function of our frequency discrimination</div></blockquote>
+<p>experiment looks like this:</p>
+<div class="highlight-python"><pre>   def initialize_freq(prm):
+     exp_name = &quot;Frequency Discrimination Demo&quot;
+     prm[&quot;experimentsChoices&quot;].append(exp_name)
+     prm[exp_name] = {}
+     prm[exp_name][&quot;paradigmChoices&quot;] = [&quot;Adaptive&quot;,
+                                         &quot;Weighted Up/Down&quot;,
+                                         &quot;Constant m-Intervals n-Alternatives&quot;]
+
+     prm[exp_name][&quot;opts&quot;] = [&quot;hasISIBox&quot;, &quot;hasAlternativesChooser&quot;,
+                              &quot;hasFeedback&quot;, &quot;hasIntervalLights&quot;]
+
+     prm[exp_name][&quot;execString&quot;] = &quot;freq&quot;
+     return prm
+
+
+When the function is called, it is passed a dictionary containing</pre>
+</div>
+<dl class="docutils">
+<dt>various parameters through the “prm” argument.</dt>
+<dd>The function receives</dd>
+<dt>this dictionary of parameters and adds or modifies some of them.</dt>
+<dd>In the</dd>
+</dl>
+<p>first line we give a label to the experiment, this can be anything we
+want, except the label of an experiment already existing.</p>
+<blockquote>
+<div>The second</div></blockquote>
+<dl class="docutils">
+<dt>line adds this experiment label to the list of “experimentChoices”.</dt>
+<dd>The</dd>
+</dl>
+<p>third line creates a new sub-dictionary that has as a key the experiment
+label.</p>
+<blockquote>
+<div>Next we list the paradims that our experiment supports by</div></blockquote>
+<dl class="docutils">
+<dt>creating a “paradigmChoices” key and giving</dt>
+<dd>the names of the supported</dd>
+</dl>
+<p>paradigms as a list. These paradims listed here must be within the set
+of paradims</p>
+<blockquote>
+<div>supported by <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> (see</div></blockquote>
+<p>Section&nbsp;[sec:paradigms] for a description of the paradigms currently
+supported).</p>
+<blockquote>
+<div>In the next line we set an “<tt class="docutils literal"><span class="pre">opts</span></tt>” key containing a list</div></blockquote>
+<dl class="docutils">
+<dt>of options. The full list of options that can be set here</dt>
+<dd>is described</dd>
+</dl>
+<p>in details in Section&nbsp;[sec:experiment<sub>o</sub>pts]. In brief, for our
+experiment we want to have a widget to set the ISI between presentation
+intervals (<tt class="docutils literal"><span class="pre">hasISIBox</span></tt>), a widget to choose the number of response
+alternatives (<tt class="docutils literal"><span class="pre">hasAlternativesChooser</span></tt>),</p>
+<blockquote>
+<div>a widget to set the feedback</div></blockquote>
+<p>on or off for a given block of trials (<tt class="docutils literal"><span class="pre">hasFeedback</span></tt>), and finally we
+want lights</p>
+<blockquote>
+<div>to mark the observation intervals (<tt class="docutils literal"><span class="pre">hasIntervalLights</span></tt>).</div></blockquote>
+<p>The penultimate line of the <tt class="docutils literal"><span class="pre">initialize_</span></tt> function sets the
+“<tt class="docutils literal"><span class="pre">execString</span></tt>” of our experiment. This</p>
+<blockquote>
+<div>must be the name of our</div></blockquote>
+<p>experiment file, so in our case “<tt class="docutils literal"><span class="pre">freq</span></tt>”.</p>
+<blockquote>
+<div>The purpose of the <tt class="docutils literal"><span class="pre">get_fields_to_hide_</span></tt> function is to</div></blockquote>
+<dl class="docutils">
+<dt>dinamically show or</dt>
+<dd>hide certain widgets depending on the status of</dd>
+<dt>other widgets. This function must</dt>
+<dd>be defined, but is not essential to a</dd>
+<dt>pychoacoustics experiment, so if you want to read</dt>
+<dd>all the essential</dd>
+</dl>
+<p>information first, you can simply write the following:</p>
+<div class="highlight-python"><pre>   def get_fields_to_hide_freq(parent):
+     pass
+
+
+and move on to read about the next function, otherwise, read on.</pre>
+</div>
+<dl class="docutils">
+<dt>writing an experimentFor example, if you</dt>
+<dd>want to set up a frequency</dd>
+<dt>discrimination experiment in which the frequency of the</dt>
+<dd>standard</dd>
+</dl>
+<p>stimulus may be either fixed, or change from trial to trial,</p>
+<blockquote>
+<div>[sec:experiment:sub:<cite>o</cite>pts]</div></blockquote>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">hasISIBox</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">hasAlternativesChooser</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">hasFeedback</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">hasIntervalLights</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">hasPreTrialInterval</span></tt></li>
+</ul>
+<div class="section" id="simulations">
+<h3>Simulations<a class="headerlink" href="#simulations" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>[sec:simulations]</p>
+<p><tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> is not designed to run</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>simulations in itself, however it provides a hook</dt>
+<dd>to redirect the</dd>
+</dl>
+<p>control flow to an auditory model that you need to specify yourself in
+the experiment file.</p>
+<blockquote>
+<div>You can retrieve the current response mode from</div></blockquote>
+<p>the experiment file with:</p>
+<div class="highlight-python"><pre>   parent.prm[&#x27;allBlocks&#x27;][&#x27;responseMode&#x27;]
+
+
+so, in the experiment file, after the creation of the stimuli for the</pre>
+</div>
+<dl class="docutils">
+<dt>trial you can redirect the</dt>
+<dd>control flow of the program depending on the</dd>
+</dl>
+<p>response mode:</p>
+<div class="highlight-python"><pre>if parent.prm[&#x27;allBlocks&#x27;][&#x27;responseMode&#x27;] != &quot;Simulated Listener&quot;:
+   #we are not in simulation mode, play the stimuli for the listener
+   parent.playSoundSequence(sndSeq, ISIs)
+if parent.prm[&#x27;allBlocks&#x27;][&#x27;responseMode&#x27;] == &quot;Simulated Listener&quot;:
+   #we are in simulation mode
+   #pass the stimuli to an auditory model and decision device
+   #---
+   #Here you specify your model, pychoacoustics doesn&#x27;t do it for you!
+   # at the end your simulated listener arrives to a response that is
+   # either correct or incorrect
+   #---
+   parent.prm[&#x27;trialRunning&#x27;] = False
+   #this is needed for technical reasons (if the &#x27;trialRunning&#x27;
+   #flag were set to &#x27;True&#x27; pychoacoustics would not process
+   #the response.
+   #
+   #let&#x27;s suppose that at the end of the simulation you store the
+   #response in a variable called &#x27;resp&#x27;, that can take as values
+   #either the string &#x27;Correct&#x27; or the string &#x27;Incorrect&#x27;.
+   #You can then proceed to let pychoacoustics process the response:
+   #
+   if resp == &#x27;Correct&#x27;:
+      parent.sortResponse(parent.correctButton)
+   elif resp == &#x27;Incorrect&#x27;:
+      #list all the possible &#x27;incorrect&#x27; buttons
+      inc_buttons = numpy.delete(numpy.arange(
+                                 self.prm[&#x27;nAlternatives&#x27;])+1,
+                                 self.correctButton-1))
+      #choose one of the incorrect buttons
+      parent.sortResponse(random.choice(inc_buttons))</pre>
+</div>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> saves the results at the end of each block, therefore
+only the results from the last uncompleted block will be lost, the
+results of completed blocks will not be lost. If you have an experiment
+with many different blocks presented in random order it may be difficult
+to see which blocks the listener had already completed and set
+<tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> to run only the blocks that were not run. To address
+this issue <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> keeps a copy of the parameters, including
+the block presentation order after shuffling, in a file called
+<tt class="docutils literal"><span class="pre">.tmp_prm.prm</span></tt> (this is a hidden file on Linux systems). Therefore,
+after the crash you can simply load this parameters file and move to the
+block position that the listener was running when the computer crashed
+to resume the experiment.</p>
+<p>A second function of the <tt class="docutils literal"><span class="pre">.tmp_prm.prm</span></tt> file is to keep a copy of
+parameters that were stored in memory, but not saved to a file. If your
+computer crashed while you were setting up a parameters for an
+experiment that were not yet saved (or were only partially saved) to a
+file, you can retrieve them after the crash by loading the
+<tt class="docutils literal"><span class="pre">.tmp_prm.prm</span></tt> file. One important thing to keep in mind is that the
+<tt class="docutils literal"><span class="pre">.tmp_prm.prm</span></tt> will be overwritten as soon as new parameters are
+stored in memory by a <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> instance opened in the same
+directory. Therefore it is advisable to make a copy of the
+<tt class="docutils literal"><span class="pre">.tmp_prm.prm</span></tt> file renaming it to avoid accidentally loosing its
+contents after the crash.</p>
+</div>
+<div class="section" id="introduction-to-python-numpy-and-scipy">
+<h2>Introduction to Python, Numpy and Scipy<a class="headerlink" href="#introduction-to-python-numpy-and-scipy" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="gnu-free-documentation-license">
+<h2>GNU Free Documentation License<a class="headerlink" href="#gnu-free-documentation-license" title="Permalink to this headline">¶</a></h2>
+<p>Version 1.2, November 2002</p>
+<p>Copyright ©2000,2001,2002 Free Software Foundation, Inc.</p>
+<p>51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA</p>
+<p>Everyone is permitted to copy and distribute verbatim copies of this
+license document, but changing it is not allowed.</p>
+<p><strong>Preamble</strong></p>
+<p>The purpose of this License is to make a manual, textbook, or other
+functional and useful document &#8220;free&#8221; in the sense of freedom: to assure
+everyone the effective freedom to copy and redistribute it, with or
+without modifying it, either commercially or noncommercially.
+Secondarily, this License preserves for the author and publisher a way
+to get credit for their work, while not being considered responsible for
+modifications made by others.</p>
+<p>This License is a kind of &#8220;copyleft&#8221;, which means that derivative works
+of the document must themselves be free in the same sense. It
+complements the GNU General Public License, which is a copyleft license
+designed for free software.</p>
+<p>We have designed this License in order to use it for manuals for free
+software, because free software needs free documentation: a free program
+should come with manuals providing the same freedoms that the software
+does. But this License is not limited to software manuals; it can be
+used for any textual work, regardless of subject matter or whether it is
+published as a printed book. We recommend this License principally for
+works whose purpose is instruction or reference.</p>
+<p><strong>1. APPLICABILITY AND DEFINITIONS</strong></p>
+<p>This License applies to any manual or other work, in any medium, that
+contains a notice placed by the copyright holder saying it can be
+distributed under the terms of this License. Such a notice grants a
+world-wide, royalty-free license, unlimited in duration, to use that
+work under the conditions stated herein. The <strong>&#8220;Document&#8221;</strong>, below,
+refers to any such manual or work. Any member of the public is a
+licensee, and is addressed as <strong>&#8220;you&#8221;</strong>. You accept the license if you
+copy, modify or distribute the work in a way requiring permission under
+copyright law.</p>
+<p>A <strong>&#8220;Modified Version&#8221;</strong> of the Document means any work containing the
+Document or a portion of it, either copied verbatim, or with
+modifications and/or translated into another language.</p>
+<p>A <strong>&#8220;Secondary Section&#8221;</strong> is a named appendix or a front-matter section
+of the Document that deals exclusively with the relationship of the
+publishers or authors of the Document to the Document’s overall subject
+(or to related matters) and contains nothing that could fall directly
+within that overall subject. (Thus, if the Document is in part a
+textbook of mathematics, a Secondary Section may not explain any
+mathematics.) The relationship could be a matter of historical
+connection with the subject or with related matters, or of legal,
+commercial, philosophical, ethical or political position regarding them.</p>
+<p>The <strong>&#8220;Invariant Sections&#8221;</strong> are certain Secondary Sections whose titles
+are designated, as being those of Invariant Sections, in the notice that
+says that the Document is released under this License. If a section does
+not fit the above definition of Secondary then it is not allowed to be
+designated as Invariant. The Document may contain zero Invariant
+Sections. If the Document does not identify any Invariant Sections then
+there are none.</p>
+<p>The <strong>&#8220;Cover Texts&#8221;</strong> are certain short passages of text that are
+listed, as Front-Cover Texts or Back-Cover Texts, in the notice that
+says that the Document is released under this License. A Front-Cover
+Text may be at most 5 words, and a Back-Cover Text may be at most 25
+words.</p>
+<p>A <strong>&#8220;Transparent&#8221;</strong> copy of the Document means a machine-readable copy,
+represented in a format whose specification is available to the general
+public, that is suitable for revising the document straightforwardly
+with generic text editors or (for images composed of pixels) generic
+paint programs or (for drawings) some widely available drawing editor,
+and that is suitable for input to text formatters or for automatic
+translation to a variety of formats suitable for input to text
+formatters. A copy made in an otherwise Transparent file format whose
+markup, or absence of markup, has been arranged to thwart or discourage
+subsequent modification by readers is not Transparent. An image format
+is not Transparent if used for any substantial amount of text. A copy
+that is not &#8220;Transparent&#8221; is called <strong>&#8220;Opaque&#8221;</strong>.</p>
+<p>Examples of suitable formats for Transparent copies include plain ASCII
+without markup, Texinfo input format, LaTeX input format, SGML or XML
+using a publicly available DTD, and standard-conforming simple HTML,
+PostScript or PDF designed for human modification. Examples of
+transparent image formats include PNG, XCF and JPG. Opaque formats
+include proprietary formats that can be read and edited only by
+proprietary word processors, SGML or XML for which the DTD and/or
+processing tools are not generally available, and the machine-generated
+HTML, PostScript or PDF produced by some word processors for output
+purposes only.</p>
+<p>The <strong>&#8220;Title Page&#8221;</strong> means, for a printed book, the title page itself,
+plus such following pages as are needed to hold, legibly, the material
+this License requires to appear in the title page. For works in formats
+which do not have any title page as such, &#8220;Title Page&#8221; means the text
+near the most prominent appearance of the work’s title, preceding the
+beginning of the body of the text.</p>
+<p>A section <strong>&#8220;Entitled XYZ&#8221;</strong> means a named subunit of the Document whose
+title either is precisely XYZ or contains XYZ in parentheses following
+text that translates XYZ in another language. (Here XYZ stands for a
+specific section name mentioned below, such as <strong>&#8220;Acknowledgements&#8221;</strong>,
+<strong>&#8220;Dedications&#8221;</strong>, <strong>&#8220;Endorsements&#8221;</strong>, or <strong>&#8220;History&#8221;</strong>.) To <strong>&#8220;Preserve
+the Title&#8221;</strong> of such a section when you modify the Document means that
+it remains a section &#8220;Entitled XYZ&#8221; according to this definition.</p>
+<p>The Document may include Warranty Disclaimers next to the notice which
+states that this License applies to the Document. These Warranty
+Disclaimers are considered to be included by reference in this License,
+but only as regards disclaiming warranties: any other implication that
+these Warranty Disclaimers may have is void and has no effect on the
+meaning of this License.</p>
+<p><strong>2. VERBATIM COPYING</strong></p>
+<p>You may copy and distribute the Document in any medium, either
+commercially or noncommercially, provided that this License, the
+copyright notices, and the license notice saying this License applies to
+the Document are reproduced in all copies, and that you add no other
+conditions whatsoever to those of this License. You may not use
+technical measures to obstruct or control the reading or further copying
+of the copies you make or distribute. However, you may accept
+compensation in exchange for copies. If you distribute a large enough
+number of copies you must also follow the conditions in section 3.</p>
+<p>You may also lend copies, under the same conditions stated above, and
+you may publicly display copies.</p>
+<p><strong>3. COPYING IN QUANTITY</strong></p>
+<p>If you publish printed copies (or copies in media that commonly have
+printed covers) of the Document, numbering more than 100, and the
+Document’s license notice requires Cover Texts, you must enclose the
+copies in covers that carry, clearly and legibly, all these Cover Texts:
+Front-Cover Texts on the front cover, and Back-Cover Texts on the back
+cover. Both covers must also clearly and legibly identify you as the
+publisher of these copies. The front cover must present the full title
+with all words of the title equally prominent and visible. You may add
+other material on the covers in addition. Copying with changes limited
+to the covers, as long as they preserve the title of the Document and
+satisfy these conditions, can be treated as verbatim copying in other
+respects.</p>
+<p>If the required texts for either cover are too voluminous to fit
+legibly, you should put the first ones listed (as many as fit
+reasonably) on the actual cover, and continue the rest onto adjacent
+pages.</p>
+<p>If you publish or distribute Opaque copies of the Document numbering
+more than 100, you must either include a machine-readable Transparent
+copy along with each Opaque copy, or state in or with each Opaque copy a
+computer-network location from which the general network-using public
+has access to download using public-standard network protocols a
+complete Transparent copy of the Document, free of added material. If
+you use the latter option, you must take reasonably prudent steps, when
+you begin distribution of Opaque copies in quantity, to ensure that this
+Transparent copy will remain thus accessible at the stated location
+until at least one year after the last time you distribute an Opaque
+copy (directly or through your agents or retailers) of that edition to
+the public.</p>
+<p>It is requested, but not required, that you contact the authors of the
+Document well before redistributing any large number of copies, to give
+them a chance to provide you with an updated version of the Document.</p>
+<p><strong>4. MODIFICATIONS</strong></p>
+<p>You may copy and distribute a Modified Version of the Document under the
+conditions of sections 2 and 3 above, provided that you release the
+Modified Version under precisely this License, with the Modified Version
+filling the role of the Document, thus licensing distribution and
+modification of the Modified Version to whoever possesses a copy of it.
+In addition, you must do these things in the Modified Version:</p>
+<ul class="simple">
+<li>Use in the Title Page (and on the covers, if any) a title distinct
+from that of the Document, and from those of previous versions (which
+should, if there were any, be listed in the History section of the
+Document). You may use the same title as a previous version if the
+original publisher of that version gives permission.</li>
+<li>List on the Title Page, as authors, one or more persons or entities
+responsible for authorship of the modifications in the Modified
+Version, together with at least five of the principal authors of the
+Document (all of its principal authors, if it has fewer than five),
+unless they release you from this requirement.</li>
+<li>State on the Title page the name of the publisher of the Modified
+Version, as the publisher.</li>
+<li>Preserve all the copyright notices of the Document.</li>
+<li>Add an appropriate copyright notice for your modifications adjacent
+to the other copyright notices.</li>
+<li>Include, immediately after the copyright notices, a license notice
+giving the public permission to use the Modified Version under the
+terms of this License, in the form shown in the Addendum below.</li>
+<li>Preserve in that license notice the full lists of Invariant Sections
+and required Cover Texts given in the Document’s license notice.</li>
+<li>Include an unaltered copy of this License.</li>
+<li>Preserve the section Entitled &#8220;History&#8221;, Preserve its Title, and add
+to it an item stating at least the title, year, new authors, and
+publisher of the Modified Version as given on the Title Page. If
+there is no section Entitled &#8220;History&#8221; in the Document, create one
+stating the title, year, authors, and publisher of the Document as
+given on its Title Page, then add an item describing the Modified
+Version as stated in the previous sentence.</li>
+<li>Preserve the network location, if any, given in the Document for
+public access to a Transparent copy of the Document, and likewise the
+network locations given in the Document for previous versions it was
+based on. These may be placed in the &#8220;History&#8221; section. You may omit
+a network location for a work that was published at least four years
+before the Document itself, or if the original publisher of the
+version it refers to gives permission.</li>
+<li>For any section Entitled &#8220;Acknowledgements&#8221; or &#8220;Dedications&#8221;,
+Preserve the Title of the section, and preserve in the section all
+the substance and tone of each of the contributor acknowledgements
+and/or dedications given therein.</li>
+<li>Preserve all the Invariant Sections of the Document, unaltered in
+their text and in their titles. Section numbers or the equivalent are
+not considered part of the section titles.</li>
+<li>Delete any section Entitled &#8220;Endorsements&#8221;. Such a section may not be
+included in the Modified Version.</li>
+<li>Do not retitle any existing section to be Entitled &#8220;Endorsements&#8221; or
+to conflict in title with any Invariant Section.</li>
+<li>Preserve any Warranty Disclaimers.</li>
+</ul>
+<p>If the Modified Version includes new front-matter sections or appendices
+that qualify as Secondary Sections and contain no material copied from
+the Document, you may at your option designate some or all of these
+sections as invariant. To do this, add their titles to the list of
+Invariant Sections in the Modified Version’s license notice. These
+titles must be distinct from any other section titles.</p>
+<p>You may add a section Entitled &#8220;Endorsements&#8221;, provided it contains
+nothing but endorsements of your Modified Version by various parties–for
+example, statements of peer review or that the text has been approved by
+an organization as the authoritative definition of a standard.</p>
+<p>You may add a passage of up to five words as a Front-Cover Text, and a
+passage of up to 25 words as a Back-Cover Text, to the end of the list
+of Cover Texts in the Modified Version. Only one passage of Front-Cover
+Text and one of Back-Cover Text may be added by (or through arrangements
+made by) any one entity. If the Document already includes a cover text
+for the same cover, previously added by you or by arrangement made by
+the same entity you are acting on behalf of, you may not add another;
+but you may replace the old one, on explicit permission from the
+previous publisher that added the old one.</p>
+<p>The author(s) and publisher(s) of the Document do not by this License
+give permission to use their names for publicity for or to assert or
+imply endorsement of any Modified Version.</p>
+<p><strong>5. COMBINING DOCUMENTS</strong></p>
+<p>You may combine the Document with other documents released under this
+License, under the terms defined in section 4 above for modified
+versions, provided that you include in the combination all of the
+Invariant Sections of all of the original documents, unmodified, and
+list them all as Invariant Sections of your combined work in its license
+notice, and that you preserve all their Warranty Disclaimers.</p>
+<p>The combined work need only contain one copy of this License, and
+multiple identical Invariant Sections may be replaced with a single
+copy. If there are multiple Invariant Sections with the same name but
+different contents, make the title of each such section unique by adding
+at the end of it, in parentheses, the name of the original author or
+publisher of that section if known, or else a unique number. Make the
+same adjustment to the section titles in the list of Invariant Sections
+in the license notice of the combined work.</p>
+<p>In the combination, you must combine any sections Entitled &#8220;History&#8221; in
+the various original documents, forming one section Entitled &#8220;History&#8221;;
+likewise combine any sections Entitled &#8220;Acknowledgements&#8221;, and any
+sections Entitled &#8220;Dedications&#8221;. You must delete all sections Entitled
+&#8220;Endorsements&#8221;.</p>
+<p><strong>6. COLLECTIONS OF DOCUMENTS</strong></p>
+<p>You may make a collection consisting of the Document and other documents
+released under this License, and replace the individual copies of this
+License in the various documents with a single copy that is included in
+the collection, provided that you follow the rules of this License for
+verbatim copying of each of the documents in all other respects.</p>
+<p>You may extract a single document from such a collection, and distribute
+it individually under this License, provided you insert a copy of this
+License into the extracted document, and follow this License in all
+other respects regarding verbatim copying of that document.</p>
+<p><strong>7. AGGREGATION WITH INDEPENDENT WORKS</strong></p>
+<p>A compilation of the Document or its derivatives with other separate and
+independent documents or works, in or on a volume of a storage or
+distribution medium, is called an &#8220;aggregate&#8221; if the copyright resulting
+from the compilation is not used to limit the legal rights of the
+compilation’s users beyond what the individual works permit. When the
+Document is included in an aggregate, this License does not apply to the
+other works in the aggregate which are not themselves derivative works
+of the Document.</p>
+<p>If the Cover Text requirement of section 3 is applicable to these copies
+of the Document, then if the Document is less than one half of the
+entire aggregate, the Document’s Cover Texts may be placed on covers
+that bracket the Document within the aggregate, or the electronic
+equivalent of covers if the Document is in electronic form. Otherwise
+they must appear on printed covers that bracket the whole aggregate.</p>
+<p><strong>8. TRANSLATION</strong></p>
+<p>Translation is considered a kind of modification, so you may distribute
+translations of the Document under the terms of section 4. Replacing
+Invariant Sections with translations requires special permission from
+their copyright holders, but you may include translations of some or all
+Invariant Sections in addition to the original versions of these
+Invariant Sections. You may include a translation of this License, and
+all the license notices in the Document, and any Warranty Disclaimers,
+provided that you also include the original English version of this
+License and the original versions of those notices and disclaimers. In
+case of a disagreement between the translation and the original version
+of this License or a notice or disclaimer, the original version will
+prevail.</p>
+<p>If a section in the Document is Entitled &#8220;Acknowledgements&#8221;,
+&#8220;Dedications&#8221;, or &#8220;History&#8221;, the requirement (section 4) to Preserve its
+Title (section 1) will typically require changing the actual title.</p>
+<p><strong>9. TERMINATION</strong></p>
+<p>You may not copy, modify, sublicense, or distribute the Document except
+as expressly provided for under this License. Any other attempt to copy,
+modify, sublicense or distribute the Document is void, and will
+automatically terminate your rights under this License. However, parties
+who have received copies, or rights, from you under this License will
+not have their licenses terminated so long as such parties remain in
+full compliance.</p>
+<p><strong>10. FUTURE REVISIONS OF THIS LICENSE</strong></p>
+<p>The Free Software Foundation may publish new, revised versions of the
+GNU Free Documentation License from time to time. Such new versions will
+be similar in spirit to the present version, but may differ in detail to
+address new problems or concerns. See <a class="reference external" href="http://www.gnu.org/copyleft/">http://www.gnu.org/copyleft/</a>.</p>
+<p>Each version of the License is given a distinguishing version number. If
+the Document specifies that a particular numbered version of this
+License &#8220;or any later version&#8221; applies to it, you have the option of
+following the terms and conditions either of that specified version or
+of any later version that has been published (not as a draft) by the
+Free Software Foundation. If the Document does not specify a version
+number of this License, you may choose any version ever published (not
+as a draft) by the Free Software Foundation.</p>
+<p><strong>ADDENDUM: How to use this License for your documents</strong></p>
+<p>To use this License in a document you have written, include a copy of
+the License in the document and put the following copyright and license
+notices just after the title page:</p>
+<blockquote>
+<div>Copyright ©YEAR YOUR NAME. Permission is granted to copy, distribute
+and/or modify this document under the terms of the GNU Free
+Documentation License, Version 1.2 or any later version published by
+the Free Software Foundation; with no Invariant Sections, no
+Front-Cover Texts, and no Back-Cover Texts. A copy of the license is
+included in the section entitled &#8220;GNU Free Documentation License&#8221;.</div></blockquote>
+<p>If you have Invariant Sections, Front-Cover Texts and Back-Cover Texts,
+replace the &#8220;with...Texts.&#8221; line with this:</p>
+<blockquote>
+<div>with the Invariant Sections being LIST THEIR TITLES, with the
+Front-Cover Texts being LIST, and with the Back-Cover Texts being
+LIST.</div></blockquote>
+<p>If you have Invariant Sections without Cover Texts, or some other
+combination of the three, merge those two alternatives to suit the
+situation.</p>
+<p>If your document contains nontrivial examples of program code, we
+recommend releasing these examples in parallel under your choice of free
+software license, such as the GNU General Public License, to permit
+their use in free software.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pychoacoustics manual</a><ul>
+<li><a class="reference internal" href="#what-is-pychoacoustics">What is <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt>?</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#installation-on-linux">Installation on Linux</a></li>
+<li><a class="reference internal" href="#installation-on-windows">Installation on Windows</a><ul>
+<li><a class="reference internal" href="#using-the-binary-installer">Using the binary installer</a></li>
+<li><a class="reference internal" href="#installing-from-source">Installing from source</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graphical-user-interface">Graphical User Interface</a><ul>
+<li><a class="reference internal" href="#quickstart">Quickstart</a></li>
+<li><a class="reference internal" href="#the-control-window">The Control Window</a><ul>
+<li><a class="reference internal" href="#general-widgets-left-panel">General Widgets (left panel)</a></li>
+<li><a class="reference internal" href="#general-widgets-right-panel">General Widgets (right panel)</a></li>
+<li><a class="reference internal" href="#paradigm-widgets">Paradigm Widgets</a><ul>
+<li><a class="reference internal" href="#adaptive-paradigm-widgets">Adaptive Paradigm Widgets</a></li>
+<li><a class="reference internal" href="#weighted-up-down-paradigm-widgets">Weighted Up/Down Paradigm Widgets</a></li>
+<li><a class="reference internal" href="#adaptive-interleaved-paradigm-widgets">Adaptive Interleaved Paradigm Widgets</a></li>
+<li><a class="reference internal" href="#weighted-up-down-interleaved-paradigm-widgets">Weighted Up/Down Interleaved Paradigm Widgets</a></li>
+<li><a class="reference internal" href="#constant-m-intervals-n-alternatives-paradigm-widgets">Constant m-Intervals n-Alternatives Paradigm Widgets</a></li>
+<li><a class="reference internal" href="#multiple-constants-m-intervals-n-alternatives-paradigm-widgets">Multiple Constants m-Intervals n-Alternatives Paradigm Widgets</a></li>
+<li><a class="reference internal" href="#constant-1-interval-2-alternatives-paradigm-widgets">Constant 1-Interval 2-Alternatives Paradigm Widgets</a></li>
+<li><a class="reference internal" href="#multiple-constants-1-interval-2-alternatives-paradigm-widgets">Multiple Constants 1-Interval 2-Alternatives Paradigm Widgets</a></li>
+<li><a class="reference internal" href="#pair-same-different-paradigm-widgets">1-Pair Same/Different Paradigm Widgets</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-menu-bar">The Menu Bar</a><ul>
+<li><a class="reference internal" href="#the-file-menu">The File Menu</a></li>
+<li><a class="reference internal" href="#the-edit-menu">The Edit Menu</a></li>
+<li><a class="reference internal" href="#the-tools-menu">The Tools Menu</a></li>
+<li><a class="reference internal" href="#the-help-menu">The Help Menu</a></li>
+<li><a class="reference internal" href="#the-whats-this-button">The “what’s this?” Button.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#process-results-dialog">Process Results Dialog</a></li>
+<li><a class="reference internal" href="#edit-preferences-dialog">Edit Preferences Dialog</a><ul>
+<li><a class="reference internal" href="#general">General</a></li>
+<li><a class="reference internal" href="#sound">Sound</a></li>
+<li><a class="reference internal" href="#notifications">Notifications</a></li>
+<li><a class="reference internal" href="#eeg">EEG</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#edit-phones-dialog">Edit Phones Dialog</a></li>
+<li><a class="reference internal" href="#edit-experimenters-dialog">Edit Experimenters Dialog</a></li>
+<li><a class="reference internal" href="#the-response-box">The Response Box</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#command-line-user-interface">Command Line User Interface</a></li>
+<li><a class="reference internal" href="#psychophysics">Psychophysics</a><ul>
+<li><a class="reference internal" href="#available-paradigms">Available Paradigms</a></li>
+<li><a class="reference internal" href="#available-experiments">Available Experiments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-pychoacoustics-engine">The <tt class="docutils literal"><span class="pre">pychoacoustics</span></tt> Engine</a><ul>
+<li><a class="reference internal" href="#sound-output">Sound Output</a></li>
+<li><a class="reference internal" href="#parameters-files">Parameters Files</a></li>
+<li><a class="reference internal" href="#results-files">Results Files</a><ul>
+<li><a class="reference internal" href="#constant-m-intervals-n-alternatives-result-files">Constant m-Intervals n-Alternatives Result Files</a></li>
+<li><a class="reference internal" href="#multiple-constants-m-intervals-n-alternatives-result-files">Multiple Constants m-Intervals n-Alternatives Result Files</a></li>
+<li><a class="reference internal" href="#constant-1-intervals-2-alternatives-result-files">Constant 1-Intervals 2-Alternatives Result Files</a></li>
+<li><a class="reference internal" href="#multiple-constants-1-intervals-2-alternatives-result-files">Multiple Constants 1-Intervals 2-Alternatives Result Files</a></li>
+<li><a class="reference internal" href="#constant-1-pair-same-different-result-files">Constant 1-Pair Same/Different Result Files</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#block-presentation-position">Block Presentation Position</a></li>
+<li><a class="reference internal" href="#os-commands">OS Commands</a></li>
+<li><a class="reference internal" href="#preferences-settings">Preferences Settings</a></li>
+<li><a class="reference internal" href="#response-mode">Response Mode</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#designing-custom-experiments">Designing Custom Experiments</a><ul>
+<li><a class="reference internal" href="#simulations">Simulations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+<li><a class="reference internal" href="#introduction-to-python-numpy-and-scipy">Introduction to Python, Numpy and Scipy</a></li>
+<li><a class="reference internal" href="#gnu-free-documentation-license">GNU Free Documentation License</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/pychoacoustics_manual.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">pychoacoustics (&#39;0.2.52&#39;,) documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Samuele Carcagno.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

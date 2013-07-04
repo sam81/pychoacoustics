@@ -1,0 +1,85 @@
+\chapter{Installation}
+
+\texttt{pychoacoustics} has been successfully installed and used on Linux and Windows platforms, since it is entirely written in python it should be fully cross-platform and should work on the Mac as well, but this has never been tested. \texttt{pychoacoustics} depends on the installation of a handful of other programs:
+\begin{itemize}
+\item Python (version 3) \href{http://www.python.org/}{http://www.python.org/}
+\item pyqt4 \href{http://www.riverbankcomputing.co.uk/software/pyqt/download}{http://www.riverbankcomputing.co.uk/software/pyqt/download}
+\item numpy \href{http://sourceforge.net/projects/numpy/files/}{http://sourceforge.net/projects/numpy/files/}
+\item scipy \href{http://sourceforge.net/projects/scipy/files/}{http://sourceforge.net/projects/scipy/files/}
+\end{itemize}
+these programs need to be installed manually. Once these programs are installed you can proceed with the installtion of \texttt{pychoacoustics}. %At this time there is no Linux package or Windows executable to automatically install \texttt{pychoacoustics}, however the installation is quite simple. %It can be installed either as a standard python program, using \verb+python setup.py install+ or it can simply unpacked 
+
+\section{Installation on Linux} 
+%On debian based platforms the dependencies can be installed using
+%\begin{verbatim}
+%sudo apt-get install python3 pyqt4 numpy scipy
+%\end{verbatim}
+Binary deb packages for recent debian-based distributions are provided (starting from Wheezy), and can be installed
+using gdebi which automatically handles dependencies. For other linux systems,
+once all of the dependencies have been installed,
+\texttt{pychoacoustics} can be installed as a standard python package using
+\begin{verbatim}
+sudo python3 setup.py install
+\end{verbatim}
+you can then invoke \texttt{pychoacoustics} from a terminal by typing the command 
+\begin{verbatim}
+pychoacoustics.pyw
+\end{verbatim}
+
+\section{Installation on Windows}
+
+\subsection{Using the binary installer}
+After installing the dependencies (\texttt{python}, \texttt{pyqt4}, \texttt{numpy}, and \texttt{scipy}), simply double click on the \texttt{pychoacoustics}
+windows installer to start the installation procedure. Currently the installer does not provide a launcher.
+There is, however, a file called \texttt{pychoacoustics-qt4.bat} inside the source distribution of pychoacoustics that
+after some modifications can be used as a launcher. The content of the file is the following:
+\begin{verbatim}
+C:\Python32\python "C:\Python32\site-packages\pychoacoustics.pyw" 
+%1 %2 %3 %4 %5 %6 %7 %8
+\end{verbatim}
+The first statement \verb+C:\Python32\python+ is the path to the Python executable.
+The second statement is the path to the main file of the \texttt{pychoacoustics} app.
+You simply need to replace those two statements to reflect the Python installation on your system.
+
+You can place the \texttt{.bat} launcher wherever you want, for example on your \texttt{Desktop}
+folder. Simply double click on it, and \texttt{pychoacoustics} should start.
+%The installer should create a launcher on the desktop, and a launcher on the start menu \footnote{Due to a bug, when you uninstall \texttt{pychoacoustics}, the launchers on the desktop and on the start menu may not be automatically removed. You can however remove them manually. For the launcher on the start manu, simply right click on it and select ``Remove''}.
+
+\subsection{Installing from source}
+After installing the dependencies, it is recommended to add the directory 
+where the Python executable resides to the system \verb+PATH+. In this way 
+you can call \texttt{python} from a \texttt{DOS} shell by simply typing its 
+name, rather than typing the full path to the Python executable.
+
+By default \texttt{python} is installed in \verb+C:+. The name of the Python
+directory depends on its version number, for example, if you installed Python 
+version 3.2, the python directory will be \verb+C:\Python32+. To add this 
+directory to the system path go to \texttt{My Computer} and click \texttt{Properties}, 
+then click \texttt{Advanced System Settings}. In the \texttt{System Properties} window 
+click \texttt{Environment Variables}. There you will find an entry called \texttt{Path}. 
+Select it and click \texttt{Edit}. Be careful not to remove any of the entries that are 
+already written there because it could corrupt your system. Simply append the name of 
+the full path of the folder where \texttt{python} is installed, at the end of the other entries.
+
+To install \texttt{pychoacoustics} from source, unpack the \texttt{pychoacoustics} 
+\texttt{.zip} file containing the source code. Open a \texttt{DOS} shell and \texttt{cd} 
+to the directory where you unzipped pychoacoustics. The program can then be installed 
+as a standard python package using the following command:
+\begin{verbatim}
+python setup.py install
+\end{verbatim}
+If you have installed the dependencies, you can also use pychoacoustics without installing it.
+Open a \texttt{DOS} shell, \texttt{cd} to the directory where you unzipped pychoacoustics and launch it with the following command:
+\begin{verbatim}
+python pychoacoustics.pyw
+\end{verbatim}
+As mentioned in the previous section, there is also a \texttt{.bat} launcher that can be used to launch
+\texttt{pychoacoustics} without needing to open a \texttt{DOS} shell each time. You can read the previous
+section for further info.
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "pychoacoustics_manual"
+%%% End: 

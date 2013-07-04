@@ -1,0 +1,231 @@
+\chapter{Designing Custom Experiments}
+\label{sec:cutom_exp}
+
+In order to add a new experiment to \texttt{pychoacoustics}, create a directory in your home folder called \texttt{pychoacoustics\_experiments}, inside this folder create a subfolder called \texttt{custom\_experiments}. Each experiment is written in a single file contained in this folder. Let's imagine we want to create an experiment for a simple frequency discrimination task. We create a file named \verb+freq.py+ in the \texttt{custom\_experiments} folder. In addition to the experiment file we need an additional file that lists all the experiments contained in the \texttt{custom\_experiments} directory. This file must be named \verb+__init__.py+, and in our case it will have the following content:
+\begin{lstlisting}[stepnumber=0]
+__all__ = ["freq"]
+\end{lstlisting}
+
+
+here the variable \verb+__all__+ is simply a python list with the name of the experiment files. So, if one day we decide to write a new experiment on, let's say, level discrimination, in a file called \verb+lev.py+ we would simply add it to the list in \verb+__init__.py+:
+\begin{lstlisting}[stepnumber=0]
+__all__ = ["freq",
+           "lev"]
+\end{lstlisting}
+For people familiar with packaging Python modules it should be clear by now that the custom experiments folder is basically a Python package containing various modules (the experiment files). If at some point we want to remove an experiment from \texttt{pychoacoustics}, for example because it contains a bug that does not allow the program to start, we can simply remove it from the list in \verb+__init__.py+
+
+Let's go back to the \verb+freq.py+ file. Here we need to define four functions. For our example the names of these functions would be:
+\begin{lstlisting}[stepnumber=0]
+initialize_freq()
+select_default_parameters_freq()
+get_fields_to_hide_freq()
+doTrial_freq()
+\end{lstlisting}
+basically the function names consist of a fixed prefix, followed by the name of the experiment file. So in the case of the level experiment example written in the file \verb+lev.py+, our four functions would be called:
+\begin{lstlisting}[stepnumber=0]
+initialize_lev()
+select_default_parameters_lev()
+get_fields_to_hide_lev()
+doTrial_lev()
+\end{lstlisting}
+we'll look at each function in details shortly. Briefly, the \verb+initialize_+ function is used to set some general parameters and options for our experiment; the \verb+select_default_parameters_+ function lists all the widgets (text fields and choosers) of our experiment and their default values; the \verb+get_field_to_hide_+ function is used to dinamically hide or show certain widgets depending on the status of other widgets; finally, the \verb+doTrial_+ function contains the code that generates the sounds and plays them during the experiment.
+
+\subsubsection{The \texttt{initialize\_} function}
+The \verb+initialize_+ function of our frequency discrimination experiment looks like this:
+\begin{lstlisting}
+def initialize_freq(prm):
+  exp_name = "Frequency Discrimination Demo"
+  prm["experimentsChoices"].append(exp_name)
+  prm[exp_name] = {}
+  prm[exp_name]["paradigmChoices"] = ["Adaptive",
+                                      "Weighted Up/Down",
+                                      "Constant m-Intervals n-Alternatives"]
+
+  prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", 
+                           "hasFeedback", "hasIntervalLights"]
+    
+  prm[exp_name]["execString"] = "freq"
+  return prm
+\end{lstlisting}
+When the function is called, it is passed a dictionary containing various parameters through the ``prm'' argument.
+The function receives this dictionary of parameters and adds or modifies some of them.
+In the first line we give a label to the experiment, this can be anything we want, except the label of an experiment already existing.
+The second line adds this experiment label to the list of ``experimentsChoices''.
+The third line creates a new sub-dictionary that has as a key the experiment label.
+Next we list the paradims that our experiment supports by creating a ``paradigmChoices'' key and giving
+the names of the supported paradigms as a list. These paradims listed here must be within the set of paradims 
+supported by \texttt{pychoacoustics} (see Section~\ref{sec:paradigms} for a description of the paradigms currently supported).
+In the next line we set an ``\texttt{opts}'' key containing a list of options. The full list of options that can be set here
+is described in details in Section~\ref{sec:experiment_opts}. In brief, for our experiment we want to have a widget to set the ISI between presentation
+intervals (\texttt{hasISIBox}), a widget to choose the number of response alternatives (\texttt{hasAlternativesChooser}),
+a widget to set the feedback on or off for a given block of trials (\texttt{hasFeedback}), and finally we want lights
+to mark the observation intervals (\texttt{hasIntervalLights}).
+The penultimate line of the \verb+initialize_+ function sets the ``\texttt{execString}'' of our experiment. This
+must be the name of our experiment file, so in our case ``\texttt{freq}''.
+
+
+
+\subsubsection{The \texttt{select\_default\_parameters\_} function}
+The \texttt{select\_default\_parameters\_} function is the function in which you
+define all the widgets (text fields and choosers) needed for your experiment.
+For our frequency discrimination experiment, the first lines look as follow:
+\begin{lstlisting}
+def select_default_parameters_freq(parent, paradigm, par):
+   
+  field = []
+  fieldLabel = []
+  chooser = []
+  chooserLabel = []
+  chooserOptions = []
+\end{lstlisting}
+the function accepts three arguments, ``parent'' is simply a reference to the pychoacoustics
+application. ``paradigm'' is the paradigm with which the
+function has been called, while ``par'' is a variable
+that can hold some special values for initializing the function. The use of the ``par'' argument is discussed in Section~\ref{sec:par}.
+
+From line three to line seven, we create a series of empty lists. The \texttt{field} and \texttt{fieldLabel } lists will
+hold the default values of our text field widgets, and their labels, respectively. The \texttt{chooser} and \texttt{chooserLabel}
+lists will likewise hold the default values of our chooser widgets, and their labels, while the \texttt{chooserOptions} list will hold 
+the possible values that our choosers can take. Lines 8 to 29 show how we populate these lists for our frequency discrimination
+experiment:
+
+\begin{lstlisting}[firstnumber=8]
+  fieldLabel.append("Frequency (Hz)")
+  field.append(1000)
+
+  fieldLabel.append("Starting Difference (%)")
+  field.append(20)
+    
+  fieldLabel.append("Level (dB SPL)")
+  field.append(50)
+   
+  fieldLabel.append("Duration (ms)")
+  field.append(180)
+    
+  fieldLabel.append("Ramps (ms)")
+  field.append(10)
+
+    
+  chooserOptions.append(["Right",
+                         "Left",
+                         "Both"])
+  chooserLabel.append("Ear:")
+  chooser.append("Right")
+\end{lstlisting}
+
+The last lines of our \texttt{select\_default\_parameters\_} function are used to set some additional parameters and look as follows:
+\begin{lstlisting}[firstnumber=29]
+  prm = {}
+  if paradigm == None:
+      prm['paradigm'] = "Adaptive"
+  else:
+      prm['paradigm'] = paradigm
+  prm['adType'] =  "Geometric"
+  prm['field'] = field
+  prm['fieldLabel'] = fieldLabel
+  prm['chooser'] = chooser
+  prm['chooserLabel'] = chooserLabel
+  prm['chooserOptions'] =  chooserOptions
+  prm['nIntervals'] = 2
+  prm['nAlternatives'] = 2
+
+  return prm
+\end{lstlisting}
+on line 29 we create a dictionary to hold the parameters. Lines 30--33 are used to
+set a default paradigm for our experiment if \texttt{None} has been passed to our function.
+\texttt{'adType} gives sets the default type of the adaptive procedure, this could be either \texttt{Geometric}, or 
+\texttt{Arithmetic}. From line 25 to line 39 we insert in the dictionary the \texttt{field}, \texttt{fieldLabel},
+\texttt{chooser}, \texttt{chooserLabel} and \texttt{chooserOptions} lists that we have previously creaetd and populated.
+Finally in the last two lines we give the default number of response intervals and response alternatives.
+
+\subsubsection{The \texttt{get\_fields\_to\_hide\_} function}
+
+The purpose of the \verb+get_fields_to_hide_+ function is to dinamically show or
+hide certain widgets depending on the status of other widgets. This function must
+be defined, but is not essential to a \texttt{pychoacoustics} experiment, so if you want to read
+all the essential information first, you can simply write the following:
+\begin{lstlisting}
+def get_fields_to_hide_freq(parent):
+  pass
+\end{lstlisting}
+and move on to read about the next function, otherwise, read on.
+
+Let's suppose that you 
+want to set up a frequency discrimination experiment in which the frequency of the 
+standard stimulus may be either fixed, or change from trial to trial. You start by writing
+an experiment with a single ``Frequency'' text field for the fixed stimulus frequency case.
+You then add two additional fields called ``Min. Frequency'' and ``Max Frequency'' to set
+the range of frequencies in the roving frequency case. Finally, you create a chooser to decide
+whether an experiment is to be run with a fixed or roving frequency. The code for creating these widgets
+is shown below:
+
+
+
+\subsubsection{The \texttt{doTrial\_} function}
+
+\subsubsection{The Experiment ``opts''}
+\label{sec:experiment_opts}
+
+\begin{itemize}
+\item \verb+hasISIBox+
+\item \verb+hasAlternativesChooser+
+\item \verb+hasFeedback+
+\item \verb+hasIntervalLights+
+\item \verb+hasPreTrialInterval+
+\end{itemize}
+
+\subsubsection{Using \texttt{par}}
+\label{sec:par}
+
+
+
+\section{Simulations}
+\label{sec:simulations}
+
+\texttt{pychoacoustics} is not designed to run simulations in itself, however it provides a hook
+to redirect the control flow to an auditory model that you need to specify yourself in the experiment file.
+
+You can retrieve the current response mode from the experiment file with:
+\begin{lstlisting}[stepnumber=0]
+parent.prm['allBlocks']['responseMode']
+\end{lstlisting}
+so, in the experiment file, after the creation of the stimuli for the trial you can redirect the
+control flow of the program depending on the response mode:
+\begin{lstlisting}
+if parent.prm['allBlocks']['responseMode'] != "Simulated Listener":
+   #we are not in simulation mode, play the stimuli for the listener
+   parent.playSoundSequence(sndSeq, ISIs)
+if parent.prm['allBlocks']['responseMode'] == "Simulated Listener":
+   #we are in simulation mode
+   #pass the stimuli to an auditory model and decision device
+   #---
+   #Here you specify your model, pychoacoustics doesn't do it for you!
+   # at the end your simulated listener arrives to a response that is
+   # either correct or incorrect
+   #---
+   parent.prm['trialRunning'] = False 
+   #this is needed for technical reasons (if the 'trialRunning'
+   #flag were set to 'True' pychoacoustics would not process
+   #the response.
+   #
+   #let's suppose that at the end of the simulation you store the
+   #response in a variable called 'resp', that can take as values 
+   #either the string 'Correct' or the string 'Incorrect'.
+   #You can then proceed to let pychoacoustics process the response:
+   #
+   if resp == 'Correct':
+      parent.sortResponse(parent.correctButton) 
+   elif resp == 'Incorrect':
+      #list all the possible 'incorrect' buttons
+      inc_buttons = numpy.delete(numpy.arange(
+                                 self.prm['nAlternatives'])+1, 
+                                 self.correctButton-1))
+      #choose one of the incorrect buttons
+      parent.sortResponse(random.choice(inc_buttons))
+
+\end{lstlisting}
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "pychoacoustics_manual"
+%%% End: 
+

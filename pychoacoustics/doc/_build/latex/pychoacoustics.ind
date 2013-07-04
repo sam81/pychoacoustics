@@ -1,0 +1,89 @@
+\begin{theindex}
+\def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
+
+  \bigletter A
+  \item addSounds() (in module sndlib), \hyperpage{6}
+  \item AMTone() (in module sndlib), \hyperpage{5}
+
+  \indexspace
+  \bigletter B
+  \item binauralPureTone() (in module sndlib), \hyperpage{6}
+  \item broadbandNoise() (in module sndlib), \hyperpage{7}
+
+  \indexspace
+  \bigletter C
+  \item camSinFMComplex() (in module sndlib), \hyperpage{7}
+  \item camSinFMTone() (in module sndlib), \hyperpage{7}
+  \item chirp() (in module sndlib), \hyperpage{8}
+  \item complexTone() (in module sndlib), \hyperpage{8}
+  \item complexToneParallel() (in module sndlib), \hyperpage{9}
+
+  \indexspace
+  \bigletter D
+  \item dprime\_mAFC() (in module pysdt), \hyperpage{21}
+  \item dprime\_SD() (in module pysdt), \hyperpage{21}
+  \item dprime\_SD\_from\_counts() (in module pysdt), \hyperpage{21}
+  \item dprime\_yes\_no() (in module pysdt), \hyperpage{22}
+  \item dprime\_yes\_no\_from\_counts() (in module pysdt), \hyperpage{22}
+
+  \indexspace
+  \bigletter E
+  \item ERBDistance() (in module sndlib), \hyperpage{5}
+  \item expAMNoise() (in module sndlib), \hyperpage{9}
+  \item expSinFMComplex() (in module sndlib), \hyperpage{10}
+  \item expSinFMTone() (in module sndlib), \hyperpage{10}
+
+  \indexspace
+  \bigletter F
+  \item fir2Filt() (in module sndlib), \hyperpage{11}
+  \item FMTone() (in module sndlib), \hyperpage{5}
+  \item freqFromERBInterval() (in module sndlib), \hyperpage{11}
+
+  \indexspace
+  \bigletter G
+  \item gate() (in module sndlib), \hyperpage{12}
+  \item getRms() (in module sndlib), \hyperpage{12}
+  \item glide() (in module sndlib), \hyperpage{12}
+
+  \indexspace
+  \bigletter H
+  \item harmComplFromNarrowbandNoise() (in module sndlib), \hyperpage{12}
+
+  \indexspace
+  \bigletter I
+  \item imposeLevelGlide() (in module sndlib), \hyperpage{13}
+  \item intNCyclesFreq() (in module sndlib), \hyperpage{13}
+  \item itdtoipd() (in module sndlib), \hyperpage{14}
+
+  \indexspace
+  \bigletter J
+  \item joinSndISI() (in module sndlib), \hyperpage{14}
+
+  \indexspace
+  \bigletter M
+  \item makeAsynchChord() (in module sndlib), \hyperpage{14}
+  \item makeHuggins() (in module sndlib), \hyperpage{15}
+  \item makePink() (in module sndlib), \hyperpage{15}
+  \item makePinkRef() (in module sndlib), \hyperpage{15}
+  \item makeSilence() (in module sndlib), \hyperpage{16}
+  \item makeSimpleDichotic() (in module sndlib), \hyperpage{16}
+
+  \indexspace
+  \bigletter N
+  \item nextpow2() (in module sndlib), \hyperpage{17}
+
+  \indexspace
+  \bigletter P
+  \item phaseShift() (in module sndlib), \hyperpage{17}
+  \item pinkNoiseFromSin() (in module sndlib), \hyperpage{18}
+  \item pinkNoiseFromSin2() (in module sndlib), \hyperpage{18}
+  \item pureTone() (in module sndlib), \hyperpage{19}
+  \item pysdt (module), \hyperpage{21}
+
+  \indexspace
+  \bigletter S
+  \item scale() (in module sndlib), \hyperpage{19}
+  \item sndlib (module), \hyperpage{5}
+  \item steepNoise() (in module sndlib), \hyperpage{19}
+
+\end{theindex}

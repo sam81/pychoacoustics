@@ -1,9 +1,10 @@
 #! /usr/bin/env python
 from distutils.core import setup
+import glob
 setup(
     name="pychoacoustics",
-    version="0.2.52",
-    url="none",
+    version="0.2.53",
+    url="https://bitbucket.org/samuele_c/pychoacoustics",
     author="Samuele Carcagno",
     author_email="sam.carcagno@google.com;",
     description="Python application for running psychoacoustics experiments",
@@ -31,14 +32,18 @@ setup(
         ],
     license="GPL v3",
     requires=['PyQt (>=4.8.4)', 'numpy (>=1.6.1)', 'scipy (>=0.10.1)'],
-    packages=["pychoacoustics_pack", "default_experiments"],
-    py_modules = ['sndlib', 'pysdt'],
+    packages=["pychoacoustics", "pychoacoustics.default_experiments"],
     scripts = ["pychoacoustics.pyw"],
-    package_dir={"pychoacoustics_pack": "pychoacoustics_pack"},
-    package_data={'pychoacoustics_pack': ["qrc_resources.py", "doc/*.pdf", "doc/modules/html/*.*",
-                                          "doc/modules/html/_modules/*", "doc/modules/html/_sources/*",
-                                          "doc/modules/html/_static/*"]},
+    package_dir={"pychoacoustics": "pychoacoustics"},
+    package_data={'pychoacoustics': ["qrc_resources.py", "doc/pychoacoustics_manual*.pdf", "doc/_build/html/*.*",
+                                          "doc/_build/html/_modules/*", "doc/_build/html/_sources/*",
+                                          "doc/_build/html/_static/*"],},
+
+    
     data_files = [('share/applications', ['pychoacoustics.desktop']),
-                  ('share/icons', ['icons/Machovka_Headphones.svg'])]#,
-                  #('share/mime/text', ['x-prm.xml'])]
+                  ('share/icons', ['icons/Machovka_Headphones.svg']),
+                  ]
+
     )
+
+

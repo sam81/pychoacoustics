@@ -1,0 +1,90 @@
+\contentsline {chapter}{\numberline {1}What is \texttt {pychoacoustics}?}{1}{chapter.1}
+\contentsline {chapter}{\numberline {2}Installation}{4}{chapter.2}
+\contentsline {section}{\numberline {2.1}Installation on Linux}{4}{section.2.1}
+\contentsline {section}{\numberline {2.2}Installation on Windows}{5}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Using the binary installer}{5}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Installing from source}{5}{subsection.2.2.2}
+\contentsline {chapter}{\numberline {3}Graphical User Interface}{7}{chapter.3}
+\contentsline {section}{\numberline {3.1}Quickstart}{7}{section.3.1}
+\contentsline {section}{\numberline {3.2}The Control Window}{8}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}General Widgets (left panel)}{8}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}General Widgets (right panel)}{11}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Paradigm Widgets}{12}{subsection.3.2.3}
+\contentsline {subsubsection}{Adaptive Paradigm Widgets}{12}{section*.4}
+\contentsline {subsubsection}{Weighted Up/Down Paradigm Widgets}{13}{section*.5}
+\contentsline {subsubsection}{Adaptive Interleaved Paradigm Widgets}{13}{section*.6}
+\contentsline {subsubsection}{Weighted Up/Down Interleaved Paradigm Widgets}{15}{section*.7}
+\contentsline {subsubsection}{Constant m-Intervals n-Alternatives Paradigm Widgets}{16}{section*.8}
+\contentsline {subsubsection}{Multiple Constants m-Intervals n-Alternatives Paradigm Widgets}{16}{section*.9}
+\contentsline {subsubsection}{Constant 1-Interval 2-Alternatives Paradigm Widgets}{16}{section*.10}
+\contentsline {subsubsection}{Multiple Constants 1-Interval 2-Alternatives Paradigm Widgets}{17}{section*.11}
+\contentsline {subsubsection}{1-Pair Same/Different Paradigm Widgets}{17}{section*.12}
+\contentsline {subsection}{\numberline {3.2.4}The Menu Bar}{17}{subsection.3.2.4}
+\contentsline {subsubsection}{The File Menu}{17}{section*.14}
+\contentsline {subsubsection}{The Edit Menu}{18}{section*.15}
+\contentsline {subsubsection}{The Tools Menu}{18}{section*.16}
+\contentsline {subsubsection}{The Help Menu}{18}{section*.17}
+\contentsline {subsubsection}{The ``what's this?'' Button.}{18}{section*.18}
+\contentsline {section}{\numberline {3.3}Process Results Dialog}{18}{section.3.3}
+\contentsline {section}{\numberline {3.4}Edit Preferences Dialog}{20}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}General}{20}{subsection.3.4.1}
+\contentsline {subsection}{\numberline {3.4.2}Sound}{21}{subsection.3.4.2}
+\contentsline {subsection}{\numberline {3.4.3}Notifications}{21}{subsection.3.4.3}
+\contentsline {subsection}{\numberline {3.4.4}EEG}{23}{subsection.3.4.4}
+\contentsline {section}{\numberline {3.5}Edit Phones Dialog}{23}{section.3.5}
+\contentsline {section}{\numberline {3.6}Edit Experimenters Dialog}{24}{section.3.6}
+\contentsline {section}{\numberline {3.7}The Response Box}{24}{section.3.7}
+\contentsline {chapter}{\numberline {4}Command Line User Interface}{26}{chapter.4}
+\contentsline {chapter}{\numberline {5}Psychophysics}{28}{chapter.5}
+\contentsline {section}{\numberline {5.1}Available Paradigms}{28}{section.5.1}
+\contentsline {subsubsection}{Adaptive}{28}{section*.22}
+\contentsline {subsubsection}{Adaptive Interleaved}{28}{section*.23}
+\contentsline {subsubsection}{Weighted Up/Down}{28}{section*.24}
+\contentsline {subsubsection}{Weighted Up/Down Interleaved}{29}{section*.25}
+\contentsline {subsubsection}{Constant m-Intervals n-Alternatives}{29}{section*.26}
+\contentsline {subsubsection}{Constant 1-Interval 2-Alternatives}{29}{section*.27}
+\contentsline {subsubsection}{Constant 1-Pair Same/Different}{29}{section*.28}
+\contentsline {section}{\numberline {5.2}Available Experiments}{29}{section.5.2}
+\contentsline {chapter}{\numberline {6}The \texttt {pychoacoustics} Engine}{30}{chapter.6}
+\contentsline {section}{\numberline {6.1}Sound Output}{30}{section.6.1}
+\contentsline {subsubsection}{Sound Output on Linux}{30}{section*.29}
+\contentsline {subsubsection}{Sound Output on Windows}{31}{section*.30}
+\contentsline {section}{\numberline {6.2}Parameters Files}{31}{section.6.2}
+\contentsline {section}{\numberline {6.3}Results Files}{32}{section.6.3}
+\contentsline {subsubsection}{Tabular Results Files}{33}{section*.31}
+\contentsline {subsubsection}{Log Results Files}{34}{section*.33}
+\contentsline {subsubsection}{Adaptive and Weighted Up/Down Result Files}{35}{section*.34}
+\contentsline {subsubsection}{Adaptive and Weighted Up/Down Interleaved Result Files}{35}{section*.35}
+\contentsline {subsection}{\numberline {6.3.1}Constant m-Intervals n-Alternatives Result Files}{35}{subsection.6.3.1}
+\contentsline {subsection}{\numberline {6.3.2}Multiple Constants m-Intervals n-Alternatives Result Files}{35}{subsection.6.3.2}
+\contentsline {subsection}{\numberline {6.3.3}Constant 1-Intervals 2-Alternatives Result Files}{35}{subsection.6.3.3}
+\contentsline {subsection}{\numberline {6.3.4}Multiple Constants 1-Intervals 2-Alternatives Result Files}{35}{subsection.6.3.4}
+\contentsline {subsection}{\numberline {6.3.5}Constant 1-Pair Same/Different Result Files}{35}{subsection.6.3.5}
+\contentsline {section}{\numberline {6.4}Block Presentation Position}{35}{section.6.4}
+\contentsline {section}{\numberline {6.5}OS Commands}{37}{section.6.5}
+\contentsline {section}{\numberline {6.6}Preferences Settings}{38}{section.6.6}
+\contentsline {section}{\numberline {6.7}Response Mode}{38}{section.6.7}
+\contentsline {chapter}{\numberline {7}Designing Custom Experiments}{41}{chapter.7}
+\contentsline {subsubsection}{The \texttt {initialize\_} function}{42}{section*.37}
+\contentsline {subsubsection}{The \texttt {select\_default\_parameters\_} function}{43}{section*.38}
+\contentsline {subsubsection}{The \texttt {get\_fields\_to\_hide\_} function}{45}{section*.39}
+\contentsline {subsubsection}{The \texttt {doTrial\_} function}{45}{section*.40}
+\contentsline {subsubsection}{The Experiment ``opts''}{45}{section*.41}
+\contentsline {subsubsection}{Using \texttt {par}}{46}{section*.42}
+\contentsline {section}{\numberline {7.1}Simulations}{46}{section.7.1}
+\contentsline {chapter}{\numberline {8}Troubleshooting}{48}{chapter.8}
+\contentsline {subsubsection}{The computer crashed in the middle of an experimental session}{48}{section*.43}
+\contentsline {chapter}{References}{49}{chapter*.44}
+\contentsline {chapter}{\numberline {A}Introduction to Python, Numpy and Scipy}{50}{appendix.A}
+\contentsline {chapter}{\numberline {B}GNU Free Documentation License}{51}{appendix.B}
+\contentsline {section}{1. APPLICABILITY AND DEFINITIONS}{51}{section*.45}
+\contentsline {section}{2. VERBATIM COPYING}{53}{section*.45}
+\contentsline {section}{3. COPYING IN QUANTITY}{54}{section*.45}
+\contentsline {section}{4. MODIFICATIONS}{54}{section*.45}
+\contentsline {section}{5. COMBINING DOCUMENTS}{56}{section*.45}
+\contentsline {section}{6. COLLECTIONS OF DOCUMENTS}{57}{section*.45}
+\contentsline {section}{7. AGGREGATION WITH INDEPENDENT WORKS}{57}{section*.45}
+\contentsline {section}{8. TRANSLATION}{58}{section*.45}
+\contentsline {section}{9. TERMINATION}{58}{section*.45}
+\contentsline {section}{10. FUTURE REVISIONS OF THIS LICENSE}{58}{section*.45}
+\contentsline {section}{ADDENDUM: How to use this License for your documents}{59}{section*.45}

@@ -1,0 +1,124 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{%
+Grimault%
+, Micheyl%
+, Carlyon%
+\BCBL{}\ \BBA{} Collet%
+}{%
+Grimault%
+\ \protect\BOthers{.}}{%
+{\protect\APACyear{2002}}%
+}]{%
+Grimault2002}%
+\APACinsertmetastar{%
+Grimault2002}%
+Grimault, N.%
+, Micheyl, C.%
+, Carlyon, R\BPBI P.%
+\BCBL{}\ \BBA{} Collet, L.%
+%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2002}{}{}.
+\newblock
+\BBOQ{}\APACrefatitle{Evidence for two pitch encoding mechanisms using a
+  selective auditory training paradigm.}{Evidence for two pitch encoding
+  mechanisms using a selective auditory training paradigm.}\BBCQ{}
+\newblock
+\APACjournalVolNumPages{Percept. Psychophys.}{64}{2}{189--197}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem[\protect\citeauthoryear{%
+Jesteadt%
+}{%
+Jesteadt%
+}{%
+{\protect\APACyear{1980}}%
+}]{%
+Jesteadt1980}%
+\APACinsertmetastar{%
+Jesteadt1980}%
+Jesteadt, W.%
+%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1980}{}{}.
+\newblock
+\BBOQ{}\APACrefatitle{{{A}n adaptive procedure for subjective judgments}}{{{A}n
+  adaptive procedure for subjective judgments}}.\BBCQ{}
+\newblock
+\APACjournalVolNumPages{Percept Psychophys}{28}{1}{85--88}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem[\protect\citeauthoryear{%
+Kaernbach%
+}{%
+Kaernbach%
+}{%
+{\protect\APACyear{1991}}%
+}]{%
+Kaernbach1991}%
+\APACinsertmetastar{%
+Kaernbach1991}%
+Kaernbach, C.%
+%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1991}{}{}.
+\newblock
+\BBOQ{}\APACrefatitle{{{S}imple adaptive testing with the weighted up-down
+  method}}{{{S}imple adaptive testing with the weighted up-down
+  method}}.\BBCQ{}
+\newblock
+\APACjournalVolNumPages{Percept Psychophys}{49}{3}{227--229}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem[\protect\citeauthoryear{%
+Levitt%
+}{%
+Levitt%
+}{%
+{\protect\APACyear{1971}}%
+}]{%
+Levitt1971}%
+\APACinsertmetastar{%
+Levitt1971}%
+Levitt, H.%
+%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1971}{}{}.
+\newblock
+\BBOQ{}\APACrefatitle{{{T}ransformed up-down methods in
+  psychoacoustics}}{{{T}ransformed up-down methods in psychoacoustics}}.\BBCQ{}
+\newblock
+\APACjournalVolNumPages{J. Acoust. Soc. Am.}{49}{2}{467-477}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem[\protect\citeauthoryear{%
+Macmillan%
+\ \BBA{} Creelman%
+}{%
+Macmillan%
+\ \BBA{} Creelman%
+}{%
+{\protect\APACyear{2005}}%
+}]{%
+Macmillan2005}%
+\APACinsertmetastar{%
+Macmillan2005}%
+Macmillan, N\BPBI A.%
+\BCBT{}\ \BBA{} Creelman, C\BPBI D.%
+%
+\unskip\
+\newblock
+\APACrefYear{2005}.
+\newblock
+\APACrefbtitle{Detection Theory: A User's Guide}{Detection theory: A user's
+  guide}\ (\PrintOrdinal{2dn}\ \BEd).
+\newblock
+\APACaddressPublisher{Mahwah, NJ}{Lawrence Erlbaum Associates}.
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}

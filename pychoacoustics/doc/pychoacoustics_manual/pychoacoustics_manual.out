@@ -1,0 +1,90 @@
+\BOOKMARK [0][-]{chapter.1}{1 What is pychoacoustics?}{}% 1
+\BOOKMARK [0][-]{chapter.2}{2 Installation}{}% 2
+\BOOKMARK [1][-]{section.2.1}{2.1 Installation on Linux}{chapter.2}% 3
+\BOOKMARK [1][-]{section.2.2}{2.2 Installation on Windows}{chapter.2}% 4
+\BOOKMARK [2][-]{subsection.2.2.1}{2.2.1 Using the binary installer}{section.2.2}% 5
+\BOOKMARK [2][-]{subsection.2.2.2}{2.2.2 Installing from source}{section.2.2}% 6
+\BOOKMARK [0][-]{chapter.3}{3 Graphical User Interface}{}% 7
+\BOOKMARK [1][-]{section.3.1}{3.1 Quickstart}{chapter.3}% 8
+\BOOKMARK [1][-]{section.3.2}{3.2 The Control Window}{chapter.3}% 9
+\BOOKMARK [2][-]{subsection.3.2.1}{3.2.1 General Widgets \(left panel\)}{section.3.2}% 10
+\BOOKMARK [2][-]{subsection.3.2.2}{3.2.2 General Widgets \(right panel\)}{section.3.2}% 11
+\BOOKMARK [2][-]{subsection.3.2.3}{3.2.3 Paradigm Widgets}{section.3.2}% 12
+\BOOKMARK [3][-]{section*.4}{Adaptive Paradigm Widgets}{subsection.3.2.3}% 13
+\BOOKMARK [3][-]{section*.5}{Weighted Up/Down Paradigm Widgets}{subsection.3.2.3}% 14
+\BOOKMARK [3][-]{section*.6}{Adaptive Interleaved Paradigm Widgets}{subsection.3.2.3}% 15
+\BOOKMARK [3][-]{section*.7}{Weighted Up/Down Interleaved Paradigm Widgets}{subsection.3.2.3}% 16
+\BOOKMARK [3][-]{section*.8}{Constant m-Intervals n-Alternatives Paradigm Widgets}{subsection.3.2.3}% 17
+\BOOKMARK [3][-]{section*.9}{Multiple Constants m-Intervals n-Alternatives Paradigm Widgets}{subsection.3.2.3}% 18
+\BOOKMARK [3][-]{section*.10}{Constant 1-Interval 2-Alternatives Paradigm Widgets}{subsection.3.2.3}% 19
+\BOOKMARK [3][-]{section*.11}{Multiple Constants 1-Interval 2-Alternatives Paradigm Widgets}{subsection.3.2.3}% 20
+\BOOKMARK [3][-]{section*.12}{1-Pair Same/Different Paradigm Widgets}{subsection.3.2.3}% 21
+\BOOKMARK [2][-]{subsection.3.2.4}{3.2.4 The Menu Bar}{section.3.2}% 22
+\BOOKMARK [3][-]{section*.14}{The File Menu}{subsection.3.2.4}% 23
+\BOOKMARK [3][-]{section*.15}{The Edit Menu}{subsection.3.2.4}% 24
+\BOOKMARK [3][-]{section*.16}{The Tools Menu}{subsection.3.2.4}% 25
+\BOOKMARK [3][-]{section*.17}{The Help Menu}{subsection.3.2.4}% 26
+\BOOKMARK [3][-]{section*.18}{The ``what's this?'' Button.}{subsection.3.2.4}% 27
+\BOOKMARK [1][-]{section.3.3}{3.3 Process Results Dialog}{chapter.3}% 28
+\BOOKMARK [1][-]{section.3.4}{3.4 Edit Preferences Dialog}{chapter.3}% 29
+\BOOKMARK [2][-]{subsection.3.4.1}{3.4.1 General}{section.3.4}% 30
+\BOOKMARK [2][-]{subsection.3.4.2}{3.4.2 Sound}{section.3.4}% 31
+\BOOKMARK [2][-]{subsection.3.4.3}{3.4.3 Notifications}{section.3.4}% 32
+\BOOKMARK [2][-]{subsection.3.4.4}{3.4.4 EEG}{section.3.4}% 33
+\BOOKMARK [1][-]{section.3.5}{3.5 Edit Phones Dialog}{chapter.3}% 34
+\BOOKMARK [1][-]{section.3.6}{3.6 Edit Experimenters Dialog}{chapter.3}% 35
+\BOOKMARK [1][-]{section.3.7}{3.7 The Response Box}{chapter.3}% 36
+\BOOKMARK [0][-]{chapter.4}{4 Command Line User Interface}{}% 37
+\BOOKMARK [0][-]{chapter.5}{5 Psychophysics}{}% 38
+\BOOKMARK [1][-]{section.5.1}{5.1 Available Paradigms}{chapter.5}% 39
+\BOOKMARK [2][-]{section*.22}{Adaptive}{section.5.1}% 40
+\BOOKMARK [3][-]{section*.23}{Adaptive Interleaved}{section*.22}% 41
+\BOOKMARK [3][-]{section*.24}{Weighted Up/Down}{section*.22}% 42
+\BOOKMARK [3][-]{section*.25}{Weighted Up/Down Interleaved}{section*.22}% 43
+\BOOKMARK [3][-]{section*.26}{Constant m-Intervals n-Alternatives}{section*.22}% 44
+\BOOKMARK [3][-]{section*.27}{Constant 1-Interval 2-Alternatives}{section*.22}% 45
+\BOOKMARK [3][-]{section*.28}{Constant 1-Pair Same/Different}{section*.22}% 46
+\BOOKMARK [1][-]{section.5.2}{5.2 Available Experiments}{chapter.5}% 47
+\BOOKMARK [0][-]{chapter.6}{6 The pychoacoustics Engine}{}% 48
+\BOOKMARK [1][-]{section.6.1}{6.1 Sound Output}{chapter.6}% 49
+\BOOKMARK [2][-]{section*.29}{Sound Output on Linux}{section.6.1}% 50
+\BOOKMARK [3][-]{section*.30}{Sound Output on Windows}{section*.29}% 51
+\BOOKMARK [1][-]{section.6.2}{6.2 Parameters Files}{chapter.6}% 52
+\BOOKMARK [1][-]{section.6.3}{6.3 Results Files}{chapter.6}% 53
+\BOOKMARK [2][-]{section*.31}{Tabular Results Files}{section.6.3}% 54
+\BOOKMARK [3][-]{section*.33}{Log Results Files}{section*.31}% 55
+\BOOKMARK [3][-]{section*.34}{Adaptive and Weighted Up/Down Result Files}{section*.31}% 56
+\BOOKMARK [3][-]{section*.35}{Adaptive and Weighted Up/Down Interleaved Result Files}{section*.31}% 57
+\BOOKMARK [2][-]{subsection.6.3.1}{6.3.1 Constant m-Intervals n-Alternatives Result Files}{section.6.3}% 58
+\BOOKMARK [2][-]{subsection.6.3.2}{6.3.2 Multiple Constants m-Intervals n-Alternatives Result Files}{section.6.3}% 59
+\BOOKMARK [2][-]{subsection.6.3.3}{6.3.3 Constant 1-Intervals 2-Alternatives Result Files}{section.6.3}% 60
+\BOOKMARK [2][-]{subsection.6.3.4}{6.3.4 Multiple Constants 1-Intervals 2-Alternatives Result Files}{section.6.3}% 61
+\BOOKMARK [2][-]{subsection.6.3.5}{6.3.5 Constant 1-Pair Same/Different Result Files}{section.6.3}% 62
+\BOOKMARK [1][-]{section.6.4}{6.4 Block Presentation Position}{chapter.6}% 63
+\BOOKMARK [1][-]{section.6.5}{6.5 OS Commands}{chapter.6}% 64
+\BOOKMARK [1][-]{section.6.6}{6.6 Preferences Settings}{chapter.6}% 65
+\BOOKMARK [1][-]{section.6.7}{6.7 Response Mode}{chapter.6}% 66
+\BOOKMARK [0][-]{chapter.7}{7 Designing Custom Experiments}{}% 67
+\BOOKMARK [1][-]{section*.37}{The initialize\137 function}{chapter.7}% 68
+\BOOKMARK [2][-]{section*.38}{The select\137default\137parameters\137 function}{section*.37}% 69
+\BOOKMARK [3][-]{section*.39}{The get\137fields\137to\137hide\137 function}{section*.38}% 70
+\BOOKMARK [3][-]{section*.40}{The doTrial\137 function}{section*.38}% 71
+\BOOKMARK [3][-]{section*.41}{The Experiment ``opts''}{section*.38}% 72
+\BOOKMARK [3][-]{section*.42}{Using par}{section*.38}% 73
+\BOOKMARK [1][-]{section.7.1}{7.1 Simulations}{chapter.7}% 74
+\BOOKMARK [0][-]{chapter.8}{8 Troubleshooting}{}% 75
+\BOOKMARK [1][-]{section*.43}{The computer crashed in the middle of an experimental session}{chapter.8}% 76
+\BOOKMARK [0][-]{chapter*.44}{References}{}% 77
+\BOOKMARK [0][-]{appendix.A}{A Introduction to Python, Numpy and Scipy}{}% 78
+\BOOKMARK [0][-]{appendix.B}{B GNU Free Documentation License}{}% 79
+\BOOKMARK [1][-]{section*.45}{1. APPLICABILITY AND DEFINITIONS}{appendix.B}% 80
+\BOOKMARK [1][-]{section*.45}{2. VERBATIM COPYING}{appendix.B}% 81
+\BOOKMARK [1][-]{section*.45}{3. COPYING IN QUANTITY}{appendix.B}% 82
+\BOOKMARK [1][-]{section*.45}{4. MODIFICATIONS}{appendix.B}% 83
+\BOOKMARK [1][-]{section*.45}{5. COMBINING DOCUMENTS}{appendix.B}% 84
+\BOOKMARK [1][-]{section*.45}{6. COLLECTIONS OF DOCUMENTS}{appendix.B}% 85
+\BOOKMARK [1][-]{section*.45}{7. AGGREGATION WITH INDEPENDENT WORKS}{appendix.B}% 86
+\BOOKMARK [1][-]{section*.45}{8. TRANSLATION}{appendix.B}% 87
+\BOOKMARK [1][-]{section*.45}{9. TERMINATION}{appendix.B}% 88
+\BOOKMARK [1][-]{section*.45}{10. FUTURE REVISIONS OF THIS LICENSE}{appendix.B}% 89
+\BOOKMARK [1][-]{section*.45}{ADDENDUM: How to use this License for your documents}{appendix.B}% 90

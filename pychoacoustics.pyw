@@ -24,9 +24,9 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from PyQt4 import QtGui, QtCore
 import signal
 import argparse, fnmatch, os, sys, time, traceback
-from pychoacoustics_pack import qrc_resources
-from pychoacoustics_pack import global_parameters
-from pychoacoustics_pack.control_window import*
+from pychoacoustics import qrc_resources
+from pychoacoustics import global_parameters
+from pychoacoustics.control_window import*
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 #
 import logging

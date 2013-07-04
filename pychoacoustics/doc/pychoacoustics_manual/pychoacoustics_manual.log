@@ -1,0 +1,963 @@
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Arch Linux) (format=pdflatex 2013.4.13)  16 APR 2013 02:41
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**\input pychoacoustics_manual.tex
+(./pychoacoustics_manual.tex (/usr/share/texmf-dist/tex/latex/base/report.cls
+Document Class: report 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/share/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/share/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/share/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/share/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/share/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/share/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count88
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(/usr/share/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+(/usr/share/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+(/usr/share/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/share/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count89
+\Gm@cntv=\count90
+\c@Gm@tempcnt=\count91
+\Gm@bindingoffset=\dimen105
+\Gm@wd@mp=\dimen106
+\Gm@odd@mp=\dimen107
+\Gm@even@mp=\dimen108
+\Gm@layoutwidth=\dimen109
+\Gm@layoutheight=\dimen110
+\Gm@layouthoffset=\dimen111
+\Gm@layoutvoffset=\dimen112
+\Gm@dimlist=\toks15
+)
+(/usr/share/texmf-dist/tex/latex/psnfss/mathpazo.sty
+Package: mathpazo 2005/04/12 PSNFSS-v9.2a Palatino w/ Pazo Math (D.Puga, WaS) 
+\symupright=\mathgroup4
+)
+(/usr/share/texmf-dist/tex/latex/tools/bm.sty
+Package: bm 2004/02/26 v1.1c Bold Symbol Support (DPC/FMi)
+\symboldoperators=\mathgroup5
+\symboldletters=\mathgroup6
+\symboldsymbols=\mathgroup7
+\symboldupright=\mathgroup8
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 138.
+LaTeX Info: Redefining \bm on input line 204.
+)
+(/usr/share/texmf-dist/tex/latex/tools/afterpage.sty
+Package: afterpage 1995/10/27 v1.08 After-Page Package (DPC)
+\AP@output=\toks16
+\AP@partial=\box26
+\AP@footins=\box27
+)
+(/usr/share/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2005/04/14 v1.61803 publication quality tables
+\heavyrulewidth=\dimen113
+\lightrulewidth=\dimen114
+\cmidrulewidth=\dimen115
+\belowrulesep=\dimen116
+\belowbottomsep=\dimen117
+\aboverulesep=\dimen118
+\abovetopsep=\dimen119
+\cmidrulesep=\dimen120
+\cmidrulekern=\dimen121
+\defaultaddspace=\dimen122
+\@cmidla=\count92
+\@cmidlb=\count93
+\@aboverulesep=\dimen123
+\@belowrulesep=\dimen124
+\@thisruleclass=\count94
+\@lastruleclass=\count95
+\@thisrulewidth=\dimen125
+)
+(/usr/share/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2004/02/01 v4.11 Multi-page Table package (DPC)
+\LTleft=\skip43
+\LTright=\skip44
+\LTpre=\skip45
+\LTpost=\skip46
+\LTchunksize=\count96
+\LTcapwidth=\dimen126
+\LT@head=\box28
+\LT@firsthead=\box29
+\LT@foot=\box30
+\LT@lastfoot=\box31
+\LT@cols=\count97
+\LT@rows=\count98
+\c@LT@tables=\count99
+\c@LT@chunks=\count100
+\LT@p@ftn=\toks17
+)
+(/usr/share/texmf-dist/tex/latex/tools/multicol.sty
+Package: multicol 2011/06/27 v1.7a multicolumn formatting (FMi)
+\c@tracingmulticols=\count101
+\mult@box=\box32
+\multicol@leftmargin=\dimen127
+\c@unbalance=\count102
+\c@collectmore=\count103
+\doublecol@number=\count104
+\multicoltolerance=\count105
+\multicolpretolerance=\count106
+\full@width=\dimen128
+\page@free=\dimen129
+\premulticols=\dimen130
+\postmulticols=\dimen131
+\multicolsep=\skip47
+\multicolbaselineskip=\skip48
+\partial@page=\box33
+\last@line=\box34
+\mult@rightbox=\box35
+\mult@grightbox=\box36
+\mult@gfirstbox=\box37
+\mult@firstbox=\box38
+\@tempa=\box39
+\@tempa=\box40
+\@tempa=\box41
+\@tempa=\box42
+\@tempa=\box43
+\@tempa=\box44
+\@tempa=\box45
+\@tempa=\box46
+\@tempa=\box47
+\@tempa=\box48
+\@tempa=\box49
+\@tempa=\box50
+\@tempa=\box51
+\@tempa=\box52
+\@tempa=\box53
+\@tempa=\box54
+\@tempa=\box55
+\c@columnbadness=\count107
+\c@finalcolumnbadness=\count108
+\last@try=\dimen132
+\multicolovershoot=\dimen133
+\multicolundershoot=\dimen134
+\mult@nat@firstbox=\box56
+\colbreak@box=\box57
+\multicol@sort@counter=\count109
+)
+(/usr/share/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2008/02/07
+
+Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix 
+<2008/02/07> (tvz)
+\FV@CodeLineNo=\count110
+\FV@InFile=\read1
+\FV@TabBox=\box58
+\c@FancyVerbLine=\count111
+\FV@StepNumber=\count112
+\FV@OutFile=\write3
+) (/usr/share/texmf-dist/tex/latex/psnfss/pifont.sty
+Package: pifont 2005/04/12 PSNFSS-v9.2a Pi font support (SPQR) 
+LaTeX Font Info:    Try loading font information for U+pzd on input line 63.
+
+(/usr/share/texmf-dist/tex/latex/psnfss/upzd.fd
+File: upzd.fd 2001/06/04 font definitions for U/pzd.
+)
+LaTeX Font Info:    Try loading font information for U+psy on input line 64.
+
+(/usr/share/texmf-dist/tex/latex/psnfss/upsy.fd
+File: upsy.fd 2001/06/04 font definitions for U/psy.
+))
+(/usr/share/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2012/02/19 v3.2f Customizing captions (AR)
+
+(/usr/share/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2012/01/12 v1.4b caption3 kernel (AR)
+\captionmargin=\dimen135
+\captionmargin@=\dimen136
+\captionwidth=\dimen137
+\caption@indent=\dimen138
+\caption@parindent=\dimen139
+\caption@hangindent=\dimen140
+)
+\c@ContinuedFloat=\count113
+Package caption Info: longtable package is loaded.
+
+(/usr/share/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2011/09/12 v1.3 longtable captions (AR)
+))
+(/usr/share/texmf-dist/tex/latex/base/makeidx.sty
+Package: makeidx 2000/03/29 v1.0m Standard LaTeX package
+)
+(/usr/share/texmf-dist/tex/latex/wrapfig/wrapfig.sty
+\wrapoverhang=\dimen141
+\WF@size=\dimen142
+\c@WF@wrappedlines=\count114
+\WF@box=\box59
+\WF@everypar=\toks18
+Package: wrapfig 2003/01/31  v 3.6
+)
+(/usr/share/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count115
+\lst@gtempboxa=\box60
+\lst@token=\toks19
+\lst@length=\count116
+\lst@currlwidth=\dimen143
+\lst@column=\count117
+\lst@pos=\count118
+\lst@lostspace=\dimen144
+\lst@width=\dimen145
+\lst@newlines=\count119
+\lst@lineno=\count120
+\lst@maxwidth=\dimen146
+
+(/usr/share/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
+\c@lstnumber=\count121
+\lst@skipnumbers=\count122
+\lst@framebox=\box61
+)
+(/usr/share/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2007/02/22 1.4 listings configuration
+))
+Package: listings 2007/02/22 1.4 (Carsten Heinz)
+
+(/usr/share/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/usr/share/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+)
+\@indexfile=\write4
+\openout4 = `pychoacoustics_manual.idx'.
+
+
+Writing index file pychoacoustics_manual.idx
+(/usr/share/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
+
+(/usr/share/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
+Package: hobsub-hyperref 2012/05/28 v1.13 Bundle oberdiek, subset hyperref (HO)
+
+
+(/usr/share/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
+Package: hobsub-generic 2012/05/28 v1.13 Bundle oberdiek, subset generic (HO)
+Package: hobsub 2012/05/28 v1.13 Construct package bundles (HO)
+Package hobsub Info: Skipping package `infwarerr' (already loaded).
+Package hobsub Info: Skipping package `ltxcmds' (already loaded).
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+Package hobsub Info: Skipping package `ifvtex' (already loaded).
+Package: intcalc 2007/09/27 v1.1 Expandable calculations with integers (HO)
+Package hobsub Info: Skipping package `ifpdf' (already loaded).
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+Package: pdfescape 2011/11/25 v1.13 Implements pdfTeX's escape features (HO)
+Package: bigintcalc 2012/04/08 v1.3 Expandable calculations on big integers (HO
+)
+Package: bitset 2011/01/30 v1.1 Handle bit-vector datatype (HO)
+Package: uniquecounter 2011/01/30 v1.2 Provide unlimited unique counter (HO)
+)
+Package hobsub Info: Skipping package `hobsub' (already loaded).
+Package: letltxmacro 2010/09/02 v1.4 Let assignment for LaTeX macros (HO)
+Package: hopatch 2012/05/28 v1.2 Wrapper for package hooks (HO)
+Package: xcolor-patch 2011/01/30 xcolor patch
+Package: atveryend 2011/06/30 v1.8 Hooks at the very end of document (HO)
+Package atveryend Info: \AP@enddocument detected (standard20110627).
+Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
+Package: refcount 2011/10/16 v3.4 Data extraction from label references (HO)
+Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
+)
+(/usr/share/texmf-dist/tex/latex/oberdiek/auxhook.sty
+Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
+)
+(/usr/share/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+)
+\@linkdim=\dimen147
+\Hy@linkcounter=\count123
+\Hy@pagecounter=\count124
+
+(/usr/share/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
+)
+\Hy@SavedSpaceFactor=\count125
+
+(/usr/share/texmf-dist/tex/latex/latexconfig/hyperref.cfg
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+Package hyperref Info: Option `hyperindex' set `true' on input line 4319.
+Package hyperref Info: Option `bookmarks' set `true' on input line 4319.
+Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 4319
+.
+Package hyperref Info: Option `breaklinks' set `true' on input line 4319.
+Package hyperref Info: Hyper figures OFF on input line 4443.
+Package hyperref Info: Link nesting OFF on input line 4448.
+Package hyperref Info: Hyper index ON on input line 4451.
+Package hyperref Info: Plain pages OFF on input line 4458.
+Package hyperref Info: Backreferencing OFF on input line 4463.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4688.
+\c@Hy@tempcnt=\count126
+
+(/usr/share/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip10
+Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 5041.
+\XeTeXLinkMargin=\dimen148
+\Fld@menulength=\count127
+\Field@Width=\dimen149
+\Fld@charsize=\dimen150
+Package hyperref Info: Hyper figures OFF on input line 6295.
+Package hyperref Info: Link nesting OFF on input line 6300.
+Package hyperref Info: Hyper index ON on input line 6303.
+Package hyperref Info: backreferencing OFF on input line 6310.
+Package hyperref Info: Link coloring OFF on input line 6315.
+Package hyperref Info: Link coloring with OCG OFF on input line 6320.
+Package hyperref Info: PDF/A mode OFF on input line 6325.
+LaTeX Info: Redefining \ref on input line 6365.
+LaTeX Info: Redefining \pageref on input line 6369.
+\Hy@abspage=\count128
+\c@Item=\count129
+\c@Hfootnote=\count130
+)
+
+Package hyperref Message: Driver (autodetected): hpdftex.
+
+(/usr/share/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
+\Fld@listcount=\count131
+\c@bookmark@seq@number=\count132
+
+(/usr/share/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
+Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+82.
+)
+\Hy@SectionHShift=\skip49
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 50.
+
+(/usr/share/texmf-dist/tex/latex/apacite/apacite.sty
+Package: apacite 2012/02/25 v6.01 APA citation
+\c@BibCnt=\count133
+\bibleftmargin=\skip50
+\bibindent=\skip51
+\bibparsep=\skip52
+\bibitemsep=\skip53
+\biblabelsep=\skip54
+)
+(./pychoacoustics_manual.aux (./titlepage.aux) (./intro.aux)
+(./installation.aux) (./graphical_user_interface.aux)
+(./commandline_user_interface.aux) (./psychophysics.aux) (./engine.aux
+
+LaTeX Warning: Label `sec:response_mode' multiply defined.
+
+) (./custom_experiments.aux) (./troubleshooting.aux) (./python_intro.aux)
+(./fdl.aux))
+\openout1 = `pychoacoustics_manual.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Try loading font information for OT1+ppl on input line 54.
+ (/usr/share/texmf-dist/tex/latex/psnfss/ot1ppl.fd
+File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
+)
+(/usr/share/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count134
+\scratchdimen=\dimen151
+\scratchbox=\box62
+\nofMPsegments=\count135
+\nofMParguments=\count136
+\everyMPshowfont=\toks20
+\MPscratchCnt=\count137
+\MPscratchDim=\dimen152
+\MPnumerator=\count138
+\makeMPintoPDFobject=\count139
+\everyMPtoPDFconversion=\toks21
+) (/usr/share/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/share/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+)
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(96.73918pt, 404.02951pt, 96.73918pt)
+* v-part:(T,H,B)=(101.40665pt, 591.5302pt, 152.11pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=404.02951pt
+* \textheight=591.5302pt
+* \oddsidemargin=24.4692pt
+* \evensidemargin=24.4692pt
+* \topmargin=-7.86334pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=35.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+\big@size=\dimen153
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
+Package caption Info: wrapfig package is loaded.
+Package caption Info: End \AtBeginDocument code.
+\c@lstlisting=\count140
+\AtBeginShipoutBox=\box63
+Package hyperref Info: Link coloring ON on input line 54.
+(/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
+
+(/usr/share/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
+)
+\c@section@level=\count141
+)
+LaTeX Info: Redefining \ref on input line 54.
+LaTeX Info: Redefining \pageref on input line 54.
+LaTeX Info: Redefining \nameref on input line 54.
+
+(./pychoacoustics_manual.out) (./pychoacoustics_manual.out)
+\@outlinefile=\write5
+\openout5 = `pychoacoustics_manual.out'.
+
+\c@maskedRefs=\count142
+
+(/usr/share/texmf-dist/tex/latex/apacite/english.apc
+File: english.apc 2012/02/25 v6.01 apacite language file
+LaTeX Info: Redefining \BPBI on input line 129.
+LaTeX Info: Redefining \BHBI on input line 130.
+)
+(/usr/share/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2004/09/05 1.3 listings language file
+)
+\openout2 = `titlepage.aux'.
+
+ (./titlepage.tex
+Underfull \hbox (badness 10000) in paragraph at lines 6--7
+
+ []
+
+[1
+
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Try loading font information for OMS+ppl on input line 24.
+
+(/usr/share/texmf-dist/tex/latex/psnfss/omsppl.fd
+File: omsppl.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 24.
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 32.
+)pdfTeX warning (ext4): destination with the same identifier (name{page.}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.85 \include{titlepage}
+                         [1
+
+]
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <24.88> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 99.
+ (./pychoacoustics_manual.toc
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 1.
+LaTeX Font Info:    Try loading font information for OML+zplm on input line 3.
+
+(/usr/share/texmf-dist/tex/latex/psnfss/omlzplm.fd
+File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
+)
+LaTeX Font Info:    Try loading font information for OMS+zplm on input line 3.
+
+(/usr/share/texmf-dist/tex/latex/psnfss/omszplm.fd
+File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
+)
+LaTeX Font Info:    Try loading font information for OMX+zplm on input line 3.
+
+(/usr/share/texmf-dist/tex/latex/psnfss/omxzplm.fd
+File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
+)
+LaTeX Font Info:    Try loading font information for OT1+zplm on input line 3.
+
+(/usr/share/texmf-dist/tex/latex/psnfss/ot1zplm.fd
+File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
+)
+Overfull \hbox (8.32285pt too wide) in paragraph at lines 18--18
+ [][] [][]\OT1/ppl/m/n/12 Mul-ti-ple Con-stants m-Intervals n-Alternatives Para
+digm 
+ []
+
+[1
+
+
+] [2])
+\tf@toc=\write6
+\openout6 = `pychoacoustics_manual.toc'.
+
+ [3]
+\openout2 = `intro.aux'.
+
+ (./intro.tex
+Chapter 1.
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <24.88> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 1.
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 6.
+<Figures/response_box.png, id=474, 604.50844pt x 451.6875pt>
+File: Figures/response_box.png Graphic file (type png)
+
+<use Figures/response_box.png>
+Package pdftex.def Info: Figures/response_box.png used on input line 8.
+(pdftex.def)             Requested size: 362.70786pt x 271.01459pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<Figures/control_window.png, id=475, 666.99188pt x 567.62062pt>
+File: Figures/control_window.png Graphic file (type png)
+
+<use Figures/control_window.png>
+Package pdftex.def Info: Figures/control_window.png used on input line 15.
+(pdftex.def)             Requested size: 366.84666pt x 312.19229pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+) [1
+
+
+
+] [2 <./Figures/response_box.png (PNG copy)>] [3 <./Figures/control_window.png>
+]
+\openout2 = `installation.aux'.
+
+ (./installation.tex
+Chapter 2.
+
+Overfull \hbox (17.59686pt too wide) in paragraph at lines 6--7
+[]\OT1/ppl/m/n/12 pyqt4 [][]http://www.riverbankcomputing.co.uk/software/pyqt/d
+ownload[][] 
+ []
+
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <17.28> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 12.
+
+Overfull \hbox (3.51018pt too wide) in paragraph at lines 17--21
+\OT1/ppl/m/n/12 Binary deb pack-ages for re-cent debian-based dis-tri-bu-tions 
+are pro-vided (start-
+ []
+
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 31.
+[4
+
+
+
+]
+Overfull \hbox (0.27008pt too wide) in paragraph at lines 71--73
+\OT1/ppl/m/n/12 If you have in-stalled the de-pen-den-cies, you can also use py
+-choa-cous-tics with-
+ []
+
+[5]) [6]
+\openout2 = `graphical_user_interface.aux'.
+
+ (./graphical_user_interface.tex
+Chapter 3.
+[7
+
+
+
+]
+Overfull \hbox (59.61215pt too wide) in paragraph at lines 57--60
+[]\OT1/ppl/b/n/12 Shuffling Scheme \OT1/ppl/m/n/12 By de-fault when you click t
+he ``Shuf-fle'' but-ton, \OT1/cmtt/m/n/12 pychoacoustics
+ []
+
+[8] [9]
+Overfull \hbox (8.21683pt too wide) in paragraph at lines 121--130
+[]\OT1/ppl/b/n/12 Response Mode \OT1/ppl/m/n/12 When ``Real Lis-tener'' is se-l
+ected, \OT1/cmtt/m/n/12 pychoacoustics \OT1/ppl/m/n/12 waits
+ []
+
+[10] [11] [12] [13]
+Overfull \hbox (3.5565pt too wide) in paragraph at lines 202--207
+\OT1/ppl/m/n/12 hap-pen that for a track the num-ber of to-tal turn-points col-
+lected is greater
+ []
+
+[14]
+Overfull \hbox (3.5565pt too wide) in paragraph at lines 229--234
+\OT1/ppl/m/n/12 hap-pen that for a track the num-ber of to-tal turn-points col-
+lected is greater
+ []
+
+[15] [16] <Figures/menuBar.png, id=562, 162.6075pt x 36.135pt>
+File: Figures/menuBar.png Graphic file (type png)
+
+<use Figures/menuBar.png>
+Package pdftex.def Info: Figures/menuBar.png used on input line 293.
+(pdftex.def)             Requested size: 162.6071pt x 36.13489pt.
+ [17 <./Figures/menuBar.png>]
+<Figures/proc_res_dia.png, id=575, 266.49562pt x 246.1697pt>
+File: Figures/proc_res_dia.png Graphic file (type png)
+
+<use Figures/proc_res_dia.png>
+Package pdftex.def Info: Figures/proc_res_dia.png used on input line 340.
+(pdftex.def)             Requested size: 266.49496pt x 246.16908pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[18] [19 <./Figures/proc_res_dia.png>]
+Overfull \hbox (5.83716pt too wide) in paragraph at lines 379--380
+\OT1/ppl/m/n/12 where $\OML/zplm/m/it/12 N$ \OT1/ppl/m/n/12 is the num-ber of t
+ri-als, to avoid in-fi-nite val-ues of \OT1/ppl/m/it/12 d' []\OT1/ppl/m/n/12 se
+e [][]Macmil-
+ []
+
+[20]
+Overfull \hbox (1.6401pt too wide) in paragraph at lines 398--399
+\OT1/ppl/m/n/12 wav file for each seg-ment of the se-quence in the cur-rent \OT
+1/cmtt/m/n/12 pychoacoustics
+ []
+
+[21]
+Overfull \hbox (3.28177pt too wide) in paragraph at lines 417--419
+[]\OT1/ppl/b/n/12 Execute cus-tom com-mand \OT1/ppl/m/n/12 If checked, ex-e-cut
+e an op-er-at-ing sys-tem com-
+ []
+
+
+Overfull \hbox (0.35292pt too wide) in paragraph at lines 423--424
+[]\OT1/ppl/b/n/12 Security \OT1/ppl/m/n/12 Set the se-cu-rity pro-to-col for ne
+t-work ex-changes with the SMTP
+ []
+
+[22] <Figures/phones_database.png, id=608, 580.41844pt x 289.83281pt>
+File: Figures/phones_database.png Graphic file (type png)
+
+<use Figures/phones_database.png>
+Package pdftex.def Info: Figures/phones_database.png used on input line 445.
+(pdftex.def)             Requested size: 377.26752pt x 188.38908pt.
+
+<Figures/experimenter_database.png, id=610, 358.33875pt x 250.68657pt>
+File: Figures/experimenter_database.png Graphic file (type png)
+
+<use Figures/experimenter_database.png>
+Package pdftex.def Info: Figures/experimenter_database.png used on input line 4
+57.
+(pdftex.def)             Requested size: 358.33788pt x 250.68594pt.
+
+Overfull \hbox (9.8095pt too wide) in paragraph at lines 453--465
+\OT1/ppl/m/n/12 de-tails of the ex-per-i-menters that work in your lab in the e
+x-per-i-menter database.
+ []
+
+[23 <./Figures/phones_database.png>] [24 <./Figures/experimenter_database.png>]
+) [25]
+\openout2 = `commandline_user_interface.aux'.
+
+ (./commandline_user_interface.tex
+Chapter 4.
+[26
+
+
+
+]) [27]
+\openout2 = `psychophysics.aux'.
+
+ (./psychophysics.tex
+Chapter 5.
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 4.
+
+[28
+
+
+
+]) [29]
+\openout2 = `engine.aux'.
+
+ (./engine.tex
+Chapter 6.
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 7.
+
+[30
+
+
+
+]
+Overfull \hbox (3.71703pt too wide) in paragraph at lines 39--48
+\OT1/ppl/m/n/12 need to be in-stalled by the user. If they are in the sys-tem p
+ath, \OT1/cmtt/m/n/12 pychoacoustics
+ []
+
+
+Overfull \hbox (19.53293pt too wide) in paragraph at lines 52--54
+\OT1/ppl/m/n/12 Parameters files are plain text files, that can be mod-i-fied t
+hrough \OT1/cmtt/m/n/12 pychoacoustics
+ []
+
+[31]
+Overfull \hbox (2.34918pt too wide) in paragraph at lines 94--106
+\OT1/ppl/m/n/12 can be in-put to a sta-tis-ti-cal soft-ware pack-age. For this 
+rea-son, \OT1/cmtt/m/n/12 pychoacoustics
+ []
+
+[32]
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 125.
+
+<Figures/inSummaryCheckBoxes.png, id=681, 348.55219pt x 112.92188pt>
+File: Figures/inSummaryCheckBoxes.png Graphic file (type png)
+
+<use Figures/inSummaryCheckBoxes.png>
+Package pdftex.def Info: Figures/inSummaryCheckBoxes.png used on input line 135
+.
+(pdftex.def)             Requested size: 348.55132pt x 112.92159pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[33] [34 <./Figures/inSummaryCheckBoxes.png>]
+Overfull \hbox (13.53873pt too wide) in paragraph at lines 179--179
+[]\OT1/ppl/b/n/14.4 Multiple Con-stants 1-Intervals 2-Alternatives Re-sult File
+s 
+ []
+
+[35] [36] [37]
+Overfull \hbox (4.83057pt too wide) in paragraph at lines 328--332
+\OT1/ppl/m/n/12 vides two ad-di-tional re-sponse modes, ``Au-to-matic'' and ``S
+im-u-lated Lis-tener''.
+ []
+
+[38]
+LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 367.
+ [39]) [40]
+\openout2 = `custom_experiments.aux'.
+
+ (./custom_experiments.tex
+Chapter 7.
+[41
+
+
+
+]
+Overfull \hbox (26.89307pt too wide) in paragraph at lines 31--32
+\OT1/ppl/m/n/12 and choosers) of our ex-per-i-ment and their de-fault val-ues; 
+the []\OT1/cmtt/m/n/12 get_field_to_hide_
+ []
+
+
+Package hyperref Warning: Difference (3) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 33.
+
+[42]
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 68.
+
+
+LaTeX Warning: Reference `sec:par' on page 43 undefined on input line 84.
+
+[43] [44] [45] [46]) [47]
+\openout2 = `troubleshooting.aux'.
+
+ (./troubleshooting.tex
+Chapter 8.
+
+Package hyperref Warning: Difference (3) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 3.
+
+) [48
+
+
+
+] (./pychoacoustics_manual.bbl) [49
+
+
+]
+\openout2 = `python_intro.aux'.
+
+ (./python_intro.tex
+Appendix A.
+) [50
+
+
+]
+\openout2 = `fdl.aux'.
+
+ (./fdl.tex
+Appendix B.
+
+Package hyperref Warning: The anchor of a bookmark and its parent's must not
+(hyperref)                be the same. Added a new anchor on input line 69.
+
+[51
+
+
+
+] [52]
+Overfull \hbox (2.05508pt too wide) in paragraph at lines 150--156
+[]\OT1/ppl/m/n/12 The Doc-u-ment may in-clude War-ranty Dis-claimers next to th
+e no-tice which
+ []
+
+[53] [54] [55] [56] [57] [58]) [59]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 120.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 120.
+ (./pychoacoustics_manual.aux
+(./titlepage.aux) (./intro.aux) (./installation.aux)
+(./graphical_user_interface.aux) (./commandline_user_interface.aux)
+(./psychophysics.aux) (./engine.aux) (./custom_experiments.aux)
+(./troubleshooting.aux) (./python_intro.aux) (./fdl.aux))
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 120.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 120.
+
+
+Package rerunfilecheck Warning: File `pychoacoustics_manual.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `pychoacoustics_manual.out':
+(rerunfilecheck)             Before: D54B89DA45A8C0A6C7587D228F33698D;6842
+(rerunfilecheck)             After:  BCFBB19F0B5DD3F9C61C8E9809AE709A;6900.
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 120.
+ ) 
+Here is how much of TeX's memory you used:
+ 9812 strings out of 493488
+ 146834 string characters out of 3146892
+ 403327 words of memory out of 3000000
+ 12608 multiletter control sequences out of 15000+200000
+ 40596 words of font info for 105 fonts, out of 3000000 for 9000
+ 957 hyphenation exceptions out of 8191
+ 36i,9n,40p,1313b,1691s stack positions out of 5000i,500n,10000p,200000b,50000s
+pdfTeX warning (dest): name{section*.44} has been referenced but does not exi
+st, replaced by a fixed one
+
+pdfTeX warning (dest): name{chapter*.43} has been referenced but does not exist
+, replaced by a fixed one
+
+{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmt
+t10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/
+share/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/share/texmf-dist/fon
+ts/type1/urw/palatino/uplr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/palatin
+o/uplri8a.pfb></usr/share/texmf-dist/fonts/type1/urw/zapfding/uzdr.pfb>
+Output written on pychoacoustics_manual.pdf (64 pages, 524701 bytes).
+PDF statistics:
+ 1016 PDF objects out of 1200 (max. 8388607)
+ 924 compressed objects within 10 object streams
+ 276 named destinations out of 1000 (max. 500000)
+ 748 words of extra memory for PDF output out of 10000 (max. 10000000)
+

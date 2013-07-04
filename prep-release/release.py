@@ -38,23 +38,9 @@ def main(argv):
     f = open('setup.py', 'w')
     f.writelines(ln)
     f.close()
-
-    ## #version specific build
-    ## #pywvername = "pychoacoustics" + gittag.replace(".", "-") + ".pyw"
-    ## thisCmd = "cp pychoacoustics.pyw " + "pychoacoustics" + gittag.replace(".", "-") + ".pyw"
-    ## os.system(thisCmd)
-    
-    ## for i in range(len(ln)):
-    ##     if ln[i].strip().split('=')[0].strip() == "name":
-    ##         ln[i] = '    name="pychoacoustics' + gittag.replace(".", "-") +'",\n'
-    ##     if ln[i].strip().split('=')[0].strip() == "scripts":
-    ##         ln[i] = '    scripts=["pychoacoustics' + gittag.replace(".", "-") + '.pyw"], \n'
-    ## f = open('setup_ver.py', 'w')
-    ## f.writelines(ln)
-    ## f.close()
     
 
-    f = open('pychoacoustics_pack/_version_info.py', 'r')
+    f = open('pychoacoustics/_version_info.py', 'r')
     ln = f.readlines()
     f.close()
     for i in range(len(ln)):
@@ -63,12 +49,12 @@ def main(argv):
         if ln[i].strip().split('=')[0].strip() == "pychoacoustics_builddate":
             ln[i] = 'pychoacoustics_builddate = "' + builddate +'"\n'
 
-    f = open('pychoacoustics_pack/_version_info.py', 'w')
+    f = open('pychoacoustics/_version_info.py', 'w')
     f.writelines(ln)
     f.close()
 
 
-    f = open('doc/conf.py', 'r')
+    f = open('pychoacoustics/doc/conf.py', 'r')
     ln = f.readlines()
     f.close()
     for i in range(len(ln)):
@@ -77,7 +63,7 @@ def main(argv):
         if ln[i].strip().split('=')[0].strip() == "release":
             ln[i] = 'release = "' + gittag + '",\n'
 
-    f = open('doc/conf.py', 'w')
+    f = open('pychoacoustics/doc/conf.py', 'w')
     f.writelines(ln)
     f.close()
 
