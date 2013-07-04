@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
+
+"""
+Run Frequency Discrimination demo.
+"""
+
 from sndlib import*
 from PyQt4.QtGui import QApplication
 
-                                                                                         
+                                                                              
 def initialize_freq(prm):
     exp_name = "Frequency Discrimination Demo"
     prm["experimentsChoices"].append(exp_name)

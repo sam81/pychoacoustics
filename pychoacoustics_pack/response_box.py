@@ -55,7 +55,7 @@ if matplotlib_available and pandas_available:
     from .win_categorical_plot import*
 
 
-from . import default_experiments
+import default_experiments
 
 homeExperimentsPath = os.path.normpath(os.path.expanduser("~") +'/pychoacoustics_exp/')
 if os.path.exists(os.path.normpath(homeExperimentsPath + '/home_exp/__init__.py')) == True:
@@ -63,11 +63,11 @@ if os.path.exists(os.path.normpath(homeExperimentsPath + '/home_exp/__init__.py'
     import home_exp
 
 try:
-    import lab_exp
-    from lab_exp import*
-    lab_exp_exists = True
+    import labexp
+    from labexp import*
+    labexp_exists = True
 except:
-    lab_exp_exists = False
+    labexp_exists = False
 
 class responseBox(QtGui.QMainWindow):
     def __init__(self, parent):
@@ -643,7 +643,7 @@ class responseBox(QtGui.QMainWindow):
         except:
             pass
         try:
-            methodToCall1 = getattr(lab_exp, execString)
+            methodToCall1 = getattr(labexp, execString)
         except:
             pass
         try:
@@ -2222,7 +2222,7 @@ class responseBox(QtGui.QMainWindow):
         for i in range(2):
             thisFile = filesToWrite[i]
             thisFile.write('*******************************************************\n')
-            thisFile.write('pychoacoustics version: ' + self.prm['version'] + '; rev. no: ' + str(self.prm['revno']) + '; build date: ' +  self.prm['builddate'] + '\n')
+            thisFile.write('pychoacoustics version: ' + self.prm['version'] + '; build date: ' +  self.prm['builddate'] + '\n')
             thisFile.write('Block Number: ' + str(self.prm['currentBlock']) + '\n')
             thisFile.write('Block Position: ' + self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'] + '\n')
             thisFile.write('Start: ' + self.prm['blockStartTimeStamp']+ '\n') 

@@ -37,7 +37,6 @@ stderrFile = os.path.expanduser("~") +'/.local/share/data/pychoacoustics/pychoac
 
 logging.basicConfig(filename=stderrFile,level=logging.DEBUG,)
 
-
 def excepthook(except_type, except_val, tbck):
     """ Show errors in message box"""
     # recover traceback
@@ -102,7 +101,6 @@ def main(argv):
     prm['quit'] = False
     prm['progbar'] = False
     prm['blockProgbar'] = False
-
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-f", "--file", help="Load parameters file", nargs='?', const='', default='')

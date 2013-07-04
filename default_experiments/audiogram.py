@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
+
+"""
+Run audiogram experiment.
+"""
+
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import QApplication
 from sndlib import*
 from numpy import log10
 
-                                                                                         
+
 
 def initialize_audiogram(prm):
     exp_name = QApplication.translate("","Audiogram","", QApplication.UnicodeUTF8)
@@ -73,6 +78,7 @@ def get_fields_to_hide_audiogram(parent):
         parent.fieldsToShow = [parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)","", QApplication.UnicodeUTF8))]
     
 def doTrial_audiogram(parent):
+
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
         parent.prm['additional_parameters_to_write'] = {}

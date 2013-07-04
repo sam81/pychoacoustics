@@ -39,19 +39,19 @@ def main(argv):
     f.writelines(ln)
     f.close()
 
-    #version specific build
-    #pywvername = "pychoacoustics" + gittag.replace(".", "-") + ".pyw"
-    thisCmd = "cp pychoacoustics.pyw " + "pychoacoustics" + gittag.replace(".", "-") + ".pyw"
-    os.system(thisCmd)
+    ## #version specific build
+    ## #pywvername = "pychoacoustics" + gittag.replace(".", "-") + ".pyw"
+    ## thisCmd = "cp pychoacoustics.pyw " + "pychoacoustics" + gittag.replace(".", "-") + ".pyw"
+    ## os.system(thisCmd)
     
-    for i in range(len(ln)):
-        if ln[i].strip().split('=')[0].strip() == "name":
-            ln[i] = '    name="pychoacoustics' + gittag.replace(".", "-") +'",\n'
-        if ln[i].strip().split('=')[0].strip() == "scripts":
-            ln[i] = '    scripts=["pychoacoustics' + gittag.replace(".", "-") + '.pyw"], \n'
-    f = open('setup_ver.py', 'w')
-    f.writelines(ln)
-    f.close()
+    ## for i in range(len(ln)):
+    ##     if ln[i].strip().split('=')[0].strip() == "name":
+    ##         ln[i] = '    name="pychoacoustics' + gittag.replace(".", "-") +'",\n'
+    ##     if ln[i].strip().split('=')[0].strip() == "scripts":
+    ##         ln[i] = '    scripts=["pychoacoustics' + gittag.replace(".", "-") + '.pyw"], \n'
+    ## f = open('setup_ver.py', 'w')
+    ## f.writelines(ln)
+    ## f.close()
     
 
     f = open('pychoacoustics_pack/_version_info.py', 'r')

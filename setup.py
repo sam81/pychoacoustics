@@ -31,7 +31,7 @@ setup(
         ],
     license="GPL v3",
     requires=['PyQt (>=4.8.4)', 'numpy (>=1.6.1)', 'scipy (>=0.10.1)'],
-    packages=["pychoacoustics_pack", "pychoacoustics_pack.default_experiments"],
+    packages=["pychoacoustics_pack", "default_experiments"],
     py_modules = ['sndlib', 'pysdt'],
     scripts = ["pychoacoustics.pyw"],
     package_dir={"pychoacoustics_pack": "pychoacoustics_pack"},

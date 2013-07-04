@@ -54,8 +54,9 @@ try:
 except:
     pandas_available = False
 
-from .default_experiments import*
-from . import default_experiments
+import default_experiments
+from default_experiments import*
+
 homeExperimentsPath = os.path.normpath(os.path.expanduser("~") +'/pychoacoustics_exp/')
 if os.path.exists(os.path.normpath(homeExperimentsPath)):
     sys.path.append(os.path.normpath(homeExperimentsPath))
@@ -63,11 +64,11 @@ if os.path.exists(os.path.normpath(homeExperimentsPath + '/home_exp/__init__.py'
     import home_exp
     from home_exp import*
 try:
-    import lab_exp
-    from lab_exp import*
-    lab_exp_exists = True
+    import labexp
+    from labexp import*
+    labexp_exists = True
 except:
-    lab_exp_exists = False
+    labexp_exists = False
 
 def set_global_parameters(prm):
     prm['tmpParametersFile'] = ".tmp_prm.prm"
@@ -86,9 +87,9 @@ def set_global_parameters(prm):
             methodToCall1 = getattr(home_exp, item)
             methodToCall2 = getattr(methodToCall1, 'initialize_'+item)
             prm = methodToCall2(prm)
-    if lab_exp_exists == True:
-        for item in lab_exp.__all__:
-            methodToCall1 = getattr(lab_exp, item)
+    if labexp_exists == True:
+        for item in labexp.__all__:
+            methodToCall1 = getattr(labexp, item)
             methodToCall2 = getattr(methodToCall1, 'initialize_'+item)
             prm = methodToCall2(prm)
     opts =  ["hasISIBox", "hasAlternativesChooser", "hasFeedback", "hasIntervalLights", "hasPreTrialInterval", "hasPrecursorInterval", "hasPostcursorInterval"]

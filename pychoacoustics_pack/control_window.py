@@ -32,7 +32,7 @@ from .dialog_swap_blocks import*
 
 
 #from redirect_out import*
-from . import default_experiments
+import default_experiments
 import fnmatch
 from ._version_info import*
 __version__ = pychoacoustics_version
@@ -42,11 +42,11 @@ if os.path.exists(homeExperimentsPath + 'home_exp/__init__.py') == True:
     sys.path.append(homeExperimentsPath)
     import home_exp
 try:
-    import lab_exp
-    from lab_exp import*
-    lab_exp_exists = True
+    import labexp
+    from labexp import*
+    labexp_exists = True
 except:
-    lab_exp_exists = False
+    labexp_exists = False
 
 class pychControlWin(QtGui.QMainWindow):
     def __init__(self, parent=None, prm=None):
@@ -1718,7 +1718,7 @@ class pychControlWin(QtGui.QMainWindow):
         except:
             pass
         try:
-            methodToCall1 = getattr(lab_exp, execString)
+            methodToCall1 = getattr(labexp, execString)
         except:
             pass
         try:
@@ -2773,7 +2773,7 @@ class pychControlWin(QtGui.QMainWindow):
         except:
             pass
         try:
-            methodToCall1 = getattr(lab_exp, execString)
+            methodToCall1 = getattr(labexp, execString)
         except:
             pass
         try:
