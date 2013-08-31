@@ -43,7 +43,7 @@ def addSounds(snd1, snd2, delay, fs):
         Sampling frequency in hertz of the two sounds.
 
     Returns
-    -------
+    --------
     snd : 2-dimensional array of floats
        
     Examples
@@ -1210,18 +1210,15 @@ def fir2Filt(f1, f2, f3, f4, snd, fs):
     n = 256
 
     if f2 == 0: #low pass
-        #print('lowpass')
         f = [0, f3, f4, 1]
         m = [1, 1, 0.00003, 0]
         
     elif f3 < 1: #bandpass
-        #print('bandpass')
         f = [0, f1, f2, ((f2+f3)/2), f3, f4, 1]
         m = [0, 0.00003, 1, 1, 1, 0.00003, 0]
         
-    else:
-        #print('highpass')
-        f = [0, f1, f2, 0.999999, 1] #high pass
+    else:#high pass
+        f = [0, f1, f2, 0.999999, 1] #scipy wants that gain at the Nyquist is 0
         m = [0, 0.00003, 1, 1, 0]
         
         

@@ -1,7 +1,31 @@
 # -*- coding: utf-8 -*-
 
 """
-Run audiogram experiment.
+This experiment can be used to measure thresholds for detecting a signal in quiet.
+The signal can be either a pure tone or a narrow-band noise.
+
+The available fields are:
+
+- Frequency (Hz) :
+    Signal center frequency in Hz
+- Bandwidth (Hz) :
+    The bandwidth of the signal in Hz (only applicable if
+    signal type is Narrowband Noise)
+- Level (dB SPL) :
+    Signal level (for constant procedures), or starting signal level
+    (for adaptive procedures), in dB SPL
+- Duration (ms) :
+    Signal duration (excluding ramps), in ms
+- Ramps (ms) :
+    Duration of each ramp, in ms
+
+The available choosers are:
+
+- Ear: [``Right``, ``Left``, ``Both``]
+    The ear to which the signal will be presented
+- Signal Type: [``Sinusoid``, ``Narrowband Noise``]
+    The signal type. If ``Sinusoid`` the signal will be a pure tone, if ``Narrowband Noise``, the signal will be a narrow-band noise
+
 """
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
@@ -59,7 +83,7 @@ def select_default_parameters_audiogram(parent, par):
     chooser.append(QApplication.translate("","Right","", QApplication.UnicodeUTF8))
     chooserOptions.append([QApplication.translate("","Sinusoid","", QApplication.UnicodeUTF8),
                            QApplication.translate("","Narrowband Noise","", QApplication.UnicodeUTF8)])
-    chooserLabel.append(QApplication.translate("","Type:","", QApplication.UnicodeUTF8))
+    chooserLabel.append(QApplication.translate("","Signal Type:","", QApplication.UnicodeUTF8))
     chooser.append(QApplication.translate("","Sinusoid","", QApplication.UnicodeUTF8))
     
     prm = {}
@@ -72,7 +96,7 @@ def select_default_parameters_audiogram(parent, par):
     return prm
 
 def get_fields_to_hide_audiogram(parent):
-    if parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Sinusoid","", QApplication.UnicodeUTF8):
+    if parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Signal Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Sinusoid","", QApplication.UnicodeUTF8):
         parent.fieldsToHide = [parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)","", QApplication.UnicodeUTF8))]
     else:
         parent.fieldsToShow = [parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)","", QApplication.UnicodeUTF8))]
@@ -95,7 +119,7 @@ def doTrial_audiogram(parent):
     duration = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Duration (ms)","", QApplication.UnicodeUTF8))] 
     ramps = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Ramps (ms)","", QApplication.UnicodeUTF8))] 
     channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(QApplication.translate("","Ear:","", QApplication.UnicodeUTF8))]
-    sndType = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(QApplication.translate("","Type:","", QApplication.UnicodeUTF8))]
+    sndType = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(QApplication.translate("","Signal Type:","", QApplication.UnicodeUTF8))]
 
     if sndType == QApplication.translate("","Narrowband Noise","", QApplication.UnicodeUTF8):
         if bandwidth > 0:

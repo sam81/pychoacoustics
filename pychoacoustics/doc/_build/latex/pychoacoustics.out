@@ -1,6 +1,45 @@
-\BOOKMARK [0][-]{chapter.1}{Indices and tables}{}% 1
-\BOOKMARK [0][-]{chapter.2}{sndlib \205 Sound Synthesis Library}{}% 2
-\BOOKMARK [0][-]{chapter.3}{pysdt \205 Signal Detection Theory Measures}{}% 3
-\BOOKMARK [0][-]{chapter.4}{Default Experiments}{}% 4
-\BOOKMARK [0][-]{section*.46}{Python Module Index}{}% 5
-\BOOKMARK [0][-]{section*.47}{Index}{}% 6
+\BOOKMARK [0][-]{chapter.1}{pychoacoustics manual}{}% 1
+\BOOKMARK [1][-]{section.1.1}{What is pychoacoustics?}{chapter.1}% 2
+\BOOKMARK [0][-]{chapter.2}{Installation}{}% 3
+\BOOKMARK [1][-]{section.2.1}{Installation on Linux}{chapter.2}% 4
+\BOOKMARK [1][-]{section.2.2}{Installation on Windows}{chapter.2}% 5
+\BOOKMARK [0][-]{chapter.3}{Graphical User Interface}{}% 6
+\BOOKMARK [1][-]{section.3.1}{Quickstart}{chapter.3}% 7
+\BOOKMARK [1][-]{section.3.2}{The Control Window}{chapter.3}% 8
+\BOOKMARK [1][-]{section.3.3}{Process Results Dialog}{chapter.3}% 9
+\BOOKMARK [1][-]{section.3.4}{Edit Preferences Dialog}{chapter.3}% 10
+\BOOKMARK [1][-]{section.3.5}{Edit Phones Dialog}{chapter.3}% 11
+\BOOKMARK [1][-]{section.3.6}{Edit Experimenters Dialog}{chapter.3}% 12
+\BOOKMARK [1][-]{section.3.7}{The Response Box}{chapter.3}% 13
+\BOOKMARK [0][-]{chapter.4}{Command Line User Interface}{}% 14
+\BOOKMARK [0][-]{chapter.5}{Psychophysics}{}% 15
+\BOOKMARK [1][-]{section.5.1}{Available Paradigms}{chapter.5}% 16
+\BOOKMARK [0][-]{chapter.6}{Default Experiments}{}% 17
+\BOOKMARK [1][-]{section.6.1}{Audiogram}{chapter.6}% 18
+\BOOKMARK [1][-]{section.6.2}{Audiogram Multiple Frequencies}{chapter.6}% 19
+\BOOKMARK [1][-]{section.6.3}{Frequency Discrimination Demo}{chapter.6}% 20
+\BOOKMARK [0][-]{chapter.7}{The pychoacoustics Engine}{}% 21
+\BOOKMARK [1][-]{section.7.1}{Sound Output}{chapter.7}% 22
+\BOOKMARK [1][-]{section.7.2}{Parameters Files}{chapter.7}% 23
+\BOOKMARK [1][-]{section.7.3}{Results Files}{chapter.7}% 24
+\BOOKMARK [1][-]{section.7.4}{Block Presentation Position}{chapter.7}% 25
+\BOOKMARK [1][-]{section.7.5}{OS Commands}{chapter.7}% 26
+\BOOKMARK [1][-]{section.7.6}{Preferences Settings}{chapter.7}% 27
+\BOOKMARK [1][-]{section.7.7}{Response Mode}{chapter.7}% 28
+\BOOKMARK [0][-]{chapter.8}{Designing Custom Experiments}{}% 29
+\BOOKMARK [1][-]{section.8.1}{The initialize\137 function}{chapter.8}% 30
+\BOOKMARK [1][-]{section.8.2}{The select\137default\137parameters\137 function}{chapter.8}% 31
+\BOOKMARK [1][-]{section.8.3}{The get\137fields\137to\137hide\137 function}{chapter.8}% 32
+\BOOKMARK [1][-]{section.8.4}{The doTrial\137 function}{chapter.8}% 33
+\BOOKMARK [1][-]{section.8.5}{The Experiment \215opts\216}{chapter.8}% 34
+\BOOKMARK [1][-]{section.8.6}{Using par}{chapter.8}% 35
+\BOOKMARK [0][-]{chapter.9}{Troubleshooting}{}% 36
+\BOOKMARK [1][-]{section.9.1}{The computer crashed in the middle of an experimental session}{chapter.9}% 37
+\BOOKMARK [0][-]{chapter.10}{sndlib \205 Sound Synthesis Library}{}% 38
+\BOOKMARK [0][-]{chapter.11}{pysdt \205 Signal Detection Theory Measures}{}% 39
+\BOOKMARK [0][-]{chapter.12}{GNU Free Documentation License}{}% 40
+\BOOKMARK [0][-]{chapter.13}{Indices and tables}{}% 41
+\BOOKMARK [0][-]{chapter*.109}{Bibliography}{}% 42
+\BOOKMARK [0][-]{section*.115}{Python Module Index}{}% 43
+\BOOKMARK [0][-]{section*.116}{Python Module Index}{}% 44
+\BOOKMARK [0][-]{section*.117}{Index}{}% 45

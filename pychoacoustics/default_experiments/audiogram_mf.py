@@ -1,18 +1,43 @@
 # -*- coding: utf-8 -*-
 
-"""
-Run audiogram_mf
-"""
-
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import QApplication
 from ..sndlib import*
 from numpy import log10
+
+"""
+This experiment can be used to measure thresholds for detecting a signal in quiet.
+The signal can be either a pure tone or a narrow-band noise. Several signal frequencies
+can be tested within the same block of trials.
+
+The available fields are:
+
+- Frequency (Hz) :
+    Aignal center frequency in Hz
+- Bandwidth (Hz) :
+    The bandwidth of the signal in Hz (only applicable
+    if signal type is Narrowband Noise)
+- Level (dB SPL) :
+    Aignal level (for constant procedures), or starting signal level (for adaptive procedures), in dB SPL
+- Duration (ms) :
+    Aignal duration (excluding ramps), in ms
+- Ramps (ms) :
+    Duration of each ramp, in ms
+
+The available choosers are:
+
+- Ear:         [``Right``, ``Left``, ``Both``]
+    The ear to which the signal will be presented
+- Signal Type: [``Sinusoid``, ``Narrowband Noise``]
+    The signal type. If ``Sinusoid`` the signal will be a pure tone,
+    if ``Narrowband Noise``, the signal will be a narrow-band noise
+
+"""
                                                                             
 
 def initialize_audiogram_mf(prm):
-    exp_name = QApplication.translate("","audiogram_mf","", QApplication.UnicodeUTF8)
+    exp_name = QApplication.translate("","Audiogram Multiple Frequencies","", QApplication.UnicodeUTF8)
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
     prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Adaptive Interleaved","", QApplication.UnicodeUTF8),

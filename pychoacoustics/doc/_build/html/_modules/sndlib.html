@@ -8,15 +8,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>sndlib &mdash; pychoacoustics (&#39;0.2.52&#39;,) documentation</title>
+    <title>sndlib &mdash; pychoacoustics (&#39;0.2.53&#39;,) documentation</title>
     
-    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/scipy.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '(&#39;0.2.52&#39;,)',
+        VERSION:     '(&#39;0.2.53&#39;,)',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="pychoacoustics (&#39;0.2.52&#39;,) documentation" href="../index.html" />
+    <link rel="top" title="pychoacoustics (&#39;0.2.53&#39;,) documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body>
@@ -39,7 +39,11 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">pychoacoustics (&#39;0.2.52&#39;,) documentation</a> &raquo;</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+<li><a href="../index.html">pychoacoustics ('0.2.53',) documentation</a> &raquo;</li>
+
           <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -79,7 +83,7 @@
 <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">firwin2</span>
 
 
-<div class="viewcode-block" id="addSounds"><a class="viewcode-back" href="../index.html#sndlib.addSounds">[docs]</a><span class="k">def</span> <span class="nf">addSounds</span><span class="p">(</span><span class="n">snd1</span><span class="p">,</span> <span class="n">snd2</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<div class="viewcode-block" id="addSounds"><a class="viewcode-back" href="../sndlib.html#sndlib.addSounds">[docs]</a><span class="k">def</span> <span class="nf">addSounds</span><span class="p">(</span><span class="n">snd1</span><span class="p">,</span> <span class="n">snd2</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add or concatenate two sounds.</span>
 
@@ -95,7 +99,7 @@
 <span class="sd">        Sampling frequency in hertz of the two sounds.</span>
 
 <span class="sd">    Returns</span>
-<span class="sd">    -------</span>
+<span class="sd">    --------</span>
 <span class="sd">    snd : 2-dimensional array of floats</span>
 <span class="sd">       </span>
 <span class="sd">    Examples</span>
@@ -151,7 +155,7 @@
 
 
 </div>
-<div class="viewcode-block" id="AMTone"><a class="viewcode-back" href="../index.html#sndlib.AMTone">[docs]</a><span class="k">def</span> <span class="nf">AMTone</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="n">AMFreq</span><span class="p">,</span> <span class="n">AMDepth</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="AMTone"><a class="viewcode-back" href="../sndlib.html#sndlib.AMTone">[docs]</a><span class="k">def</span> <span class="nf">AMTone</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="n">AMFreq</span><span class="p">,</span> <span class="n">AMDepth</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate an amplitude modulated tone.</span>
 
@@ -220,7 +224,7 @@
        
     <span class="k">return</span> <span class="n">snd</span>
 </div>
-<div class="viewcode-block" id="binauralPureTone"><a class="viewcode-back" href="../index.html#sndlib.binauralPureTone">[docs]</a><span class="k">def</span> <span class="nf">binauralPureTone</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">itd</span><span class="p">,</span> <span class="n">itdRef</span><span class="p">,</span> <span class="n">ild</span><span class="p">,</span> <span class="n">ildRef</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="binauralPureTone"><a class="viewcode-back" href="../sndlib.html#sndlib.binauralPureTone">[docs]</a><span class="k">def</span> <span class="nf">binauralPureTone</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">itd</span><span class="p">,</span> <span class="n">itdRef</span><span class="p">,</span> <span class="n">ild</span><span class="p">,</span> <span class="n">ildRef</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a pure tone with an optional interaural time or level difference.</span>
 
@@ -345,7 +349,7 @@
     <span class="k">return</span> <span class="n">snd</span>
 
 </div>
-<div class="viewcode-block" id="broadbandNoise"><a class="viewcode-back" href="../index.html#sndlib.broadbandNoise">[docs]</a><span class="k">def</span> <span class="nf">broadbandNoise</span><span class="p">(</span><span class="n">spectrumLevel</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="broadbandNoise"><a class="viewcode-back" href="../sndlib.html#sndlib.broadbandNoise">[docs]</a><span class="k">def</span> <span class="nf">broadbandNoise</span><span class="p">(</span><span class="n">spectrumLevel</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Synthetise a broadband noise.</span>
 
@@ -426,7 +430,7 @@
     <span class="k">return</span> <span class="n">snd</span>
 
 </div>
-<div class="viewcode-block" id="chirp"><a class="viewcode-back" href="../index.html#sndlib.chirp">[docs]</a><span class="k">def</span> <span class="nf">chirp</span><span class="p">(</span><span class="n">freqStart</span><span class="p">,</span> <span class="n">ftype</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="chirp"><a class="viewcode-back" href="../sndlib.html#sndlib.chirp">[docs]</a><span class="k">def</span> <span class="nf">chirp</span><span class="p">(</span><span class="n">freqStart</span><span class="p">,</span> <span class="n">ftype</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Synthetize a chirp, that is a tone with frequency changing linearly or</span>
 <span class="sd">    exponentially over time with a give rate.</span>
@@ -504,7 +508,7 @@
     <span class="k">return</span> <span class="n">snd</span>
 
 </div>
-<div class="viewcode-block" id="complexTone"><a class="viewcode-back" href="../index.html#sndlib.complexTone">[docs]</a><span class="k">def</span> <span class="nf">complexTone</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">harmPhase</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">stretch</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="complexTone"><a class="viewcode-back" href="../sndlib.html#sndlib.complexTone">[docs]</a><span class="k">def</span> <span class="nf">complexTone</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">harmPhase</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">stretch</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Synthetise a complex tone.</span>
 
@@ -654,7 +658,7 @@
     <span class="k">return</span> <span class="n">snd</span>
 
 </div>
-<div class="viewcode-block" id="complexToneParallel"><a class="viewcode-back" href="../index.html#sndlib.complexToneParallel">[docs]</a><span class="k">def</span> <span class="nf">complexToneParallel</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">harmPhase</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">stretch</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="complexToneParallel"><a class="viewcode-back" href="../sndlib.html#sndlib.complexToneParallel">[docs]</a><span class="k">def</span> <span class="nf">complexToneParallel</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">harmPhase</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">stretch</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Synthetise a complex tone.</span>
 
@@ -760,7 +764,7 @@
         
     <span class="k">return</span> <span class="n">snd</span>
 </div>
-<div class="viewcode-block" id="ERBDistance"><a class="viewcode-back" href="../index.html#sndlib.ERBDistance">[docs]</a><span class="k">def</span> <span class="nf">ERBDistance</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">):</span>
+<div class="viewcode-block" id="ERBDistance"><a class="viewcode-back" href="../sndlib.html#sndlib.ERBDistance">[docs]</a><span class="k">def</span> <span class="nf">ERBDistance</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -768,7 +772,7 @@
 
     <span class="k">return</span> <span class="n">deltaERB</span>
 </div>
-<div class="viewcode-block" id="expAMNoise"><a class="viewcode-back" href="../index.html#sndlib.expAMNoise">[docs]</a><span class="k">def</span> <span class="nf">expAMNoise</span><span class="p">(</span><span class="n">fc</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">deltaCents</span><span class="p">,</span> <span class="n">fmPhase</span><span class="p">,</span> <span class="n">AMDepth</span><span class="p">,</span> <span class="n">spectrumLevel</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="expAMNoise"><a class="viewcode-back" href="../sndlib.html#sndlib.expAMNoise">[docs]</a><span class="k">def</span> <span class="nf">expAMNoise</span><span class="p">(</span><span class="n">fc</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">deltaCents</span><span class="p">,</span> <span class="n">fmPhase</span><span class="p">,</span> <span class="n">AMDepth</span><span class="p">,</span> <span class="n">spectrumLevel</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a sinusoidally amplitude-modulated noise with an exponentially</span>
 <span class="sd">    modulated AM frequency.</span>
@@ -860,7 +864,7 @@
 
     <span class="k">return</span> <span class="n">snd</span>
 </div>
-<div class="viewcode-block" id="expSinFMComplex"><a class="viewcode-back" href="../index.html#sndlib.expSinFMComplex">[docs]</a><span class="k">def</span> <span class="nf">expSinFMComplex</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">harmPhase</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">deltaCents</span><span class="p">,</span> <span class="n">fmPhase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="expSinFMComplex"><a class="viewcode-back" href="../sndlib.html#sndlib.expSinFMComplex">[docs]</a><span class="k">def</span> <span class="nf">expSinFMComplex</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">harmPhase</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">deltaCents</span><span class="p">,</span> <span class="n">fmPhase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a frequency-modulated complex tone with an exponential sinusoid.</span>
 
@@ -919,7 +923,7 @@
     <span class="k">return</span> <span class="n">snd</span>
 
 </div>
-<div class="viewcode-block" id="expSinFMTone"><a class="viewcode-back" href="../index.html#sndlib.expSinFMTone">[docs]</a><span class="k">def</span> <span class="nf">expSinFMTone</span><span class="p">(</span><span class="n">fc</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">deltaCents</span><span class="p">,</span> <span class="n">fmPhase</span><span class="p">,</span> <span class="n">startPhase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="expSinFMTone"><a class="viewcode-back" href="../sndlib.html#sndlib.expSinFMTone">[docs]</a><span class="k">def</span> <span class="nf">expSinFMTone</span><span class="p">(</span><span class="n">fc</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">deltaCents</span><span class="p">,</span> <span class="n">fmPhase</span><span class="p">,</span> <span class="n">startPhase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a frequency-modulated tone with an exponential sinusoid.</span>
 
@@ -994,7 +998,7 @@
 
 
 </div>
-<div class="viewcode-block" id="camSinFMComplex"><a class="viewcode-back" href="../index.html#sndlib.camSinFMComplex">[docs]</a><span class="k">def</span> <span class="nf">camSinFMComplex</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">harmPhase</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">deltaCams</span><span class="p">,</span> <span class="n">fmPhase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="camSinFMComplex"><a class="viewcode-back" href="../sndlib.html#sndlib.camSinFMComplex">[docs]</a><span class="k">def</span> <span class="nf">camSinFMComplex</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">harmPhase</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">deltaCams</span><span class="p">,</span> <span class="n">fmPhase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a tone frequency modulated with an exponential sinusoid.</span>
 
@@ -1051,7 +1055,7 @@
     <span class="k">return</span> <span class="n">snd</span>
 
 </div>
-<div class="viewcode-block" id="camSinFMTone"><a class="viewcode-back" href="../index.html#sndlib.camSinFMTone">[docs]</a><span class="k">def</span> <span class="nf">camSinFMTone</span><span class="p">(</span><span class="n">fc</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">deltaCams</span><span class="p">,</span> <span class="n">fmPhase</span><span class="p">,</span> <span class="n">startPhase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="camSinFMTone"><a class="viewcode-back" href="../sndlib.html#sndlib.camSinFMTone">[docs]</a><span class="k">def</span> <span class="nf">camSinFMTone</span><span class="p">(</span><span class="n">fc</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">deltaCams</span><span class="p">,</span> <span class="n">fmPhase</span><span class="p">,</span> <span class="n">startPhase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a tone frequency modulated with an exponential sinusoid.</span>
 
@@ -1127,7 +1131,7 @@
 
 
 </div>
-<div class="viewcode-block" id="FMTone"><a class="viewcode-back" href="../index.html#sndlib.FMTone">[docs]</a><span class="k">def</span> <span class="nf">FMTone</span><span class="p">(</span><span class="n">fc</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">mi</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="FMTone"><a class="viewcode-back" href="../sndlib.html#sndlib.FMTone">[docs]</a><span class="k">def</span> <span class="nf">FMTone</span><span class="p">(</span><span class="n">fc</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">mi</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a frequency modulated tone.</span>
 
@@ -1199,7 +1203,7 @@
     <span class="k">return</span> <span class="n">snd</span>
 
 </div>
-<div class="viewcode-block" id="fir2Filt"><a class="viewcode-back" href="../index.html#sndlib.fir2Filt">[docs]</a><span class="k">def</span> <span class="nf">fir2Filt</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">f3</span><span class="p">,</span> <span class="n">f4</span><span class="p">,</span> <span class="n">snd</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<div class="viewcode-block" id="fir2Filt"><a class="viewcode-back" href="../sndlib.html#sndlib.fir2Filt">[docs]</a><span class="k">def</span> <span class="nf">fir2Filt</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">f3</span><span class="p">,</span> <span class="n">f4</span><span class="p">,</span> <span class="n">snd</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Filter signal with a fir2 filter.</span>
 
@@ -1262,18 +1266,15 @@
     <span class="n">n</span> <span class="o">=</span> <span class="mi">256</span>
 
     <span class="k">if</span> <span class="n">f2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c">#low pass</span>
-        <span class="c">#print(&#39;lowpass&#39;)</span>
         <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">f3</span><span class="p">,</span> <span class="n">f4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
         <span class="n">m</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.00003</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
         
     <span class="k">elif</span> <span class="n">f3</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span> <span class="c">#bandpass</span>
-        <span class="c">#print(&#39;bandpass&#39;)</span>
         <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="p">((</span><span class="n">f2</span><span class="o">+</span><span class="n">f3</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">f3</span><span class="p">,</span> <span class="n">f4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
         <span class="n">m</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.00003</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.00003</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
         
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c">#print(&#39;highpass&#39;)</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="mf">0.999999</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="c">#high pass</span>
+    <span class="k">else</span><span class="p">:</span><span class="c">#high pass</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="mf">0.999999</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="c">#scipy wants that gain at the Nyquist is 0</span>
         <span class="n">m</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.00003</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
         
         
@@ -1284,7 +1285,7 @@
     
     <span class="k">return</span> <span class="n">x</span>
 </div>
-<div class="viewcode-block" id="freqFromERBInterval"><a class="viewcode-back" href="../index.html#sndlib.freqFromERBInterval">[docs]</a><span class="k">def</span> <span class="nf">freqFromERBInterval</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">deltaERB</span><span class="p">):</span>
+<div class="viewcode-block" id="freqFromERBInterval"><a class="viewcode-back" href="../sndlib.html#sndlib.freqFromERBInterval">[docs]</a><span class="k">def</span> <span class="nf">freqFromERBInterval</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">deltaERB</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1293,7 +1294,7 @@
     <span class="k">return</span> <span class="n">f2</span>
     
 </div>
-<div class="viewcode-block" id="getRms"><a class="viewcode-back" href="../index.html#sndlib.getRms">[docs]</a><span class="k">def</span> <span class="nf">getRms</span><span class="p">(</span><span class="n">sig</span><span class="p">):</span>
+<div class="viewcode-block" id="getRms"><a class="viewcode-back" href="../sndlib.html#sndlib.getRms">[docs]</a><span class="k">def</span> <span class="nf">getRms</span><span class="p">(</span><span class="n">sig</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the root mean square (RMS) value of the signal.</span>
 
@@ -1318,7 +1319,7 @@
     <span class="n">rms</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">mean</span><span class="p">(</span><span class="n">sig</span><span class="o">*</span><span class="n">sig</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">rms</span>
 </div>
-<div class="viewcode-block" id="gate"><a class="viewcode-back" href="../index.html#sndlib.gate">[docs]</a><span class="k">def</span> <span class="nf">gate</span><span class="p">(</span><span class="n">ramps</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<div class="viewcode-block" id="gate"><a class="viewcode-back" href="../sndlib.html#sndlib.gate">[docs]</a><span class="k">def</span> <span class="nf">gate</span><span class="p">(</span><span class="n">ramps</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Impose onset and offset ramps to a sound.</span>
 
@@ -1357,7 +1358,7 @@
     <span class="k">return</span> <span class="n">sig</span>
 
 </div>
-<div class="viewcode-block" id="glide"><a class="viewcode-back" href="../index.html#sndlib.glide">[docs]</a><span class="k">def</span> <span class="nf">glide</span><span class="p">(</span><span class="n">freqStart</span><span class="p">,</span> <span class="n">ftype</span><span class="p">,</span> <span class="n">excursion</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="glide"><a class="viewcode-back" href="../sndlib.html#sndlib.glide">[docs]</a><span class="k">def</span> <span class="nf">glide</span><span class="p">(</span><span class="n">freqStart</span><span class="p">,</span> <span class="n">ftype</span><span class="p">,</span> <span class="n">excursion</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Synthetize a rising or falling tone glide with frequency changing</span>
 <span class="sd">    linearly or exponentially. </span>
@@ -1408,7 +1409,7 @@
     
     <span class="k">return</span> <span class="n">snd</span>
 </div>
-<div class="viewcode-block" id="harmComplFromNarrowbandNoise"><a class="viewcode-back" href="../index.html#sndlib.harmComplFromNarrowbandNoise">[docs]</a><span class="k">def</span> <span class="nf">harmComplFromNarrowbandNoise</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="harmComplFromNarrowbandNoise"><a class="viewcode-back" href="../sndlib.html#sndlib.harmComplFromNarrowbandNoise">[docs]</a><span class="k">def</span> <span class="nf">harmComplFromNarrowbandNoise</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate an harmonic complex tone from narrow noise bands.</span>
 
@@ -1488,7 +1489,7 @@
     <span class="k">return</span> <span class="n">snd</span>
 
 </div>
-<div class="viewcode-block" id="intNCyclesFreq"><a class="viewcode-back" href="../index.html#sndlib.intNCyclesFreq">[docs]</a><span class="k">def</span> <span class="nf">intNCyclesFreq</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+<div class="viewcode-block" id="intNCyclesFreq"><a class="viewcode-back" href="../sndlib.html#sndlib.intNCyclesFreq">[docs]</a><span class="k">def</span> <span class="nf">intNCyclesFreq</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the frequency closest to &#39;freq&#39; that has an integer number</span>
 <span class="sd">    of cycles for the given sound duration.</span>
@@ -1517,7 +1518,7 @@
     <span class="n">adjFreq</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">freq</span><span class="o">*</span><span class="n">duration</span><span class="p">)</span><span class="o">/</span><span class="n">duration</span>
     <span class="k">return</span> <span class="n">adjFreq</span>
 </div>
-<div class="viewcode-block" id="imposeLevelGlide"><a class="viewcode-back" href="../index.html#sndlib.imposeLevelGlide">[docs]</a><span class="k">def</span> <span class="nf">imposeLevelGlide</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">deltaL</span><span class="p">,</span> <span class="n">startTime</span><span class="p">,</span> <span class="n">endTime</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<div class="viewcode-block" id="imposeLevelGlide"><a class="viewcode-back" href="../sndlib.html#sndlib.imposeLevelGlide">[docs]</a><span class="k">def</span> <span class="nf">imposeLevelGlide</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">deltaL</span><span class="p">,</span> <span class="n">startTime</span><span class="p">,</span> <span class="n">endTime</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Impose a glide in level to a sound.</span>
 <span class="sd">    </span>
@@ -1595,7 +1596,7 @@
     <span class="k">return</span> <span class="n">snd</span>
 
 </div>
-<div class="viewcode-block" id="itdtoipd"><a class="viewcode-back" href="../index.html#sndlib.itdtoipd">[docs]</a><span class="k">def</span> <span class="nf">itdtoipd</span><span class="p">(</span><span class="n">itd</span><span class="p">,</span> <span class="n">freq</span><span class="p">):</span>
+<div class="viewcode-block" id="itdtoipd"><a class="viewcode-back" href="../sndlib.html#sndlib.itdtoipd">[docs]</a><span class="k">def</span> <span class="nf">itdtoipd</span><span class="p">(</span><span class="n">itd</span><span class="p">,</span> <span class="n">freq</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert an interaural time difference to an equivalent interaural</span>
 <span class="sd">    phase difference for a given frequency.</span>
@@ -1622,7 +1623,7 @@
     <span class="n">ipd</span> <span class="o">=</span> <span class="p">(</span><span class="n">itd</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">freq</span><span class="p">))</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span>
     <span class="k">return</span> <span class="n">ipd</span>
 </div>
-<div class="viewcode-block" id="joinSndISI"><a class="viewcode-back" href="../index.html#sndlib.joinSndISI">[docs]</a><span class="k">def</span> <span class="nf">joinSndISI</span><span class="p">(</span><span class="n">sndList</span><span class="p">,</span> <span class="n">ISIList</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<div class="viewcode-block" id="joinSndISI"><a class="viewcode-back" href="../sndlib.html#sndlib.joinSndISI">[docs]</a><span class="k">def</span> <span class="nf">joinSndISI</span><span class="p">(</span><span class="n">sndList</span><span class="p">,</span> <span class="n">ISIList</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    </span>
@@ -1666,7 +1667,7 @@
 
 
 </div>
-<div class="viewcode-block" id="makeAsynchChord"><a class="viewcode-back" href="../index.html#sndlib.makeAsynchChord">[docs]</a><span class="k">def</span> <span class="nf">makeAsynchChord</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">levels</span><span class="p">,</span> <span class="n">phases</span><span class="p">,</span> <span class="n">tonesDuration</span><span class="p">,</span> <span class="n">tonesRamps</span><span class="p">,</span> <span class="n">tonesChannel</span><span class="p">,</span> <span class="n">SOA</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="makeAsynchChord"><a class="viewcode-back" href="../sndlib.html#sndlib.makeAsynchChord">[docs]</a><span class="k">def</span> <span class="nf">makeAsynchChord</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">levels</span><span class="p">,</span> <span class="n">phases</span><span class="p">,</span> <span class="n">tonesDuration</span><span class="p">,</span> <span class="n">tonesRamps</span><span class="p">,</span> <span class="n">tonesChannel</span><span class="p">,</span> <span class="n">SOA</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate an asynchronous chord.</span>
 
@@ -1724,7 +1725,7 @@
             <span class="n">snd</span> <span class="o">=</span> <span class="n">addSounds</span><span class="p">(</span><span class="n">snd</span><span class="p">,</span> <span class="n">thisTone</span><span class="p">,</span> <span class="n">SOA</span><span class="o">*</span><span class="n">i</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">snd</span>
 </div>
-<div class="viewcode-block" id="makeHuggins"><a class="viewcode-back" href="../index.html#sndlib.makeHuggins">[docs]</a><span class="k">def</span> <span class="nf">makeHuggins</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">spectrumLevel</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">,</span> <span class="n">phaseRelationship</span><span class="p">,</span> <span class="n">noiseType</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="makeHuggins"><a class="viewcode-back" href="../sndlib.html#sndlib.makeHuggins">[docs]</a><span class="k">def</span> <span class="nf">makeHuggins</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">spectrumLevel</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">,</span> <span class="n">phaseRelationship</span><span class="p">,</span> <span class="n">noiseType</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Synthetise a complex Huggings Pitch.</span>
 
@@ -1801,7 +1802,7 @@
 
     <span class="k">return</span> <span class="n">snd</span>
 </div>
-<div class="viewcode-block" id="makePink"><a class="viewcode-back" href="../index.html#sndlib.makePink">[docs]</a><span class="k">def</span> <span class="nf">makePink</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<div class="viewcode-block" id="makePink"><a class="viewcode-back" href="../sndlib.html#sndlib.makePink">[docs]</a><span class="k">def</span> <span class="nf">makePink</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a white noise into a pink noise.</span>
 
@@ -1860,7 +1861,7 @@
 
 
 </div>
-<div class="viewcode-block" id="makePinkRef"><a class="viewcode-back" href="../index.html#sndlib.makePinkRef">[docs]</a><span class="k">def</span> <span class="nf">makePinkRef</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">refHz</span><span class="p">):</span>
+<div class="viewcode-block" id="makePinkRef"><a class="viewcode-back" href="../sndlib.html#sndlib.makePinkRef">[docs]</a><span class="k">def</span> <span class="nf">makePinkRef</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">refHz</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a white noise into a pink noise.</span>
 
@@ -1922,7 +1923,7 @@
     <span class="k">return</span> <span class="n">sig</span>
 
 </div>
-<div class="viewcode-block" id="makeSilence"><a class="viewcode-back" href="../index.html#sndlib.makeSilence">[docs]</a><span class="k">def</span> <span class="nf">makeSilence</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<div class="viewcode-block" id="makeSilence"><a class="viewcode-back" href="../sndlib.html#sndlib.makeSilence">[docs]</a><span class="k">def</span> <span class="nf">makeSilence</span><span class="p">(</span><span class="n">duration</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a silence.</span>
 
@@ -1954,7 +1955,7 @@
     
     <span class="k">return</span> <span class="n">snd</span>
 </div>
-<div class="viewcode-block" id="makeSimpleDichotic"><a class="viewcode-back" href="../index.html#sndlib.makeSimpleDichotic">[docs]</a><span class="k">def</span> <span class="nf">makeSimpleDichotic</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">cmpLevel</span><span class="p">,</span> <span class="n">lowFreq</span><span class="p">,</span> <span class="n">highFreq</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">sigBandwidth</span><span class="p">,</span> <span class="n">phaseRelationship</span><span class="p">,</span> <span class="n">dichoticDifference</span><span class="p">,</span> <span class="n">itd</span><span class="p">,</span> <span class="n">ipd</span><span class="p">,</span> <span class="n">narrowBandCmpLevel</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="makeSimpleDichotic"><a class="viewcode-back" href="../sndlib.html#sndlib.makeSimpleDichotic">[docs]</a><span class="k">def</span> <span class="nf">makeSimpleDichotic</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">lowHarm</span><span class="p">,</span> <span class="n">highHarm</span><span class="p">,</span> <span class="n">cmpLevel</span><span class="p">,</span> <span class="n">lowFreq</span><span class="p">,</span> <span class="n">highFreq</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">sigBandwidth</span><span class="p">,</span> <span class="n">phaseRelationship</span><span class="p">,</span> <span class="n">dichoticDifference</span><span class="p">,</span> <span class="n">itd</span><span class="p">,</span> <span class="n">ipd</span><span class="p">,</span> <span class="n">narrowBandCmpLevel</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate harmonically related dichotic pitches, or equivalent</span>
 <span class="sd">    harmonically related narrowband tones in noise.</span>
@@ -2148,7 +2149,7 @@
 <span class="c">##     return soundSequence</span>
 
 </div>
-<div class="viewcode-block" id="nextpow2"><a class="viewcode-back" href="../index.html#sndlib.nextpow2">[docs]</a><span class="k">def</span> <span class="nf">nextpow2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="nextpow2"><a class="viewcode-back" href="../sndlib.html#sndlib.nextpow2">[docs]</a><span class="k">def</span> <span class="nf">nextpow2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Next power of two.</span>
 
@@ -2180,7 +2181,7 @@
 
 
 </div>
-<div class="viewcode-block" id="phaseShift"><a class="viewcode-back" href="../index.html#sndlib.phaseShift">[docs]</a><span class="k">def</span> <span class="nf">phaseShift</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">phase_shift</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+<div class="viewcode-block" id="phaseShift"><a class="viewcode-back" href="../sndlib.html#sndlib.phaseShift">[docs]</a><span class="k">def</span> <span class="nf">phaseShift</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">phase_shift</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Shift the phases of a sound within a given frequency region.</span>
 
@@ -2287,7 +2288,7 @@
     <span class="k">return</span> <span class="n">snd</span>
 
 </div>
-<div class="viewcode-block" id="pinkNoiseFromSin"><a class="viewcode-back" href="../index.html#sndlib.pinkNoiseFromSin">[docs]</a><span class="k">def</span> <span class="nf">pinkNoiseFromSin</span><span class="p">(</span><span class="n">compLevel</span><span class="p">,</span> <span class="n">lowCmp</span><span class="p">,</span> <span class="n">highCmp</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="pinkNoiseFromSin"><a class="viewcode-back" href="../sndlib.html#sndlib.pinkNoiseFromSin">[docs]</a><span class="k">def</span> <span class="nf">pinkNoiseFromSin</span><span class="p">(</span><span class="n">compLevel</span><span class="p">,</span> <span class="n">lowCmp</span><span class="p">,</span> <span class="n">highCmp</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a pink noise by adding sinusoids spaced by a fixed</span>
 <span class="sd">    interval in cents.</span>
@@ -2363,7 +2364,7 @@
     <span class="k">return</span> <span class="n">snd</span>
 
 </div>
-<div class="viewcode-block" id="pinkNoiseFromSin2"><a class="viewcode-back" href="../index.html#sndlib.pinkNoiseFromSin2">[docs]</a><span class="k">def</span> <span class="nf">pinkNoiseFromSin2</span><span class="p">(</span><span class="n">compLevel</span><span class="p">,</span> <span class="n">lowCmp</span><span class="p">,</span> <span class="n">highCmp</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="pinkNoiseFromSin2"><a class="viewcode-back" href="../sndlib.html#sndlib.pinkNoiseFromSin2">[docs]</a><span class="k">def</span> <span class="nf">pinkNoiseFromSin2</span><span class="p">(</span><span class="n">compLevel</span><span class="p">,</span> <span class="n">lowCmp</span><span class="p">,</span> <span class="n">highCmp</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a pink noise by adding sinusoids spaced by a fixed</span>
 <span class="sd">    interval in cents.</span>
@@ -2447,7 +2448,7 @@
     <span class="k">return</span> <span class="n">snd</span>
 
 </div>
-<div class="viewcode-block" id="pureTone"><a class="viewcode-back" href="../index.html#sndlib.pureTone">[docs]</a><span class="k">def</span> <span class="nf">pureTone</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="pureTone"><a class="viewcode-back" href="../sndlib.html#sndlib.pureTone">[docs]</a><span class="k">def</span> <span class="nf">pureTone</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Synthetise a pure tone.</span>
 
@@ -2518,7 +2519,7 @@
 
     <span class="k">return</span> <span class="n">snd</span>
 </div>
-<div class="viewcode-block" id="scale"><a class="viewcode-back" href="../index.html#sndlib.scale">[docs]</a><span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">sig</span><span class="p">):</span>
+<div class="viewcode-block" id="scale"><a class="viewcode-back" href="../sndlib.html#sndlib.scale">[docs]</a><span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">sig</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Increase or decrease the amplitude of a sound signal.</span>
 
@@ -2547,7 +2548,7 @@
     <span class="k">return</span> <span class="n">sig</span>
 
 </div>
-<div class="viewcode-block" id="steepNoise"><a class="viewcode-back" href="../index.html#sndlib.steepNoise">[docs]</a><span class="k">def</span> <span class="nf">steepNoise</span><span class="p">(</span><span class="n">frequency1</span><span class="p">,</span> <span class="n">frequency2</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
+<div class="viewcode-block" id="steepNoise"><a class="viewcode-back" href="../sndlib.html#sndlib.steepNoise">[docs]</a><span class="k">def</span> <span class="nf">steepNoise</span><span class="p">(</span><span class="n">frequency1</span><span class="p">,</span> <span class="n">frequency2</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">ramp</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">maxLevel</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Synthetise band-limited noise from the addition of random-phase</span>
 <span class="sd">    sinusoids.</span>
@@ -2638,6 +2639,7 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
@@ -2651,6 +2653,7 @@
     </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -2664,7 +2667,11 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">pychoacoustics (&#39;0.2.52&#39;,) documentation</a> &raquo;</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+<li><a href="../index.html">pychoacoustics ('0.2.53',) documentation</a> &raquo;</li>
+
           <li><a href="index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

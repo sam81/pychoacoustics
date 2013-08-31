@@ -1,7 +1,30 @@
 # -*- coding: utf-8 -*-
 
 """
-Run Frequency Discrimination demo.
+This experiment can be used to measure pure-tone frequency-discrimination
+thresholds.
+
+The available fields are:
+
+- Frequency (Hz) :
+    Signal frequency in Hz
+- Difference (%) :
+    Frequency difference (for constant procedures),
+    or starting frequency difference (for adaptive procedures),
+    between the standard and comparison stimuli. The difference
+    is measured as a percentage of the standard frequency in Hz.
+- Level (dB SPL) :
+    Signal level in dB SPL
+- Duration (ms) :
+    Signal duration (excluding ramps), in ms
+- Ramps (ms) :
+    Duration of each ramp, in ms
+
+The available choosers are:
+
+- Ear: [``Right``, ``Left``, ``Both``]
+    The ear to which the signal will be presented
+
 """
 
 from ..sndlib import*
@@ -35,7 +58,7 @@ def select_default_parameters_freq(parent, par):
     fieldLabel.append("Frequency (Hz)")
     field.append(1000)
 
-    fieldLabel.append("Starting Difference (%)")
+    fieldLabel.append("Difference (%)")
     field.append(20)
     
     fieldLabel.append("Level (dB SPL)")
@@ -71,7 +94,7 @@ def doTrial_freq(parent):
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
         parent.prm['additional_parameters_to_write'] = {}
-        parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Starting Difference (%)")]
+        parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference (%)")]
         parent.prm['conditions'] = [str(parent.prm['adaptiveDifference'])]
 
         parent.writeResultsHeader('log')

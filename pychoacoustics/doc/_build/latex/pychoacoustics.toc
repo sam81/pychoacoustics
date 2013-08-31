@@ -1,7 +1,130 @@
 \select@language {english}
-\contentsline {chapter}{\numberline {1}Indices and tables}{3}{chapter.1}
-\contentsline {chapter}{\numberline {2}\texttt {sndlib} -- Sound Synthesis Library}{5}{chapter.2}
-\contentsline {chapter}{\numberline {3}\texttt {pysdt} -- Signal Detection Theory Measures}{21}{chapter.3}
-\contentsline {chapter}{\numberline {4}Default Experiments}{23}{chapter.4}
-\contentsline {chapter}{Python Module Index}{25}{section*.46}
-\contentsline {chapter}{Index}{27}{section*.47}
+\contentsline {chapter}{\numberline {1}pychoacoustics manual}{3}{chapter.1}
+\contentsline {section}{\numberline {1.1}What is \texttt {pychoacoustics}?}{3}{section.1.1}
+\contentsline {chapter}{\numberline {2}Installation}{5}{chapter.2}
+\contentsline {section}{\numberline {2.1}Installation on Linux}{5}{section.2.1}
+\contentsline {section}{\numberline {2.2}Installation on Windows}{5}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Using the binary installer}{5}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Installing from source}{6}{subsection.2.2.2}
+\contentsline {chapter}{\numberline {3}Graphical User Interface}{7}{chapter.3}
+\contentsline {section}{\numberline {3.1}Quickstart}{7}{section.3.1}
+\contentsline {section}{\numberline {3.2}The Control Window}{7}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}General Widgets (left panel)}{8}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}General Widgets (right panel)}{10}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Paradigm Widgets}{10}{subsection.3.2.3}
+\contentsline {subsubsection}{Adaptive Paradigm Widgets}{10}{subsubsection*.3}
+\contentsline {subsubsection}{Weighted Up/Down Paradigm Widgets}{11}{subsubsection*.4}
+\contentsline {subsubsection}{Adaptive Interleaved Paradigm Widgets}{12}{subsubsection*.5}
+\contentsline {subsubsection}{Weighted Up/Down Interleaved Paradigm Widgets}{13}{subsubsection*.6}
+\contentsline {subsubsection}{Constant m-Intervals n-Alternatives Paradigm Widgets}{14}{subsubsection*.7}
+\contentsline {subsubsection}{Multiple Constants m-Intervals n-Alternatives Paradigm Widgets}{14}{subsubsection*.8}
+\contentsline {subsubsection}{Constant 1-Interval 2-Alternatives Paradigm Widgets}{14}{subsubsection*.9}
+\contentsline {subsubsection}{Multiple Constants 1-Interval 2-Alternatives Paradigm Widgets}{14}{subsubsection*.10}
+\contentsline {subsubsection}{1-Pair Same/Different Paradigm Widgets}{14}{subsubsection*.11}
+\contentsline {subsection}{\numberline {3.2.4}The Menu Bar}{14}{subsection.3.2.4}
+\contentsline {subsubsection}{The File Menu}{15}{subsubsection*.12}
+\contentsline {subsubsection}{The Edit Menu}{15}{subsubsection*.13}
+\contentsline {subsubsection}{The Tools Menu}{15}{subsubsection*.14}
+\contentsline {subsubsection}{The Help Menu}{15}{subsubsection*.15}
+\contentsline {subsubsection}{The \IeC {\textquotedblleft }what\IeC {\textquoteright }s this?\IeC {\textquotedblright } Button.}{15}{subsubsection*.16}
+\contentsline {section}{\numberline {3.3}Process Results Dialog}{16}{section.3.3}
+\contentsline {section}{\numberline {3.4}Edit Preferences Dialog}{17}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}General}{17}{subsection.3.4.1}
+\contentsline {subsection}{\numberline {3.4.2}Sound}{17}{subsection.3.4.2}
+\contentsline {subsection}{\numberline {3.4.3}Notifications}{18}{subsection.3.4.3}
+\contentsline {subsection}{\numberline {3.4.4}EEG}{19}{subsection.3.4.4}
+\contentsline {section}{\numberline {3.5}Edit Phones Dialog}{19}{section.3.5}
+\contentsline {section}{\numberline {3.6}Edit Experimenters Dialog}{20}{section.3.6}
+\contentsline {section}{\numberline {3.7}The Response Box}{20}{section.3.7}
+\contentsline {chapter}{\numberline {4}Command Line User Interface}{23}{chapter.4}
+\contentsline {chapter}{\numberline {5}Psychophysics}{25}{chapter.5}
+\contentsline {section}{\numberline {5.1}Available Paradigms}{25}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Adaptive}{25}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Adaptive Interleaved}{25}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}Weighted Up/Down}{25}{subsection.5.1.3}
+\contentsline {subsection}{\numberline {5.1.4}Weighted Up/Down Interleaved}{25}{subsection.5.1.4}
+\contentsline {subsection}{\numberline {5.1.5}Constant m-Intervals n-Alternatives}{26}{subsection.5.1.5}
+\contentsline {subsection}{\numberline {5.1.6}Constant 1-Interval 2-Alternatives}{26}{subsection.5.1.6}
+\contentsline {subsection}{\numberline {5.1.7}Constant 1-Pair Same/Different}{26}{subsection.5.1.7}
+\contentsline {chapter}{\numberline {6}Default Experiments}{27}{chapter.6}
+\contentsline {section}{\numberline {6.1}Audiogram}{27}{section.6.1}
+\contentsline {section}{\numberline {6.2}Audiogram Multiple Frequencies}{27}{section.6.2}
+\contentsline {section}{\numberline {6.3}Frequency Discrimination Demo}{28}{section.6.3}
+\contentsline {chapter}{\numberline {7}The \texttt {pychoacoustics} Engine}{29}{chapter.7}
+\contentsline {section}{\numberline {7.1}Sound Output}{29}{section.7.1}
+\contentsline {subsection}{\numberline {7.1.1}Sound Output on Linux}{29}{subsection.7.1.1}
+\contentsline {subsection}{\numberline {7.1.2}Sound Output on Windows}{29}{subsection.7.1.2}
+\contentsline {section}{\numberline {7.2}Parameters Files}{30}{section.7.2}
+\contentsline {section}{\numberline {7.3}Results Files}{31}{section.7.3}
+\contentsline {subsection}{\numberline {7.3.1}Tabular Results Files}{32}{subsection.7.3.1}
+\contentsline {subsection}{\numberline {7.3.2}Log Results Files}{32}{subsection.7.3.2}
+\contentsline {subsection}{\numberline {7.3.3}Adaptive and Weighted Up/Down Result Files}{33}{subsection.7.3.3}
+\contentsline {subsection}{\numberline {7.3.4}Adaptive and Weighted Up/Down Interleaved Result Files}{33}{subsection.7.3.4}
+\contentsline {subsubsection}{Constant m-Intervals n-Alternatives Result Files}{33}{subsubsection*.19}
+\contentsline {subsubsection}{Multiple Constants m-Intervals n-Alternatives Result Files}{33}{subsubsection*.20}
+\contentsline {subsubsection}{Constant 1-Intervals 2-Alternatives Result Files}{33}{subsubsection*.21}
+\contentsline {subsubsection}{Multiple Constants 1-Intervals 2-Alternatives Result Files}{33}{subsubsection*.22}
+\contentsline {subsubsection}{Constant 1-Pair Same/Different Result Files}{33}{subsubsection*.23}
+\contentsline {section}{\numberline {7.4}Block Presentation Position}{33}{section.7.4}
+\contentsline {section}{\numberline {7.5}OS Commands}{34}{section.7.5}
+\contentsline {section}{\numberline {7.6}Preferences Settings}{35}{section.7.6}
+\contentsline {section}{\numberline {7.7}Response Mode}{36}{section.7.7}
+\contentsline {chapter}{\numberline {8}Designing Custom Experiments}{39}{chapter.8}
+\contentsline {section}{\numberline {8.1}The \texttt {initialize\_} function}{40}{section.8.1}
+\contentsline {section}{\numberline {8.2}The \texttt {select\_default\_parameters\_} function}{41}{section.8.2}
+\contentsline {section}{\numberline {8.3}The \texttt {get\_fields\_to\_hide\_} function}{42}{section.8.3}
+\contentsline {section}{\numberline {8.4}The \texttt {doTrial\_} function}{42}{section.8.4}
+\contentsline {section}{\numberline {8.5}The Experiment \IeC {\textquotedblleft }opts\IeC {\textquotedblright }}{43}{section.8.5}
+\contentsline {section}{\numberline {8.6}Using \texttt {par}}{43}{section.8.6}
+\contentsline {subsection}{\numberline {8.6.1}Simulations}{43}{subsection.8.6.1}
+\contentsline {chapter}{\numberline {9}Troubleshooting}{45}{chapter.9}
+\contentsline {section}{\numberline {9.1}The computer crashed in the middle of an experimental session}{45}{section.9.1}
+\contentsline {chapter}{\numberline {10}\texttt {sndlib} -- Sound Synthesis Library}{47}{chapter.10}
+\contentsline {paragraph}{Examples}{48}{paragraph*.26}
+\contentsline {paragraph}{Examples}{49}{paragraph*.29}
+\contentsline {paragraph}{Examples}{49}{paragraph*.31}
+\contentsline {paragraph}{Examples}{50}{paragraph*.33}
+\contentsline {paragraph}{Examples}{51}{paragraph*.35}
+\contentsline {paragraph}{Examples}{52}{paragraph*.37}
+\contentsline {paragraph}{Examples}{53}{paragraph*.39}
+\contentsline {paragraph}{Examples}{54}{paragraph*.41}
+\contentsline {paragraph}{Examples}{55}{paragraph*.43}
+\contentsline {paragraph}{Examples}{56}{paragraph*.45}
+\contentsline {paragraph}{Examples}{57}{paragraph*.47}
+\contentsline {paragraph}{Examples}{58}{paragraph*.49}
+\contentsline {paragraph}{Examples}{59}{paragraph*.51}
+\contentsline {paragraph}{Notes}{60}{paragraph*.53}
+\contentsline {paragraph}{Examples}{60}{paragraph*.54}
+\contentsline {paragraph}{Examples}{61}{paragraph*.57}
+\contentsline {paragraph}{Examples}{61}{paragraph*.59}
+\contentsline {paragraph}{Examples}{62}{paragraph*.61}
+\contentsline {paragraph}{Examples}{63}{paragraph*.63}
+\contentsline {paragraph}{Examples}{64}{paragraph*.65}
+\contentsline {paragraph}{Examples}{64}{paragraph*.67}
+\contentsline {paragraph}{Examples}{64}{paragraph*.69}
+\contentsline {paragraph}{Examples}{65}{paragraph*.71}
+\contentsline {paragraph}{Examples}{66}{paragraph*.73}
+\contentsline {paragraph}{Examples}{67}{paragraph*.75}
+\contentsline {paragraph}{Examples}{67}{paragraph*.77}
+\contentsline {paragraph}{Examples}{68}{paragraph*.79}
+\contentsline {paragraph}{Examples}{68}{paragraph*.81}
+\contentsline {paragraph}{Examples}{70}{paragraph*.83}
+\contentsline {paragraph}{Examples}{71}{paragraph*.85}
+\contentsline {paragraph}{Examples}{71}{paragraph*.87}
+\contentsline {paragraph}{Examples}{72}{paragraph*.89}
+\contentsline {paragraph}{Examples}{73}{paragraph*.91}
+\contentsline {paragraph}{Examples}{74}{paragraph*.93}
+\contentsline {paragraph}{Examples}{74}{paragraph*.95}
+\contentsline {paragraph}{Examples}{75}{paragraph*.97}
+\contentsline {chapter}{\numberline {11}\texttt {pysdt} -- Signal Detection Theory Measures}{77}{chapter.11}
+\contentsline {paragraph}{Examples}{77}{paragraph*.99}
+\contentsline {paragraph}{Examples}{78}{paragraph*.101}
+\contentsline {paragraph}{Examples}{78}{paragraph*.103}
+\contentsline {paragraph}{Examples}{79}{paragraph*.105}
+\contentsline {paragraph}{Examples}{79}{paragraph*.107}
+\contentsline {chapter}{\numberline {12}GNU Free Documentation License}{81}{chapter.12}
+\contentsline {chapter}{\numberline {13}Indices and tables}{89}{chapter.13}
+\contentsline {chapter}{Bibliography}{91}{chapter*.109}
+\contentsline {chapter}{Python Module Index}{93}{section*.115}
+\contentsline {chapter}{Python Module Index}{95}{section*.116}
+\contentsline {chapter}{Index}{97}{section*.117}

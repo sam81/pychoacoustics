@@ -11,6 +11,19 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   intro
+   installation
+   graphical_user_interface
+   commandline_user_interface
+   psychophysics
+   default_experiments
+   engine
+   custom_experiments
+   troubleshooting
+   sndlib
+   pysdt
+   references
+   fdl
 
 
 Indices and tables
@@ -19,33 +32,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-:mod:`sndlib` -- Sound Synthesis Library
-========================================
-
-.. automodule:: sndlib
-    :members:
-
-:mod:`pysdt` -- Signal Detection Theory Measures
-========================================
-
-.. automodule:: pysdt
-    :members:
-
-Default Experiments
-========================================
-*audiogram*
-
-.. automodule:: audiogram
-   :members:
-
-*audiogram_mf*
-
-.. automodule:: audiogram_mf
-   :members:
-
-*freq*
-
-.. automodule:: freq
-   :members:
-

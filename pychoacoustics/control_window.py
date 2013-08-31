@@ -186,11 +186,11 @@ class pychControlWin(QtGui.QMainWindow):
         #HELP MENU
         self.helpMenu = self.menubar.addMenu(self.tr('&Help'))
 
-        self.onShowManualPdfAction = QtGui.QAction(self.tr('Manual'), self)
+        self.onShowManualPdfAction = QtGui.QAction(self.tr('Manual (pdf)'), self)
         self.helpMenu.addAction(self.onShowManualPdfAction)
         self.connect(self.onShowManualPdfAction, QtCore.SIGNAL('triggered()'), self.onShowManualPdf)
 
-        self.onShowModulesDocAction = QtGui.QAction(self.tr('Modules Doc.'), self)
+        self.onShowModulesDocAction = QtGui.QAction(self.tr('Manual (html)'), self)
         self.helpMenu.addAction(self.onShowModulesDocAction)
         self.connect(self.onShowModulesDocAction, QtCore.SIGNAL('triggered()'), self.onShowModulesDoc)
 
@@ -2943,7 +2943,7 @@ class pychControlWin(QtGui.QMainWindow):
     def onShowFortune(self):
         dialog = showFortuneDialog(self)
     def onShowManualPdf(self):
-        fileToOpen = os.path.abspath(os.path.dirname(__file__)) + '/doc/pychoacoustics_manual/pychoacoustics_manual.pdf'
+        fileToOpen = os.path.abspath(os.path.dirname(__file__)) + '/doc/_build/latex/pychoacoustics.pdf'
         QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(fileToOpen))
     def onShowModulesDoc(self):
         fileToOpen = os.path.abspath(os.path.dirname(__file__)) + '/doc/_build/html/index.html'
