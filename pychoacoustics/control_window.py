@@ -77,88 +77,22 @@ class pychControlWin(QtGui.QMainWindow):
         self.connect(self.exitButton, QtCore.SIGNAL('triggered()'), self.close)
 
         self.processResultsMenu = self.fileMenu.addMenu(self.tr('&Process Results'))
-        self.processResultsTableMenu = self.fileMenu.addMenu(self.tr('&Process Results Table'))
-
-
-        self.processResultsTableAdaptiveButton = QtGui.QAction(self.tr('&Adaptive'), self)
-        self.processResultsTableAdaptiveButton.setStatusTip(self.tr('Process results table adaptive'))
-        self.connect(self.processResultsTableAdaptiveButton, QtCore.SIGNAL('triggered()'), self.processResultsTableAdaptiveDialog)
-
-        self.processResultsTableAdaptiveInterleavedButton = QtGui.QAction(self.tr('&Adaptive interleaved'), self)
-        self.processResultsTableAdaptiveInterleavedButton.setStatusTip(self.tr('Process results table adaptive interleaved'))
-        self.connect(self.processResultsTableAdaptiveInterleavedButton, QtCore.SIGNAL('triggered()'), self.processResultsTableAdaptiveInterleavedDialog)
-
-        self.processResultsTableConstantMIntNAltButton = QtGui.QAction(self.tr('&Constant m-Intervals n-Alternatives'), self)
-        self.processResultsTableConstantMIntNAltButton.setStatusTip(self.tr('Process results table constant m-intervals n-alternatives'))
-        self.connect(self.processResultsTableConstantMIntNAltButton, QtCore.SIGNAL('triggered()'), self.processResultsTableConstantMIntNAltDialog)
-
-        self.processResultsTableMultipleConstantsMIntNAltButton = QtGui.QAction(self.tr('&Multiple Constants m-Intervals n-Alternatives'), self)
-        self.processResultsTableMultipleConstantsMIntNAltButton.setStatusTip(self.tr('Process results table multiple constants m-intervals n-alternatives'))
-        self.connect(self.processResultsTableMultipleConstantsMIntNAltButton, QtCore.SIGNAL('triggered()'), self.processResultsTableMultipleConstantsMIntNAltDialog)
         
-        self.processResultsTableConstant1Int2AltButton = QtGui.QAction(self.tr('&Constant 1-Interval 2-Alternatives'), self)
-        self.processResultsTableConstant1Int2AltButton.setStatusTip(self.tr('Process results table constant 1-interval 2-alternatives'))
-        self.connect(self.processResultsTableConstant1Int2AltButton, QtCore.SIGNAL('triggered()'), self.processResultsTableConstant1Int2AltDialog)
+        self.processResultsLinearButton = QtGui.QAction(self.tr('&Process Results Plain'), self)
+        self.processResultsLinearButton.setStatusTip(self.tr('Process Results Plain'))
+        self.connect(self.processResultsLinearButton, QtCore.SIGNAL('triggered()'), self.processResultsLinearDialog)
 
-        self.processResultsTableMultipleConstants1Int2AltButton = QtGui.QAction(self.tr('&Multiple Constants 1-Interval 2-Alternatives'), self)
-        self.processResultsTableMultipleConstants1Int2AltButton.setStatusTip(self.tr('Process results table multiple constants 1-interval 2-alternatives'))
-        self.connect(self.processResultsTableMultipleConstants1Int2AltButton, QtCore.SIGNAL('triggered()'), self.processResultsTableMultipleConstants1Int2AltDialog)
+        self.processResultsTableButton = QtGui.QAction(self.tr('&Process Results Table'), self)
+        self.processResultsTableButton.setStatusTip(self.tr('Process Results Table'))
+        self.connect(self.processResultsTableButton, QtCore.SIGNAL('triggered()'), self.processResultsTableDialog)
 
-        self.processResultsTableConstant1PairSDButton = QtGui.QAction(self.tr('&Constant 1-Pair Same/Different'), self)
-        self.processResultsTableConstant1PairSDButton.setStatusTip(self.tr('Process results table constant 1-pair same/different'))
-        self.connect(self.processResultsTableConstant1PairSDButton, QtCore.SIGNAL('triggered()'), self.processResultsTableConstant1PairSDDialog)
-
-     
-
-      
-        
-        self.processResultsAdaptiveButton = QtGui.QAction(self.tr('&Adaptive'), self)
-        self.processResultsAdaptiveButton.setStatusTip(self.tr('Process results adaptive'))
-        self.connect(self.processResultsAdaptiveButton, QtCore.SIGNAL('triggered()'), self.processResultsAdaptiveDialog)
-
-        self.processResultsAdaptiveInterleavedButton = QtGui.QAction(self.tr('&Adaptive interleaved'), self)
-        self.processResultsAdaptiveInterleavedButton.setStatusTip(self.tr('Process results adaptive interleaved'))
-        self.connect(self.processResultsAdaptiveInterleavedButton, QtCore.SIGNAL('triggered()'), self.processResultsAdaptiveInterleavedDialog)
-
-        self.processResultsConstantMIntervalsNAlternativesButton = QtGui.QAction(self.tr('&Constant m-Intervals n-Alternatives'), self)
-        self.processResultsConstantMIntervalsNAlternativesButton.setStatusTip(self.tr('Process results constant m-intervals n-alternatives'))
-        self.connect(self.processResultsConstantMIntervalsNAlternativesButton, QtCore.SIGNAL('triggered()'), self.processResultsConstantMIntervalsNAlternativesDialog)
-
-        self.processResultsMultipleConstantsMIntervalsNAlternativesButton = QtGui.QAction(self.tr('&Multiple Constants m-Intervals n-Alternatives'), self)
-        self.processResultsMultipleConstantsMIntervalsNAlternativesButton.setStatusTip(self.tr('Process results multiple constants m-intervals n-alternatives'))
-        self.connect(self.processResultsMultipleConstantsMIntervalsNAlternativesButton, QtCore.SIGNAL('triggered()'), self.processResultsMultipleConstantsMIntervalsNAlternativesDialog)
-
-        self.processResultsConstant1Int2AltButton = QtGui.QAction(self.tr('&Constant 1-Interval 2-Alternatives'), self)
-        self.processResultsConstant1Int2AltButton.setStatusTip(self.tr('Process results constant 1-interval 2-alternatives'))
-        self.connect(self.processResultsConstant1Int2AltButton, QtCore.SIGNAL('triggered()'), self.processResultsConstant1Int2AltDialog)
-
-        self.processResultsMultipleConstants1Int2AltButton = QtGui.QAction(self.tr('&Multiple Constants 1-Interval 2-Alternatives'), self)
-        self.processResultsMultipleConstants1Int2AltButton.setStatusTip(self.tr('Process results multiple constants 1-interval 2-alternatives'))
-        self.connect(self.processResultsMultipleConstants1Int2AltButton, QtCore.SIGNAL('triggered()'), self.processResultsMultipleConstants1Int2AltDialog)
-
-        self.processResultsConstant1PairSDButton = QtGui.QAction(self.tr('&Constant 1-Pair Same/Different'), self)
-        self.processResultsConstant1PairSDButton.setStatusTip(self.tr('Process results constant 1-pair same/different'))
-        self.connect(self.processResultsConstant1PairSDButton, QtCore.SIGNAL('triggered()'), self.processResultsConstant1PairSDDialog)
 
         self.openResultsButton = QtGui.QAction(QtGui.QIcon.fromTheme("document-open", QtGui.QIcon(":/document-open")), self.tr('Open Results File'), self)
         self.openResultsButton.setStatusTip(self.tr('Open Results File'))
         self.connect(self.openResultsButton, QtCore.SIGNAL('triggered()'), self.onClickOpenResultsButton)
 
-        self.processResultsTableMenu.addAction(self.processResultsTableAdaptiveButton)
-        self.processResultsTableMenu.addAction(self.processResultsTableAdaptiveInterleavedButton)
-        self.processResultsTableMenu.addAction(self.processResultsTableConstantMIntNAltButton)
-        self.processResultsTableMenu.addAction(self.processResultsTableMultipleConstantsMIntNAltButton)
-        self.processResultsTableMenu.addAction(self.processResultsTableConstant1Int2AltButton)
-        self.processResultsTableMenu.addAction(self.processResultsTableMultipleConstants1Int2AltButton)
-        self.processResultsTableMenu.addAction(self.processResultsTableConstant1PairSDButton)
-        
-        self.processResultsMenu.addAction(self.processResultsAdaptiveButton)
-        self.processResultsMenu.addAction(self.processResultsAdaptiveInterleavedButton)
-        self.processResultsMenu.addAction(self.processResultsConstantMIntervalsNAlternativesButton)
-        self.processResultsMenu.addAction(self.processResultsMultipleConstantsMIntervalsNAlternativesButton)
-        self.processResultsMenu.addAction(self.processResultsConstant1Int2AltButton)
-        self.processResultsMenu.addAction(self.processResultsMultipleConstants1Int2AltButton)
-        self.processResultsMenu.addAction(self.processResultsConstant1PairSDButton)
+        self.processResultsMenu.addAction(self.processResultsLinearButton)
+        self.processResultsMenu.addAction(self.processResultsTableButton)
         
         self.fileMenu.addAction(self.openResultsButton)
         self.fileMenu.addAction(self.exitButton)
@@ -2828,48 +2762,55 @@ class pychControlWin(QtGui.QMainWindow):
     ##     if dialog.exec_():
     ##         dialog.permanentApply()
 
-    def processResultsAdaptiveDialog(self):
-        dialog = processResultsDialog(self, 'adaptive', 'linear')
+    def processResultsLinearDialog(self):
+        fList = QtGui.QFileDialog.getOpenFileNames(self, self.tr("Choose results file to load"), '', self.tr("All Files (*)"))
+        sep = None
+        if len(fList) > 0:
+            resformat = 'linear'
 
-    def processResultsAdaptiveInterleavedDialog(self):
-        dialog = processResultsDialog(self, 'adaptive_interleaved', 'linear')
+            f = open(fList[0], 'r')
+            allLines = f.readlines()
+            f.close()
+            paradigmFound = False
+            lineNum = 0
+            while paradigmFound == False:
+                if allLines[lineNum].split(':')[0] == "Paradigm":
+                    paradigm = allLines[lineNum].split(':')[1].strip()
+                    paradigmFound = True
+                lineNum = lineNum+1
+                
+            dialog = processResultsDialog(self, fList, resformat, paradigm, sep)
 
-    def processResultsConstantMIntervalsNAlternativesDialog(self):
-        dialog = processResultsDialog(self, 'constantMIntervalsNAlternatives', 'linear')
+    def processResultsTableDialog(self):
+        fList = QtGui.QFileDialog.getOpenFileNames(self, self.tr("Choose results file to load"), '', self.tr("All Files (*)"))
+        sep = None
+        if len(fList) > 0:
+           
+            resformat = 'table'
+           
 
-    def processResultsMultipleConstantsMIntervalsNAlternativesDialog(self):
-        dialog = processResultsDialog(self, 'multipleConstantsMIntervalsNAlternatives', 'linear')
+        #Determine paradigm
 
-    def processResultsConstant1Int2AltDialog(self):
-        dialog = processResultsDialog(self, 'constant1Interval2Alternatives', 'linear')
+            f = open(fList[0], "r")
+            thisLines = f.readlines()
+            f.close()
 
-    def processResultsMultipleConstants1Int2AltDialog(self):
-        dialog = processResultsDialog(self, 'multipleConstants1Interval2Alternatives', 'linear')
+            seps = [';', ',', ':', ' ']
+            for sep in seps:
+                try:
+                    prdgCol = thisLines[0].split(sep).index('paradigm')
+                except:
+                    prdgCol = None
+                if prdgCol != None:
+                    break
+            if prdgCol == None:
+                sep, ok = QtGui.QInputDialog.getText(self, self.tr('Input Dialog'), "CSV separator")
+                if ok == False:
+                    return
 
-    def processResultsConstant1PairSDDialog(self):
-        dialog = processResultsDialog(self, 'constant1PairSD', 'linear')
-
-    def processResultsTableAdaptiveDialog(self):
-        dialog = processResultsDialog(self, 'adaptive', 'table')
-
-    def processResultsTableAdaptiveInterleavedDialog(self):
-        dialog = processResultsDialog(self, 'adaptive_interleaved', 'table')
-
-    def processResultsTableConstantMIntNAltDialog(self):
-        dialog = processResultsDialog(self, 'constantMIntervalsNAlternatives', 'table')
-
-    def processResultsTableMultipleConstantsMIntNAltDialog(self):
-        dialog = processResultsDialog(self, 'multipleConstantsMIntervalsNAlternatives', 'table')
-
-    def processResultsTableConstant1Int2AltDialog(self):
-        dialog = processResultsDialog(self, 'constant1Interval2Alternatives', 'table')
-
-    def processResultsTableConstant1PairSDDialog(self):
-        dialog = processResultsDialog(self, 'constant1PairSD', 'table')
-
-    def processResultsTableMultipleConstants1Int2AltDialog(self):
-        dialog = processResultsDialog(self, 'multipleConstants1Interval2Alternatives', 'table')
-
+            paradigm = thisLines[1].split(sep)[prdgCol]
+                
+            dialog = processResultsDialog(self, fList, resformat, paradigm, sep)
    
 
     def onClickOpenResultsButton(self):

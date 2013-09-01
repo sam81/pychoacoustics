@@ -37,28 +37,29 @@ if matplotlib_available and pandas_available:
     from .win_categorical_plot import*
 
 class processResultsDialog(QtGui.QDialog):
-    def __init__(self, parent, paradigm, resformat):
+    def __init__(self, parent, fName, resformat, paradigm, sep):
         QtGui.QDialog.__init__(self, parent)
-        self.paradigm = paradigm
+        self.fName = fName
         self.resformat = resformat
-        if paradigm == "adaptive":
-            paradigmName = self.tr("Adaptive")
-        elif paradigm == "adaptive_interleaved":
-            paradigmName = self.tr("Adaptive Interleaved")
-        elif paradigm == "constant1Interval2Alternatives":
-            paradigmName = self.tr("Constant 1-Interval 2-Alternatives")
-        elif paradigm == "multipleConstants1Interval2Alternatives":
-            paradigmName = self.tr("Multiple Constants 1-Interval 2-Alternatives")
-        elif paradigm == "constantMIntervalsNAlternatives":
-            paradigmName = self.tr("Constant m-Intervals n-Alternatives")
-        elif paradigm == "multipleConstantsMIntervalsNAlternatives":
-            paradigmName = self.tr("Multiple Constants m-Intervals n-Alternatives")
-        elif paradigm == "constant1PairSD":
-            paradigmName = self.tr("Constant 1-Pair Same/Different")
       
         self.currLocale = self.parent().prm['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         self.prm = self.parent().prm
+
+        if paradigm in [self.tr("Adaptive"), self.tr("Weighted Up/Down")]:
+            self.paradigm = "adaptive"
+        elif paradigm in [self.tr("Adaptive Interleaved"), self.tr("Weighted Up/Down Interleaved")]:
+            self.paradigm = "adaptive_interleaved"
+        elif paradigm == self.tr("Constant 1-Interval 2-Alternatives"):
+            self.paradigm = "constant1Interval2Alternatives" 
+        elif paradigm == self.tr("Multiple Constants 1-Interval 2-Alternatives"):
+            self.paradigm = "multipleConstants1Interval2Alternatives" 
+        elif paradigm == self.tr("Constant m-Intervals n-Alternatives"):
+            self.paradigm = "constantMIntervalsNAlternatives"
+        elif paradigm == self.tr("Multiple Constants m-Intervals n-Alternatives"):
+            self.paradigm = "multipleConstantsMIntervalsNAlternatives"
+        elif paradigm == self.tr("Constant 1-Pair Same/Different"):
+            self.paradigm = "constant1PairSD"
         
         self.soundPrefWidget = QtGui.QWidget()
         self.vBoxSizer = QtGui.QVBoxLayout()
@@ -80,7 +81,7 @@ class processResultsDialog(QtGui.QDialog):
         n = 0
         self.fileChooseLabel = QtGui.QLabel(self.tr('Input File(s): '))
         self.hBox1.addWidget(self.fileChooseLabel)
-        self.fileTF = QtGui.QLineEdit("")
+        self.fileTF = QtGui.QLineEdit(';'.join(self.fName))
         self.hBox1.addWidget(self.fileTF)
         self.chooseFileButton = QtGui.QPushButton(self.tr("Choose File"), self)
         QtCore.QObject.connect(self.chooseFileButton,
@@ -99,7 +100,7 @@ class processResultsDialog(QtGui.QDialog):
 
         if self.resformat == 'table':
             self.csvSeparatorLabel = QtGui.QLabel(self.tr('csv separator:'))
-            self.csvSeparatorTF = QtGui.QLineEdit(parent.prm['pref']["general"]["csvSeparator"])
+            self.csvSeparatorTF = QtGui.QLineEdit(sep)#parent.prm['pref']["general"]["csvSeparator"])
             self.hCsvSeparator.addWidget(self.csvSeparatorLabel)
             self.hCsvSeparator.addWidget(self.csvSeparatorTF)
             if self.parent().prm['appData']['plotting_available'] == True:
@@ -197,7 +198,7 @@ class processResultsDialog(QtGui.QDialog):
         self.vBoxSizer.addLayout(self.hBox9)
         self.vBoxSizer.addWidget(buttonBox)
         self.setLayout(self.vBoxSizer)
-        self.setWindowTitle(self.tr("Process Results ") + paradigmName)
+        self.setWindowTitle(self.tr("Process Results "))
         self.show()
 
     def onClickRunButton(self):
@@ -222,7 +223,7 @@ class processResultsDialog(QtGui.QDialog):
             if len(self.foutName) < 1:
                 print('No file was selected for saving the results. Skipping')
                 return
-        else: #file name has been choser
+        else: #file name has been chosen
             self.foutName = self.outfileTF.text()
                 
         if self.processAllBlocksCheckBox.isChecked() == True:
@@ -240,6 +241,7 @@ class processResultsDialog(QtGui.QDialog):
             else:
                     last = None; block_range=(int(self.fromTF.text()), int(self.toTF.text()))
 
+        
         if self.resformat == 'linear':
             if self.paradigm == "adaptive":
                 processResultsAdaptive(fList, self.foutName, last=last, block_range=block_range)

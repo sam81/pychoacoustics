@@ -889,7 +889,8 @@ class responseBox(QtGui.QMainWindow):
                              self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
                              durString + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
-                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] 
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
             for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
                 if self.prm[currBlock]['fieldCheckBox'][i] == True:
                     resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
@@ -1133,7 +1134,8 @@ class responseBox(QtGui.QMainWindow):
                              self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
                              durString + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
-                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] 
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
             for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
                 if self.prm[currBlock]['fieldCheckBox'][i] == True:
                     resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
@@ -1267,7 +1269,8 @@ class responseBox(QtGui.QMainWindow):
                              self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
                              durString + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
-                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"]
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
 
             resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nIntervals']) + self.prm['pref']["general"]["csvSeparator"] 
             resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nAlternatives']) + self.prm['pref']["general"]["csvSeparator"]
@@ -1429,7 +1432,8 @@ class responseBox(QtGui.QMainWindow):
                              self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
                              durString + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
-                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"]
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
 
             resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nIntervals']) + self.prm['pref']["general"]["csvSeparator"] 
             resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nAlternatives']) + self.prm['pref']["general"]["csvSeparator"]
@@ -1592,7 +1596,8 @@ class responseBox(QtGui.QMainWindow):
                              self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
                              durString + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
-                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] 
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"] 
             for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
                 if self.prm[currBlock]['fieldCheckBox'][i] == True:
                     resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
@@ -1823,7 +1828,8 @@ class responseBox(QtGui.QMainWindow):
                              self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
                              durString + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
-                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] 
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"] 
             for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
                 if self.prm[currBlock]['fieldCheckBox'][i] == True:
                     resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
@@ -1988,7 +1994,8 @@ class responseBox(QtGui.QMainWindow):
                              self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
                              durString + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
-                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] 
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"] 
             for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
                 if self.prm[currBlock]['fieldCheckBox'][i] == True:
                     resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
@@ -2303,7 +2310,8 @@ class responseBox(QtGui.QMainWindow):
                             'time'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"] 
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"] 
 
         elif paradigm in ['Adaptive Interleaved', 'Weighted Up/Down Interleaved']:
             headerToWrite = ''
@@ -2318,7 +2326,8 @@ class responseBox(QtGui.QMainWindow):
                             'time'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"] 
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"] 
         elif paradigm in ['Constant 1-Interval 2-Alternatives']:
             headerToWrite =  'dprime' +  self.prm['pref']["general"]["csvSeparator"] + \
                             'nTotal'+ self.prm['pref']["general"]["csvSeparator"] + \
@@ -2334,7 +2343,8 @@ class responseBox(QtGui.QMainWindow):
                             'time'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"]
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] +\
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
         elif paradigm in ['Constant 1-Pair Same/Different']:
             headerToWrite =  'dprime_IO' +  self.prm['pref']["general"]["csvSeparator"] + \
                             'dprime_diff' +  self.prm['pref']["general"]["csvSeparator"] + \
@@ -2351,7 +2361,8 @@ class responseBox(QtGui.QMainWindow):
                             'time'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"]
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
         elif paradigm in ['Multiple Constants 1-Interval 2-Alternatives']:
             headerToWrite =  'dprime_ALL' +  self.prm['pref']["general"]["csvSeparator"] + \
                             'nTotal_ALL'+ self.prm['pref']["general"]["csvSeparator"] + \
@@ -2375,7 +2386,8 @@ class responseBox(QtGui.QMainWindow):
                             'time'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"] 
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"] 
         elif paradigm in ['Constant m-Intervals n-Alternatives']:
             headerToWrite = ''
           
@@ -2392,6 +2404,7 @@ class responseBox(QtGui.QMainWindow):
                             'duration' + self.prm['pref']["general"]["csvSeparator"] + \
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] +\
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"] +\
                             'nIntervals' + self.prm['pref']["general"]["csvSeparator"] + \
                             'nAlternatives' + self.prm['pref']["general"]["csvSeparator"]
 
@@ -2416,6 +2429,7 @@ class responseBox(QtGui.QMainWindow):
                             'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] +\
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"] +\
                             'nIntervals' + self.prm['pref']["general"]["csvSeparator"] + \
                             'nAlternatives' + self.prm['pref']["general"]["csvSeparator"]
 
