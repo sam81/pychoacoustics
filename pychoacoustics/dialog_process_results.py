@@ -83,7 +83,7 @@ class processResultsDialog(QtGui.QDialog):
         self.hBox1.addWidget(self.fileChooseLabel)
         self.fileTF = QtGui.QLineEdit(';'.join(self.fName))
         self.hBox1.addWidget(self.fileTF)
-        self.chooseFileButton = QtGui.QPushButton(self.tr("Choose File"), self)
+        self.chooseFileButton = QtGui.QPushButton(self.tr("Change File"), self)
         QtCore.QObject.connect(self.chooseFileButton,
                                QtCore.SIGNAL('clicked()'), self.onClickChooseFileButton)
         self.hBox1.addWidget(self.chooseFileButton)
@@ -93,7 +93,7 @@ class processResultsDialog(QtGui.QDialog):
         self.hBox1_1.addWidget(self.outfileChooseLabel)
         self.outfileTF = QtGui.QLineEdit("")
         self.hBox1_1.addWidget(self.outfileTF)
-        self.chooseOutFileButton = QtGui.QPushButton(self.tr("Choose File"), self)
+        self.chooseOutFileButton = QtGui.QPushButton(self.tr("Change File"), self)
         QtCore.QObject.connect(self.chooseOutFileButton,
                                QtCore.SIGNAL('clicked()'), self.onClickChooseOutFileButton)
         self.hBox1_1.addWidget(self.chooseOutFileButton)
@@ -171,11 +171,16 @@ class processResultsDialog(QtGui.QDialog):
         self.runButton.setIcon(QtGui.QIcon.fromTheme("system-run", QtGui.QIcon(":/system-run")))
         self.hBox9.addWidget(self.runButton)
 
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|
-                                           QtGui.QDialogButtonBox.Cancel)
+        ## buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|
+        ##                                    QtGui.QDialogButtonBox.Cancel)
         
-        self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                     self, QtCore.SLOT("accept()"))
+        ## self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
+        ##              self, QtCore.SLOT("accept()"))
+        ## self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
+        ##              self, QtCore.SLOT("reject()"))
+
+        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Close)
+        
         self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
                      self, QtCore.SLOT("reject()"))
         

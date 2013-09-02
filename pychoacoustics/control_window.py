@@ -78,8 +78,8 @@ class pychControlWin(QtGui.QMainWindow):
 
         self.processResultsMenu = self.fileMenu.addMenu(self.tr('&Process Results'))
         
-        self.processResultsLinearButton = QtGui.QAction(self.tr('&Process Results Plain'), self)
-        self.processResultsLinearButton.setStatusTip(self.tr('Process Results Plain'))
+        self.processResultsLinearButton = QtGui.QAction(self.tr('&Process Results (Plain Text)'), self)
+        self.processResultsLinearButton.setStatusTip(self.tr('Process Results (Plain Text)'))
         self.connect(self.processResultsLinearButton, QtCore.SIGNAL('triggered()'), self.processResultsLinearDialog)
 
         self.processResultsTableButton = QtGui.QAction(self.tr('&Process Results Table'), self)
@@ -2780,6 +2780,7 @@ class pychControlWin(QtGui.QMainWindow):
                 lineNum = lineNum+1
                 
             dialog = processResultsDialog(self, fList, resformat, paradigm, sep)
+            
 
     def processResultsTableDialog(self):
         fList = QtGui.QFileDialog.getOpenFileNames(self, self.tr("Choose results file to load"), '', self.tr("All Files (*)"))
