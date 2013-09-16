@@ -1,6 +1,6 @@
 
-include pychoacoustics_pack/*.py
-include pychoacoustics_pack/default_experiments/*
+include pychoacoustics/*.py
+include pychoacoustics/default_experiments/*
 #include scripts/*
 include translations/*
 #include postinstall.py

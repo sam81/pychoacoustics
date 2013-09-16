@@ -38,9 +38,9 @@ from ._version_info import*
 __version__ = pychoacoustics_version
 
 homeExperimentsPath = os.path.expanduser("~") +'/pychoacoustics_exp/'
-if os.path.exists(homeExperimentsPath + 'home_exp/__init__.py') == True:
+if os.path.exists(homeExperimentsPath + 'labexp/__init__.py') == True:
     sys.path.append(homeExperimentsPath)
-    import home_exp
+
 try:
     import labexp
     from labexp import*
@@ -1663,10 +1663,6 @@ class pychControlWin(QtGui.QMainWindow):
             methodToCall1 = getattr(labexp, execString)
         except:
             pass
-        try:
-            methodToCall1 = getattr(home_exp, execString)
-        except:
-            pass
         methodToCall2 = getattr(methodToCall1, 'select_default_parameters_'+ execString)
         tmp = methodToCall2(self, self.par)
         
@@ -2716,10 +2712,6 @@ class pychControlWin(QtGui.QMainWindow):
             pass
         try:
             methodToCall1 = getattr(labexp, execString)
-        except:
-            pass
-        try:
-            methodToCall1 = getattr(home_exp, execString)
         except:
             pass
         

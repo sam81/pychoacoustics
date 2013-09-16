@@ -58,18 +58,15 @@ from . import default_experiments
 from .default_experiments import*
 
 homeExperimentsPath = os.path.normpath(os.path.expanduser("~") +'/pychoacoustics_exp/')
-if os.path.exists(os.path.normpath(homeExperimentsPath)):
-    sys.path.append(os.path.normpath(homeExperimentsPath))
-if os.path.exists(os.path.normpath(homeExperimentsPath + '/home_exp/__init__.py')) == True:
-    import home_exp
-    from home_exp import*
+if os.path.exists(os.path.normpath(homeExperimentsPath + '/labexp/__init__.py')) == True:
+    sys.path.append(homeExperimentsPath)
+
 try:
     import labexp
     from labexp import*
     labexp_exists = True
 except:
     labexp_exists = False
-    print(sys.exc_info())
 
 def set_global_parameters(prm):
     prm['tmpParametersFile'] = ".tmp_prm.prm"
@@ -81,11 +78,6 @@ def set_global_parameters(prm):
         methodToCall2 = getattr(methodToCall1, 'initialize_'+item)
         #this calls the initialize function for each experiment, which returns experiment specific parameters
         prm = methodToCall2(prm)
-    if os.path.exists(os.path.normpath(homeExperimentsPath + '/home_exp/__init__.py')) == True:
-        for item in home_exp.__all__:
-            methodToCall1 = getattr(home_exp, item)
-            methodToCall2 = getattr(methodToCall1, 'initialize_'+item)
-            prm = methodToCall2(prm)
     if labexp_exists == True:
         for item in labexp.__all__:
             methodToCall1 = getattr(labexp, item)

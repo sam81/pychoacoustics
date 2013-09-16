@@ -58,9 +58,8 @@ if matplotlib_available and pandas_available:
 from . import default_experiments
 
 homeExperimentsPath = os.path.normpath(os.path.expanduser("~") +'/pychoacoustics_exp/')
-if os.path.exists(os.path.normpath(homeExperimentsPath + '/home_exp/__init__.py')) == True:
+if os.path.exists(os.path.normpath(homeExperimentsPath + '/labexp/__init__.py')) == True:
     sys.path.append(homeExperimentsPath)
-    import home_exp
 
 try:
     import labexp
@@ -644,10 +643,6 @@ class responseBox(QtGui.QMainWindow):
             pass
         try:
             methodToCall1 = getattr(labexp, execString)
-        except:
-            pass
-        try:
-            methodToCall1 = getattr(home_exp, execString)
         except:
             pass
         

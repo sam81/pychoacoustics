@@ -27,6 +27,19 @@ import argparse, fnmatch, os, sys, time, traceback
 from pychoacoustics import qrc_resources
 from pychoacoustics import global_parameters
 from pychoacoustics.control_window import*
+
+homeExperimentsPath = os.path.expanduser("~") +'/pychoacoustics_exp/'
+if os.path.exists(homeExperimentsPath + 'labexp/__init__.py') == True:
+    sys.path.append(homeExperimentsPath)
+
+try:
+    import labexp
+    from labexp import*
+    labexp_exists = True
+except:
+    labexp_exists = False
+    print(sys.exc_info())
+
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 #
 import logging
@@ -120,7 +133,6 @@ def main(argv):
     parser.add_argument("-g", "-graphicssystem", "--graphicssystem", help="Sets the backend to be used for on-screen widgets and QPixmaps. Available options are native (default) raster and opengl (experimental)")#, choices=['raster', 'opengl', 'native'])
     parser.add_argument("-d", "--display", help="This option is only valid for X11 and sets the X display (default is $DISPLAY)")
 
-
     args = parser.parse_args()
 
     if len(args.file) > 0:
@@ -153,8 +165,6 @@ def main(argv):
         prm['display'] = args.display
   
    
-   
-    
     prm = global_parameters.get_prefs(prm)
     callArgs = sys.argv
     if 'display' in prm:
@@ -193,7 +203,14 @@ def main(argv):
     responseBoxLocale =  prm['pref']['responseBoxLanguage']  + '_' + prm['pref']['responseBoxCountry']#returns a string such as en_US
     responseBoxTranslator = QtCore.QTranslator()
     responseBoxTranslator.load("pychoacoustics_" + responseBoxLocale, ":/translations/")
+    respButtTranslator = QtCore.QTranslator()
+
+    if labexp_exists == True:
+        respButtTransPath = os.path.dirname(labexp.__file__) + '/translations/labexp_' + responseBoxLocale
+        respButtTranslator.load(respButtTransPath)
     prm['rbTrans'] = responseBoxTranslator
+    prm['buttonTranslator'] = respButtTranslator
+
     prm = global_parameters.set_global_parameters(prm)
     app.setWindowIcon(QtGui.QIcon(":/Machovka_Headphones.svg"))
     x = pychControlWin(parent=None, prm=prm)
