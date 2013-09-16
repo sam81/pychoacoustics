@@ -57,8 +57,9 @@ def excepthook(except_type, except_val, tbck):
     siz = QtGui.QVBoxLayout()
     lay = QtGui.QVBoxLayout()
     saveTbButton = QtGui.QPushButton("Save Traceback", diag)
-    QtCore.QObject.connect(saveTbButton,
-                           QtCore.SIGNAL('clicked()'), onClickSaveTbButton)
+    #QtCore.QObject.connect(saveTbButton,
+    #                       QtCore.SIGNAL('clicked()'), onClickSaveTbButton)
+    saveTbButton.clicked.connect(onClickSaveTbButton)
     lab = QLabel("Sorry, something went wrong. The attached traceback can help you troubleshoot the problem: \n\n" + "".join(tb))
     lab.setMargin(10)
     lab.setWordWrap(True)
@@ -72,15 +73,17 @@ def excepthook(except_type, except_val, tbck):
 
     buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
         
-    diag.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                 diag, QtCore.SLOT("accept()"))
-    diag.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                 diag, QtCore.SLOT("reject()"))
+    ## diag.connect(buttonBox, QtCore.SIGNAL("accepted()"),
+    ##              diag, QtCore.SLOT("accept()"))
+    ## diag.connect(buttonBox, QtCore.SIGNAL("rejected()"),
+    ##              diag, QtCore.SLOT("reject()"))
+
+    buttonBox.accepted.connect(accept)
+    buttonBox.rejected.connect(reject)
     siz.addWidget(saveTbButton)
     siz.addWidget(buttonBox)
     diag.setLayout(siz)
     
-
 
     diag.exec_()
 

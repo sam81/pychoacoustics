@@ -74,22 +74,26 @@ class pychControlWin(QtGui.QMainWindow):
         self.exitButton = QtGui.QAction(QtGui.QIcon.fromTheme("application-exit", QtGui.QIcon(":/application-exit")), self.tr('Exit'), self)
         self.exitButton.setShortcut('Ctrl+Q')
         self.exitButton.setStatusTip(self.tr('Exit application'))
-        self.connect(self.exitButton, QtCore.SIGNAL('triggered()'), self.close)
+
+        self.exitButton.triggered.connect(self.close)
 
         self.processResultsMenu = self.fileMenu.addMenu(self.tr('&Process Results'))
         
         self.processResultsLinearButton = QtGui.QAction(self.tr('&Process Results (Plain Text)'), self)
         self.processResultsLinearButton.setStatusTip(self.tr('Process Results (Plain Text)'))
-        self.connect(self.processResultsLinearButton, QtCore.SIGNAL('triggered()'), self.processResultsLinearDialog)
+        #self.connect(self.processResultsLinearButton, QtCore.SIGNAL('triggered()'), self.processResultsLinearDialog)
+        self.processResultsLinearButton.triggered.connect(self.processResultsLinearDialog)
 
         self.processResultsTableButton = QtGui.QAction(self.tr('&Process Results Table'), self)
         self.processResultsTableButton.setStatusTip(self.tr('Process Results Table'))
-        self.connect(self.processResultsTableButton, QtCore.SIGNAL('triggered()'), self.processResultsTableDialog)
+        #self.connect(self.processResultsTableButton, QtCore.SIGNAL('triggered()'), self.processResultsTableDialog)
+        self.processResultsTableButton.triggered.connect(self.processResultsTableDialog)
 
 
         self.openResultsButton = QtGui.QAction(QtGui.QIcon.fromTheme("document-open", QtGui.QIcon(":/document-open")), self.tr('Open Results File'), self)
         self.openResultsButton.setStatusTip(self.tr('Open Results File'))
-        self.connect(self.openResultsButton, QtCore.SIGNAL('triggered()'), self.onClickOpenResultsButton)
+        #self.connect(self.openResultsButton, QtCore.SIGNAL('triggered()'), self.onClickOpenResultsButton)
+        self.openResultsButton.triggered.connect(self.onClickOpenResultsButton)
 
         self.processResultsMenu.addAction(self.processResultsLinearButton)
         self.processResultsMenu.addAction(self.processResultsTableButton)
@@ -101,21 +105,25 @@ class pychControlWin(QtGui.QMainWindow):
         self.editMenu = self.menubar.addMenu(self.tr('&Edit'))
         self.editPrefAction = QtGui.QAction(QtGui.QIcon.fromTheme("preferences-other", QtGui.QIcon(":/preferences-other")), self.tr('Preferences'), self)
         self.editMenu.addAction(self.editPrefAction)
-        self.connect(self.editPrefAction, QtCore.SIGNAL('triggered()'), self.onEditPref)
+        #self.connect(self.editPrefAction, QtCore.SIGNAL('triggered()'), self.onEditPref)
+        self.editPrefAction.triggered.connect(self.onEditPref)
 
         self.editPhonesAction = QtGui.QAction(QtGui.QIcon.fromTheme("audio-headphones", QtGui.QIcon(":/audio-headphones")), self.tr('Phones'), self)
         self.editMenu.addAction(self.editPhonesAction)
-        self.connect(self.editPhonesAction, QtCore.SIGNAL('triggered()'), self.onEditPhones)
+        #self.connect(self.editPhonesAction, QtCore.SIGNAL('triggered()'), self.onEditPhones)
+        self.editPhonesAction.triggered.connect(self.onEditPhones)
 
         self.editExperimentersAction = QtGui.QAction(QtGui.QIcon.fromTheme("system-users", QtGui.QIcon(":/system-users")), self.tr('Experimenters'), self)
         self.editMenu.addAction(self.editExperimentersAction)
-        self.connect(self.editExperimentersAction, QtCore.SIGNAL('triggered()'), self.onEditExperimenters)
+        #self.connect(self.editExperimentersAction, QtCore.SIGNAL('triggered()'), self.onEditExperimenters)
+        self.editExperimentersAction.triggered.connect(self.onEditExperimenters)
 
         #TOOLS MENU
         self.toolsMenu = self.menubar.addMenu(self.tr('&Tools'))
         self.swapBlocksAction = QtGui.QAction(self.tr('Swap Blocks'), self)
         self.toolsMenu.addAction(self.swapBlocksAction)
-        self.connect(self.swapBlocksAction, QtCore.SIGNAL('triggered()'), self.onSwapBlocksAction)
+        #self.connect(self.swapBlocksAction, QtCore.SIGNAL('triggered()'), self.onSwapBlocksAction)
+        self.swapBlocksAction.triggered.connect(self.onSwapBlocksAction)
 
         #HELP MENU
         self.helpMenu = self.menubar.addMenu(self.tr('&Help'))

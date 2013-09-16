@@ -69,6 +69,7 @@ try:
     labexp_exists = True
 except:
     labexp_exists = False
+    print(sys.exc_info())
 
 def set_global_parameters(prm):
     prm['tmpParametersFile'] = ".tmp_prm.prm"
