@@ -4,7 +4,7 @@ Priority: extra
 Maintainer: Samuele Carcagno <sam.carcagno@gmail.com>
 Build-Depends: debhelper (>= 8.0.0), 
 	       python3 (>= 3.1)
-X-Python-Version: >= 3.1
+X-Python3-Version: >= 3.1
 Standards-Version: 3.9.3
 Homepage: <insert the upstream URL, if relevant>
 #Vcs-Git: git://git.debian.org/collab-maint/pychoacoustics.git
