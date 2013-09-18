@@ -1,13 +1,31 @@
-Designing Custom Experiments
-============================
+Writing your own Experiments
+=============================
 
-In order to add a new experiment to ``pychoacoustics``, create a directory in your home folder called ``pychoacoustics_exp``, inside this folder create a subfolder called ``labexp``. Each experiment is written in a single file contained in this folder. Let’s imagine we want to create an experiment for a frequency discrimination task. We create a file named ``freq.py`` in the ``labexp`` folder. In addition to the experiment file we need an additional file that lists all the experiments contained in the ``labexp`` directory. This file must be named ``__init__.py``, and in our case it will have the following content:
+``pychoacoustics`` can be easily extended with new experiments written by users. User-written experiments need to reside in a Python package called ``labexp``, and this package needs to be in your Python path. No worries if you're not familiar with packaging Python software, we'll go through the process of adding a new experiment step by step.
+
+First of all, you need to create a directory called ``pychoacoustics_exp`` inside your home directory, and a sub-directory called ``labexp`` inside the ``pychoacoustics_exp`` directory. If you don't know where your home directory is located you can find out from a Python shell with the following commands:
+
+.. code-block:: python
+
+   import os
+   os.path.expanduser('~')
+
+You can create the ``pychoacoustics_exp`` and ``labexp`` directories from a Python shell as shown below:
+
+.. code-block:: python
+
+   import os
+   dirPath = os.path.expanduser('~/pychoacoustics_exp/labexp/')
+   os.makedirs(dirPath)
+
+
+Each user experiment will be  written in a single file contained in the ``labexp`` directory. Let’s imagine we want to create an experiment for a frequency discrimination task. We create a file named ``freq.py`` in the ``labexp`` directory. In addition to the experiment file we need an additional file that lists all the experiments contained in the ``labexp`` directory. This file must be named ``__init__.py``, and in our case it will have the following content:
 
 .. code-block:: python
     
     __all__ = ["freq"]
 
-here the variable ``__all__`` is simply a python list with the
+here the variable ``__all__`` is simply a Python list with the
 name of the experiment files. So, if one day we decide to write a new
 experiment on, let’s say, level discrimination, in a file called
 ``lev.py`` we would simply add it to the list in ``__init__.py``:
@@ -18,7 +36,7 @@ experiment on, let’s say, level discrimination, in a file called
                "lev"]
 
 For people familiar with packaging Python modules it should be clear
-by now that the custom experiments folder is basically a Python package
+by now that the ``labexp`` folder is a Python package
 containing various modules (the experiment files). If at some point we
 want to remove an experiment from ``pychoacoustics``, for example
 because it contains a bug that does not allow the program to start, we
@@ -69,8 +87,7 @@ The ``initialize_`` function
       prm["experimentsChoices"].append(exp_name)
       prm[exp_name] = {}
       prm[exp_name]["paradigmChoices"] = ["Adaptive",
-                                          "Weighted Up/Down",
-                                          "Constant m-Intervals n-Alternatives"]
+                                          "Weighted Up/Down"]
     
       prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", 
                                "hasFeedback", "hasIntervalLights"]
@@ -175,6 +192,7 @@ The ``get_fields_to_hide_`` function
       pass
 
 and move on to read about the next function, otherwise, read on. 
+
 Let’s suppose that you  want to set up a frequency discrimination
 experiment in which the frequency of the  standard stimulus may be
 either fixed, or change from trial to trial. You start by writing an
@@ -187,6 +205,9 @@ for creating these widgets is shown below:
 
 The ``doTrial_`` function
 ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``doTrial_`` function is called each time a trial is started, and is responsible for generating the sound and presenting them to the listener. The ``doTrial_`` function for our frequency discrimination experiment is shown below:
+
 .. code-block:: python
    :linenos:
 
@@ -194,30 +215,32 @@ The ``doTrial_`` function
 
       currBlock = 'b'+ str(parent.prm['currentBlock'])
        if parent.prm['startOfBlock'] == True:
-           parent.prm['additional_parameters_to_write'] = {}
            parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference (%)")]
-           parent.prm['conditions'] = [str(parent.prm['adaptiveDifference'])]
-
            parent.writeResultsHeader('log')
-       parent.currentCondition = parent.prm['conditions'][0]
 
        frequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Frequency (Hz)")]
        level = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Level (dB SPL)")] 
        duration = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Duration (ms)")] 
        ramps = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Ramps (ms)")]
-       phase = 0
        channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
-    
+       phase = 0
+
        correctFrequency = frequency + (frequency*parent.prm['adaptiveDifference'])/100
-       parent.stimulusCorrect = pureTone(correctFrequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+       stimulusCorrect = pureTone(correctFrequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
       
-       parent.stimulusIncorrect = []
+       stimulusIncorrect = []
        for i in range((parent.prm['nIntervals']-1)):
            thisSnd = pureTone(frequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
-           parent.stimulusIncorrect.append(thisSnd)
+           stimulusIncorrect.append(thisSnd)
        
-       parent.playRandomisedIntervals(parent.stimulusCorrect, parent.stimulusIncorrect)
+       parent.playRandomisedIntervals(stimulusCorrect, stimulusIncorrect)
 
+As you can see on the first line the ``doTrial_`` function is passed as an argument its ``parent``. This is important because the parent contains a dictionary with the parameters for the current experiment (``parent.prm``). The parameters for each stored block of the experiment are stored in the ``parent.prm`` dictionary with keys starting with ``b`` followed by the block number. For example ``parent.prm['b3']`` contains the parameters for the third stored block. The current block number is stored in ``parent.prm['currentBlock']``, and on line 3 we retrieve the dictionary key for the current block. On line 4 we start an if block that is executed only at the first trial of each block. In this block we retrieve the % frequency difference between the standard and the comparison stimuli for the first trial, and we store it in the ``parent.prm['adaptiveDifference']`` variable. Since we're using an adaptive procedure, this variable will be automatically increased or decreased by ``pychoacoustics`` on successive trials on the bases of the responses given by the listener. On line 6 we tell ``pychoacoustics`` to write the header of the 'log' result files (see :ref:`sec-log_results_files`).
+
+On lines 8-11 we read off the values of the text field widgets for the current block of trials. The values of these field widgets are stored in the list ``parent.prm[currBlock]['field']``, and we exploit the label of each text field widget to retrieve its index in the list. For example ``parent.prm['fieldLabel'].index("Frequency (Hz)")`` retrieves the index of the text widget that stores the frequency of the standard tone for the current block of trials. On line 12 we read off the value of the only chooser widget for the current block of trials. The values of chooser widgets are stored in the list ``parent.prm[currBlock]['chooser']``, and we exploit the label of each chooser widget to retrieve its index in the list as we did for text field widgets.
+
+
+Our next step will be to generate the stimuli for the trial. In a `X`-Intervals task we have to generate `X` stimuli. The standard stimuli will have in our case always the same frequency, we retrieved its value on line 8 of our ``doTrial_`` function. If a listener presses the button corresponding to one of the the standard stimuli his response will be incorrect. For this reason we will store the standard stimuli in a list called ``stimulusIncorrect = []``. The comparison stimulus will be instead stored in a variable called ``stimulusCorrect``. The frequency of the comparison stimulus, which can vary from trial to trial, depending on the current value of ``parent.prm['adaptiveDifference']`` is computed on line 15. On line 16 we generate the stimulus using the ``pureTone`` function that is available in the ``sndlib`` module. Note that we need to pass the current samplig rate and the current maximum output level of our headphones (see :ref:`sec-edit_phones_dia`) to the ``pureTone`` function. Their values are stored respectively in the ``parent.prm['sampRate']`` and ``parent.prm['maxLevel']`` variables. On lines 18-21 we generate and store the standard stimuli in the ``stimulusIncorrect`` list. The number of standard stimuli to generate will be equal to the number of intervals minus one. The number of intervals is stored in the ``parent.prm['nIntervals']`` variable. Finally on line 23 we call the ``parent.playRandomisedIntervals`` function to play the stimuli. This function requires two arguments, the correct stimulus, and a list containing the incorrect stimuli. That's it, our frequency discrimination experiment is ready and we can test it on ``pychoacoustics``.
 
 .. _sec-experiment_opts: 
 

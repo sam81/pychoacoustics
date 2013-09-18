@@ -410,9 +410,9 @@ class responseBox(QtGui.QMainWindow):
         soundList = []
         for i in range(nIntervals):
             if i == self.correctInterval:
-                soundList.append(self.stimulusCorrect)
+                soundList.append(stimulusCorrect)
             else:
-                foo = self.stimulusIncorrect.pop()
+                foo = stimulusIncorrect.pop()
                 soundList.append(foo)
 
         nLight = 0
@@ -766,11 +766,12 @@ class responseBox(QtGui.QMainWindow):
             self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
             self.fullFileLog.write('1; ')
             self.fullFileLines.append('1; ')
-            for p in range(len(self.prm['additional_parameters_to_write'])):
-                self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
-                self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
-                self.fullFileLog.write(' ;')
-                self.fullFileLines.append(' ;')
+            if 'additional_parameters_to_write' in self.prm:
+                for p in range(len(self.prm['additional_parameters_to_write'])):
+                    self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLog.write(' ;')
+                    self.fullFileLines.append(' ;')
             self.fullFileLog.write('\n')
             self.fullFileLines.append('\n')
             self.prm['correctCount'] = self.prm['correctCount'] + 1
@@ -800,11 +801,12 @@ class responseBox(QtGui.QMainWindow):
             self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
             self.fullFileLog.write('0; ')
             self.fullFileLines.append('0; ')
-            for p in range(len(self.prm['additional_parameters_to_write'])):
-                self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
-                self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
-                self.fullFileLog.write('; ')
-                self.fullFileLines.append('; ')
+            if 'additional_parameters_to_write' in self.prm:
+                for p in range(len(self.prm['additional_parameters_to_write'])):
+                    self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLog.write('; ')
+                    self.fullFileLines.append('; ')
             self.fullFileLog.write('\n')
             self.fullFileLines.append('\n')
             
@@ -975,11 +977,12 @@ class responseBox(QtGui.QMainWindow):
             self.fullFileLines.append(str(self.prm['adaptiveDifference'][trackNumber]) + '; ')
             self.fullFileLog.write('TRACK %d; 1; ' %(trackNumber+1))
             self.fullFileLines.append('TRACK %d; 1; ' %(trackNumber+1))
-            for p in range(len(self.prm['additional_parameters_to_write'])):
-                self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
-                self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
-                self.fullFileLog.write('; ')
-                self.fullFileLines.append('; ')
+            if 'additional_parameters_to_write' in self.prm:
+                for p in range(len(self.prm['additional_parameters_to_write'])):
+                    self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLog.write('; ')
+                    self.fullFileLines.append('; ')
             self.fullFileLog.write('\n')
             self.fullFileLines.append('\n')
             self.prm['correctCount'][trackNumber] = self.prm['correctCount'][trackNumber] + 1
@@ -1009,11 +1012,12 @@ class responseBox(QtGui.QMainWindow):
             self.fullFileLines.append(str(self.prm['adaptiveDifference'][trackNumber]) + '; ')
             self.fullFileLog.write('TRACK %d; 0; ' %(trackNumber+1))
             self.fullFileLines.append('TRACK %d; 0; ' %(trackNumber+1))
-            for p in range(len(self.prm['additional_parameters_to_write'])):
-                self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
-                self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
-                self.fullFileLog.write('; ')
-                self.fullFileLines.append('; ')
+            if 'additional_parameters_to_write' in self.prm:
+                for p in range(len(self.prm['additional_parameters_to_write'])):
+                    self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLog.write('; ')
+                    self.fullFileLines.append('; ')
             self.fullFileLog.write('\n')
             self.fullFileLines.append('\n')
             
@@ -1208,11 +1212,12 @@ class responseBox(QtGui.QMainWindow):
             resp = '0'
         self.fullFileLog.write(resp + '; ')
         self.fullFileLines.append(resp + '; ')
-        for p in range(len(self.prm['additional_parameters_to_write'])):
-            self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
-            self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
-            self.fullFileLog.write('; ')
-            self.fullFileLines.append('; ')
+        if 'additional_parameters_to_write' in self.prm:
+            for p in range(len(self.prm['additional_parameters_to_write'])):
+                self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLog.write('; ')
+                self.fullFileLines.append('; ')
         self.fullFileLog.write('\n')
         self.fullFileLines.append('\n')
         self.fullFileLog.flush()
@@ -1349,11 +1354,12 @@ class responseBox(QtGui.QMainWindow):
             resp = '0'
         self.fullFileLog.write(self.currentCondition + '; ' + resp + '; ')
         self.fullFileLines.append(self.currentCondition + '; ' + resp + '; ')
-        for p in range(len(self.prm['additional_parameters_to_write'])):
-            self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
-            self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
-            self.fullFileLog.write('; ')
-            self.fullFileLines.append('; ')
+        if 'additional_parameters_to_write' in self.prm:
+            for p in range(len(self.prm['additional_parameters_to_write'])):
+                self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLog.write('; ')
+                self.fullFileLines.append('; ')
         self.fullFileLog.write('\n')
         self.fullFileLines.append('\n')
         self.fullFileLog.flush()
@@ -1517,11 +1523,12 @@ class responseBox(QtGui.QMainWindow):
             
         self.fullFileLog.write(self.currentCondition + '; ' + resp + '; ')
         self.fullFileLines.append(self.currentCondition + '; ' + resp + '; ')
-        for p in range(len(self.prm['additional_parameters_to_write'])):
-            self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
-            self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
-            self.fullFileLog.write('; ')
-            self.fullFileLines.append('; ')
+        if 'additional_parameters_to_write' in self.prm:
+            for p in range(len(self.prm['additional_parameters_to_write'])):
+                self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLog.write('; ')
+                self.fullFileLines.append('; ')
         self.fullFileLog.write('\n')
         self.fullFileLines.append('\n')
         self.fullFileLog.flush()
@@ -1682,11 +1689,12 @@ class responseBox(QtGui.QMainWindow):
             resp = '0'
         self.fullFileLog.write(self.currentCondition + '; ' + self.currentSubcondition + '; ' + resp + '; ')
         self.fullFileLines.append(self.currentCondition + '; ' + self.currentSubcondition + '; ' + resp + '; ')
-        for p in range(len(self.prm['additional_parameters_to_write'])):
-            self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
-            self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
-            self.fullFileLog.write('; ')
-            self.fullFileLines.append('; ')
+        if 'additional_parameters_to_write' in self.prm:
+            for p in range(len(self.prm['additional_parameters_to_write'])):
+                self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLog.write('; ')
+                self.fullFileLines.append('; ')
         self.fullFileLog.write('\n')
         self.fullFileLines.append('\n')
         self.fullFileLog.flush()
@@ -1906,11 +1914,12 @@ class responseBox(QtGui.QMainWindow):
             resp = '0'
         self.fullFileLog.write(self.currentCondition + '; ' + resp + '; ')
         self.fullFileLines.append(self.currentCondition + '; ' + resp + '; ')
-        for p in range(len(self.prm['additional_parameters_to_write'])):
-            self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
-            self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
-            self.fullFileLog.write('; ')
-            self.fullFileLines.append('; ')
+        if 'additional_parameters_to_write' in self.prm:
+            for p in range(len(self.prm['additional_parameters_to_write'])):
+                self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLog.write('; ')
+                self.fullFileLines.append('; ')
         self.fullFileLog.write('\n')
         self.fullFileLines.append('\n')
         self.fullFileLog.flush()
@@ -2063,11 +2072,12 @@ class responseBox(QtGui.QMainWindow):
             resp = '0'
         self.fullFileLog.write(self.currentCondition + '; ' + resp + '; ')
         self.fullFileLines.append(self.currentCondition + '; ' + resp + '; ')
-        for p in range(len(self.prm['additional_parameters_to_write'])):
-            self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
-            self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
-            self.fullFileLog.write('; ')
-            self.fullFileLines.append('; ')
+        if 'additional_parameters_to_write' in self.prm:
+            for p in range(len(self.prm['additional_parameters_to_write'])):
+                self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLog.write('; ')
+                self.fullFileLines.append('; ')
         self.fullFileLog.write('\n')
         self.fullFileLines.append('\n')
         self.fullFileLog.flush()

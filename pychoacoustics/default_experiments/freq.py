@@ -36,8 +36,7 @@ def initialize_freq(prm):
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
     prm[exp_name]["paradigmChoices"] = ["Adaptive",
-                                        "Weighted Up/Down",
-                                        "Constant m-Intervals n-Alternatives"]
+                                        "Weighted Up/Down"]
 
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
                              "hasIntervalLights"]
@@ -93,12 +92,8 @@ def get_fields_to_hide_freq(parent):
 def doTrial_freq(parent):
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
-        parent.prm['additional_parameters_to_write'] = {}
         parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference (%)")]
-        parent.prm['conditions'] = [str(parent.prm['adaptiveDifference'])]
-
         parent.writeResultsHeader('log')
-    parent.currentCondition = parent.prm['conditions'][0]
 
     frequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Frequency (Hz)")]
     level = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Level (dB SPL)")] 
@@ -108,12 +103,12 @@ def doTrial_freq(parent):
     channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
     
     correctFrequency = frequency + (frequency*parent.prm['adaptiveDifference'])/100
-    parent.stimulusCorrect = pureTone(correctFrequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+    stimulusCorrect = pureTone(correctFrequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
 
       
             
-    parent.stimulusIncorrect = []
+    stimulusIncorrect = []
     for i in range((parent.prm['nIntervals']-1)):
         thisSnd = pureTone(frequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
-        parent.stimulusIncorrect.append(thisSnd)
-    parent.playRandomisedIntervals(parent.stimulusCorrect, parent.stimulusIncorrect)
+        stimulusIncorrect.append(thisSnd)
+    parent.playRandomisedIntervals(stimulusCorrect, stimulusIncorrect)

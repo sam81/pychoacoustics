@@ -214,6 +214,8 @@ Not all is lost, because the “level” parameter will be nonetheless
 stored in the “block summary” file, but you will need more work before
 you can process your results with a statistical software package.
 
+.. _sec-log_results_files: 
+
 Log Results Files
 ^^^^^^^^^^^^^^^^^
 
