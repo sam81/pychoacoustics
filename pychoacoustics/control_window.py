@@ -2201,8 +2201,8 @@ class pychControlWin(QtGui.QMainWindow):
             self.updateParametersWin()
             self.prm['shuffled'] = False
             self.saveParametersToFile(self.prm["tmpParametersFile"])
-            self.autoSetGaugeValue()
             self.prm['currentRepetition'] = 1
+            self.autoSetGaugeValue()
             self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
     def onClickUndoUnsavedButton(self):
         if self.prm["currentBlock"] > self.prm["storedBlocks"]:
