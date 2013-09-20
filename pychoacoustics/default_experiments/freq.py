@@ -36,7 +36,8 @@ def initialize_freq(prm):
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
     prm[exp_name]["paradigmChoices"] = ["Adaptive",
-                                        "Weighted Up/Down"]
+                                        "Weighted Up/Down",
+                                        "Constant m-Intervals n-Alternatives"]
 
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
                              "hasIntervalLights"]
@@ -86,8 +87,6 @@ def select_default_parameters_freq(parent, par):
 
     return prm
 
-def get_fields_to_hide_freq(parent):
-    pass
     
 def doTrial_freq(parent):
     currBlock = 'b'+ str(parent.prm['currentBlock'])

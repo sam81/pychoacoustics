@@ -2714,26 +2714,27 @@ class pychControlWin(QtGui.QMainWindow):
             methodToCall1 = getattr(labexp, execString)
         except:
             pass
-        
-        methodToCall2 = getattr(methodToCall1, 'get_fields_to_hide_'+ execString)
-        tmp = methodToCall2(self)
 
-        for i in range(len(self.fieldsToHide)):
-            self.field[self.fieldsToHide[i]].hide()
-            self.fieldLabel[self.fieldsToHide[i]].hide()
-            self.fieldCheckBox[self.fieldsToHide[i]].hide()
-        for i in range(len(self.fieldsToShow)):
-            self.field[self.fieldsToShow[i]].show()
-            self.fieldLabel[self.fieldsToShow[i]].show()
-            self.fieldCheckBox[self.fieldsToShow[i]].show()
-        for i in range(len(self.choosersToHide)):
-            self.chooser[self.choosersToHide[i]].hide()
-            self.chooserLabel[self.choosersToHide[i]].hide()
-            self.chooserCheckBox[self.choosersToHide[i]].hide()
-        for i in range(len(self.choosersToShow)):
-            self.chooser[self.choosersToShow[i]].show()
-            self.chooserLabel[self.choosersToShow[i]].show()
-            self.chooserCheckBox[self.choosersToShow[i]].show()
+        if hasattr(methodToCall1, 'get_fields_to_hide_'+ execString):
+            methodToCall2 = getattr(methodToCall1, 'get_fields_to_hide_'+ execString)
+            tmp = methodToCall2(self)
+
+            for i in range(len(self.fieldsToHide)):
+                self.field[self.fieldsToHide[i]].hide()
+                self.fieldLabel[self.fieldsToHide[i]].hide()
+                self.fieldCheckBox[self.fieldsToHide[i]].hide()
+            for i in range(len(self.fieldsToShow)):
+                self.field[self.fieldsToShow[i]].show()
+                self.fieldLabel[self.fieldsToShow[i]].show()
+                self.fieldCheckBox[self.fieldsToShow[i]].show()
+            for i in range(len(self.choosersToHide)):
+                self.chooser[self.choosersToHide[i]].hide()
+                self.chooserLabel[self.choosersToHide[i]].hide()
+                self.chooserCheckBox[self.choosersToHide[i]].hide()
+            for i in range(len(self.choosersToShow)):
+                self.chooser[self.choosersToShow[i]].show()
+                self.chooserLabel[self.choosersToShow[i]].show()
+                self.chooserCheckBox[self.choosersToShow[i]].show()
 
 
 

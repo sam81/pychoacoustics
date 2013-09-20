@@ -41,19 +41,18 @@ containing various modules (the experiment files). If at some point we
 want to remove an experiment from ``pychoacoustics``, for example
 because it contains a bug that does not allow the program to start, we
 can simply remove it from the list in ``__init__.py``.  Let’s go back
-to the ``freq.py`` file. Here we need to define four functions. For our
+to the ``freq.py`` file. Here we need to define three functions. For our
 example the names of these functions would be:
 
 .. code-block:: python
     
     initialize_freq()
     select_default_parameters_freq()
-    get_fields_to_hide_freq()
     doTrial_freq()
 
 basically the function names consist of a fixed prefix, followed by
 the name of the experiment file. So in the case of the level experiment
-example, written in the file ``lev.py``, the four functions would be
+example, written in the file ``lev.py``, the three functions would be
 called:
 
 
@@ -61,16 +60,13 @@ called:
     
     initialize_lev()
     select_default_parameters_lev()
-    get_fields_to_hide_lev()
     doTrial_lev()
 
 we’ll look at each function in details shortly. Briefly, the
 ``initialize_`` function is used to set some general parameters and
 options for our experiment; the ``select_default_parameters_`` function
 lists all the widgets (text fields and choosers) of our experiment and
-their default values; the ``get_fields_to_hide_`` function is used to
-dinamically hide or show certain widgets depending on the status of
-other widgets; finally, the ``doTrial_`` function contains the code that
+their default values; finally, the ``doTrial_`` function contains the code that
 generates the sounds and plays them during the experiment. 
 
 The ``initialize_`` function
@@ -180,29 +176,6 @@ used to set some additional parameters. On line 31 we create a dictionary to hol
 ``field``, ``fieldLabel``, ``chooser``, ``chooserLabel`` and ``chooserOptions`` lists that we previously creaetd and populated. Finally, on lines 42-43, we give the default number of response intervals and response alternatives. 
 
 
-The ``get_fields_to_hide_`` function
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-  The purpose of the ``get_fields_to_hide_`` function is to dinamically show or hide certain widgets depending on the status of other widgets. This function must be defined, but is not essential to a ``pychoacoustics`` experiment, so if you want to read all the essential information first, you can simply define the function as follows:
-
-.. code-block:: python
-
-    
-    def get_fields_to_hide_freq(parent):
-      pass
-
-and move on to read about the next function, otherwise, read on. 
-
-Let’s suppose that you  want to set up a frequency discrimination
-experiment in which the frequency of the  standard stimulus may be
-either fixed, or change from trial to trial. You start by writing an
-experiment with a single “Frequency” text field for the fixed stimulus
-frequency case. You then add two additional fields called “Min.
-Frequency” and “Max Frequency” to set the range of frequencies in the
-roving frequency case. Finally, you create a chooser to decide whether
-an experiment is to be run with a fixed or roving frequency. The code
-for creating these widgets is shown below:   
-
 The ``doTrial_`` function
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -242,6 +215,23 @@ On lines 8-11 we read off the values of the text field widgets for the current b
 
 Our next step will be to generate the stimuli for the trial. In a `X`-Intervals task we have to generate `X` stimuli. The standard stimuli will have in our case always the same frequency, we retrieved its value on line 8 of our ``doTrial_`` function. If a listener presses the button corresponding to one of the the standard stimuli his response will be incorrect. For this reason we will store the standard stimuli in a list called ``stimulusIncorrect = []``. The comparison stimulus will be instead stored in a variable called ``stimulusCorrect``. The frequency of the comparison stimulus, which can vary from trial to trial, depending on the current value of ``parent.prm['adaptiveDifference']`` is computed on line 15. On line 16 we generate the stimulus using the ``pureTone`` function that is available in the ``sndlib`` module. Note that we need to pass the current samplig rate and the current maximum output level of our headphones (see :ref:`sec-edit_phones_dia`) to the ``pureTone`` function. Their values are stored respectively in the ``parent.prm['sampRate']`` and ``parent.prm['maxLevel']`` variables. On lines 18-21 we generate and store the standard stimuli in the ``stimulusIncorrect`` list. The number of standard stimuli to generate will be equal to the number of intervals minus one. The number of intervals is stored in the ``parent.prm['nIntervals']`` variable. Finally on line 23 we call the ``parent.playRandomisedIntervals`` function to play the stimuli. This function requires two arguments, the correct stimulus, and a list containing the incorrect stimuli. That's it, our frequency discrimination experiment is ready and we can test it on ``pychoacoustics``.
 
+Adding support for the Constant Paradigm
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+So far our frequency discrimination experiment supports only two paradigms, "Adaptive" and "Weighted Up/Down" (which is just a variant of the adaptive paradigm).
+Adding support for the constant paradigm, in which the frequency difference between the standard and comparison stimuli is fixed across a block of trials is easy.
+All we need to do is add "Constant m-Intervals n-Alternatives" to the list of paradigms supported paradims in the ``initialize_`` function:
+
+.. code-block:: python
+
+   prm[exp_name]["paradigmChoices"] = ["Adaptive",
+                                       "Weighted Up/Down",
+                                       "Constant m-Intervals n-Alternatives"]
+
+Now our frequency discrimination task supports also the constant paradigm.
+
+
+
 .. _sec-experiment_opts: 
 
 The Experiment “opts”
@@ -262,6 +252,29 @@ The Experiment “opts”
 
 Using ``par``
 ^^^^^^^^^^^^^
+
+Showing/Hiding Widgets Dynamically
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  The purpose of the ``get_fields_to_hide_`` function is to dinamically show or hide certain widgets depending on the status of other widgets. This function must be defined, but is not essential to a ``pychoacoustics`` experiment, so if you want to read all the essential information first, you can simply define the function as follows:
+
+.. code-block:: python
+
+    
+    def get_fields_to_hide_freq(parent):
+      pass
+
+and move on to read about the next function, otherwise, read on. 
+
+Let’s suppose that you  want to set up a frequency discrimination
+experiment in which the frequency of the  standard stimulus may be
+either fixed, or change from trial to trial. You start by writing an
+experiment with a single “Frequency” text field for the fixed stimulus
+frequency case. You then add two additional fields called “Min.
+Frequency” and “Max Frequency” to set the range of frequencies in the
+roving frequency case. Finally, you create a chooser to decide whether
+an experiment is to be run with a fixed or roving frequency. The code
+for creating these widgets is shown below:   
 
 .. _sec-simulations:
 
