@@ -230,6 +230,176 @@ All we need to do is add "Constant m-Intervals n-Alternatives" to the list of pa
 
 Now our frequency discrimination task supports also the constant paradigm.
 
+Showing/Hiding Widgets Dynamically
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Often you may want to write a single experiment that can handle a number 
+of different experimental conditions. This usually leads to a growing number 
+of widgets in the experiment user interface that can be distracting. 
+To address this issue, in ``pychoacoustics`` it is possible to dinamically 
+show or hide widgets depending on the value taken by chooser widgets. 
+To do this, you need to write a function called ``get_fields_to_hide_`` 
+that specifies the conditions upon which certain widgets are shown or hidden. 
+
+For a practical example, let's extend the frequency discrimination experiment
+described in the sections above so that it can handle not only conditions in
+which the standard frequency is fixed, but also conditions in which the standard
+frequency is roved from trial to trial within a specified frequency range. 
+In the ``select_default_parameters_`` function of our frequency discrimination
+experiment we had a text field for setting the standard frequency:
+
+.. code-block:: python
+
+      fieldLabel.append("Frequency (Hz)")
+      field.append(1000)
+
+now we'll add two additional text fields to set the frequency range for the
+roved-frequency case:
+
+.. code-block:: python
+
+      fieldLabel.append("Frequency (Hz)")
+      field.append(1000)
+
+      fieldLabel.append("Min. Frequency (Hz)")
+      field.append(250)
+
+      fieldLabel.append("Max. Frequency (Hz)")
+      field.append(4000)
+
+we also add a chooser to control whether for the current block the standard frequency
+should be fixed or roved:
+
+.. code-block:: python
+
+      chooserOptions.append(["Fixed",
+                             "Roved"])
+      chooserLabel.append("Standard Frequency:")
+      chooser.append("Fixed")
+
+The ``get_fields_to_hide_`` for this experiment is shown below:
+
+.. code-block:: python
+   :linenos:
+
+   def get_fields_to_hide_freq(parent):
+      if parent.chooser[parent.prm['chooserLabel'].index("Standard Frequency:")].currentText() == "Fixed":
+         parent.fieldsToHide = [parent.prm['fieldLabel'].index("Min. Frequency (Hz)"),
+                                parent.prm['fieldLabel'].index("Max. Frequency (Hz)")]
+         parent.fieldsToShow = [parent.prm['fieldLabel'].index("Frequency (Hz)")]
+      elif parent.chooser[parent.prm['chooserLabel'].index("Standard Frequency:")].currentText() == "Roved":
+         parent.fieldsToHide = [parent.prm['fieldLabel'].index("Frequency (Hz)")]
+         parent.fieldsToShow = [parent.prm['fieldLabel'].index("Min. Frequency (Hz)"),
+                                parent.prm['fieldLabel'].index("Max. Frequency (Hz)")]
+
+    
+As for the other experiment functions we have discussed before, the actual name is the concatenation of a prefix, in this case
+``get_fields_to_hide_``, and the name of the experiment file, in this case ``freq``.
+As you can see on line 1, this function takes as an argument ``parent``, which contains the lists of widgets for the current experiment.
+We need to tell the ``get_fields_to_hide_`` function that if the standard frequency is fixed, it should
+show only the ``Frequency (Hz)`` text field, and hide the ``Min. Frequency (Hz)`` and ``Max. Frequency (Hz)``
+text fields. Vice-versa, if the standard frequency is roved, it should show only the ``Min. Frequency (Hz)`` 
+and ``Max. Frequency (Hz)`` text fields, and hide the ``Frequency (Hz)`` text field. On line 2 we start an if block which
+will be executed if the value, retrieved by the ``currentText`` attribute, of the ``Standard Frequency`` chooser is
+set to ``Fixed``. Note how we exploit once again the ``chooserLabel`` to find the index of the chooser we want 
+with ``parent.prm['chooserLabel'].index("Standard Frequency:")``. Next, we define two lists, one containing the indexes
+of the fields to hide ``parent.fieldsToHide``, and one containing the indexes of the fields to show ``parent.fieldsToShow``.
+Once more we exploit the ``fieldLabel`` to retrieve the indexes of the fields we want to get (e.g. ``parent.prm['fieldLabel'].index("Min. Frequency (Hz)")``).
+From line 6 to line 9 we handle the case in which the standard frequency is roved. The logic of the code is the same as for the fixed standard frequency
+case.
+
+To complete the experiment we need to add a couple of lines to the ``doTrial_`` function to handle the case in which the standard frequency is roved.
+The new function is shown below:
+
+.. code-block:: python
+   :linenos:
+
+   def doTrial_freq2(parent):
+      currBlock = 'b'+ str(parent.prm['currentBlock'])
+      if parent.prm['startOfBlock'] == True:
+         parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference (%)")]
+         parent.writeResultsHeader('log')
+
+      frequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Frequency (Hz)")]
+      minFrequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Min. Frequency (Hz)")]
+      maxFrequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Max. Frequency (Hz)")]
+      level = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Level (dB SPL)")] 
+      duration = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Duration (ms)")] 
+      ramps = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Ramps (ms)")]
+      phase = 0
+      channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
+      stdFreq = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Standard Frequency:")]
+
+      if stdFreq == "Roved":
+         frequency = random.uniform(minFrequency, maxFrequency)
+      correctFrequency = frequency + (frequency*parent.prm['adaptiveDifference'])/100
+      stimulusCorrect = pureTone(correctFrequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+            
+      stimulusIncorrect = []
+      for i in range((parent.prm['nIntervals']-1)):
+         thisSnd = pureTone(frequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+         stimulusIncorrect.append(thisSnd)
+      parent.playRandomisedIntervals(stimulusCorrect, stimulusIncorrect)
+   
+
+On lines 8-9 we read off the minimum and maximum frequency values for the roved-standard case. On line 15 we retrieve the
+value of the ``Standard Frequency:`` chooser. On lines 17-18 we state that if the value of the standard frequency chooser 
+is equal to ``Roved``, then the standard frequency for that trial should be drawn from a uniform distribution ranging
+from ``minFrequency`` to ``maxFrequency``. The rest of the function is unchanged. Note that we're using the a Python module
+called ``random`` on line 18, so we need to add ``import random`` at the top of our ``freq.py`` file.
+
+It is also possible to show/hide choosers. Let's extend the frequency-discrimination experiment by allowing for the possibility 
+that the standard frequency is roved on a log scale (which in fact would be a better choice given the frequency scaling in the auditory
+system). To do this, we first add a new chooser to set the roving scale:
+
+.. code-block:: python
+
+      chooserOptions.append(["Linear",
+                             "Log"])
+      chooserLabel.append("Roving Scale:")
+      chooser.append("Linear")
+
+Because this chooser is useful only when the standard frequency is roved, we'll tell the ``get_fields_to_hide_`` function to show/hide
+it depending on the value of the ``Standard Frequency`` chooser. The new ``get_fields_to_hide_`` function is shown below:
+
+.. code-block:: python
+   :linenos:
+
+   def get_fields_to_hide_freq(parent):
+      if parent.chooser[parent.prm['chooserLabel'].index("Standard Frequency:")].currentText() == "Fixed":
+         parent.fieldsToHide = [parent.prm['fieldLabel'].index("Min. Frequency (Hz)"),
+                                parent.prm['fieldLabel'].index("Max. Frequency (Hz)")]
+         parent.fieldsToShow = [parent.prm['fieldLabel'].index("Frequency (Hz)")]
+	 parent.choosersToHide = [parent.prm['chooserLabel'].index("Roving Scale:")]
+      elif parent.chooser[parent.prm['chooserLabel'].index("Standard Frequency:")].currentText() == "Roved":
+         parent.fieldsToHide = [parent.prm['fieldLabel'].index("Frequency (Hz)")]
+         parent.fieldsToShow = [parent.prm['fieldLabel'].index("Min. Frequency (Hz)"),
+                                parent.prm['fieldLabel'].index("Max. Frequency (Hz)")]
+	 parent.choosersToShow = [parent.prm['chooserLabel'].index("Roving Scale:")]
+
+We've just added two lines. Line 6 gets executed if the ``Standard Frequency`` chooser is set to ``Fixed``,
+and adds the ``Roving Scale`` chooser to the ``parent.choosersToHide`` list.  Line 11 instead gets executed 
+if the ``Standard Frequency`` chooser is set to ``Roved``, and adds the ``Roving Scale`` chooser to the ``parent.choosersToShow`` list.
+
+Finally, we need to add/modify a couple of lines to the ``doTrial_`` function. 
+First of all we need to read off the value of the new ``Roving Scale`` chooser:
+
+.. code-block:: python
+      
+    rovingScale = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Roving Scale:")]
+
+second, we need to set the standard frequency depending on whether it is drawn from a linear or a logarithmic distribution:
+
+.. code-block:: python
+
+     if stdFreq == "Roved":
+        if rovingScale == "Linear":
+           frequency = random.uniform(minFrequency, maxFrequency)
+        elif rovingScale == "Log":
+           frequency = 10**(random.uniform(log10(minFrequency), log10(maxFrequency)))
+
+Note that we're using the ``log10`` function from numpy here, so we need to add ``from numpy import log10``
+at the top of our ``freq.py`` file.
 
 
 .. _sec-experiment_opts: 
@@ -253,28 +423,7 @@ The Experiment “opts”
 Using ``par``
 ^^^^^^^^^^^^^
 
-Showing/Hiding Widgets Dynamically
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  The purpose of the ``get_fields_to_hide_`` function is to dinamically show or hide certain widgets depending on the status of other widgets. This function must be defined, but is not essential to a ``pychoacoustics`` experiment, so if you want to read all the essential information first, you can simply define the function as follows:
-
-.. code-block:: python
-
-    
-    def get_fields_to_hide_freq(parent):
-      pass
-
-and move on to read about the next function, otherwise, read on. 
-
-Let’s suppose that you  want to set up a frequency discrimination
-experiment in which the frequency of the  standard stimulus may be
-either fixed, or change from trial to trial. You start by writing an
-experiment with a single “Frequency” text field for the fixed stimulus
-frequency case. You then add two additional fields called “Min.
-Frequency” and “Max Frequency” to set the range of frequencies in the
-roving frequency case. Finally, you create a chooser to decide whether
-an experiment is to be run with a fixed or roving frequency. The code
-for creating these widgets is shown below:   
 
 .. _sec-simulations:
 

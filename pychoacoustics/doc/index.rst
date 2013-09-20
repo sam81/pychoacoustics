@@ -18,7 +18,7 @@ Contents:
    psychophysics
    default_experiments
    engine
-   custom_experiments
+   adding_experiments
    troubleshooting
    sndlib
    pysdt
