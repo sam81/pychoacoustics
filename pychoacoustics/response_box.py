@@ -449,7 +449,7 @@ class responseBox(QtGui.QMainWindow):
                 time.sleep(self.prm['isi']/1000.)
 
 
-    def playSequentialIntervals(self, sndList, ISIList, trigNum=None):
+    def playSequentialIntervals(self, sndList, ISIList=[], trigNum=None):
         currBlock = 'b'+ str(self.prm['currentBlock'])
         cmd = self.prm['pref']['sound']['playCommand']
         for i in range(len(sndList)):

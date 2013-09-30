@@ -1,7 +1,8 @@
 .. _sec-installation:
 
+*************
 Installation
-============
+*************
 
 ``pychoacoustics`` has been successfully installed and used on Linux and
 Windows platforms. Given that it is entirely written in Python, it should be

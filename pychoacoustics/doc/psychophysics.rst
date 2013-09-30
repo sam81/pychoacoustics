@@ -1,7 +1,8 @@
 .. _sec-psychophysics:
 
+**************
 Psychophysics
-=============
+**************
 
 .. _sec-paradigms:
 

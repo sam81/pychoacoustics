@@ -1,5 +1,6 @@
+****************
 Troubleshooting
-===============
+****************
 
 The computer crashed in the middle of an experimental session
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

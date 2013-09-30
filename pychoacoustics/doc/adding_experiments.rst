@@ -1,5 +1,9 @@
+*****************************
 Writing your own Experiments
-=============================
+*****************************
+
+First Steps
+==============
 
 ``pychoacoustics`` can be easily extended with new experiments written by users. User-written experiments need to reside in a Python package called ``labexp``, and this package needs to be in your Python path. No worries if you're not familiar with packaging Python software, we'll go through the process of adding a new experiment step by step.
 
@@ -402,6 +406,128 @@ Note that we're using the ``log10`` function from numpy here, so we need to add 
 at the top of our ``freq.py`` file.
 
 
+Writing a "Constant 1-Interval 2-Alternatives" Paradigm Experiment
+===============================================================
+
+In the next paragraphs we'll see an example of an experiment using the  
+"Constant 1-Interval 2-Alternatives" paradigm. The experiment is simple "Yes/No" signal
+detection task. On each trial the listener is presented with a single interval which may
+or may not contain a sinusoid, and s/he has to tell if the signal was present or not.
+
+The ``initialize_`` function for the signal detection experiment is shown below, since the
+general framework for writing an experiment is the same, only the differences from an adaptive-paradigm
+experiment will be highlited.
+
+.. code-block:: python
+   :linenos:
+
+   def initialize_sig_detect(prm):
+      exp_name = "Signal Detection Demo"
+      prm["experimentsChoices"].append(exp_name)
+      prm[exp_name] = {}
+      prm[exp_name]["paradigmChoices"] = ["Constant 1-Interval 2-Alternatives"]
+      prm[exp_name]["opts"] = ["hasFeedback"]
+      prm[exp_name]["buttonLabels"] = ["Yes", "No"]
+      prm[exp_name]['defaultNIntervals'] = 1
+      prm[exp_name]['defaultNAlternatives'] = 2
+    
+      prm[exp_name]["execString"] = "sig_detect"
+      return prm
+
+On line 5 we list the available paradigms for the experiment, in this case the only paradigm possible is ``Constant 1-Interval 2-Alternatives``. On line 7 we insert ``hasFeedback`` to the list of experiment options, so that feedback can be provided at the end of each trial. Since we'll have a single observation interval we don't add the ``hasISIBox`` option, because we don't need to have a silent inteval between observation intervals. On line 7, we set the labels for the buttons, which represent the two response alternatives: "Yes" or "No". On line 8 and line 9 we set the number of intervals and the number of response alternatives. 
+
+The ``select_default_parameters_`` function for the signal detection 
+experiment is shown below:
+
+.. code-block:: python
+   :linenos:
+
+   def select_default_parameters_sig_detect(parent, par):
+   
+      field = []
+      fieldLabel = []
+      chooser = []
+      chooserLabel = []
+      chooserOptions = []
+
+      fieldLabel.append(parent.tr("Frequency (Hz)"))
+      field.append(1000)
+    
+      fieldLabel.append(parent.tr("Duration (ms)"))
+      field.append(2)
+    
+      fieldLabel.append(parent.tr("Ramps (ms)"))
+      field.append(4)
+
+      fieldLabel.append(parent.tr("Level (dB SPL)"))
+      field.append(30)
+    
+      chooserOptions.append([parent.tr("Right"), parent.tr("Left"), parent.tr("Both")])
+      chooserLabel.append(parent.tr("Channel:"))
+      chooser.append(parent.tr("Both"))
+        
+      prm = {}
+      prm['field'] = field
+      prm['fieldLabel'] = fieldLabel
+      prm['chooser'] = chooser
+      prm['chooserLabel'] = chooserLabel
+      prm['chooserOptions'] =  chooserOptions
+
+      return prm
+
+there is nothing really new here compared to experiments with adaptive 
+paradigms that we have seen before. We set the text fields that we need
+to set the frequency duration and level of the signal. We also set
+a chooser to set the channels on which the signal should be presented.
+
+The ``doTrial_`` function for the signal detection task is shown below:
+
+.. code-block:: python
+   :linenos:
+
+   def doTrial_sig_detect(parent):
+  
+      currBlock = 'b'+ str(parent.prm['currentBlock'])
+      if parent.prm['startOfBlock'] == True:
+          parent.writeResultsHeader('log')
+          parent.prm['conditions'] = ["Yes","No"]
+
+      parent.currentCondition = random.choice(parent.prm['conditions'])
+      if parent.currentCondition == 'Yes':
+          parent.correctButton = 1
+      elif parent.currentCondition == 'No':
+          parent.correctButton = 2
+
+      freq    = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Frequency (Hz)")]
+      dur     = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Duration (ms)")]
+      ramps   = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Ramps (ms)")]
+      lev     = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Level (dB SPL)")]
+      phase   = 0
+      channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Channel:"))]
+   
+      if parent.currentCondition == 'No':
+          lev = -200
+      sig = pureTone(freq, phase, lev, dur, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+
+ 
+      parent.playSequentialIntervals([sig])
+   
+
+For experiments using the "Constant 1-Interval 2-Alternatives" paradigm,
+it is necessary to list the experimental conditions in the ``doTrial_``
+finction. We do this on line 6. On line 8, we bind the response buttons
+to the correct response. Since the button number 1 is the "Yes" button, we 
+say that in the case of a signal trial (``parent.currentCondition == "Yes"``)
+the correct button to press is the button number 1, otherwise the correct button to press is the button number 2.
+
+On lines 14-23 we read off the values of the text fields and generates the
+sound to play (signal or silence) according to the experimental condition. 
+Finally, on line 25 we use the ``parent.playSequentialIntervals`` function to
+present the sound to the listener. This function accepts as an argument a
+list of sounds to play sequentially. In our case we have only a single
+sound to insert in the list. More details on the ``playSequentialIntervals``
+function are provided in Section XY.
+
 .. _sec-experiment_opts: 
 
 The Experiment “opts”
@@ -428,7 +554,7 @@ Using ``par``
 .. _sec-simulations:
 
 Simulations
------------
+=============
 
  ``pychoacoustics`` is not designed to run simulations in itself, however it provides a hook to redirect the control flow to an auditory model that you need to specify yourself in the experiment file.  You can retrieve the current response mode from the experiment file with:
 

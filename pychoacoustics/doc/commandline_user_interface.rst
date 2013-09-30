@@ -1,7 +1,8 @@
 .. _sec-cmd_user_interface:
 
+****************************
 Command Line User Interface
-===========================
+****************************
 
 In order to automate certain tasks, or perform some advanced operations,
 ``pychoacoustics`` can be called from the command line with a number of

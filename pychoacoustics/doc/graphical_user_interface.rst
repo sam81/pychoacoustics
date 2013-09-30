@@ -1,7 +1,8 @@
 .. _sec-graphical_user_interface:
 
+*************************
 Graphical User Interface
-========================
+*************************
 
 The user interface is divided into two windows: the “Control Window” and
 the “Response Box”. The “Control Window” is used to set the experimental
