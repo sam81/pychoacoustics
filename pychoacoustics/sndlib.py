@@ -1130,15 +1130,15 @@ def FMTone(fc, fm, mi, phase, level, duration, ramp, channel, fs, maxLevel):
 
     snd = zeros((nTot, 2))
     if channel == "Right":
-        snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fctimeAll[0:nRamp] + mi*sin(2*pi*fm * timeAll[0:nRamp] + phase))
+        snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fc*timeAll[0:nRamp] + mi*sin(2*pi*fm * timeAll[0:nRamp] + phase))
         snd[nRamp:nRamp+nSamples, 1] = amp* sin(2*pi*fc * timeAll[nRamp:nRamp+nSamples] +mi*sin(2*pi*fm * timeAll[nRamp:nRamp+nSamples] + phase))
         snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fc * timeAll[nRamp+nSamples:len(timeAll)]+mi*sin(2*pi*fm * timeAll[nRamp+nSamples:len(timeAll)] + phase))
     elif channel == "Left":
-        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fctimeAll[0:nRamp] + mi*sin(2*pi*fm * timeAll[0:nRamp] + phase))
+        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fc*timeAll[0:nRamp] + mi*sin(2*pi*fm * timeAll[0:nRamp] + phase))
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(2*pi*fc * timeAll[nRamp:nRamp+nSamples] +mi*sin(2*pi*fm * timeAll[nRamp:nRamp+nSamples] + phase))
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fc * timeAll[nRamp+nSamples:len(timeAll)]+mi*sin(2*pi*fm * timeAll[nRamp+nSamples:len(timeAll)] + phase))
     elif channel == "Both":
-        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fctimeAll[0:nRamp] + mi*sin(2*pi*fm * timeAll[0:nRamp] + phase))
+        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fc*timeAll[0:nRamp] + mi*sin(2*pi*fm * timeAll[0:nRamp] + phase))
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(2*pi*fc * timeAll[nRamp:nRamp+nSamples] +mi*sin(2*pi*fm * timeAll[nRamp:nRamp+nSamples] + phase))
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fc * timeAll[nRamp+nSamples:len(timeAll)]+mi*sin(2*pi*fm * timeAll[nRamp+nSamples:len(timeAll)] + phase))
         snd[:, 1] = snd[:, 0]

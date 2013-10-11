@@ -33,7 +33,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/freq.py" line="43"/>
+        <location filename="../pychoacoustics/default_experiments/freq.py" line="44"/>
         <source>Geometric</source>
         <translation type="unfinished"></translation>
     </message>
@@ -917,7 +917,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2826"/>
+        <location filename="../pychoacoustics/control_window.py" line="2827"/>
         <source>About pychoacoustics</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1617,12 +1617,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2786"/>
+        <location filename="../pychoacoustics/control_window.py" line="2787"/>
         <source>All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2920"/>
+        <location filename="../pychoacoustics/control_window.py" line="2921"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1783,17 +1783,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2822"/>
+        <location filename="../pychoacoustics/control_window.py" line="2823"/>
         <source>message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2822"/>
+        <location filename="../pychoacoustics/control_window.py" line="2823"/>
         <source>No results file has been selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2826"/>
+        <location filename="../pychoacoustics/control_window.py" line="2827"/>
         <source>&lt;b&gt;Python app for psychoacoustics&lt;/b&gt; &lt;br&gt;
                                 - version: {0}; &lt;br&gt;
                                 - build date: {1} &lt;br&gt;
@@ -1815,29 +1815,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2850"/>
+        <location filename="../pychoacoustics/control_window.py" line="2851"/>
         <source>The parameters have not been saved to a file. 
  Do you want to save them before exiting?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2868"/>
+        <location filename="../pychoacoustics/control_window.py" line="2869"/>
         <source>The parameters in memory differ from the parameters on file. 
  Do you want to save the parameters stored in memory them before exiting?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2899"/>
+        <location filename="../pychoacoustics/control_window.py" line="2900"/>
         <source>There are no stored blocks to swap.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2904"/>
+        <location filename="../pychoacoustics/control_window.py" line="2905"/>
         <source>Block numbers specified out of range.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2920"/>
+        <location filename="../pychoacoustics/control_window.py" line="2921"/>
         <source>Shuffling scheme contains non-allowed characters.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1867,12 +1867,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2786"/>
+        <location filename="../pychoacoustics/control_window.py" line="2787"/>
         <source>Choose results file to load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2808"/>
+        <location filename="../pychoacoustics/control_window.py" line="2809"/>
         <source>Input Dialog</source>
         <translation type="unfinished"></translation>
     </message>
