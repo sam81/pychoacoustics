@@ -46,7 +46,7 @@ def initialize_audiogram_mf(prm):
                                                                                                    
                                                                                                    
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
-                                                                                           "hasIntervalLights"]
+                             "hasIntervalLights", "hasNTracksChooser"]
     prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Arithmetic","", QApplication.UnicodeUTF8)
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2
@@ -55,8 +55,7 @@ def initialize_audiogram_mf(prm):
     return prm
 
 def select_default_parameters_audiogram_mf(parent, par):
-    if 'nDifferences' not in par:
-        par['nDifferences'] = 3
+   
     nDifferences = par['nDifferences']
    
     field = []

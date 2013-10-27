@@ -924,6 +924,7 @@ class pychControlWin(QtGui.QMainWindow):
                 self.paradigm_widg_sizer.removeWidget(self.paradigmFieldCheckBoxList[i])
                 self.paradigmFieldCheckBoxList[i].setParent(None)
 
+         
         #------------------------------------
         #ADAPTIVE PARADIGM WIDGETS
         if self.currParadigm == self.tr("Adaptive"):
@@ -1112,6 +1113,14 @@ class pychControlWin(QtGui.QMainWindow):
             self.connect(self.nTracksChooser, SIGNAL('activated(QString)'), self.onChangeNTracks)
             self.nTracksCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.nTracksCheckBox, n, 0)
+            if self.prm[self.currExp]["hasNTracksChooser"] == True:
+                self.nTracksLabel.show()
+                self.nTracksChooser.show()
+                self.nTracksCheckBox.show()
+            else:
+                self.nTracksLabel.hide()
+                self.nTracksChooser.hide()
+                self.nTracksCheckBox.hide()
             n = n+1
             self.maxConsecutiveTrialsLabel = QLabel(self.tr("Max. Consecutive Trials x Track:"), self)
             self.paradigm_widg_sizer.addWidget(self.maxConsecutiveTrialsLabel, n, 1)
@@ -1297,6 +1306,14 @@ class pychControlWin(QtGui.QMainWindow):
             self.connect(self.nTracksChooser, SIGNAL('activated(QString)'), self.onChangeNTracks)
             self.nTracksCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.nTracksCheckBox, n, 0)
+            if self.prm[self.currExp]["hasNTracksChooser"] == True:
+                self.nTracksLabel.show()
+                self.nTracksChooser.show()
+                self.nTracksCheckBox.show()
+            else:
+                self.nTracksLabel.hide()
+                self.nTracksChooser.hide()
+                self.nTracksCheckBox.hide()
             n = n+1
             self.maxConsecutiveTrialsLabel = QLabel(self.tr("Max. Consecutive Trials x Track:"), self)
             self.paradigm_widg_sizer.addWidget(self.maxConsecutiveTrialsLabel, n, 1)
@@ -1502,17 +1519,21 @@ class pychControlWin(QtGui.QMainWindow):
             self.nDifferencesOptionsList = list(range(1,101))
             self.nDifferencesOptionsList = [str(el) for el in self.nDifferencesOptionsList]
             self.nDifferencesChooser.addItems(self.nDifferencesOptionsList)
-            if  'nDifferences' in self.par:
-                nDifferences = self.par['nDifferences']
-            else:
-                nDifferences = 3
           
-            self.nDifferencesChooser.setCurrentIndex(self.nDifferencesOptionsList.index(str(nDifferences)))
+            self.nDifferencesChooser.setCurrentIndex(self.nDifferencesOptionsList.index(str(self.par["nDifferences"])))
             self.paradigm_widg_sizer.addWidget(self.nDifferencesChooser, n, 2)
             self.connect(self.nDifferencesChooser, SIGNAL('activated(QString)'), self.onChangeNDifferences)
 
             self.nDifferencesCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.nDifferencesCheckBox, n, 0)
+            if self.prm[self.currExp]["hasNDifferencesChooser"] == True:
+                self.nDifferencesLabel.show()
+                self.nDifferencesChooser.show()
+                self.nDifferencesCheckBox.show()
+            else:
+                self.nDifferencesLabel.hide()
+                self.nDifferencesChooser.hide()
+                self.nDifferencesCheckBox.hide()
 
             self.paradigmChooserList = [self.nDifferencesChooser]
             self.paradigmChooserLabelList = [self.nDifferencesLabel]
@@ -1650,6 +1671,27 @@ class pychControlWin(QtGui.QMainWindow):
         self.prevExp = self.currExp
         self.currExp = experiment
         self.removePrmWidgets()
+        
+        if paradigm in [self.tr("Adaptive Interleaved"), self.tr("Weighted Up/Down Interleaved")]:
+            if self.prm[self.currExp]['hasNTracksChooser'] == False:
+                self.par['nDifferences'] = self.prm[self.currExp]['defaultNTracks']
+            else:
+                if 'nDifferences' not in par:
+                    if 'defaultNTracks' in self.prm[self.currExp]:
+                        nDifferences = self.prm[self.currExp]['defaultNTracks']
+                    else:
+                        self.par['nDifferences'] = 2
+
+        if paradigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), self.tr("Multiple Constants m-Intervals n-Alternatives")]:
+            if self.prm[self.currExp]['hasNDifferencesChooser'] == False:
+                self.par['nDifferences'] = self.prm[self.currExp]['defaultNDifferences']
+            else:
+                if 'nDifferences' not in par:
+                    if 'defaultNDifferences' in self.prm[self.currExp]:
+                        self.par['nDifferences'] = self.prm[self.currExp]['defaultNDifferences']
+                    else:
+                        self.par['nDifferences'] = 2
+                    
         execString = self.prm[self.currExp]['execString']
         ## if  self.prm[self.currExp]['execString'] in default_experiments.__all__:
         ##     methodToCall1 = getattr(default_experiments, execString)
@@ -1705,8 +1747,8 @@ class pychControlWin(QtGui.QMainWindow):
         self.prm['nFields'] = len(self.field)
         self.prm['nChoosers'] = len(self.chooser)
 
-        if  'nDifferences' not in self.par and 'nDifferences' in tmp:
-            self.par['nDifferences'] = tmp['nDifferences']
+        #if  'nDifferences' not in self.par and 'nDifferences' in tmp:
+        #    self.par['nDifferences'] = tmp['nDifferences']
 
         for c in range(len(self.chooser)):
             self.connect(self.chooser[c], SIGNAL('activated(QString)'), self.onChooserChange)
