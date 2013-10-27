@@ -1678,7 +1678,7 @@ class pychControlWin(QtGui.QMainWindow):
             else:
                 if 'nDifferences' not in par:
                     if 'defaultNTracks' in self.prm[self.currExp]:
-                        nDifferences = self.prm[self.currExp]['defaultNTracks']
+                        self.par['nDifferences'] = self.prm[self.currExp]['defaultNTracks']
                     else:
                         self.par['nDifferences'] = 2
 
