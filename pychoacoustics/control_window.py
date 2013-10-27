@@ -1693,10 +1693,7 @@ class pychControlWin(QtGui.QMainWindow):
                         self.par['nDifferences'] = 2
                     
         execString = self.prm[self.currExp]['execString']
-        ## if  self.prm[self.currExp]['execString'] in default_experiments.__all__:
-        ##     methodToCall1 = getattr(default_experiments, execString)
-        ## else:
-        ##     methodToCall1 = getattr(custom_experiments, execString)
+     
         try:
             methodToCall1 = getattr(default_experiments, execString)
         except:
@@ -1746,9 +1743,6 @@ class pychControlWin(QtGui.QMainWindow):
             self.pw_prm_sizer_1.addWidget(self.chooserCheckBox[c], c, 3)
         self.prm['nFields'] = len(self.field)
         self.prm['nChoosers'] = len(self.chooser)
-
-        #if  'nDifferences' not in self.par and 'nDifferences' in tmp:
-        #    self.par['nDifferences'] = tmp['nDifferences']
 
         for c in range(len(self.chooser)):
             self.connect(self.chooser[c], SIGNAL('activated(QString)'), self.onChooserChange)
