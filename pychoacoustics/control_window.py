@@ -1705,7 +1705,7 @@ class pychControlWin(QtGui.QMainWindow):
         methodToCall2 = getattr(methodToCall1, 'select_default_parameters_'+ execString)
         tmp = methodToCall2(self, self.par)
         
-
+        
         self.prm['field'] = tmp['field']
         self.prm['fieldLabel'] = tmp['fieldLabel']
         self.prm['nFields'] = len(self.prm['fieldLabel'])
@@ -1714,6 +1714,14 @@ class pychControlWin(QtGui.QMainWindow):
         self.prm['nChoosers'] = len(self.prm['chooserLabel'])
         self.prm['chooserOptions'] = tmp['chooserOptions']
 
+        if 'fileChooser' in tmp:
+            self.prm['fileChooser'] = tmp['fileChooser']
+            self.prm['fileChooserButton'] = tmp['fileChooserButton']
+        else:
+            self.prm['fileChooser'] = []
+            self.prm['fileChooserButton'] = []
+        self.prm['nFileChoosers'] = len(self.prm['fileChooser'])
+        # SET UP TEXT FIELDS
         self.field = list(range(self.prm['nFields']))
         self.fieldLabel = list(range(self.prm['nFields']))
         self.fieldCheckBox = list(range(self.prm['nFields']))
@@ -1726,7 +1734,7 @@ class pychControlWin(QtGui.QMainWindow):
             self.pw_prm_sizer_0.addWidget(self.field[f], f, 2)
             self.fieldCheckBox[f] = QCheckBox()
             self.pw_prm_sizer_0.addWidget(self.fieldCheckBox[f], f, 0)
-
+        # SET UP CHOOSERS
         self.chooser = list(range(self.prm['nChoosers']))
         self.chooserLabel = list(range(self.prm['nChoosers']))
         self.chooserOptions = list(range(self.prm['nChoosers']))
@@ -1741,14 +1749,26 @@ class pychControlWin(QtGui.QMainWindow):
             self.pw_prm_sizer_1.addWidget(self.chooser[c], c, 5)
             self.chooserCheckBox[c] = QCheckBox()
             self.pw_prm_sizer_1.addWidget(self.chooserCheckBox[c], c, 3)
-        self.prm['nFields'] = len(self.field)
-        self.prm['nChoosers'] = len(self.chooser)
-
         for c in range(len(self.chooser)):
             self.connect(self.chooser[c], SIGNAL('activated(QString)'), self.onChooserChange)
+        #self.prm['nFields'] = len(self.field)
+        #self.prm['nChoosers'] = len(self.chooser)
+        #SET UP FILE CHOOSERS
+        self.fileChooser = list(range(self.prm['nFileChoosers']))
+        self.fileChooserButton = list(range(self.prm['nFileChoosers']))
+        self.fileChooserCheckBox = list(range(self.prm['nFileChoosers']))
+        for f in range(self.prm['nFileChoosers']):
+            self.fileChooser[f] = QLineEdit()
+            self.fileChooser[f].setText(str(self.prm['fileChooser'][f]))
+            self.pw_prm_sizer_0.addWidget(self.fileChooser[f], self.prm['nFields']+f, 2)
+            self.fileChooserButton[f] =  QtGui.QPushButton(self.tr(self.prm['fileChooserButton'][f]), self)
+            self.fileChooserButton[f].clicked.connect(self.fileChooserButtonClicked)
+            self.pw_prm_sizer_0.addWidget(self.fileChooserButton[f], self.prm['nFields']+f, 1)
+            self.fileChooserCheckBox[f] = QCheckBox()
+            self.pw_prm_sizer_0.addWidget(self.fileChooserCheckBox[f], self.prm['nFields']+f, 0)
         
         self.prevParadigm = self.currParadigm
-        self.currParadigm = paradigm #tmp['paradigm']
+        self.currParadigm = paradigm 
         self.paradigmChooser.setCurrentIndex(self.prm[self.currExp]["paradigmChoices"].index(self.currParadigm))
         self.preTrialSilenceTF.setText(self.prm["pref"]["general"]["preTrialSilence"])
 
@@ -1760,6 +1780,7 @@ class pychControlWin(QtGui.QMainWindow):
         self.prm['nAlternatives'] = self.prm[self.currExp]['defaultNAlternatives']#tmp['nAlternatives']
         self.setAdditionalWidgets(self.currExp, self.prevExp)
         self.onChooserChange(None)
+        
     def removePrmWidgets(self):
         if self.prevExp != None:
             for f in range(len(self.field)):
@@ -1776,7 +1797,13 @@ class pychControlWin(QtGui.QMainWindow):
                 self.chooser[c].setParent(None)
                 self.pw_prm_sizer_1.removeWidget(self.chooserCheckBox[c])
                 self.chooserCheckBox[c].setParent(None)
-
+            for f in range(len(self.fileChooser)):
+                self.pw_prm_sizer_0.removeWidget(self.fileChooser[f])
+                self.fileChooser[f].setParent(None)
+                self.pw_prm_sizer_0.removeWidget(self.fileChooserButton[f])
+                self.fileChooserButton[f].setParent(None)
+                self.pw_prm_sizer_0.removeWidget(self.fileChooserCheckBox[f])
+                self.fileChooserCheckBox[f].setParent(None)
     def updateParametersWin(self):
         #if the next block is already stored show it, otherwise copy the values from the previous block
         currBlock = 'b' + str(self.prm["currentBlock"])
@@ -1813,6 +1840,9 @@ class pychControlWin(QtGui.QMainWindow):
         for c in range(len(self.chooser)):
             self.chooser[c].setCurrentIndex(self.prm['chooserOptions'][c].index(self.prm[block]['chooser'][c]))
             self.chooserCheckBox[c].setChecked(self.prm[block]['chooserCheckBox'][c])
+        for f in range(len(self.fileChooser)):
+            self.fileChooser[f].setText(self.prm[block]['fileChooser'][f])
+            self.fileChooserCheckBox[f].setChecked(self.prm[block]['fileChooserCheckBox'][f])
 
         for f in range(len(self.paradigmFieldList)):
             self.paradigmFieldList[f].setText(self.currLocale.toString(self.prm[block]['paradigmField'][f], precision=self.prm["pref"]["general"]["precision"]))
@@ -1822,7 +1852,6 @@ class pychControlWin(QtGui.QMainWindow):
             self.paradigmChooserCheckBoxList[c].setChecked(self.prm[block]['paradigmChooserCheckBox'][c])
 
         self.preTrialSilenceTF.setText(self.currLocale.toString(self.prm[block]['preTrialSilence']))
-        #self.warningInterval.setChecked(self.prm[block]['warningInterval'])
         self.warningIntervalChooser.setCurrentIndex(self.warningIntervalChooser.findText(self.prm[block]['warningInterval']))
         self.warningIntervalDurTF.setText(self.currLocale.toString(self.prm[block]['warningIntervalDur']))
         self.warningIntervalISITF.setText(self.currLocale.toString(self.prm[block]['warningIntervalISI']))
@@ -1932,6 +1961,9 @@ class pychControlWin(QtGui.QMainWindow):
         self.prm[currBlock]['chooserOptions'] = list(range(self.prm['nChoosers']))
         self.prm[currBlock]['chooserCheckBox'] = list(range(self.prm['nChoosers']))
         self.prm[currBlock]['chooserLabel'] = list(range(self.prm['nChoosers']))
+        self.prm[currBlock]['fileChooser'] = list(range(self.prm['nFileChoosers']))
+        self.prm[currBlock]['fileChooserButton'] = list(range(self.prm['nFileChoosers']))
+        self.prm[currBlock]['fileChooserCheckBox'] = list(range(self.prm['nFileChoosers']))
         self.prm[currBlock]['paradigmChooser'] = []
         self.prm[currBlock]['paradigmChooserCheckBox'] = []
         self.prm[currBlock]['paradigmField'] = []
@@ -1985,6 +2017,11 @@ class pychControlWin(QtGui.QMainWindow):
             self.prm[currBlock]['chooserOptions'][c] =  self.chooserOptions[c]
             self.prm[currBlock]['chooserLabel'][c] =  self.chooserLabel[c].text()
             self.prm[currBlock]['chooserCheckBox'][c] =  self.chooserCheckBox[c].isChecked()
+
+        for f in range(self.prm['nFileChoosers']):
+            self.prm[currBlock]['fileChooser'][f] = self.fileChooser[f].text()
+            self.prm[currBlock]['fileChooserButton'][f] =  self.fileChooserButton[f].text()
+            self.prm[currBlock]['fileChooserCheckBox'][f] =  self.fileChooserCheckBox[f].isChecked()
 
         for i in range(len(self.paradigmFieldList)):
             self.prm[currBlock]['paradigmField'].append(self.currLocale.toDouble(self.paradigmFieldList[i].text())[0])
@@ -2064,6 +2101,8 @@ class pychControlWin(QtGui.QMainWindow):
             tmpPrm[currBlock]['fieldCheckBox'] = list(range(tmpPrm['nFields']))
             tmpPrm[currBlock]['chooser'] = list(range(tmpPrm['nChoosers']))
             tmpPrm[currBlock]['chooserCheckBox'] = list(range(tmpPrm['nChoosers']))
+            tmpPrm[currBlock]['fileChooser'] = list(range(tmpPrm['nFileChoosers']))
+            tmpPrm[currBlock]['fileChooserCheckBox'] = list(range(tmpPrm['nFileChoosers']))
             tmpPrm[currBlock]['paradigmChooser'] = []
             tmpPrm[currBlock]['paradigmField'] = []
             tmpPrm[currBlock]['paradigmChooserCheckBox'] = []
@@ -2122,6 +2161,10 @@ class pychControlWin(QtGui.QMainWindow):
             for c in range(tmpPrm['nChoosers']):
                 tmpPrm[currBlock]['chooser'][c] =  self.chooserOptions[c][self.chooser[c].currentIndex()]
                 tmpPrm[currBlock]['chooserCheckBox'][c] =  self.chooserCheckBox[c].isChecked()
+
+            for f in range(tmpPrm['nFileChoosers']):
+                tmpPrm[currBlock]['fileChooser'][f] = self.fileChooser[f].text()
+                tmpPrm[currBlock]['fileChooserCheckBox'][f] = self.fileChooserCheckBox[f].isChecked()
             
             for i in range(len(self.paradigmFieldList)):
                 tmpPrm[currBlock]['paradigmField'].append(self.currLocale.toDouble(self.paradigmFieldList[i].text())[0])
@@ -2137,9 +2180,13 @@ class pychControlWin(QtGui.QMainWindow):
                 prmChanged = True
             if tmpPrm['b'+str(i+1)]['chooser'] != self.prm['b'+str(i+1)]['chooser']:
                 prmChanged = True
+            if tmpPrm['b'+str(i+1)]['fileChooser'] != self.prm['b'+str(i+1)]['fileChooser']:
+                prmChanged = True
             if tmpPrm['b'+str(i+1)]['fieldCheckBox'] != self.prm['b'+str(i+1)]['fieldCheckBox']:
                 prmChanged = True
             if tmpPrm['b'+str(i+1)]['chooserCheckBox'] != self.prm['b'+str(i+1)]['chooserCheckBox']:
+                prmChanged = True
+            if tmpPrm['b'+str(i+1)]['fileChooserCheckBox'] != self.prm['b'+str(i+1)]['fileChooserCheckBox']:
                 prmChanged = True
             if tmpPrm['b'+str(i+1)]['paradigmField'] != self.prm['b'+str(i+1)]['paradigmField']:
                 prmChanged = True
@@ -2177,6 +2224,7 @@ class pychControlWin(QtGui.QMainWindow):
                                             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
             if ret == QtGui.QMessageBox.Yes:
                 self.onClickStoreParametersButton()
+                
     def onClickNewBlockButton(self):
         if self.prm["storedBlocks"] >= self.prm["currentBlock"]:
             self.compareGuiStoredParameters()
@@ -2406,6 +2454,8 @@ class pychControlWin(QtGui.QMainWindow):
             if allLines[i].strip() == '...':
                 foo['b'+str(blockNumber)]['startChooser'] = i+1
             if allLines[i].strip() == '....':
+                foo['b'+str(blockNumber)]['startFileChooser'] = i+1
+            if allLines[i].strip() == '.....':
                 foo['b'+str(blockNumber)]['startField'] = i+1
             if allLines[i] == ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'):
                 foo['b'+str(blockNumber)]['endField'] = i
@@ -2425,6 +2475,9 @@ class pychControlWin(QtGui.QMainWindow):
             tmp['b'+str(blockNumber)]['field'] = []
             tmp['b'+str(blockNumber)]['fieldCheckBox'] = []
             tmp['b'+str(blockNumber)]['fieldLabel'] = []
+            tmp['b'+str(blockNumber)]['fileChooser'] = []
+            tmp['b'+str(blockNumber)]['fileChooserCheckBox'] = []
+            tmp['b'+str(blockNumber)]['fileChooserButton'] = []
             for i in range(foo['b'+str(blockNumber)]['startParadigmField'] - foo['b'+str(blockNumber)]['startParadigmChooser'] -1):
                 tmp['b'+str(blockNumber)]['paradigmChooser'].append(allLines[foo['b'+str(blockNumber)]['startParadigmChooser']+i].split(':')[1].strip())
                 tmp['b'+str(blockNumber)]['paradigmChooserLabel'].append(allLines[foo['b'+str(blockNumber)]['startParadigmChooser']+i].split(':')[0].strip()+':')
@@ -2435,15 +2488,22 @@ class pychControlWin(QtGui.QMainWindow):
                 tmp['b'+str(blockNumber)]['paradigmFieldLabel'].append(allLines[foo['b'+str(blockNumber)]['startParadigmField']+i].split(':')[0].strip())
                 tmp['b'+str(blockNumber)]['paradigmFieldCheckBox'].append(strToBoolean(allLines[foo['b'+str(blockNumber)]['startParadigmField']+i].split(':')[2].strip()))
 
-            for i in range(foo['b'+str(blockNumber)]['startField'] - foo['b'+str(blockNumber)]['startChooser'] -1):
+            for i in range(foo['b'+str(blockNumber)]['startFileChooser'] - foo['b'+str(blockNumber)]['startChooser'] -1):
                 tmp['b'+str(blockNumber)]['chooser'].append(allLines[foo['b'+str(blockNumber)]['startChooser']+i].split(':')[1].strip())
                 tmp['b'+str(blockNumber)]['chooserLabel'].append(allLines[foo['b'+str(blockNumber)]['startChooser']+i].split(':')[0].strip()+':')
                 tmp['b'+str(blockNumber)]['chooserCheckBox'].append(strToBoolean(allLines[foo['b'+str(blockNumber)]['startChooser']+i].split(':')[2].strip()))
+
+            for i in range(foo['b'+str(blockNumber)]['startField'] - foo['b'+str(blockNumber)]['startFileChooser'] -1):
+                tmp['b'+str(blockNumber)]['fileChooser'].append(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(':')[1].strip())
+                tmp['b'+str(blockNumber)]['fileChooserButton'].append(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(':')[0].strip()+':')
+                tmp['b'+str(blockNumber)]['fileChooserCheckBox'].append(strToBoolean(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(':')[2].strip()))
 
             for i in range(foo['b'+str(blockNumber)]['endField'] - foo['b'+str(blockNumber)]['startField'] ):
                 tmp['b'+str(blockNumber)]['field'].append(self.currLocale.toDouble(allLines[foo['b'+str(blockNumber)]['startField']+i].split(':')[1].strip())[0])
                 tmp['b'+str(blockNumber)]['fieldLabel'].append(allLines[foo['b'+str(blockNumber)]['startField']+i].split(':')[0].strip())
                 tmp['b'+str(blockNumber)]['fieldCheckBox'].append(strToBoolean(allLines[foo['b'+str(blockNumber)]['startField']+i].split(':')[2].strip()))
+
+
               
                     
         for i in range(self.prm["storedBlocks"]):
@@ -2563,10 +2623,14 @@ class pychControlWin(QtGui.QMainWindow):
             for k in range(len(self.prm[currBlock]['chooser'])):
                 fName.write(self.prm[currBlock]['chooserLabel'][k] +' ' + self.prm[currBlock]['chooser'][k] + ' :' + str(self.prm[currBlock]['chooserCheckBox'][k]) + '\n')
             fName.write('....\n')
+            for k in range(len(self.prm[currBlock]['fileChooser'])):
+                fName.write(self.prm[currBlock]['fileChooserButton'][k] +': ' + self.prm[currBlock]['fileChooser'][k] + ' :' + str(self.prm[currBlock]['fileChooserCheckBox'][k]) + '\n')
+            fName.write('.....\n')
             for k in range(len(self.prm[currBlock]['field'])):
                 fName.write(self.prm[currBlock]['fieldLabel'][k] + ': ' + self.currLocale.toString(self.prm[currBlock]['field'][k], precision=self.prm["pref"]["general"]["precision"]) + ' :' + str(self.prm[currBlock]['fieldCheckBox'][k]) + '\n')
             fName.write('+++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n')
         fName.close()
+        
     def onClickPrevBlockButton(self):
         self.compareGuiStoredParameters()
         if self.prm["storedBlocks"] > 0:
@@ -2584,9 +2648,11 @@ class pychControlWin(QtGui.QMainWindow):
                 self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
             self.updateParametersWin()
             self.autoSetGaugeValue()
+            
     def onClickNextBlockButton(self):
         self.compareGuiStoredParameters()
         self.moveNextBlock()
+        
     def moveNextBlock(self):
         if self.prm["storedBlocks"] > 0:
             lastBlock = 'b' + str(self.prm["currentBlock"])
@@ -2599,6 +2665,7 @@ class pychControlWin(QtGui.QMainWindow):
                 self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
             self.updateParametersWin()
             self.autoSetGaugeValue()
+            
     def onJumpToBlockChange(self):
         blockToJumpTo = self.jumpToBlockChooser.currentIndex() + 1
         self.compareGuiStoredParameters()
@@ -2609,10 +2676,12 @@ class pychControlWin(QtGui.QMainWindow):
             self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
             self.updateParametersWin()
             self.autoSetGaugeValue()
+            
     def onJumpToPositionChange(self):
         position = self.jumpToPositionChooser.currentIndex() + 1
         self.compareGuiStoredParameters()
         self.moveToBlockPosition(position)
+        
     def onClickPrevBlockPositionButton(self):
         self.compareGuiStoredParameters()
         if self.prm["currentBlock"] > self.prm["storedBlocks"]:
@@ -2620,6 +2689,7 @@ class pychControlWin(QtGui.QMainWindow):
         else:
             position = int(self.prm["b"+str(self.prm["currentBlock"])]["blockPosition"])-1
         self.moveToBlockPosition(position)
+        
     def onClickNextBlockPositionButton(self):
         self.compareGuiStoredParameters()
         if self.prm["currentBlock"] > self.prm["storedBlocks"]:
@@ -2646,6 +2716,7 @@ class pychControlWin(QtGui.QMainWindow):
         if self.prm["storedBlocks"] > 0:
             self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
             self.autoSetGaugeValue()
+            
     def onClickShuffleBlocksButton(self):
         self.compareGuiStoredParameters()
         if self.prm["storedBlocks"] > 1:
@@ -2678,6 +2749,7 @@ class pychControlWin(QtGui.QMainWindow):
             self.updateParametersWin()
             self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
             self.autoSetGaugeValue()
+            
     def autoSetGaugeValue(self):
         bp = int(self.prm['b'+str(self.prm["currentBlock"])]["blockPosition"])
         pcThisRep = (bp-1)/self.prm["storedBlocks"]*100
@@ -2688,6 +2760,7 @@ class pychControlWin(QtGui.QMainWindow):
         cb = (self.prm['currentRepetition']-1)*self.prm["storedBlocks"]+bp
         self.responseBox.blockGauge.setValue(cb-1)
         self.responseBox.blockGauge.setFormat(self.prm['rbTrans'].translate('rb', "Completed") +  ' ' + str(cb-1) + '/' + str(self.prm['storedBlocks']*self.prm['allBlocks']['repetitions']) + ' ' + self.prm['rbTrans'].translate('rb', "Blocks"))
+        
     def swapBlocks(self, b1, b2):
         self.compareGuiStoredParameters()
         if self.prm["storedBlocks"] < 1:
@@ -2706,6 +2779,7 @@ class pychControlWin(QtGui.QMainWindow):
             #self.updateParametersWin()
             self.moveToBlockPosition(int(self.prm['b'+str(b2)]["blockPosition"]))
         return
+    
     def shiftBlock(self, blockNumber, direction):
         if direction == "up":
             if blockNumber == self.prm["storedBlocks"]:
@@ -2718,15 +2792,19 @@ class pychControlWin(QtGui.QMainWindow):
             else:
                 newBlockNumber = blockNumber - 1
         self.swapBlocks(blockNumber, newBlockNumber)
+        
     def onClickShiftBlockDownButton(self):
         self.shiftBlock(self.prm['currentBlock'], 'down')
+        
     def onClickShiftBlockUpButton(self):
         self.shiftBlock(self.prm['currentBlock'], 'up')
+        
     def onChangeNDifferences(self):
         nDifferences = self.currLocale.toInt(self.nDifferencesChooser.currentText())[0]
         self.removePrmWidgets()
         self.par['nDifferences'] = nDifferences
         self.setDefaultParameters(self.currExp, self.currParadigm, self.par)
+        
     def onChangeNTracks(self):
         nTracks = self.currLocale.toInt(self.nTracksChooser.currentText())[0]
         self.removePrmWidgets()
@@ -2736,12 +2814,10 @@ class pychControlWin(QtGui.QMainWindow):
     def onChooserChange(self, selectedOption):
         self.fieldsToHide = []; self.fieldsToShow = []
         self.choosersToHide = []; self.choosersToShow = [];
+        self.fileChoosersToHide = []; self.fileChoosersToShow = [];
 
         execString = self.prm[self.currExp]['execString']
-        ## if  self.prm[self.currExp]['execString'] in default_experiments.__all__:
-        ##     methodToCall1 = getattr(default_experiments, execString)
-        ## else:
-        ##     methodToCall1 = getattr(custom_experiments, execString)
+
         try:
             methodToCall1 = getattr(default_experiments, execString)
         except:
@@ -2771,14 +2847,32 @@ class pychControlWin(QtGui.QMainWindow):
                 self.chooser[self.choosersToShow[i]].show()
                 self.chooserLabel[self.choosersToShow[i]].show()
                 self.chooserCheckBox[self.choosersToShow[i]].show()
+            for i in range(len(self.fileChoosersToHide)):
+                self.fileChooser[self.fileChoosersToHide[i]].hide()
+                self.fileChooserButton[self.fileChoosersToHide[i]].hide()
+                self.fileChooserCheckBox[self.fileChoosersToHide[i]].hide()
+            for i in range(len(self.fileChoosersToShow)):
+                self.fileChooser[self.fileChoosersToHide[i]].show()
+                self.fileChooserButton[self.fileChoosersToHide[i]].show()
+                self.fileChooserCheckBox[self.fileChoosersToHide[i]].show()
 
-
-
+    def fileChooserButtonClicked(self):
+        sender = self.sender()
+        fName = QtGui.QFileDialog.getOpenFileName(self, self.tr("Choose file"), '', self.tr("files (*);;All Files (*)"))
+        lbls = []
+ 
+        if len(fName) > 0: #if the user didn't press cancel
+            for i in range(self.prm['nFileChoosers']):
+                lbls.append(self.fileChooserButton[i].text())
+            self.fileChooser[lbls.index(sender.text())].setText(fName)
+        #print(sender.text())
+        
     def onEditPref(self):
         dialog = preferencesDialog(self)
         if dialog.exec_():
             dialog.permanentApply()
             self.audioManager.initializeAudio()
+            
     def onEditPhones(self):
         currIdx = self.phonesChooser.currentIndex()
         dialog = phonesDialog(self)
@@ -2825,8 +2919,6 @@ class pychControlWin(QtGui.QMainWindow):
         if len(fList) > 0:
            
             resformat = 'table'
-           
-
         #Determine paradigm
 
             f = open(fList[0], "r")
@@ -2859,6 +2951,7 @@ class pychControlWin(QtGui.QMainWindow):
             ret = QtGui.QMessageBox.information(self, self.tr("message"),
                                                 self.tr("No results file has been selected"),
                                                 QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
+            
     def onAbout(self):
         QtGui.QMessageBox.about(self, self.tr("About pychoacoustics"),
                                 self.tr("""<b>Python app for psychoacoustics</b> <br>
@@ -2921,12 +3014,15 @@ class pychControlWin(QtGui.QMainWindow):
 
     def onShowFortune(self):
         dialog = showFortuneDialog(self)
+        
     def onShowManualPdf(self):
         fileToOpen = os.path.abspath(os.path.dirname(__file__)) + '/doc/_build/latex/pychoacoustics.pdf'
         QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(fileToOpen))
+        
     def onShowModulesDoc(self):
         fileToOpen = os.path.abspath(os.path.dirname(__file__)) + '/doc/_build/html/index.html'
         QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(fileToOpen))
+        
     def onSwapBlocksAction(self):
         dialog = swapBlocksDialog(self)
         if dialog.exec_():
@@ -3025,12 +3121,15 @@ class pychControlWin(QtGui.QMainWindow):
             else:
                 newSeq.append(seq[i])
         return newSeq
+    
     def toggleWinPlotCheckBox(self, state):
      if self.winPlotCheckBox.isChecked() == True: #or self.pdfPlotCheckBox.isChecked() == True:
          self.procResTableCheckBox.setChecked(True)
+         
     def togglePdfPlotCheckBox(self, state):
      if self.pdfPlotCheckBox.isChecked() == True: #or self.pdfPlotCheckBox.isChecked() == True:
          self.procResTableCheckBox.setChecked(True)
+         
     def toggleResTableCheckBox(self, state):
         if self.procResTableCheckBox.isChecked() == False:
             self.winPlotCheckBox.setChecked(False)
@@ -3041,6 +3140,7 @@ class dropFrame(QtGui.QFrame):
     def __init__(self, parent):
         QtGui.QFrame.__init__(self, parent)
         self.setAcceptDrops(True)
+        
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls:
             event.accept()

@@ -888,6 +888,7 @@ class responseBox(QtGui.QMainWindow):
                              self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
                              self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+
             for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
                 if self.prm[currBlock]['fieldCheckBox'][i] == True:
                     resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
@@ -2283,7 +2284,9 @@ class responseBox(QtGui.QMainWindow):
             for j in range(len(self.prm[currBlock]['chooser'])):
                 if j not in self.parent().choosersToHide:
                     thisFile.write(self.parent().chooserLabel[j].text() + ' ' + self.prm[currBlock]['chooser'][j] + '\n')
-
+            for j in range(len(self.prm[currBlock]['fileChooser'])):
+                if j not in self.parent().fileChoosersToHide:
+                    thisFile.write(self.parent().fileChooserButton[j].text() + ' ' + self.prm[currBlock]['fileChooser'][j] + '\n')
             for j in range(len(self.prm[currBlock]['field'])):
                 if j not in self.parent().fieldsToHide and self.parent().fieldLabel[j].text()!= "Random Seed":
                     thisFile.write(self.parent().fieldLabel[j].text() + ':  ' + self.currLocale.toString(self.prm[currBlock]['field'][j]) + '\n')
@@ -2445,6 +2448,9 @@ class responseBox(QtGui.QMainWindow):
         for i in range(len(self.prm[currBlock]['chooserCheckBox'])):
             if self.prm[currBlock]['chooserCheckBox'][i] == True:
                 headerToWrite = headerToWrite + self.prm[currBlock]['chooserLabel'][i] + self.prm['pref']["general"]["csvSeparator"]
+        for i in range(len(self.prm[currBlock]['fileChooserCheckBox'])):
+            if self.prm[currBlock]['fileChooserCheckBox'][i] == True:
+                headerToWrite = headerToWrite + self.prm[currBlock]['fileChooserButton'][i] + self.prm['pref']["general"]["csvSeparator"]
         for i in range(len(self.prm[currBlock]['paradigmFieldCheckBox'])):
             if self.prm[currBlock]['paradigmFieldCheckBox'][i] == True:
                 headerToWrite = headerToWrite + self.prm[currBlock]['paradigmFieldLabel'][i] + self.prm['pref']["general"]["csvSeparator"]
