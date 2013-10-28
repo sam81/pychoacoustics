@@ -164,7 +164,6 @@ class responseBox(QtGui.QMainWindow):
         if self.prm['hideWins'] == True:
             self.parent().hide()
         
-        
     def clearLayout(self, layout):
         #http://stackoverflow.com/questions/9374063/pyqt4-remove-widgets-and-layout-as-well
         for i in reversed(range(layout.count())):
@@ -181,8 +180,7 @@ class responseBox(QtGui.QMainWindow):
                 self.clearLayout(item.layout())
 
             # remove the item from layout
-            
-            
+             
     def setupLights(self):
         nIntervals = self.prm['nIntervals']
         nResponseIntervals = nIntervals
@@ -199,7 +197,6 @@ class responseBox(QtGui.QMainWindow):
             self.intervalLight.append(intervalLight(self))
             self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
             n = n+1
-     
                 
         if self.prm[self.parent().currExp]["hasAlternativesChooser"] == True:
             nAlternatives = self.currLocale.toInt(self.parent().nAlternativesChooser.currentText())[0]
@@ -393,7 +390,6 @@ class responseBox(QtGui.QMainWindow):
         
         self.doTrial()
 
-
     def playRandomisedIntervals(self, stimulusCorrect, stimulusIncorrect, preTrialStim=None, precursorStim=None, postCursorStim=None):
         # this randint function comes from numpy and has different behaviour than in the python 'random' module
         # Return random integers x such that low <= x < high
@@ -448,7 +444,6 @@ class responseBox(QtGui.QMainWindow):
             if i < nIntervals-1:
                 time.sleep(self.prm['isi']/1000.)
 
-
     def playSequentialIntervals(self, sndList, ISIList=[], trigNum=None):
         currBlock = 'b'+ str(self.prm['currentBlock'])
         cmd = self.prm['pref']['sound']['playCommand']
@@ -474,9 +469,6 @@ class responseBox(QtGui.QMainWindow):
             if i < (len(sndList) - 1):
                 time.sleep(ISIList[i]/1000)
 
-   
-
-    
     def doTrial(self):
         self.prm['trialRunning'] = True
         self.prm['sortingResponse'] = False
@@ -628,15 +620,7 @@ class responseBox(QtGui.QMainWindow):
         
         time.sleep(self.prm[currBlock]['preTrialSilence']/1000)
         execString = self.prm[currExp]['execString']
-        ## if  self.prm[currExp]['execString'] in default_experiments.__all__:
-        ##     methodToCall1 = getattr(default_experiments, execString)
-        ## else:
-        ##     if os.path.exists(os.path.normpath(customExperimentsPath + '/custom_experiments/__init__.py')) == True:
-        ##         if self.prm[currExp]['execString'] in custom_experiments.__all__:
-        ##             methodToCall1 = getattr(custom_experiments, execString)
-        ##         elif my_audio_exp_exists == True:
-        ##             if self.prm[currExp]['execString'] in my_audio_exp.__all__:
-        ##                 methodToCall1 = getattr(my_audio_exp, execString)
+      
         try:
             methodToCall1 = getattr(default_experiments, execString)
         except:
@@ -700,7 +684,6 @@ class responseBox(QtGui.QMainWindow):
             return
         self.prm['sortingResponse'] = True
 
-
         if self.prm['paradigm'] == self.tr("Adaptive"):
             self.sortResponseAdaptive(buttonClicked, 'transformedUpDown')
         elif self.prm['paradigm'] == self.tr("Adaptive Interleaved"):
@@ -722,6 +705,7 @@ class responseBox(QtGui.QMainWindow):
         elif self.prm['paradigm'] == self.tr("Same Different 4"):
             self.sortResponseSameDifferent4(buttonClicked)
             self.prm['sortingResponse'] = False
+            
     def sortResponseAdaptive(self, buttonClicked, method):
         if self.prm['startOfBlock'] == True:
             self.prm['correctCount'] = 0
@@ -825,7 +809,6 @@ class responseBox(QtGui.QMainWindow):
                 elif self.prm['adaptiveType'] == self.tr("Geometric"):
                     self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * stepSizeUp
 
-
         self.fullFileLog.flush()
         pcDone = (self.prm['nTurnpoints'] / self.prm['totalTurnpoints']) * 100
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
@@ -873,7 +856,6 @@ class responseBox(QtGui.QMainWindow):
             self.resFileLog.flush()
             self.getEndTime()
 
-            
             currBlock = 'b' + str(self.prm['currentBlock'])
             durString = '{0:5.3f}'.format(self.prm['blockEndTime'] - self.prm['blockStartTime'])
             resLineToWrite = '{0:5.3f}'.format(turnpointMean) + self.prm['pref']["general"]["csvSeparator"] + \
@@ -888,44 +870,14 @@ class responseBox(QtGui.QMainWindow):
                              self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
                              self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
-
-            for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
-                if self.prm[currBlock]['fieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['chooserCheckBox'])):
-                if self.prm[currBlock]['chooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['chooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmFieldCheckBox'])):
-                if self.prm[currBlock]['paradigmFieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['paradigmField'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmChooserCheckBox'])):
-                if self.prm[currBlock]['paradigmChooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['paradigmChooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            
-            if self.prm[self.parent().currExp]["hasISIBox"] == True:
-                if self.prm[currBlock]['ISIValCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['ISIVal']) + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[self.parent().currExp]["hasAlternativesChooser"] == True:
-                if self.prm[currBlock]['nIntervalsCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nIntervals']) + self.prm['pref']["general"]["csvSeparator"] 
-                if self.prm[currBlock]['nAlternativesCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nAlternatives']) + self.prm['pref']["general"]["csvSeparator"]
-            ## if self.prm[self.parent().currExp]["hasNComparisonsField"] == True:
-            ##     if self.prm[currBlock]['nComparisonsCheckBox'] == True:
-            ##         resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nComparisons']) + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.prm[currBlock]['responseLight'] + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightDurationCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['responseLightDuration']) + self.prm['pref']["general"]["csvSeparator"]
-                
-
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
             resLineToWrite = resLineToWrite + '\n'
+            
             if method == 'transformedUpDown':
                 self.writeResultsSummaryLine('Adaptive', resLineToWrite)
             elif method == 'weightedUpDown':
                 self.writeResultsSummaryLine('Weighted Up/Down', resLineToWrite)
 
-            
             self.atBlockEnd()
             
         else:
@@ -1136,37 +1088,10 @@ class responseBox(QtGui.QMainWindow):
                              self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
-                if self.prm[currBlock]['fieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['chooserCheckBox'])):
-                if self.prm[currBlock]['chooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['chooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmFieldCheckBox'])):
-                if self.prm[currBlock]['paradigmFieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['paradigmField'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmChooserCheckBox'])):
-                if self.prm[currBlock]['paradigmChooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['paradigmChooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            
-            if self.prm[self.parent().currExp]["hasISIBox"] == True:
-                if self.prm[currBlock]['ISIValCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['ISIVal']) + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[self.parent().currExp]["hasAlternativesChooser"] == True:
-                if self.prm[currBlock]['nIntervalsCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nIntervals']) + self.prm['pref']["general"]["csvSeparator"] 
-                if self.prm[currBlock]['nAlternativesCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nAlternatives']) + self.prm['pref']["general"]["csvSeparator"]
-            ## if self.prm[self.parent().currExp]["hasNComparisonsField"] == True:
-            ##     if self.prm[currBlock]['nComparisonsCheckBox'] == True:
-            ##         resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nComparisons']) + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.prm[currBlock]['responseLight'] + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightDurationCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['responseLightDuration']) + self.prm['pref']["general"]["csvSeparator"]
-                
 
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
             resLineToWrite = resLineToWrite + '\n'
+            
             if method == 'transformedUpDown':
                 self.writeResultsSummaryLine('Adaptive Interleaved', resLineToWrite)
             elif  method == 'weightedUpDown':
@@ -1178,7 +1103,6 @@ class responseBox(QtGui.QMainWindow):
           
         else:
             self.doTrial()
-
 
     def sortResponseConstantMIntervalsNAlternatives(self, buttonClicked):
         if self.prm['startOfBlock'] == True:
@@ -1275,32 +1199,7 @@ class responseBox(QtGui.QMainWindow):
 
             resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nIntervals']) + self.prm['pref']["general"]["csvSeparator"] 
             resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nAlternatives']) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
-                if self.prm[currBlock]['fieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['chooserCheckBox'])):
-                if self.prm[currBlock]['chooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['chooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmFieldCheckBox'])):
-                if self.prm[currBlock]['paradigmFieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['paradigmField'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmChooserCheckBox'])):
-                if self.prm[currBlock]['paradigmChooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['paradigmChooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            
-            if self.prm[self.parent().currExp]["hasISIBox"] == True:
-                if self.prm[currBlock]['ISIValCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['ISIVal']) + self.prm['pref']["general"]["csvSeparator"]
-          
-
-            ## if self.prm[self.parent().currExp]["hasNComparisonsField"] == True:
-            ##     if self.prm[currBlock]['nComparisonsCheckBox'] == True:
-            ##         resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nComparisons']) + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.prm[currBlock]['responseLight'] + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightDurationCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['responseLightDuration']) + self.prm['pref']["general"]["csvSeparator"]
-                
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
 
             resLineToWrite = resLineToWrite + '\n'
             self.writeResultsSummaryLine('Constant m-Intervals n-Alternatives', resLineToWrite)
@@ -1439,32 +1338,7 @@ class responseBox(QtGui.QMainWindow):
 
             resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nIntervals']) + self.prm['pref']["general"]["csvSeparator"] 
             resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nAlternatives']) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
-                if self.prm[currBlock]['fieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['chooserCheckBox'])):
-                if self.prm[currBlock]['chooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['chooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmFieldCheckBox'])):
-                if self.prm[currBlock]['paradigmFieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['paradigmField'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmChooserCheckBox'])):
-                if self.prm[currBlock]['paradigmChooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['paradigmChooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            
-            if self.prm[self.parent().currExp]["hasISIBox"] == True:
-                if self.prm[currBlock]['ISIValCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['ISIVal']) + self.prm['pref']["general"]["csvSeparator"]
-          
-
-            ## if self.prm[self.parent().currExp]["hasNComparisonsField"] == True:
-            ##     if self.prm[currBlock]['nComparisonsCheckBox'] == True:
-            ##         resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nComparisons']) + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.prm[currBlock]['responseLight'] + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightDurationCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['responseLightDuration']) + self.prm['pref']["general"]["csvSeparator"]
-                
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
 
             resLineToWrite = resLineToWrite + '\n'
             self.writeResultsSummaryLine('Multiple Constants m-Intervals n-Alternatives', resLineToWrite)
@@ -1600,38 +1474,10 @@ class responseBox(QtGui.QMainWindow):
                              durString + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
-                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"] 
-            for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
-                if self.prm[currBlock]['fieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['chooserCheckBox'])):
-                if self.prm[currBlock]['chooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['chooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmFieldCheckBox'])):
-                if self.prm[currBlock]['paradigmFieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['paradigmField'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmChooserCheckBox'])):
-                if self.prm[currBlock]['paradigmChooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['paradigmChooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            
-            if self.prm[self.parent().currExp]["hasISIBox"] == True:
-                if self.prm[currBlock]['ISIValCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['ISIVal']) + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[self.parent().currExp]["hasAlternativesChooser"] == True:
-                if self.prm[currBlock]['nIntervalsCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nIntervals']) + self.prm['pref']["general"]["csvSeparator"] 
-                if self.prm[currBlock]['nAlternativesCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nAlternatives']) + self.prm['pref']["general"]["csvSeparator"]
-            ## if self.prm[self.parent().currExp]["hasNComparisonsField"] == True:
-            ##     if self.prm[currBlock]['nComparisonsCheckBox'] == True:
-            ##         resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nComparisons']) + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.prm[currBlock]['responseLight'] + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightDurationCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['responseLightDuration']) + self.prm['pref']["general"]["csvSeparator"]
-                
-
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
             resLineToWrite = resLineToWrite + '\n'
+            
             self.writeResultsSummaryLine('Constant 1-Interval 2-Alternatives', resLineToWrite)
 
             self.atBlockEnd()
@@ -1833,37 +1679,8 @@ class responseBox(QtGui.QMainWindow):
                              durString + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
-                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"] 
-            for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
-                if self.prm[currBlock]['fieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['chooserCheckBox'])):
-                if self.prm[currBlock]['chooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['chooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmFieldCheckBox'])):
-                if self.prm[currBlock]['paradigmFieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['paradigmField'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmChooserCheckBox'])):
-                if self.prm[currBlock]['paradigmChooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['paradigmChooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            
-            if self.prm[self.parent().currExp]["hasISIBox"] == True:
-                if self.prm[currBlock]['ISIValCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['ISIVal']) + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[self.parent().currExp]["hasAlternativesChooser"] == True:
-                if self.prm[currBlock]['nIntervalsCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nIntervals']) + self.prm['pref']["general"]["csvSeparator"] 
-                if self.prm[currBlock]['nAlternativesCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nAlternatives']) + self.prm['pref']["general"]["csvSeparator"]
-            ## if self.prm[self.parent().currExp]["hasNComparisonsField"] == True:
-            ##     if self.prm[currBlock]['nComparisonsCheckBox'] == True:
-            ##         resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nComparisons']) + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.prm[currBlock]['responseLight'] + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightDurationCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['responseLightDuration']) + self.prm['pref']["general"]["csvSeparator"]
-                
-
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
             resLineToWrite = resLineToWrite + '\n'
             self.writeResultsSummaryLine('Multiple Constants 1-Interval 2-Alternatives', resLineToWrite)
 
@@ -2000,37 +1817,8 @@ class responseBox(QtGui.QMainWindow):
                              durString + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
-                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"] 
-            for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
-                if self.prm[currBlock]['fieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['chooserCheckBox'])):
-                if self.prm[currBlock]['chooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['chooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmFieldCheckBox'])):
-                if self.prm[currBlock]['paradigmFieldCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['paradigmField'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm[currBlock]['paradigmChooserCheckBox'])):
-                if self.prm[currBlock]['paradigmChooserCheckBox'][i] == True:
-                    resLineToWrite = resLineToWrite + self.prm[currBlock]['paradigmChooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
-            
-            if self.prm[self.parent().currExp]["hasISIBox"] == True:
-                if self.prm[currBlock]['ISIValCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['ISIVal']) + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[self.parent().currExp]["hasAlternativesChooser"] == True:
-                if self.prm[currBlock]['nIntervalsCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nIntervals']) + self.prm['pref']["general"]["csvSeparator"] 
-                if self.prm[currBlock]['nAlternativesCheckBox'] == True:
-                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nAlternatives']) + self.prm['pref']["general"]["csvSeparator"]
-            ## if self.prm[self.parent().currExp]["hasNComparisonsField"] == True:
-            ##     if self.prm[currBlock]['nComparisonsCheckBox'] == True:
-            ##         resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nComparisons']) + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.prm[currBlock]['responseLight'] + self.prm['pref']["general"]["csvSeparator"]
-            if self.prm[currBlock]['responseLightDurationCheckBox'] == True:
-                resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['responseLightDuration']) + self.prm['pref']["general"]["csvSeparator"]
-                
-
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
             resLineToWrite = resLineToWrite + '\n'
             self.writeResultsSummaryLine('Constant 1-Pair Same/Different', resLineToWrite)
 
@@ -2171,6 +1959,7 @@ class responseBox(QtGui.QMainWindow):
             self.parent().moveToBlockPosition(1)
             if self.prm['allBlocks']['responseMode'] == self.tr("Automatic") or self.prm['allBlocks']['responseMode'] == self.tr("Simulated Listener"):
                 self.onClickStatusButton()
+                
     def atBlockEnd(self):
         self.writeResultsFooter('log');  self.writeResultsFooter('standard')
 
@@ -2200,9 +1989,8 @@ class responseBox(QtGui.QMainWindow):
                 return
         else:
             self.whenFinished()
-
-      
         self.prm['cmdOutFileHandle'].flush()
+        
     def getEndTime(self):
         self.prm['blockEndTime'] = time.time()
         self.prm['blockEndTimeStamp'] = QDateTime.toString(QDateTime.currentDateTime(), self.currLocale.dateTimeFormat(self.currLocale.ShortFormat)) 
@@ -2229,7 +2017,6 @@ class responseBox(QtGui.QMainWindow):
             self.resFile = open(resFilePath, 'a')
             self.fullFile = open(fullFilePath, 'a')
             filesToWrite = [self.resFile, self.fullFile]
-            
             
         currBlock = 'b' + str(self.prm['currentBlock'])
         for i in range(2):
@@ -2306,6 +2093,7 @@ class responseBox(QtGui.QMainWindow):
             thisFile.write('Duration: {} min. \n'.format( (self.prm['blockEndTime'] - self.prm['blockStartTime']) / 60 ))
             thisFile.write('\n')
             thisFile.flush()
+            
     def writeResultsSummaryLine(self, paradigm, resultsLine):
         if paradigm in ['Adaptive', 'Weighted Up/Down']:
             headerToWrite = 'threshold_' +  self.prm['adaptiveType'].lower() + self.prm['pref']["general"]["csvSeparator"] + \
@@ -2469,15 +2257,11 @@ class responseBox(QtGui.QMainWindow):
                 if self.prm[currBlock]['nAlternativesCheckBox'] == True:
                     headerToWrite = headerToWrite + 'Alternatives' + self.prm['pref']["general"]["csvSeparator"]
 
-        ## if self.prm[self.parent().currExp]["hasNComparisonsField"] == True:
-        ##     if self.prm[currBlock]['nComparisonsCheckBox'] == True:
-        ##         headerToWrite = headerToWrite + 'Comparisons' + self.prm['pref']["general"]["csvSeparator"]
         if self.prm[currBlock]['responseLightCheckBox'] == True:
             headerToWrite = headerToWrite + 'Response Light' + self.prm['pref']["general"]["csvSeparator"]
         if self.prm[currBlock]['responseLightDurationCheckBox'] == True:
             headerToWrite = headerToWrite + 'Response Light Duration' + self.prm['pref']["general"]["csvSeparator"]
               
-                
         headerToWrite = headerToWrite + '\n'
         if os.path.exists(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+'.csv') == False: #case 1 file does not exist yet
             self.resFileSummary = open(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+'.csv', 'w')
@@ -2516,6 +2300,47 @@ class responseBox(QtGui.QMainWindow):
             self.resFileSummary.writelines(allLines)
             self.resFileSummary.close()
             
+    def getCommonTabFields(self, resLineToWrite):
+        currBlock = 'b' + str(self.prm['currentBlock'])
+        for i in range(len(self.prm[currBlock]['fieldCheckBox'])):
+            if self.prm[currBlock]['fieldCheckBox'][i] == True:
+                resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['field'][i], precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
+        for i in range(len(self.prm[currBlock]['chooserCheckBox'])):
+            if self.prm[currBlock]['chooserCheckBox'][i] == True:
+                resLineToWrite = resLineToWrite + self.prm[currBlock]['chooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
+
+        for i in range(len(self.prm[currBlock]['fileChooserCheckBox'])):
+            if self.prm[currBlock]['fileChooserCheckBox'][i] == True:
+                resLineToWrite = resLineToWrite + self.prm[currBlock]['fileChooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
+
+        for i in range(len(self.prm[currBlock]['paradigmFieldCheckBox'])):
+            if self.prm[currBlock]['paradigmFieldCheckBox'][i] == True:
+                resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['paradigmField'][i],
+                                                                           precision=self.prm["pref"]["general"]["precision"]) + self.prm['pref']["general"]["csvSeparator"]
+
+        for i in range(len(self.prm[currBlock]['paradigmChooserCheckBox'])):
+            if self.prm[currBlock]['paradigmChooserCheckBox'][i] == True:
+                resLineToWrite = resLineToWrite + self.prm[currBlock]['paradigmChooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
+
+        if self.prm[self.parent().currExp]["hasISIBox"] == True:
+            if self.prm[currBlock]['ISIValCheckBox'] == True:
+                resLineToWrite = resLineToWrite + str(self.prm[currBlock]['ISIVal']) + self.prm['pref']["general"]["csvSeparator"]
+
+        if  self.prm['paradigm'] not in ['Constant m-Intervals n-Alternatives', 'Multiple Constants m-Intervals n-Alternatives']:
+            if self.prm[self.parent().currExp]["hasAlternativesChooser"] == True:
+                if self.prm[currBlock]['nIntervalsCheckBox'] == True:
+                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nIntervals']) + self.prm['pref']["general"]["csvSeparator"] 
+                if self.prm[currBlock]['nAlternativesCheckBox'] == True:
+                    resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nAlternatives']) + self.prm['pref']["general"]["csvSeparator"]
+       
+        if self.prm[currBlock]['responseLightCheckBox'] == True:
+            resLineToWrite = resLineToWrite + self.prm[currBlock]['responseLight'] + self.prm['pref']["general"]["csvSeparator"]
+
+        if self.prm[currBlock]['responseLightDurationCheckBox'] == True:
+                resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['responseLightDuration']) + self.prm['pref']["general"]["csvSeparator"]
+
+        return resLineToWrite
+
     def sendEndNotification(self):
         currBlock = 'b'+ str(self.prm['currentBlock'])
         subject = self.tr("Pychoacoustics Notification: Listener ") + self.prm['listener'] + self.tr(" has ") \
@@ -2582,12 +2407,12 @@ class responseBox(QtGui.QMainWindow):
             processResultsTableMultipleConstantsMIntNAlt([resFilePath], fout=None, separator=separator)
         elif self.prm['paradigm'] in [self.tr("Constant 1-Pair Same/Different")]:
             processResultsTableConstant1PairSameDifferent([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
+
     def plotDataEnd(self, winPlot, pdfPlot):
         if self.prm['appData']['plotting_available']: 
             resFilePath = self.pychovariablesSubstitute[self.pychovariables.index("[resTable]")]
             summaryResFilePath = resFilePath.split('.csv')[0] + '_processed.csv'
             separator = self.parent().prm['pref']["general"]["csvSeparator"]
-
 
             if self.prm['paradigm'] in [self.tr("Adaptive"), self.tr("Weighted Up/Down")]:
                 paradigm = 'adaptive'
@@ -2606,7 +2431,6 @@ class responseBox(QtGui.QMainWindow):
 
             categoricalPlot(self, 'average', summaryResFilePath, winPlot, pdfPlot, paradigm, separator, None, self.prm)
                 
-                
     def parseCustomCommandArguments(self, cmd):
         cmdList = []
         cmdSplit = cmd.split()
@@ -2620,16 +2444,13 @@ class responseBox(QtGui.QMainWindow):
         return parsedCmd
                 
     def playEndMessage(self):
-
         idx = get_list_indices(self.prm['pref']['general']['endMessageFilesUse'], "\u2713")
         idChosen = random.choice(idx)
         msgSnd, fs = self.audioManager.loadWavFile(self.prm['pref']['general']['endMessageFiles'][idChosen], self.prm['pref']['general']['endMessageLevels'][idChosen], self.prm['allBlocks']['maxLevel'], 'Both')
         self.playThread.playThreadedSound(msgSnd, fs, self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['playCommand'], False, 'foo.wav')
 
-  
-                
+          
 class responseLight(QtGui.QWidget):
-
     def __init__(self, parent):
         super(responseLight, self).__init__(parent)
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding,
@@ -2661,8 +2482,6 @@ class responseLight(QtGui.QWidget):
         painter.setBrush(self.lightColor)
         painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
 
-
-   
 class intervalLight(QtGui.QFrame):
 
     def __init__(self, parent):
@@ -2683,7 +2502,6 @@ class intervalLight(QtGui.QFrame):
         painter.setPen(self.borderColor)
         painter.setBrush(self.lightColor)
         painter.fillRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height(), self.lightColor)
-
 
 class threadedPlayer(QThread):
     def __init__(self, parent):
@@ -2709,7 +2527,6 @@ class commandExecuter(QThread):
     def run(self):
         for i in range(len(self.cmd)):
             os.system(self.cmd[i])
-
 
 class emailSender(QThread):
     def __init__(self, parent):
@@ -2738,8 +2555,6 @@ class emailSender(QThread):
             encoders.encode_base64(part)
             part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(filePath))
             msg.attach(part)
-
-
         
         if checkEmailValid(msg["To"]) == False:
             errMsg = self.parent().tr("Experimenter {} e-mail's address {} not valid \n Please specify a valid address for the current experimenter \n in the Edit -> Experimenters dialog".format(self.parent().parent().prm['experimenter']['experimenter_id'][experimenterIdx], msg["To"]))
