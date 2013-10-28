@@ -271,8 +271,9 @@ class preferencesDialog(QtGui.QDialog):
         notificationPrefGrid.addWidget(self.playEndMessage, n, 0)
 
         self.endMessageButton = QtGui.QPushButton(self.tr("Choose Wav"), self)
-        QtCore.QObject.connect(self.endMessageButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickEndMessageButton)
+        #QtCore.QObject.connect(self.endMessageButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickEndMessageButton)
+        self.endMessageButton.clicked.connect(self.onClickEndMessageButton)
         notificationPrefGrid.addWidget(self.endMessageButton, n, 1)
         n = n+1
 
@@ -362,8 +363,9 @@ class preferencesDialog(QtGui.QDialog):
         notificationPrefGrid.addWidget(self.passwordWarningLabel, n, 0, 1, 2)
         n = n+1
         self.testEmailButton = QtGui.QPushButton(self.tr("Send test e-mail"), self)
-        QtCore.QObject.connect(self.testEmailButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickTestEmailButton)
+        #QtCore.QObject.connect(self.testEmailButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickTestEmailButton)
+        self.testEmailButton.clicked.connect(self.onClickTestEmailButton)
         self.testEmailButton.setToolTip(self.tr("Send a test e-mail"))
         notificationPrefGrid.addWidget(self.testEmailButton, n, 0, 1, 2)
         
@@ -408,12 +410,15 @@ class preferencesDialog(QtGui.QDialog):
        
 
         
-        self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                     self, QtCore.SLOT("accept()"))
-        self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                     self, QtCore.SLOT("reject()"))
-        self.connect(buttonBox.button(QtGui.QDialogButtonBox.Apply),
-                     QtCore.SIGNAL("clicked()"), self.permanentApply)
+        # self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
+        #              self, QtCore.SLOT("accept()"))
+        # self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
+        #              self, QtCore.SLOT("reject()"))
+        # self.connect(buttonBox.button(QtGui.QDialogButtonBox.Apply),
+        #              QtCore.SIGNAL("clicked()"), self.permanentApply)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
+        buttonBox.button(QtGui.QDialogButtonBox.Apply).clicked.connect(self.permanentApply)
         
         layout = QtGui.QVBoxLayout()
         layout.addWidget(self.tabWidget)

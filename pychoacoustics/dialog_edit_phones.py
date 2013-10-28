@@ -51,29 +51,35 @@ class phonesDialog(QtGui.QDialog):
         
         self.phonesTableWidget.setHorizontalHeaderLabels([self.tr('Phones'), self.tr('Max Level'), self.tr('Default'), 'id'])
         self.phonesTableWidget.hideColumn(3)
-        self.connect(self.phonesTableWidget, QtCore.SIGNAL("cellDoubleClicked(int,int)"), self.onCellDoubleClicked)
+        #self.connect(self.phonesTableWidget, QtCore.SIGNAL("cellDoubleClicked(int,int)"), self.onCellDoubleClicked)
+        self.phonesTableWidget.cellDoubleClicked[int,int].connect(self.onCellDoubleClicked)
 
         #RENAME Phones BUTTON
         self.renamePhonesButton = QtGui.QPushButton(self.tr("Rename Phones"), self)
-        QtCore.QObject.connect(self.renamePhonesButton,
-                               QtCore.SIGNAL('clicked()'), self.onEditLabel)
+        #QtCore.QObject.connect(self.renamePhonesButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onEditLabel)
+        self.renamePhonesButton.clicked.connect(self.onEditLabel)
         #Change Level Phones BUTTON
         self.changeLevelPhonesButton = QtGui.QPushButton(self.tr("Change Max Level"), self)
-        QtCore.QObject.connect(self.changeLevelPhonesButton,
-                               QtCore.SIGNAL('clicked()'), self.onEditMaxLevel)
+        #QtCore.QObject.connect(self.changeLevelPhonesButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onEditMaxLevel)
+        self.changeLevelPhonesButton.clicked.connect(self.onEditMaxLevel)
         
         #ADD Phones BUTTON
         self.addPhonesButton = QtGui.QPushButton(self.tr("Add Phones"), self)
-        QtCore.QObject.connect(self.addPhonesButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickAddPhonesButton)
+        #QtCore.QObject.connect(self.addPhonesButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickAddPhonesButton)
+        self.addPhonesButton.clicked.connect(self.onClickAddPhonesButton)
         #REMOVE Phones BUTTON
         self.removePhonesButton = QtGui.QPushButton(self.tr("Remove Phones"), self)
-        QtCore.QObject.connect(self.removePhonesButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickRemovePhonesButton)
+        #QtCore.QObject.connect(self.removePhonesButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickRemovePhonesButton)
+        self.removePhonesButton.clicked.connect(self.onClickRemovePhonesButton)
         #Set Default Phones BUTTON
         self.setDefaultPhonesButton = QtGui.QPushButton(self.tr("Set Default"), self)
-        QtCore.QObject.connect(self.setDefaultPhonesButton,
-                               QtCore.SIGNAL('clicked()'), self.onEditDefault)
+        #QtCore.QObject.connect(self.setDefaultPhonesButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onEditDefault)
+        self.setDefaultPhonesButton.clicked.connect(self.onEditDefault)
 
         
 
@@ -146,26 +152,31 @@ class phonesDialog(QtGui.QDialog):
         self.calibSizer.addWidget(self.earChooser, n, 1)
         n = n+1
         self.playCalibButton = QtGui.QPushButton(self.tr("Play"), self)
-        QtCore.QObject.connect(self.playCalibButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickPlayCalibButton)
+        #QtCore.QObject.connect(self.playCalibButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickPlayCalibButton)
+        self.playCalibButton.clicked.connect(self.onClickPlayCalibButton)
         self.playCalibButton.setIcon(QtGui.QIcon.fromTheme("media-playback-start", QtGui.QIcon(":/media-playback-start")))
         self.calibSizer.addWidget(self.playCalibButton, n, 0, 1, 2)
         n = n+1
         self.stopCalibButton = QtGui.QPushButton(self.tr("Stop"), self)
-        QtCore.QObject.connect(self.stopCalibButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickStopCalibButton)
+        #QtCore.QObject.connect(self.stopCalibButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickStopCalibButton)
+        self.stopCalibButton.clicked.connect(self.onClickStopCalibButton)
         self.stopCalibButton.setIcon(QtGui.QIcon.fromTheme("media-playback-stop", QtGui.QIcon(":/media-playback-stop")))
         self.calibSizer.addWidget(self.stopCalibButton, n, 0, 1, 2)
 
         
         buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Apply|QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
         
-        self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                     self, QtCore.SLOT("accept()"))
-        self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                     self, QtCore.SLOT("reject()"))
-        self.connect(buttonBox.button(QtGui.QDialogButtonBox.Apply),
-                     QtCore.SIGNAL("clicked()"), self.permanentApply)
+        #self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
+        #             self, QtCore.SLOT("accept()"))
+        #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
+        #             self, QtCore.SLOT("reject()"))
+        #self.connect(buttonBox.button(QtGui.QDialogButtonBox.Apply),
+        #             QtCore.SIGNAL("clicked()"), self.permanentApply)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
+        buttonBox.button(QtGui.QDialogButtonBox.Apply).clicked.connect(self.permanentApply)
 
         self.sizer.addLayout(self.v1Sizer, 0, 0)
         self.v2Sizer.addLayout(self.calibSizer)

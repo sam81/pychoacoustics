@@ -45,7 +45,8 @@ class experimentersDialog(QtGui.QDialog):
         self.experimenterChooser = QComboBox()
         self.experimenterChooser.addItems(self.tmpPref['experimenter']['experimenter_id'])
         self.sizer.addWidget(self.experimenterChooser, n, 1)
-        self.connect(self.experimenterChooser, QtCore.SIGNAL('activated(QString)'), self.onExperimenterChange)
+        #self.connect(self.experimenterChooser, QtCore.SIGNAL('activated(QString)'), self.onExperimenterChange)
+        self.experimenterChooser.activated[str].connect(self.onExperimenterChange)
         self.currIdx = self.experimenterChooser.currentIndex()
 
         n = n+1
@@ -103,34 +104,41 @@ class experimentersDialog(QtGui.QDialog):
 
         #ADD EXPERIMENTER BUTTON
         addExpButton = QtGui.QPushButton(self.tr("Add Experimenter"), self)
-        QtCore.QObject.connect(addExpButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickAddExpButton)
+        #QtCore.QObject.connect(addExpButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickAddExpButton)
+        addExpButton.clicked.connect(self.onClickAddExpButton)
         self.v2Sizer.addWidget(addExpButton)
         #REMOVE EXPERIMENTER BUTTON
         removeExpButton = QtGui.QPushButton(self.tr("Remove Experimenter"), self)
-        QtCore.QObject.connect(removeExpButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickRemoveExpButton)
+        #QtCore.QObject.connect(removeExpButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickRemoveExpButton)
+        removeExpButton.clicked.connect(self.onClickRemoveExpButton)
         self.v2Sizer.addWidget(removeExpButton)
         #CHANGE ID BUTTON
         changeIdButton = QtGui.QPushButton(self.tr("Change Identifier"), self)
-        QtCore.QObject.connect(changeIdButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickChangeIdButton)
+        #QtCore.QObject.connect(changeIdButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickChangeIdButton)
+        changeIdButton.clicked.connect(self.onClickChangeIdButton)
         self.v2Sizer.addWidget(changeIdButton)
         #SET AS DEFAULT BUTTON
         setAsDefaultButton = QtGui.QPushButton(self.tr("Set as default"), self)
-        QtCore.QObject.connect(setAsDefaultButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickSetAsDefaultButton)
+        #QtCore.QObject.connect(setAsDefaultButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickSetAsDefaultButton)
+        setAsDefaultButton.clicked.connect(self.onClickSetAsDefaultButton)
         self.v2Sizer.addWidget(setAsDefaultButton)
         self.v2Sizer.addStretch()
 
         buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Apply|QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
         
-        self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                     self, QtCore.SLOT("accept()"))
-        self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                     self, QtCore.SLOT("reject()"))
-        self.connect(buttonBox.button(QtGui.QDialogButtonBox.Apply),
-                     QtCore.SIGNAL("clicked()"), self.onClickApplyButton)
+        #self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
+        #             self, QtCore.SLOT("accept()"))
+        #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
+        #             self, QtCore.SLOT("reject()"))
+        #self.connect(buttonBox.button(QtGui.QDialogButtonBox.Apply),
+        #             QtCore.SIGNAL("clicked()"), self.onClickApplyButton)
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
+        buttonBox.button(QtGui.QDialogButtonBox.Apply).clicked.connect(self.onClickApplyButton)
         
         self.h1Sizer.addLayout(self.v2Sizer)
         self.sizer.setAlignment(Qt.AlignTop)
@@ -297,10 +305,13 @@ class applyChanges(QtGui.QDialog):
         n = n+1
         buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|
                                      QtGui.QDialogButtonBox.Cancel)
-        self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                     self, QtCore.SLOT("accept()"))
-        self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                     self, QtCore.SLOT("reject()"))
+        #self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
+        #             self, QtCore.SLOT("accept()"))
+        #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
+        #             self, QtCore.SLOT("reject()"))
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
+
         grid.addWidget(buttonBox, n, 1)
         self.setLayout(grid)
         self.setWindowTitle(self.tr("Apply Changes"))

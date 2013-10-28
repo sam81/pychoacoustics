@@ -90,7 +90,8 @@ class responseBox(QtGui.QMainWindow):
         self.toggleControlWin.setShortcut('Ctrl+C')
         self.toggleControlWin.setCheckable(True)
         #self.toggleControlWin.setStatusTip(self.tr('Toggle Control Window'))
-        self.connect(self.toggleControlWin, QtCore.SIGNAL('triggered()'), self.onToggleControlWin)
+        #self.connect(self.toggleControlWin, QtCore.SIGNAL('triggered()'), self.onToggleControlWin)
+        self.toggleControlWin.triggered.connect(self.onToggleControlWin)
         if self.prm['hideWins'] == True:
             self.toggleControlWin.setChecked(False)
         else:
@@ -99,12 +100,14 @@ class responseBox(QtGui.QMainWindow):
         self.toggleGauge = QtGui.QAction(self.tr('Show/Hide Progress Bar'), self)
         self.toggleGauge.setShortcut('Ctrl+P')
         self.toggleGauge.setCheckable(True)
-        self.connect(self.toggleGauge, QtCore.SIGNAL('triggered()'), self.onToggleGauge)
+        #self.connect(self.toggleGauge, QtCore.SIGNAL('triggered()'), self.onToggleGauge)
+        self.toggleGauge.triggered.connect(self.onToggleGauge)
 
         self.toggleBlockGauge = QtGui.QAction(self.tr('Show/Hide Block Progress Bar'), self)
         self.toggleBlockGauge.setShortcut('Ctrl+B')
         self.toggleBlockGauge.setCheckable(True)
-        self.connect(self.toggleBlockGauge, QtCore.SIGNAL('triggered()'), self.onToggleBlockGauge)
+        #self.connect(self.toggleBlockGauge, QtCore.SIGNAL('triggered()'), self.onToggleBlockGauge)
+        self.toggleBlockGauge.triggered.connect(self.onToggleBlockGauge)
 
         #self.statusBar()
         self.fileMenu.addAction(self.toggleControlWin)
@@ -118,8 +121,9 @@ class responseBox(QtGui.QMainWindow):
         self.responseButtonSizer = QtGui.QGridLayout()
        
         self.statusButton = QtGui.QPushButton(self.prm['rbTrans'].translate('rb', "Wait"), self)
-        QtCore.QObject.connect(self.statusButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickStatusButton)
+        #QtCore.QObject.connect(self.statusButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickStatusButton)
+        self.statusButton.clicked.connect(self.onClickStatusButton)
         self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.statusButton.setProperty("responseBoxButton", True)
         self.statBtnShortcut = QtGui.QShortcut("Ctrl+R", self, activated = self.onClickStatusButton)
@@ -246,8 +250,9 @@ class responseBox(QtGui.QMainWindow):
                     if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
                         self.responseButtonSizer.addItem(QtGui.QSpacerItem(-1, -1, QtGui.QSizePolicy.Expanding), 0, r)
                         r = r+1
-                    QtCore.QObject.connect(self.responseButton[i],
-                                           QtCore.SIGNAL('clicked()'), self.sortResponseButton)
+                    #QtCore.QObject.connect(self.responseButton[i],
+                    #                       QtCore.SIGNAL('clicked()'), self.sortResponseButton)
+                    self.responseButton[i].clicked.connect(self.sortResponseButton)
             elif nAlternatives == nIntervals-1:
                 for i in range(nAlternatives):
                     if self.prm[self.parent().currExp]["hasPrecursorInterval"] == True:
@@ -262,8 +267,9 @@ class responseBox(QtGui.QMainWindow):
                     self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
                     self.responseButton[i].setProperty("responseBoxButton", True)
                     r = r+1
-                    QtCore.QObject.connect(self.responseButton[i],
-                                           QtCore.SIGNAL('clicked()'), self.sortResponseButton)
+                    #QtCore.QObject.connect(self.responseButton[i],
+                    #                       QtCore.SIGNAL('clicked()'), self.sortResponseButton)
+                    self.responseButton[i].clicked.connect(self.sortResponseButton)
                     if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
                         self.responseButtonSizer.addItem(QtGui.QSpacerItem(-1, -1, QtGui.QSizePolicy.Expanding), 0, r)
                         r = r+1
@@ -282,8 +288,9 @@ class responseBox(QtGui.QMainWindow):
                 self.responseButtonSizer.addWidget(self.responseButton[i], 1, i)
                 self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
                 self.responseButton[i].setProperty("responseBoxButton", True)
-                QtCore.QObject.connect(self.responseButton[i],
-                                       QtCore.SIGNAL('clicked()'), self.sortResponseButton)
+                #QtCore.QObject.connect(self.responseButton[i],
+                #                       QtCore.SIGNAL('clicked()'), self.sortResponseButton)
+                self.responseButton[i].clicked.connect(self.sortResponseButton)
         self.showHideIntervalLights(self.prm['intervalLights'])
 
     def showHideIntervalLights(self, status):

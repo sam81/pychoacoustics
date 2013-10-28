@@ -34,8 +34,9 @@ class showFortuneDialog(QtGui.QDialog):
         self.browser = QtGui.QTextBrowser()
         self.browser.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         self.anotherFortuneButton = QtGui.QPushButton(self.tr("One More!"), self)
-        QtCore.QObject.connect(self.anotherFortuneButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickAnotherFortuneButton)
+        #QtCore.QObject.connect(self.anotherFortuneButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickAnotherFortuneButton)
+        self.anotherFortuneButton.clicked.connect(self.onClickAnotherFortuneButton)
         self.hBoxSizer.addWidget(self.anotherFortuneButton)
 
         idx = random.choice(range(len(self.prm['appData']['fortunesList'])))

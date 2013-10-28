@@ -130,19 +130,23 @@ class pychControlWin(QtGui.QMainWindow):
 
         self.onShowManualPdfAction = QtGui.QAction(self.tr('Manual (pdf)'), self)
         self.helpMenu.addAction(self.onShowManualPdfAction)
-        self.connect(self.onShowManualPdfAction, QtCore.SIGNAL('triggered()'), self.onShowManualPdf)
+        #self.connect(self.onShowManualPdfAction, QtCore.SIGNAL('triggered()'), self.onShowManualPdf)
+        self.onShowManualPdfAction.triggered.connect(self.onShowManualPdf)
 
         self.onShowModulesDocAction = QtGui.QAction(self.tr('Manual (html)'), self)
         self.helpMenu.addAction(self.onShowModulesDocAction)
-        self.connect(self.onShowModulesDocAction, QtCore.SIGNAL('triggered()'), self.onShowModulesDoc)
+        #self.connect(self.onShowModulesDocAction, QtCore.SIGNAL('triggered()'), self.onShowModulesDoc)
+        self.onShowModulesDocAction.triggered.connect(self.onShowModulesDoc)
 
         self.onShowFortuneAction = QtGui.QAction(self.tr('Fortunes'), self)
         self.helpMenu.addAction(self.onShowFortuneAction)
-        self.connect(self.onShowFortuneAction, QtCore.SIGNAL('triggered()'), self.onShowFortune)
+        #self.connect(self.onShowFortuneAction, QtCore.SIGNAL('triggered()'), self.onShowFortune)
+        self.onShowFortuneAction.triggered.connect(self.onShowFortune)
         
         self.onAboutAction = QtGui.QAction(QtGui.QIcon.fromTheme("help-about", QtGui.QIcon(":/help-about")), self.tr('About pychoacoustics'), self)
         self.helpMenu.addAction(self.onAboutAction)
-        self.connect(self.onAboutAction, QtCore.SIGNAL('triggered()'), self.onAbout)
+        #self.connect(self.onAboutAction, QtCore.SIGNAL('triggered()'), self.onAbout)
+        self.onAboutAction.triggered.connect(self.onAbout)
 
         #TOOLBAR???
         ## self.toolbar = self.addToolBar('Control Window Toolbar')
@@ -166,7 +170,9 @@ class pychControlWin(QtGui.QMainWindow):
         self.cw.setFrameStyle(QtGui.QFrame.StyledPanel|QtGui.QFrame.Sunken)
         self.pw.setFrameStyle(QtGui.QFrame.StyledPanel|QtGui.QFrame.Sunken)
         self.splitter = QtGui.QSplitter(QtCore.Qt.Horizontal)
-        QtCore.QObject.connect(self.pw, QtCore.SIGNAL("dropped"), self.onDropPrmFile)
+        #QtCore.QObject.connect(self.pw, QtCore.SIGNAL("dropped"), self.onDropPrmFile)
+        self.pw.drpd.connect(self.onDropPrmFile)
+
 
         self.onWhatsThisAction = QtGui.QAction(QtGui.QIcon.fromTheme("help-contextual", QtGui.QIcon(":/help-contextual")), self.tr('?'), self)
         self.menubar.addAction(self.onWhatsThisAction)
@@ -189,7 +195,8 @@ class pychControlWin(QtGui.QMainWindow):
         self.listenerTF = QLineEdit("")
         if 'listener' in self.prm:
             self.listenerTF.setText(self.prm['listener'])
-        self.connect(self.listenerTF, QtCore.SIGNAL('editingFinished()'), self.onListenerChange)
+        #self.connect(self.listenerTF, QtCore.SIGNAL('editingFinished()'), self.onListenerChange)
+        self.listenerTF.editingFinished.connect(self.onListenerChange)
         self.listenerTF.setWhatsThis(self.tr("Set a label (e.g. initials, or full name) for the listener being tested."))
         self.def_widg_sizer.addWidget(self.listenerTF, n, 1)
         #EXPERIMENT LABEL
@@ -207,7 +214,8 @@ class pychControlWin(QtGui.QMainWindow):
             self.sessionLabelTF.setText(self.prm['sessionLabel'])
         self.def_widg_sizer.addWidget(self.sessionLabelTF, n, 3)
         self.sessionLabelTF.setWhatsThis(self.tr("Set a label for the current experimental session. It can be a number or a descriptive word."))
-        self.connect(self.sessionLabelTF, QtCore.SIGNAL('editingFinished()'), self.onSessionLabelChange)
+        #self.connect(self.sessionLabelTF, QtCore.SIGNAL('editingFinished()'), self.onSessionLabelChange)
+        self.sessionLabelTF.editingFinished.connect(self.onSessionLabelChange)
         #CONDITION LABEL
         n = n+1
         self.conditionLabelLabel = QLabel(self.tr('Condition Label:'), self)
@@ -235,18 +243,21 @@ class pychControlWin(QtGui.QMainWindow):
         self.def_widg_sizer.addWidget(self.procResCheckBox, n, 0)
         #PROC RES TABLE
         self.procResTableCheckBox = QtGui.QCheckBox(self.tr('Proc. Res. Table'))
-        self.connect(self.procResTableCheckBox, QtCore.SIGNAL('stateChanged(int)'), self.toggleResTableCheckBox)
+        #self.connect(self.procResTableCheckBox, QtCore.SIGNAL('stateChanged(int)'), self.toggleResTableCheckBox)
+        self.procResTableCheckBox.stateChanged[int].connect(self.toggleResTableCheckBox)
         self.def_widg_sizer.addWidget(self.procResTableCheckBox, n, 1)
         n = n+1
         #PLOT
         self.winPlotCheckBox = QtGui.QCheckBox(self.tr('Plot'))
-        self.connect(self.winPlotCheckBox, QtCore.SIGNAL('stateChanged(int)'), self.toggleWinPlotCheckBox)
+        #self.connect(self.winPlotCheckBox, QtCore.SIGNAL('stateChanged(int)'), self.toggleWinPlotCheckBox)
+        self.winPlotCheckBox.stateChanged[int].connect(self.toggleWinPlotCheckBox)
         self.def_widg_sizer.addWidget(self.winPlotCheckBox, n, 0)
         if self.prm['appData']['plotting_available'] == False:
             self.winPlotCheckBox.hide()
         #PDF PLOT
         self.pdfPlotCheckBox = QtGui.QCheckBox(self.tr('PDF Plot'))
-        self.connect(self.pdfPlotCheckBox, QtCore.SIGNAL('stateChanged(int)'), self.togglePdfPlotCheckBox)
+        #self.connect(self.pdfPlotCheckBox, QtCore.SIGNAL('stateChanged(int)'), self.togglePdfPlotCheckBox)
+        self.pdfPlotCheckBox.stateChanged[int].connect(self.togglePdfPlotCheckBox)
         self.def_widg_sizer.addWidget(self.pdfPlotCheckBox, n, 1)
         if self.prm['appData']['plotting_available'] == False:
             self.pdfPlotCheckBox.hide()
@@ -266,7 +277,8 @@ class pychControlWin(QtGui.QMainWindow):
         self.experimentChooser = QComboBox()
         self.experimentChooser.addItems(self.prm['experimentsChoices'])
         self.def_widg_sizer.addWidget(self.experimentChooser, n, 1)
-        self.connect(self.experimentChooser, SIGNAL('activated(QString)'), self.onExperimentChange)
+        #self.connect(self.experimentChooser, SIGNAL('activated(QString)'), self.onExperimentChange)
+        self.experimentChooser.activated[str].connect(self.onExperimentChange)
         #PARADIGM
         n = n+1
         self.paradigmLabel = QLabel(self.tr("Paradigm:"), self)
@@ -275,7 +287,8 @@ class pychControlWin(QtGui.QMainWindow):
         self.paradigmChooser.addItems(self.prm[self.tr('Audiogram')]['paradigmChoices'])
         self.paradigmChooser.setCurrentIndex(1)
         self.def_widg_sizer.addWidget(self.paradigmChooser, n, 1)
-        self.connect(self.paradigmChooser, SIGNAL('activated(QString)'), self.onParadigmChange)
+        #self.connect(self.paradigmChooser, SIGNAL('activated(QString)'), self.onParadigmChange)
+        self.paradigmChooser.activated[str].connect(self.onParadigmChange)
         #PHONES
         n = n+1
         self.phonesLabel = QLabel(self.tr("Phones:"), self)
@@ -323,15 +336,12 @@ class pychControlWin(QtGui.QMainWindow):
         self.def_widg_sizer.addWidget(self.preTrialSilenceTF, n, 1)
         #Warning Interval
         n = n+1
-        ## self.warningInterval = QCheckBox(self.tr("Warning Interval"), self)
-        ## self.warningInterval.setChecked(False)
-        ## self.connect(self.warningInterval, QtCore.SIGNAL('stateChanged(int)'), self.onWarningIntervalChange)
-        ## self.def_widg_sizer.addWidget(self.warningInterval, n, 0)
         self.warningIntervalLabel =  QLabel(self.tr("Warning Interval:"), self)
         self.warningIntervalChooser = QComboBox()
         self.warningIntervalChooser.addItems([self.tr("Yes"), self.tr("No")])
         self.warningIntervalChooser.setCurrentIndex(self.warningIntervalChooser.findText(self.tr("No")))
-        self.connect(self.warningIntervalChooser, SIGNAL('activated(QString)'), self.onWarningIntervalChange)
+        #self.connect(self.warningIntervalChooser, SIGNAL('activated(QString)'), self.onWarningIntervalChange)
+        self.warningIntervalChooser.activated[str].connect(self.onWarningIntervalChange)
         self.def_widg_sizer.addWidget(self.warningIntervalLabel, n, 0)
         self.def_widg_sizer.addWidget(self.warningIntervalChooser, n, 1)
         n = n+1
@@ -362,7 +372,8 @@ class pychControlWin(QtGui.QMainWindow):
         self.intervalLightsChooser.addItems([self.tr("Yes"), self.tr("No")])
         self.intervalLightsChooser.setCurrentIndex(self.intervalLightsChooser.findText(self.prm['intervalLights']))
         self.def_widg_sizer.addWidget(self.intervalLightsChooser, n, 1)
-        self.connect(self.intervalLightsChooser, SIGNAL('activated(QString)'), self.onIntervalLightsChange)
+        #self.connect(self.intervalLightsChooser, SIGNAL('activated(QString)'), self.onIntervalLightsChange)
+        self.intervalLightsChooser.activated[str].connect(self.onIntervalLightsChange)
         #RESULTS FILE
         n = n+1
         self.saveResultsLabel =  QLabel(self.tr("Results File:"), self)
@@ -372,8 +383,9 @@ class pychControlWin(QtGui.QMainWindow):
         
         self.def_widg_sizer.setRowMinimumHeight(0, min_pw_butt_size)
         self.saveResultsButton = QtGui.QPushButton(self.tr("Choose Results File"), self)
-        QtCore.QObject.connect(self.saveResultsButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickSaveResultsButton)
+        #QtCore.QObject.connect(self.saveResultsButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickSaveResultsButton)
+        self.saveResultsButton.clicked.connect(self.onClickSaveResultsButton)
         self.saveResultsButton.setIcon(QtGui.QIcon.fromTheme("document-save", QtGui.QIcon(":/document-save")))
         self.saveResultsButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.saveResultsButton.setToolTip(self.tr("Choose file to save results"))
@@ -406,7 +418,8 @@ class pychControlWin(QtGui.QMainWindow):
         self.responseModeChooser = QComboBox()
         self.responseModeChooser.addItems(self.prm['responseModeChoices'])
         self.responseModeChooser.setCurrentIndex(self.prm['responseModeChoices'].index(QApplication.translate("",self.prm['pref']['general']['defaultResponseMode'],"", QApplication.UnicodeUTF8)))
-        self.connect(self.responseModeChooser, SIGNAL('activated(QString)'), self.onResponseModeChange)
+        #self.connect(self.responseModeChooser, SIGNAL('activated(QString)'), self.onResponseModeChange)
+        self.responseModeChooser.activated[str].connect(self.onResponseModeChange)
         self.def_widg_sizer2.addWidget(self.responseModeChooser, 2, 1)
         
 
@@ -437,8 +450,9 @@ class pychControlWin(QtGui.QMainWindow):
         self.loadParametersButton = QtGui.QPushButton(self.tr("Load Prm"), self)
         self.loadParametersButton.setIcon(QtGui.QIcon.fromTheme("document-open", QtGui.QIcon(":/document-open")))
         self.loadParametersButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
-        QtCore.QObject.connect(self.loadParametersButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickLoadParametersButton)
+        #QtCore.QObject.connect(self.loadParametersButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickLoadParametersButton)
+        self.loadParametersButton.clicked.connect(self.onClickLoadParametersButton)
         self.loadParametersButton.setToolTip(self.tr("Load a parameters file"))
         self.loadParametersButton.setWhatsThis(self.tr("Load a file containing the parameters for an experimental session"))
         self.loadParametersButton.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
@@ -448,8 +462,9 @@ class pychControlWin(QtGui.QMainWindow):
         self.saveParametersButton = QtGui.QPushButton(self.tr("Save Prm"), self)
         self.saveParametersButton.setIcon(QtGui.QIcon.fromTheme("document-save", QtGui.QIcon(":/document-save")))
         self.saveParametersButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
-        QtCore.QObject.connect(self.saveParametersButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickSaveParametersButton)
+        #QtCore.QObject.connect(self.saveParametersButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickSaveParametersButton)
+        self.saveParametersButton.clicked.connect(self.onClickSaveParametersButton)
         self.saveParametersButton.setToolTip(self.tr("Save a parameters file"))
         self.saveParametersButton.setWhatsThis(self.tr("Save the current experimental parameters to a file"))
         self.saveParametersButton.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
@@ -457,8 +472,9 @@ class pychControlWin(QtGui.QMainWindow):
 
         #DELETE PARAMETERS BUTTON
         self.deleteParametersButton = QtGui.QPushButton(self.tr("Delete"), self)
-        QtCore.QObject.connect(self.deleteParametersButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickDeleteParametersButton)
+        #QtCore.QObject.connect(self.deleteParametersButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickDeleteParametersButton)
+        self.deleteParametersButton.clicked.connect(self.onClickDeleteParametersButton)
         self.deleteParametersButton.setIcon(QtGui.QIcon.fromTheme("edit-delete", QtGui.QIcon(":/edit-delete")))
         self.deleteParametersButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.deleteParametersButton.setToolTip(self.tr("Delete current Block"))
@@ -467,8 +483,9 @@ class pychControlWin(QtGui.QMainWindow):
 
      
         self.undoUnsavedButton = QtGui.QPushButton(self.tr("Undo Unsaved"), self)
-        QtCore.QObject.connect(self.undoUnsavedButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickUndoUnsavedButton)
+        #QtCore.QObject.connect(self.undoUnsavedButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickUndoUnsavedButton)
+        self.undoUnsavedButton.clicked.connect(self.onClickUndoUnsavedButton)
         self.undoUnsavedButton.setIcon(QtGui.QIcon.fromTheme("edit-undo", QtGui.QIcon(":/edit-undo")))
         self.undoUnsavedButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.undoUnsavedButton.setToolTip(self.tr("Undo unsaved changes"))
@@ -478,8 +495,9 @@ class pychControlWin(QtGui.QMainWindow):
         #---- SECOND ROW
         n = n+1
         self.storeParametersButton = QtGui.QPushButton(self.tr("Store"), self)
-        QtCore.QObject.connect(self.storeParametersButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickStoreParametersButton)
+        #QtCore.QObject.connect(self.storeParametersButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickStoreParametersButton)
+        self.storeParametersButton.clicked.connect(self.onClickStoreParametersButton)
         self.storeParametersButton.setIcon(QtGui.QIcon.fromTheme("media-flash-memory-stick", QtGui.QIcon(":/media-flash-memory-stick")))
         self.storeParametersButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.storeParametersButton.setToolTip(self.tr("Store current Block"))
@@ -487,22 +505,25 @@ class pychControlWin(QtGui.QMainWindow):
         self.pw_buttons_sizer.addWidget(self.storeParametersButton, n, 0)
 
         self.storeandaddParametersButton = QtGui.QPushButton(self.tr("Store 'n' add!"), self)
-        QtCore.QObject.connect(self.storeandaddParametersButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickStoreandaddParametersButton)
+        #QtCore.QObject.connect(self.storeandaddParametersButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickStoreandaddParametersButton)
+        self.storeandaddParametersButton.clicked.connect(self.onClickStoreandaddParametersButton)
         self.storeandaddParametersButton.setToolTip(self.tr("Store current Block and add a new one"))
         self.storeandaddParametersButton.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         self.pw_buttons_sizer.addWidget(self.storeandaddParametersButton, n, 1)
         
         self.storeandgoParametersButton = QtGui.QPushButton(self.tr("Store 'n' go!"), self)
-        QtCore.QObject.connect(self.storeandgoParametersButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickStoreandgoParametersButton)
+        #QtCore.QObject.connect(self.storeandgoParametersButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickStoreandgoParametersButton)
+        self.storeandgoParametersButton.clicked.connect(self.onClickStoreandgoParametersButton)
         self.storeandgoParametersButton.setToolTip(self.tr("Store current Block and move to the next"))
         self.storeandgoParametersButton.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         self.pw_buttons_sizer.addWidget(self.storeandgoParametersButton, n, 2)
 
         self.newBlockButton = QtGui.QPushButton(self.tr("New Block"), self)
-        QtCore.QObject.connect(self.newBlockButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickNewBlockButton)
+        #QtCore.QObject.connect(self.newBlockButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickNewBlockButton)
+        self.newBlockButton.clicked.connect(self.onClickNewBlockButton)
         self.newBlockButton.setIcon(QtGui.QIcon.fromTheme("document-new", QtGui.QIcon(":/document-new")))
         self.newBlockButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.newBlockButton.setToolTip(self.tr("Append a new block"))
@@ -515,8 +536,9 @@ class pychControlWin(QtGui.QMainWindow):
         #---- THIRD ROW
         n = n+1
         self.prevBlockButton = QtGui.QPushButton(self.tr("Previous"), self)
-        QtCore.QObject.connect(self.prevBlockButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickPrevBlockButton)
+        #QtCore.QObject.connect(self.prevBlockButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickPrevBlockButton)
+        self.prevBlockButton.clicked.connect(self.onClickPrevBlockButton)
         self.prevBlockButton.setIcon(QtGui.QIcon.fromTheme("go-previous", QtGui.QIcon(":/go-previous")))
         self.prevBlockButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.prevBlockButton.setToolTip(self.tr("Move to previous block"))
@@ -524,8 +546,9 @@ class pychControlWin(QtGui.QMainWindow):
         self.pw_buttons_sizer.addWidget(self.prevBlockButton, n, 0)
 
         self.nextBlockButton = QtGui.QPushButton(self.tr("Next"), self)
-        QtCore.QObject.connect(self.nextBlockButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickNextBlockButton)
+        #QtCore.QObject.connect(self.nextBlockButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickNextBlockButton)
+        self.nextBlockButton.clicked.connect(self.onClickNextBlockButton)
         self.nextBlockButton.setIcon(QtGui.QIcon.fromTheme("go-next", QtGui.QIcon(":/go-next")))
         self.nextBlockButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.nextBlockButton.setToolTip(self.tr("Move to next block"))
@@ -533,8 +556,9 @@ class pychControlWin(QtGui.QMainWindow):
         self.pw_buttons_sizer.addWidget(self.nextBlockButton, n, 1)
 
         self.shuffleBlocksButton = QtGui.QPushButton(self.tr("Shuffle"), self)
-        QtCore.QObject.connect(self.shuffleBlocksButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickShuffleBlocksButton)
+        #QtCore.QObject.connect(self.shuffleBlocksButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickShuffleBlocksButton)
+        self.shuffleBlocksButton.clicked.connect(self.onClickShuffleBlocksButton)
         self.shuffleBlocksButton.setIcon(QtGui.QIcon.fromTheme("media-playlist-shuffle", QtGui.QIcon(":/media-playlist-shuffle")))
         self.shuffleBlocksButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.shuffleBlocksButton.setToolTip(self.tr("Shuffle blocks"))
@@ -542,8 +566,9 @@ class pychControlWin(QtGui.QMainWindow):
         self.pw_buttons_sizer.addWidget(self.shuffleBlocksButton, n, 2)
         
         self.resetParametersButton = QtGui.QPushButton(self.tr("Reset"), self)
-        QtCore.QObject.connect(self.resetParametersButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickResetParametersButton)
+        #QtCore.QObject.connect(self.resetParametersButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickResetParametersButton)
+        self.resetParametersButton.clicked.connect(self.onClickResetParametersButton)
         self.resetParametersButton.setIcon(QtGui.QIcon.fromTheme("go-home", QtGui.QIcon(":/go-home")))
         self.resetParametersButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.resetParametersButton.setToolTip(self.tr("Reset parameters"))
@@ -579,42 +604,48 @@ class pychControlWin(QtGui.QMainWindow):
         
         self.jumpToBlockLabel = QLabel(self.tr("Jump to Block:"))
         self.jumpToBlockChooser = QComboBox()
-        self.connect(self.jumpToBlockChooser, QtCore.SIGNAL('activated(QString)'), self.onJumpToBlockChange)
+        #self.connect(self.jumpToBlockChooser, QtCore.SIGNAL('activated(QString)'), self.onJumpToBlockChange)
+        self.jumpToBlockChooser.activated[str].connect(self.onJumpToBlockChange)
         self.pw_buttons_sizer.addWidget(self.jumpToBlockLabel, n, 2)
         self.pw_buttons_sizer.addWidget(self.jumpToBlockChooser, n, 3)
         # SIXTH ROW
         n = n+1
         self.prevBlockPositionButton = QtGui.QPushButton(self.tr("Previous Position"), self)
-        QtCore.QObject.connect(self.prevBlockPositionButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickPrevBlockPositionButton)
+        #QtCore.QObject.connect(self.prevBlockPositionButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickPrevBlockPositionButton)
+        self.prevBlockPositionButton.clicked.connect(self.onClickPrevBlockPositionButton)
         self.prevBlockPositionButton.setIcon(QtGui.QIcon.fromTheme("go-previous", QtGui.QIcon(":/go-previous")))
         self.prevBlockPositionButton.setToolTip(self.tr("Move to previous block position"))
         self.pw_buttons_sizer.addWidget(self.prevBlockPositionButton, n, 0)
 
         self.nextBlockPositionButton = QtGui.QPushButton(self.tr("Next Position"), self)
-        QtCore.QObject.connect(self.nextBlockPositionButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickNextBlockPositionButton)
+        #QtCore.QObject.connect(self.nextBlockPositionButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickNextBlockPositionButton)
+        self.nextBlockPositionButton.clicked.connect(self.onClickNextBlockPositionButton)
         self.nextBlockPositionButton.setIcon(QtGui.QIcon.fromTheme("go-next", QtGui.QIcon(":/go-next")))
         self.nextBlockPositionButton.setToolTip(self.tr("Move to next block position"))
         self.pw_buttons_sizer.addWidget(self.nextBlockPositionButton, n, 1)
 
         self.jumpToPositionLabel = QLabel(self.tr("Jump to Position:"))
         self.jumpToPositionChooser = QComboBox()
-        self.connect(self.jumpToPositionChooser, QtCore.SIGNAL('activated(QString)'), self.onJumpToPositionChange)
+        #self.connect(self.jumpToPositionChooser, QtCore.SIGNAL('activated(QString)'), self.onJumpToPositionChange)
+        self.jumpToPositionChooser.activated[str].connect(self.onJumpToPositionChange)
         self.pw_buttons_sizer.addWidget(self.jumpToPositionLabel, n, 2)
         self.pw_buttons_sizer.addWidget(self.jumpToPositionChooser, n, 3)
 
         # SEVENTH ROW
         n = n+1
         self.shiftBlockDownButton = QtGui.QPushButton(self.tr("< Shift Blk. Down"), self)
-        QtCore.QObject.connect(self.shiftBlockDownButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickShiftBlockDownButton)
+        #QtCore.QObject.connect(self.shiftBlockDownButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickShiftBlockDownButton)
+        self.shiftBlockDownButton.clicked.connect(self.onClickShiftBlockDownButton)
         self.shiftBlockDownButton.setToolTip(self.tr("Shift Block. Down"))
         self.pw_buttons_sizer.addWidget(self.shiftBlockDownButton, n, 2)
 
         self.shiftBlockUpButton = QtGui.QPushButton(self.tr("Shift Blk. Up >"), self)
-        QtCore.QObject.connect(self.shiftBlockUpButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickShiftBlockUpButton)
+        #QtCore.QObject.connect(self.shiftBlockUpButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickShiftBlockUpButton)
+        self.shiftBlockUpButton.clicked.connect(self.onClickShiftBlockUpButton)
         self.shiftBlockUpButton.setToolTip(self.tr("Shift Block Up"))
         self.pw_buttons_sizer.addWidget(self.shiftBlockUpButton, n, 3)
         
@@ -725,7 +756,8 @@ class pychControlWin(QtGui.QMainWindow):
             else:
                 self.nIntervalsChooser.setCurrentIndex(0)
             self.add_widg_sizer.addWidget(self.nIntervalsChooser, n, 2)
-            self.connect(self.nIntervalsChooser, SIGNAL('activated(QString)'), self.onNIntervalsChange)
+            #self.connect(self.nIntervalsChooser, SIGNAL('activated(QString)'), self.onNIntervalsChange)
+            self.nIntervalsChooser.activated[str].connect(self.onNIntervalsChange)
             self.nIntervalsCheckBox = QCheckBox()
             self.add_widg_sizer.addWidget(self.nIntervalsCheckBox, n, 0)
             self.additionalWidgetsChooserList.append(self.nIntervalsChooser)
@@ -738,7 +770,8 @@ class pychControlWin(QtGui.QMainWindow):
             self.nAlternativesChooser.addItems([str(self.currLocale.toInt(self.nIntervalsChooser.currentText())[0]-1), self.nIntervalsChooser.currentText()])
             self.nAlternativesChooser.setCurrentIndex(self.nAlternativesChooser.findText(str(self.prm['nAlternatives'])))
             self.add_widg_sizer.addWidget(self.nAlternativesChooser, n, 2)
-            self.connect(self.nAlternativesChooser, SIGNAL('activated(QString)'), self.onNAlternativesChange)
+            #self.connect(self.nAlternativesChooser, SIGNAL('activated(QString)'), self.onNAlternativesChange)
+            self.nAlternativesChooser.activated[str].connect(self.onNAlternativesChange)
             self.nAlternativesCheckBox = QCheckBox()
             self.add_widg_sizer.addWidget(self.nAlternativesCheckBox, n, 0)
             self.additionalWidgetsChooserList.append(self.nAlternativesChooser)
@@ -753,7 +786,8 @@ class pychControlWin(QtGui.QMainWindow):
             self.preTrialIntervalChooser = QComboBox()
             self.preTrialIntervalChooser.addItems([self.tr("Yes"), self.tr("No")])
             self.preTrialIntervalChooser.setCurrentIndex(1)
-            self.connect(self.preTrialIntervalChooser, SIGNAL('activated(QString)'), self.onPreTrialIntervalChange)
+            #self.connect(self.preTrialIntervalChooser, SIGNAL('activated(QString)'), self.onPreTrialIntervalChange)
+            self.preTrialIntervalChooser.activated[str].connect(self.onPreTrialIntervalChange)
             self.add_widg_sizer.addWidget(self.preTrialIntervalChooser, n, 2)
             self.preTrialIntervalCheckBox = QCheckBox()
             self.add_widg_sizer.addWidget(self.preTrialIntervalCheckBox, n, 0)
@@ -789,7 +823,8 @@ class pychControlWin(QtGui.QMainWindow):
             self.precursorIntervalChooser = QComboBox()
             self.precursorIntervalChooser.addItems([self.tr("Yes"), self.tr("No")])
             self.precursorIntervalChooser.setCurrentIndex(1)
-            self.connect(self.precursorIntervalChooser, SIGNAL('activated(QString)'), self.onPrecursorIntervalChange)
+            #self.connect(self.precursorIntervalChooser, SIGNAL('activated(QString)'), self.onPrecursorIntervalChange)
+            self.precursorIntervalChooser.activated[str].connect(self.onPrecursorIntervalChange)
             self.add_widg_sizer.addWidget(self.precursorIntervalChooser, n, 2)
             self.precursorIntervalCheckBox = QCheckBox()
             self.add_widg_sizer.addWidget(self.precursorIntervalCheckBox, n, 0)
@@ -825,7 +860,8 @@ class pychControlWin(QtGui.QMainWindow):
             self.postcursorIntervalChooser = QComboBox()
             self.postcursorIntervalChooser.addItems([self.tr("Yes"), self.tr("No")])
             self.postcursorIntervalChooser.setCurrentIndex(1)
-            self.connect(self.postcursorIntervalChooser, SIGNAL('activated(QString)'), self.onPostcursorIntervalChange)
+            #self.connect(self.postcursorIntervalChooser, SIGNAL('activated(QString)'), self.onPostcursorIntervalChange)
+            self.postcursorIntervalChooser.activated[str].connect(self.onPostcursorIntervalChange)
             self.add_widg_sizer.addWidget(self.postcursorIntervalChooser, n, 2)
             self.postcursorIntervalCheckBox = QCheckBox()
             self.add_widg_sizer.addWidget(self.postcursorIntervalCheckBox, n, 0)
@@ -1110,7 +1146,8 @@ class pychControlWin(QtGui.QMainWindow):
             nTracks = self.par['nDifferences']
             self.nTracksChooser.setCurrentIndex(self.nTracksOptionsList.index(str(nTracks)))
             self.paradigm_widg_sizer.addWidget(self.nTracksChooser, n, 2)
-            self.connect(self.nTracksChooser, SIGNAL('activated(QString)'), self.onChangeNTracks)
+            #self.connect(self.nTracksChooser, SIGNAL('activated(QString)'), self.onChangeNTracks)
+            self.nTracksChooser.activated[str].connect(self.onChangeNTracks)
             self.nTracksCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.nTracksCheckBox, n, 0)
             if self.prm[self.currExp]["hasNTracksChooser"] == True:
@@ -1303,7 +1340,8 @@ class pychControlWin(QtGui.QMainWindow):
             nTracks = self.par['nDifferences']
             self.nTracksChooser.setCurrentIndex(self.nTracksOptionsList.index(str(nTracks)))
             self.paradigm_widg_sizer.addWidget(self.nTracksChooser, n, 2)
-            self.connect(self.nTracksChooser, SIGNAL('activated(QString)'), self.onChangeNTracks)
+            #self.connect(self.nTracksChooser, SIGNAL('activated(QString)'), self.onChangeNTracks)
+            self.nTracksChooser.activated[str].connect(self.onChangeNTracks)
             self.nTracksCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.nTracksCheckBox, n, 0)
             if self.prm[self.currExp]["hasNTracksChooser"] == True:
@@ -1522,7 +1560,8 @@ class pychControlWin(QtGui.QMainWindow):
           
             self.nDifferencesChooser.setCurrentIndex(self.nDifferencesOptionsList.index(str(self.par["nDifferences"])))
             self.paradigm_widg_sizer.addWidget(self.nDifferencesChooser, n, 2)
-            self.connect(self.nDifferencesChooser, SIGNAL('activated(QString)'), self.onChangeNDifferences)
+            #self.connect(self.nDifferencesChooser, SIGNAL('activated(QString)'), self.onChangeNDifferences)
+            self.nDifferencesChooser.activated[str].connect(self.onChangeNDifferences)
 
             self.nDifferencesCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.nDifferencesCheckBox, n, 0)
@@ -1657,7 +1696,7 @@ class pychControlWin(QtGui.QMainWindow):
             self.autoPCorrTF.show()
             
     def onDropPrmFile(self, l):
-        lastFileDropped = l[len(l)-1]
+        lastFileDropped = l #l[len(l)-1]
         if os.path.exists(lastFileDropped):
             reply = QtGui.QMessageBox.question(self, self.tr('Message'), self.tr("Do you want to load the parameters file {0} ?").format(lastFileDropped), QtGui.QMessageBox.Yes | 
                                                QtGui.QMessageBox.No, QtGui.QMessageBox.Yes)
@@ -1750,7 +1789,8 @@ class pychControlWin(QtGui.QMainWindow):
             self.chooserCheckBox[c] = QCheckBox()
             self.pw_prm_sizer_1.addWidget(self.chooserCheckBox[c], c, 3)
         for c in range(len(self.chooser)):
-            self.connect(self.chooser[c], SIGNAL('activated(QString)'), self.onChooserChange)
+            #self.connect(self.chooser[c], SIGNAL('activated(QString)'), self.onChooserChange)
+            self.chooser[c].activated[str].connect(self.onChooserChange)
         #self.prm['nFields'] = len(self.field)
         #self.prm['nChoosers'] = len(self.chooser)
         #SET UP FILE CHOOSERS
@@ -1903,7 +1943,8 @@ class pychControlWin(QtGui.QMainWindow):
         self.jumpToPositionChooser.setCurrentIndex(int(self.prm[block]['blockPosition'])-1)
    
         for c in range(len(self.chooser)):
-            self.connect(self.chooser[c], SIGNAL('activated(QString)'), self.onChooserChange)
+            #self.connect(self.chooser[c], SIGNAL('activated(QString)'), self.onChooserChange)
+            self.chooser[c].activated[str].connect(self.onChooserChange)
         self.onChooserChange(None)
         self.responseBox.setupLights()
 
@@ -3135,8 +3176,8 @@ class pychControlWin(QtGui.QMainWindow):
             self.winPlotCheckBox.setChecked(False)
             self.pdfPlotCheckBox.setChecked(False)
 
-
 class dropFrame(QtGui.QFrame):
+    drpd = QtCore.pyqtSignal(str) 
     def __init__(self, parent):
         QtGui.QFrame.__init__(self, parent)
         self.setAcceptDrops(True)
@@ -3154,7 +3195,8 @@ class dropFrame(QtGui.QFrame):
             l = []
             for url in event.mimeData().urls():
                 l.append(str(url.toLocalFile()))
-                self.emit(SIGNAL("dropped"), l)
+                self.drpd.emit(l[len(l)-1])
+                #self.emit(SIGNAL("dropped"), l)
         else:
             event.ignore()
 

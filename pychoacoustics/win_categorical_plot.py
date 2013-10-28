@@ -177,7 +177,8 @@ class categoricalPlot(QtGui.QMainWindow):
         self.ntb = NavigationToolbar(self.canvas, self.mw)
         self.gridOn = QtGui.QCheckBox(self.tr('Grid'))
         #self.gridOn.setChecked(True) #= QtGui.QCheckBox(self.tr('Grid'))
-        self.connect(self.gridOn, QtCore.SIGNAL('stateChanged(int)'), self.toggleGrid)
+        #self.connect(self.gridOn, QtCore.SIGNAL('stateChanged(int)'), self.toggleGrid)
+        self.gridOn.stateChanged[int].connect(self.toggleGrid)
         
        
 

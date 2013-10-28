@@ -63,15 +63,11 @@ def excepthook(except_type, except_val, tbck):
             fName.write("".join(tb))
             fName.close()
     
-    
-    
     diag = QtGui.QDialog(None, Qt.CustomizeWindowHint | Qt.WindowCloseButtonHint)
     diag.window().setWindowTitle("Critical Error!")
     siz = QtGui.QVBoxLayout()
     lay = QtGui.QVBoxLayout()
     saveTbButton = QtGui.QPushButton("Save Traceback", diag)
-    #QtCore.QObject.connect(saveTbButton,
-    #                       QtCore.SIGNAL('clicked()'), onClickSaveTbButton)
     saveTbButton.clicked.connect(onClickSaveTbButton)
     lab = QLabel("Sorry, something went wrong. The attached traceback can help you troubleshoot the problem: \n\n" + "".join(tb))
     lab.setMargin(10)
@@ -85,26 +81,17 @@ def excepthook(except_type, except_val, tbck):
     siz.addWidget(sc)#SCROLLAREA IS A WIDGET SO IT NEEDS TO BE ADDED TO A LAYOUT
 
     buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
-        
-    ## diag.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-    ##              diag, QtCore.SLOT("accept()"))
-    ## diag.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-    ##              diag, QtCore.SLOT("reject()"))
 
-    buttonBox.accepted.connect(accept)
-    buttonBox.rejected.connect(reject)
+    buttonBox.accepted.connect(diag.accept)
+    buttonBox.rejected.connect(diag.reject)
     siz.addWidget(saveTbButton)
     siz.addWidget(buttonBox)
     diag.setLayout(siz)
-    
-
     diag.exec_()
 
     timeStamp = ''+ time.strftime("%d/%m/%y %H:%M:%S", time.localtime()) + ' ' + '\n'
     logMsg = timeStamp + ''.join(tb)
     logging.debug(logMsg)
-
- 
 
 def main(argv):
 
@@ -164,7 +151,6 @@ def main(argv):
     if args.display:
         prm['display'] = args.display
   
-   
     prm = global_parameters.get_prefs(prm)
     callArgs = sys.argv
     if 'display' in prm:
@@ -173,7 +159,6 @@ def main(argv):
         callArgs = callArgs + ['-graphicssystem', prm['graphicssystem']]
     app = QtGui.QApplication(callArgs)
      
-
     sys.excepthook = excepthook
     #LOCALE LOADING
     # qtTranslator is the translator for default qt component labels (OK, cancel button dialogs etc...)
@@ -216,9 +201,5 @@ def main(argv):
     x = pychControlWin(parent=None, prm=prm)
     sys.exit(app.exec_())
     
-
-
-
-
 if __name__ == "__main__":
     main(sys.argv[1:])

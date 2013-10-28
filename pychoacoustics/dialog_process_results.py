@@ -84,8 +84,9 @@ class processResultsDialog(QtGui.QDialog):
         self.fileTF = QtGui.QLineEdit(';'.join(self.fName))
         self.hBox1.addWidget(self.fileTF)
         self.chooseFileButton = QtGui.QPushButton(self.tr("Change File"), self)
-        QtCore.QObject.connect(self.chooseFileButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickChooseFileButton)
+        #QtCore.QObject.connect(self.chooseFileButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickChooseFileButton)
+        self.chooseFileButton.clicked.connect(self.onClickChooseFileButton)
         self.hBox1.addWidget(self.chooseFileButton)
 
         n = n +1
@@ -94,8 +95,9 @@ class processResultsDialog(QtGui.QDialog):
         self.outfileTF = QtGui.QLineEdit("")
         self.hBox1_1.addWidget(self.outfileTF)
         self.chooseOutFileButton = QtGui.QPushButton(self.tr("Change File"), self)
-        QtCore.QObject.connect(self.chooseOutFileButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickChooseOutFileButton)
+        #QtCore.QObject.connect(self.chooseOutFileButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickChooseOutFileButton)
+        self.chooseOutFileButton.clicked.connect(self.onClickChooseOutFileButton)
         self.hBox1_1.addWidget(self.chooseOutFileButton)
 
         if self.resformat == 'table':
@@ -146,9 +148,13 @@ class processResultsDialog(QtGui.QDialog):
         self.toTF.setValidator(QtGui.QIntValidator(self))
         self.hBox6.addWidget(self.toTF)
 
-        self.connect(self.processAllBlocksCheckBox, QtCore.SIGNAL("clicked()"), self.onCheckProcessAllBlocks)
-        self.connect(self.processLastNBlocksCheckBox, QtCore.SIGNAL("clicked()"), self.onCheckProcessLastNBlocks)
-        self.connect(self.processBlocksInRangeCheckBox, QtCore.SIGNAL("clicked()"), self.onCheckProcessBlocksInRange)
+        #self.connect(self.processAllBlocksCheckBox, QtCore.SIGNAL("clicked()"), self.onCheckProcessAllBlocks)
+        #self.connect(self.processLastNBlocksCheckBox, QtCore.SIGNAL("clicked()"), self.onCheckProcessLastNBlocks)
+        #self.connect(self.processBlocksInRangeCheckBox, QtCore.SIGNAL("clicked()"), self.onCheckProcessBlocksInRange)
+
+        self.processAllBlocksCheckBox.clicked.connect(self.onCheckProcessAllBlocks)
+        self.processLastNBlocksCheckBox.clicked.connect(self.onCheckProcessLastNBlocks)
+        self.processBlocksInRangeCheckBox.clicked.connect(self.onCheckProcessBlocksInRange)
 
         if self.paradigm in ["constant1Interval2Alternatives", "multipleConstants1Interval2Alternatives", "constant1PairSD"]:
             self.dpCorrCheckBox = QtGui.QCheckBox(self.tr('d-prime correction'))
@@ -166,8 +172,9 @@ class processResultsDialog(QtGui.QDialog):
 
         n = n+1
         self.runButton = QtGui.QPushButton(self.tr("Run!"), self)
-        QtCore.QObject.connect(self.runButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickRunButton)
+        #QtCore.QObject.connect(self.runButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickRunButton)
+        self.runButton.clicked.connect(self.onClickRunButton)
         self.runButton.setIcon(QtGui.QIcon.fromTheme("system-run", QtGui.QIcon(":/system-run")))
         self.hBox9.addWidget(self.runButton)
 
@@ -181,9 +188,9 @@ class processResultsDialog(QtGui.QDialog):
 
         buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Close)
         
-        self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                     self, QtCore.SLOT("reject()"))
-        
+        #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
+        #             self, QtCore.SLOT("reject()"))
+        buttonBox.rejected.connect(self.reject)
        
         self.vBoxSizer.addLayout(self.hBox1)
         self.vBoxSizer.addLayout(self.hBox1_1)

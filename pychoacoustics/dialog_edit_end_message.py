@@ -44,26 +44,31 @@ class wavListDialog(QtGui.QDialog):
         self.wavsTableWidget.setHorizontalHeaderLabels([self.tr("File"), self.tr('Use'), self.tr("RMS Level"), 'id'])
         self.quidColumn = 3
         self.wavsTableWidget.hideColumn(self.quidColumn)
-        self.connect(self.wavsTableWidget, QtCore.SIGNAL("cellDoubleClicked(int,int)"), self.onCellDoubleClicked)
+        #self.connect(self.wavsTableWidget, QtCore.SIGNAL("cellDoubleClicked(int,int)"), self.onCellDoubleClicked)
+        self.wavsTableWidget.cellDoubleClicked[int,int].connect(self.onCellDoubleClicked)
 
         
         #ADD wav BUTTON
         self.addWavButton = QtGui.QPushButton(self.tr("Add Wav"), self)
-        QtCore.QObject.connect(self.addWavButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickAddWavButton)
+        #QtCore.QObject.connect(self.addWavButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickAddWavButton)
+        self.addWavButton.clicked.connect(self.onClickAddWavButton)
         #REMOVE wav BUTTON
         self.removeWavButton = QtGui.QPushButton(self.tr("Remove Wav"), self)
-        QtCore.QObject.connect(self.removeWavButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickRemoveWavButton)
+        #QtCore.QObject.connect(self.removeWavButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickRemoveWavButton)
+        self.removeWavButton.clicked.connect(self.onClickRemoveWavButton)
 
         #PLAY wav BUTTON
         self.playWavButton = QtGui.QPushButton(self.tr("Play Wav"), self)
-        QtCore.QObject.connect(self.playWavButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickPlayWavButton)
+        #QtCore.QObject.connect(self.playWavButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickPlayWavButton)
+        self.playWavButton.clicked.connect(self.onClickPlayWavButton)
         #STOP wav BUTTON
         self.stopWavButton = QtGui.QPushButton(self.tr("Stop Playing"), self)
-        QtCore.QObject.connect(self.stopWavButton,
-                               QtCore.SIGNAL('clicked()'), self.onClickStopWavButton)
+        #QtCore.QObject.connect(self.stopWavButton,
+        #                       QtCore.SIGNAL('clicked()'), self.onClickStopWavButton)
+        self.stopWavButton.clicked.connect(self.onClickStopWavButton)
        
         self.v1Sizer.addWidget(self.addWavButton)
         self.v1Sizer.addWidget(self.removeWavButton)
@@ -101,10 +106,12 @@ class wavListDialog(QtGui.QDialog):
      
         buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Apply|QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
         
-        self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-                     self, QtCore.SLOT("accept()"))
-        self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-                     self, QtCore.SLOT("reject()"))
+        #self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
+        #             self, QtCore.SLOT("accept()"))
+        #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
+        #             self, QtCore.SLOT("reject()"))
+        buttonBox.accepted.connect(self.accept)
+        buttonBox.rejected.connect(self.reject)
 
         self.sizer.addLayout(self.v1Sizer, 0, 0)
         self.sizer.addWidget(self.wavsTableWidget,0,1)
