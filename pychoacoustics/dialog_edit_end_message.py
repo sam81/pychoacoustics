@@ -21,11 +21,11 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale, QThread
-    from PyQt4.QtGui import QDialog
+    from PyQt4.QtGui import QDialog, QGridLayout, QVBoxLayout, QTableWidget, QAbstractItemView, QPushButton, QTableWidgetItem, QDialogButtonBox, QMessageBox, QInputDialog, QFileDialog
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, QThread
-    from PyQt5.QtWidgets import QDialog
+    from PyQt5.QtWidgets import QDialog, QGridLayout, QVBoxLayout, QTableWidget, QAbstractItemView, QPushButton, QTableWidgetItem, QDialogButtonBox, QMessageBox, QInputDialog, QFileDialog
 import copy, pickle
 from numpy import unique
 from .audio_manager import*
@@ -39,13 +39,13 @@ class wavListDialog(QDialog):
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         self.isPlaying = False
       
-        self.sizer = QtGui.QGridLayout() 
-        self.v1Sizer = QtGui.QVBoxLayout()
+        self.sizer = QGridLayout() 
+        self.v1Sizer = QVBoxLayout()
         
-        self.wavsTableWidget = QtGui.QTableWidget()
+        self.wavsTableWidget = QTableWidget()
         self.wavsTableWidget.setColumnCount(4)
-        self.wavsTableWidget.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self.wavsTableWidget.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.wavsTableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.wavsTableWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
         
         self.wavsTableWidget.setHorizontalHeaderLabels([self.tr("File"), self.tr('Use'), self.tr("RMS Level"), 'id'])
         self.quidColumn = 3
@@ -55,23 +55,23 @@ class wavListDialog(QDialog):
 
         
         #ADD wav BUTTON
-        self.addWavButton = QtGui.QPushButton(self.tr("Add Wav"), self)
+        self.addWavButton = QPushButton(self.tr("Add Wav"), self)
         #QtCore.QObject.connect(self.addWavButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickAddWavButton)
         self.addWavButton.clicked.connect(self.onClickAddWavButton)
         #REMOVE wav BUTTON
-        self.removeWavButton = QtGui.QPushButton(self.tr("Remove Wav"), self)
+        self.removeWavButton = QPushButton(self.tr("Remove Wav"), self)
         #QtCore.QObject.connect(self.removeWavButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickRemoveWavButton)
         self.removeWavButton.clicked.connect(self.onClickRemoveWavButton)
 
         #PLAY wav BUTTON
-        self.playWavButton = QtGui.QPushButton(self.tr("Play Wav"), self)
+        self.playWavButton = QPushButton(self.tr("Play Wav"), self)
         #QtCore.QObject.connect(self.playWavButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickPlayWavButton)
         self.playWavButton.clicked.connect(self.onClickPlayWavButton)
         #STOP wav BUTTON
-        self.stopWavButton = QtGui.QPushButton(self.tr("Stop Playing"), self)
+        self.stopWavButton = QPushButton(self.tr("Stop Playing"), self)
         #QtCore.QObject.connect(self.stopWavButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickStopWavButton)
         self.stopWavButton.clicked.connect(self.onClickStopWavButton)
@@ -94,23 +94,23 @@ class wavListDialog(QDialog):
             self.wavsList[thisID]['level'] = self.parent().wavsPref['endMessageLevels'][i]
             self.wavsTableWidget.setRowCount(currCount)
             n = 0
-            newItem = QtGui.QTableWidgetItem(self.wavsList[thisID]['file'])
+            newItem = QTableWidgetItem(self.wavsList[thisID]['file'])
             newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.wavsTableWidget.setItem(currCount-1, n, newItem)
             n = n+1
-            newItem = QtGui.QTableWidgetItem(self.wavsList[thisID]['use'])
+            newItem = QTableWidgetItem(self.wavsList[thisID]['use'])
             newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.wavsTableWidget.setItem(currCount-1, n, newItem)
             n = n+1
-            newItem = QtGui.QTableWidgetItem(self.currLocale.toString(self.wavsList[thisID]['level']))
+            newItem = QTableWidgetItem(self.currLocale.toString(self.wavsList[thisID]['level']))
             newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.wavsTableWidget.setItem(currCount-1, n, newItem)
             n = n+1
-            self.wavsList[thisID]['qid'] = QtGui.QTableWidgetItem(thisID)
+            self.wavsList[thisID]['qid'] = QTableWidgetItem(thisID)
             self.wavsTableWidget.setItem(currCount-1, n, self.wavsList[thisID]['qid'])
 
      
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Apply|QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
         
         #self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
         #             self, QtCore.SLOT("accept()"))
@@ -138,13 +138,13 @@ class wavListDialog(QDialog):
     def onEditLevel(self):
         ids = self.findSelectedItemIds()
         if len(ids) > 1:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one item can be edited at a time'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one item can be edited at a time'))
         elif len(ids) < 1:
             pass
         else:
             selectedSound = ids[0]
             msg = self.tr('RMS Level:')
-            text, ok = QtGui.QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.wavsList[selectedSound]['level'])
+            text, ok = QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.wavsList[selectedSound]['level'])
             if ok:
                 self.wavsTableWidget.item(self.wavsList[selectedSound]['qid'].row(), 2).setText(self.currLocale.toString(text))
                 self.wavsList[selectedSound]['level'] = text
@@ -152,7 +152,7 @@ class wavListDialog(QDialog):
     def onEditUse(self):
         ids = self.findSelectedItemIds()
         if len(ids) > 1:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one item can be edited at a time'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one item can be edited at a time'))
         elif len(ids) < 1:
             pass
         else:
@@ -190,7 +190,7 @@ class wavListDialog(QDialog):
       
 
     def onClickAddWavButton(self):
-        fName = QtGui.QFileDialog.getOpenFileName(self, self.tr("Choose wav file to load"), '', self.tr("wav files (*.wav);;All Files (*)"))
+        fName = QFileDialog.getOpenFileName(self, self.tr("Choose wav file to load"), '', self.tr("wav files (*.wav);;All Files (*)"))
         if len(fName) > 0: #if the user didn't press cancel
 
             if len(self.wavsList.keys()) > 0:
@@ -206,19 +206,19 @@ class wavListDialog(QDialog):
             self.wavsList[thisID]['level'] = 60
             self.wavsTableWidget.setRowCount(currCount)
             n = 0
-            newItem = QtGui.QTableWidgetItem(self.wavsList[thisID]['file'])
+            newItem = QTableWidgetItem(self.wavsList[thisID]['file'])
             newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.wavsTableWidget.setItem(currCount-1, n, newItem)
             n = n+1
-            newItem = QtGui.QTableWidgetItem(self.wavsList[thisID]['use'])
+            newItem = QTableWidgetItem(self.wavsList[thisID]['use'])
             newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.wavsTableWidget.setItem(currCount-1, n, newItem)
             n = n+1
-            newItem = QtGui.QTableWidgetItem(self.currLocale.toString(self.wavsList[thisID]['level']))
+            newItem = QTableWidgetItem(self.currLocale.toString(self.wavsList[thisID]['level']))
             newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.wavsTableWidget.setItem(currCount-1, n, newItem)
             n = n+1
-            self.wavsList[thisID]['qid'] = QtGui.QTableWidgetItem(thisID)
+            self.wavsList[thisID]['qid'] = QTableWidgetItem(thisID)
             self.wavsTableWidget.setItem(currCount-1, n, self.wavsList[thisID]['qid'])
       
 
@@ -232,7 +232,7 @@ class wavListDialog(QDialog):
     def onClickPlayWavButton(self):
         ids = self.findSelectedItemIds()
         if len(ids) < 1:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('No files selected for playing'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('No files selected for playing'))
         else:
             if len(ids) > 1:
                 pass #maybe say on the status bar that only the first one will be played
@@ -263,10 +263,10 @@ class wavListDialog(QDialog):
     def accept(self): #reimplement accept (i.e. ok button)
         if self.isPlaying == True:
             self.playThread.terminate()
-        QtGui.QDialog.accept(self)
+        QDialog.accept(self)
     def reject(self): #reimplement reject
         if self.isPlaying == True:
             self.playThread.terminate()
-        QtGui.QDialog.reject(self)
+        QDialog.reject(self)
         
      

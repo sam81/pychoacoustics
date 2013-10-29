@@ -42,16 +42,16 @@ from numpy import log10
 
 
 def initialize_audiogram(prm):
-    exp_name = QApplication.translate("","Audiogram","", QApplication.UnicodeUTF8)
+    exp_name = QApplication.translate("","Audiogram","")
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
-    prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Adaptive","", QApplication.UnicodeUTF8),
-                                        QApplication.translate("","Weighted Up/Down","", QApplication.UnicodeUTF8),
-                                        QApplication.translate("","Constant m-Intervals n-Alternatives","", QApplication.UnicodeUTF8)]
+    prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Adaptive",""),
+                                        QApplication.translate("","Weighted Up/Down",""),
+                                        QApplication.translate("","Constant m-Intervals n-Alternatives","")]
 
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
                              "hasIntervalLights"]
-    prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Arithmetic","", QApplication.UnicodeUTF8)
+    prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Arithmetic","")
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2
     prm[exp_name]["execString"] = "audiogram"
@@ -65,31 +65,31 @@ def select_default_parameters_audiogram(parent, par):
     chooserLabel = []
     chooserOptions = []
     
-    fieldLabel.append(QApplication.translate("","Frequency (Hz)","", QApplication.UnicodeUTF8))
+    fieldLabel.append(QApplication.translate("","Frequency (Hz)",""))
     field.append(1000)
     
-    fieldLabel.append(QApplication.translate("","Bandwidth (Hz)","", QApplication.UnicodeUTF8))
+    fieldLabel.append(QApplication.translate("","Bandwidth (Hz)",""))
     field.append(10)
     
-    fieldLabel.append(QApplication.translate("","Level (dB SPL)","", QApplication.UnicodeUTF8))
+    fieldLabel.append(QApplication.translate("","Level (dB SPL)",""))
     field.append(50)
     
-    fieldLabel.append(QApplication.translate("","Duration (ms)","", QApplication.UnicodeUTF8))
+    fieldLabel.append(QApplication.translate("","Duration (ms)",""))
     field.append(180)
     
-    fieldLabel.append(QApplication.translate("","Ramps (ms)","", QApplication.UnicodeUTF8))
+    fieldLabel.append(QApplication.translate("","Ramps (ms)",""))
     field.append(10)
 
     
-    chooserOptions.append([QApplication.translate("","Right","", QApplication.UnicodeUTF8),
-                           QApplication.translate("","Left","", QApplication.UnicodeUTF8),
-                           QApplication.translate("","Both","", QApplication.UnicodeUTF8)])
-    chooserLabel.append(QApplication.translate("","Ear:","", QApplication.UnicodeUTF8))
-    chooser.append(QApplication.translate("","Right","", QApplication.UnicodeUTF8))
-    chooserOptions.append([QApplication.translate("","Sinusoid","", QApplication.UnicodeUTF8),
-                           QApplication.translate("","Narrowband Noise","", QApplication.UnicodeUTF8)])
-    chooserLabel.append(QApplication.translate("","Signal Type:","", QApplication.UnicodeUTF8))
-    chooser.append(QApplication.translate("","Sinusoid","", QApplication.UnicodeUTF8))
+    chooserOptions.append([QApplication.translate("","Right",""),
+                           QApplication.translate("","Left",""),
+                           QApplication.translate("","Both","")])
+    chooserLabel.append(QApplication.translate("","Ear:",""))
+    chooser.append(QApplication.translate("","Right",""))
+    chooserOptions.append([QApplication.translate("","Sinusoid",""),
+                           QApplication.translate("","Narrowband Noise","")])
+    chooserLabel.append(QApplication.translate("","Signal Type:",""))
+    chooser.append(QApplication.translate("","Sinusoid",""))
     
     prm = {}
     prm['field'] = field
@@ -101,38 +101,38 @@ def select_default_parameters_audiogram(parent, par):
     return prm
 
 def get_fields_to_hide_audiogram(parent):
-    if parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Signal Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Sinusoid","", QApplication.UnicodeUTF8):
-        parent.fieldsToHide = [parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)","", QApplication.UnicodeUTF8))]
+    if parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Signal Type:",""))].currentText() == QApplication.translate("","Sinusoid",""):
+        parent.fieldsToHide = [parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)",""))]
     else:
-        parent.fieldsToShow = [parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)","", QApplication.UnicodeUTF8))]
+        parent.fieldsToShow = [parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)",""))]
     
 def doTrial_audiogram(parent):
 
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
         parent.prm['additional_parameters_to_write'] = {}
-        parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Level (dB SPL)","", QApplication.UnicodeUTF8))]
+        parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Level (dB SPL)",""))]
         parent.prm['conditions'] = [str(parent.prm['adaptiveDifference'])]
 
         parent.writeResultsHeader('log')
     parent.currentCondition = parent.prm['conditions'][0]
-    frequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Frequency (Hz)","", QApplication.UnicodeUTF8))] 
-    bandwidth = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)","", QApplication.UnicodeUTF8))] 
+    frequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Frequency (Hz)",""))] 
+    bandwidth = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)",""))] 
     phase = 0
     correctLevel = parent.prm['adaptiveDifference']
     incorrectLevel = -200
-    duration = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Duration (ms)","", QApplication.UnicodeUTF8))] 
-    ramps = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Ramps (ms)","", QApplication.UnicodeUTF8))] 
-    channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(QApplication.translate("","Ear:","", QApplication.UnicodeUTF8))]
-    sndType = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(QApplication.translate("","Signal Type:","", QApplication.UnicodeUTF8))]
+    duration = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Duration (ms)",""))] 
+    ramps = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Ramps (ms)",""))] 
+    channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(QApplication.translate("","Ear:",""))]
+    sndType = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(QApplication.translate("","Signal Type:",""))]
 
-    if sndType == QApplication.translate("","Narrowband Noise","", QApplication.UnicodeUTF8):
+    if sndType == QApplication.translate("","Narrowband Noise",""):
         if bandwidth > 0:
             parent.stimulusCorrect = steepNoise(frequency-(bandwidth/2), frequency+(bandwidth/2), correctLevel - (10*log10(bandwidth)),
                                                 duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
         else:
             parent.stimulusCorrect = pureTone(frequency, phase, correctLevel, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
-    elif sndType == QApplication.translate("","Sinusoid","", QApplication.UnicodeUTF8):
+    elif sndType == QApplication.translate("","Sinusoid",""):
         parent.stimulusCorrect = pureTone(frequency, phase, correctLevel, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
       
             

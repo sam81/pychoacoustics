@@ -21,11 +21,12 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale, QThread
-    from PyQt4.QtGui import QDialog
+    from PyQt4.QtGui import QAbstractItemView, QComboBox, QDesktopWidget, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIcon, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, QThread
-    from PyQt5.QtWidgets import QDialog
+    from PyQt5.QtWidgets import QAbstractItemView, QComboBox, QDesktopWidget, QDialog, QDialogButtonBox, QGridLayout, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
+    from PyQt5.QtGui import QDoubleValidator, QIcon
 import copy, pickle
 from numpy import unique
 from .audio_manager import*
@@ -33,28 +34,27 @@ from .audio_manager import*
 #from .default_experiments.generate_stimuli import*
 from .sndlib import*
 
-
 class phonesDialog(QDialog):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
         self.prm = self.parent().prm
         self.currLocale = self.parent().prm['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
-        screen = QtGui.QDesktopWidget().screenGeometry()
+        screen = QDesktopWidget().screenGeometry()
         self.resize(screen.width()/2.5,screen.height()/3)
         self.isPlaying = False
         #self.audioManager = audioManager(self)
         #self.playThread = threadedPlayer(self)
    
-        self.sizer = QtGui.QGridLayout() 
-        self.v1Sizer = QtGui.QVBoxLayout()
-        self.v2Sizer = QtGui.QVBoxLayout()
-        self.calibSizer = QtGui.QGridLayout()
+        self.sizer = QGridLayout() 
+        self.v1Sizer = QVBoxLayout()
+        self.v2Sizer = QVBoxLayout()
+        self.calibSizer = QGridLayout()
         
-        self.phonesTableWidget = QtGui.QTableWidget()
+        self.phonesTableWidget = QTableWidget()
         self.phonesTableWidget.setColumnCount(4)
-        self.phonesTableWidget.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self.phonesTableWidget.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.phonesTableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.phonesTableWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
         
         self.phonesTableWidget.setHorizontalHeaderLabels([self.tr('Phones'), self.tr('Max Level'), self.tr('Default'), 'id'])
         self.phonesTableWidget.hideColumn(3)
@@ -62,28 +62,28 @@ class phonesDialog(QDialog):
         self.phonesTableWidget.cellDoubleClicked[int,int].connect(self.onCellDoubleClicked)
 
         #RENAME Phones BUTTON
-        self.renamePhonesButton = QtGui.QPushButton(self.tr("Rename Phones"), self)
+        self.renamePhonesButton = QPushButton(self.tr("Rename Phones"), self)
         #QtCore.QObject.connect(self.renamePhonesButton,
         #                       QtCore.SIGNAL('clicked()'), self.onEditLabel)
         self.renamePhonesButton.clicked.connect(self.onEditLabel)
         #Change Level Phones BUTTON
-        self.changeLevelPhonesButton = QtGui.QPushButton(self.tr("Change Max Level"), self)
+        self.changeLevelPhonesButton = QPushButton(self.tr("Change Max Level"), self)
         #QtCore.QObject.connect(self.changeLevelPhonesButton,
         #                       QtCore.SIGNAL('clicked()'), self.onEditMaxLevel)
         self.changeLevelPhonesButton.clicked.connect(self.onEditMaxLevel)
         
         #ADD Phones BUTTON
-        self.addPhonesButton = QtGui.QPushButton(self.tr("Add Phones"), self)
+        self.addPhonesButton = QPushButton(self.tr("Add Phones"), self)
         #QtCore.QObject.connect(self.addPhonesButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickAddPhonesButton)
         self.addPhonesButton.clicked.connect(self.onClickAddPhonesButton)
         #REMOVE Phones BUTTON
-        self.removePhonesButton = QtGui.QPushButton(self.tr("Remove Phones"), self)
+        self.removePhonesButton = QPushButton(self.tr("Remove Phones"), self)
         #QtCore.QObject.connect(self.removePhonesButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickRemovePhonesButton)
         self.removePhonesButton.clicked.connect(self.onClickRemovePhonesButton)
         #Set Default Phones BUTTON
-        self.setDefaultPhonesButton = QtGui.QPushButton(self.tr("Set Default"), self)
+        self.setDefaultPhonesButton = QPushButton(self.tr("Set Default"), self)
         #QtCore.QObject.connect(self.setDefaultPhonesButton,
         #                       QtCore.SIGNAL('clicked()'), self.onEditDefault)
         self.setDefaultPhonesButton.clicked.connect(self.onEditDefault)
@@ -109,81 +109,81 @@ class phonesDialog(QDialog):
             self.phonesList[thisID]['maxLevel'] = self.prm['phones']['phonesMaxLevel'][i]
             self.phonesList[thisID]['default'] = self.prm['phones']['defaultPhones'][i]
             self.phonesTableWidget.setRowCount(currCount)
-            newItem = QtGui.QTableWidgetItem(self.phonesList[thisID]['label'])
+            newItem = QTableWidgetItem(self.phonesList[thisID]['label'])
             newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.phonesTableWidget.setItem(currCount-1, 0, newItem)
-            newItem = QtGui.QTableWidgetItem(self.currLocale.toString(self.phonesList[thisID]['maxLevel']))
+            newItem = QTableWidgetItem(self.currLocale.toString(self.phonesList[thisID]['maxLevel']))
             newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.phonesTableWidget.setItem(currCount-1, 1, newItem)
-            newItem = QtGui.QTableWidgetItem(self.phonesList[thisID]['default'])
+            newItem = QTableWidgetItem(self.phonesList[thisID]['default'])
             newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.phonesTableWidget.setItem(currCount-1, 2, newItem)
-            self.phonesList[thisID]['qid'] = QtGui.QTableWidgetItem(thisID)
+            self.phonesList[thisID]['qid'] = QTableWidgetItem(thisID)
             self.phonesTableWidget.setItem(currCount-1, 3, self.phonesList[thisID]['qid'])
 
 
 
         ##CALIBRATION TONE
         n = 0
-        self.calLabel = QtGui.QLabel(self.tr('Calibration Tone:'), self)
+        self.calLabel = QLabel(self.tr('Calibration Tone:'), self)
         self.calibSizer.addWidget(self.calLabel, n, 0, 1, 2)
         n = n+1
-        self.toneFreqLabel = QtGui.QLabel(self.tr('Frequency (Hz)'), self)
-        self.toneFreqTF = QtGui.QLineEdit("1000")
-        self.toneFreqTF.setValidator(QtGui.QDoubleValidator(self))
+        self.toneFreqLabel = QLabel(self.tr('Frequency (Hz)'), self)
+        self.toneFreqTF = QLineEdit("1000")
+        self.toneFreqTF.setValidator(QDoubleValidator(self))
         self.calibSizer.addWidget(self.toneFreqLabel, n, 0)
         self.calibSizer.addWidget(self.toneFreqTF, n, 1)
         n = n+1
-        self.toneLevLabel = QtGui.QLabel(self.tr('Level (dB)'), self)
-        self.toneLevTF = QtGui.QLineEdit("60")
-        self.toneLevTF.setValidator(QtGui.QDoubleValidator(self))
+        self.toneLevLabel = QLabel(self.tr('Level (dB)'), self)
+        self.toneLevTF = QLineEdit("60")
+        self.toneLevTF.setValidator(QDoubleValidator(self))
         self.calibSizer.addWidget(self.toneLevLabel, n, 0)
         self.calibSizer.addWidget(self.toneLevTF, n, 1)
         n = n+1
-        self.toneDurLabel = QtGui.QLabel(self.tr('Duration (ms)'), self)
-        self.toneDurTF = QtGui.QLineEdit("4980")
-        self.toneDurTF.setValidator(QtGui.QDoubleValidator(self))
+        self.toneDurLabel = QLabel(self.tr('Duration (ms)'), self)
+        self.toneDurTF = QLineEdit("4980")
+        self.toneDurTF.setValidator(QDoubleValidator(self))
         self.calibSizer.addWidget(self.toneDurLabel, n, 0)
         self.calibSizer.addWidget(self.toneDurTF, n, 1)
         n = n+1
-        self.toneRampsLabel = QtGui.QLabel(self.tr('Ramps (ms)'), self)
-        self.toneRampsTF = QtGui.QLineEdit("10")
-        self.toneRampsTF.setValidator(QtGui.QDoubleValidator(self))
+        self.toneRampsLabel = QLabel(self.tr('Ramps (ms)'), self)
+        self.toneRampsTF = QLineEdit("10")
+        self.toneRampsTF.setValidator(QDoubleValidator(self))
         self.calibSizer.addWidget(self.toneRampsLabel, n, 0)
         self.calibSizer.addWidget(self.toneRampsTF, n, 1)
         n = n+1
-        self.earLabel = QtGui.QLabel(self.tr('Ear:'), self)
-        self.earChooser = QtGui.QComboBox()
+        self.earLabel = QLabel(self.tr('Ear:'), self)
+        self.earChooser = QComboBox()
         self.earChooser.addItems([self.tr("Right"), self.tr("Left"), self.tr("Both")])
         self.calibSizer.addWidget(self.earLabel, n, 0)
         self.calibSizer.addWidget(self.earChooser, n, 1)
         n = n+1
-        self.playCalibButton = QtGui.QPushButton(self.tr("Play"), self)
+        self.playCalibButton = QPushButton(self.tr("Play"), self)
         #QtCore.QObject.connect(self.playCalibButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickPlayCalibButton)
         self.playCalibButton.clicked.connect(self.onClickPlayCalibButton)
-        self.playCalibButton.setIcon(QtGui.QIcon.fromTheme("media-playback-start", QtGui.QIcon(":/media-playback-start")))
+        self.playCalibButton.setIcon(QIcon.fromTheme("media-playback-start", QIcon(":/media-playback-start")))
         self.calibSizer.addWidget(self.playCalibButton, n, 0, 1, 2)
         n = n+1
-        self.stopCalibButton = QtGui.QPushButton(self.tr("Stop"), self)
+        self.stopCalibButton = QPushButton(self.tr("Stop"), self)
         #QtCore.QObject.connect(self.stopCalibButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickStopCalibButton)
         self.stopCalibButton.clicked.connect(self.onClickStopCalibButton)
-        self.stopCalibButton.setIcon(QtGui.QIcon.fromTheme("media-playback-stop", QtGui.QIcon(":/media-playback-stop")))
+        self.stopCalibButton.setIcon(QIcon.fromTheme("media-playback-stop", QIcon(":/media-playback-stop")))
         self.calibSizer.addWidget(self.stopCalibButton, n, 0, 1, 2)
 
         
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Apply|QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
         
         #self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
         #             self, QtCore.SLOT("accept()"))
         #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
         #             self, QtCore.SLOT("reject()"))
-        #self.connect(buttonBox.button(QtGui.QDialogButtonBox.Apply),
+        #self.connect(buttonBox.button(QDialogButtonBox.Apply),
         #             QtCore.SIGNAL("clicked()"), self.permanentApply)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
-        buttonBox.button(QtGui.QDialogButtonBox.Apply).clicked.connect(self.permanentApply)
+        buttonBox.button(QDialogButtonBox.Apply).clicked.connect(self.permanentApply)
 
         self.sizer.addLayout(self.v1Sizer, 0, 0)
         self.v2Sizer.addLayout(self.calibSizer)
@@ -208,26 +208,26 @@ class phonesDialog(QDialog):
     def onEditLabel(self):
         ids = self.findSelectedItemIds()
         if len(ids) > 1:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one label can be renamed at a time'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one label can be renamed at a time'))
         elif len(ids) < 1:
             pass
         else:
             selectedSound = ids[0]
             msg = self.tr('New name:')
-            text, ok = QtGui.QInputDialog.getText(self, self.tr('Input Dialog'), msg)
+            text, ok = QInputDialog.getText(self, self.tr('Input Dialog'), msg)
             if ok:
                 self.phonesTableWidget.item(self.phonesList[selectedSound]['qid'].row(), 0).setText(text)
                 self.phonesList[selectedSound]['label'] = text
     def onEditMaxLevel(self):
         ids = self.findSelectedItemIds()
         if len(ids) > 1:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one item can be edited at a time'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one item can be edited at a time'))
         elif len(ids) < 1:
             pass
         else:
             selectedSound = ids[0]
             msg = self.tr('Level:')
-            text, ok = QtGui.QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.phonesList[selectedSound]['maxLevel'])
+            text, ok = QInputDialog.getDouble(self, self.tr('Input Dialog'), msg, self.phonesList[selectedSound]['maxLevel'])
             if ok:
                 self.phonesTableWidget.item(self.phonesList[selectedSound]['qid'].row(), 1).setText(self.currLocale.toString(text))
                 self.phonesList[selectedSound]['maxLevel'] = text
@@ -235,7 +235,7 @@ class phonesDialog(QDialog):
     def onEditDefault(self):
         ids = self.findSelectedItemIds()
         if len(ids) > 1:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one item can be edited at a time'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one item can be edited at a time'))
         elif len(ids) < 1:
             pass
         else:
@@ -286,24 +286,24 @@ class phonesDialog(QDialog):
         self.phonesList[thisID]['maxLevel'] = 100
         self.phonesList[thisID]['default'] = "\u2012"
         self.phonesTableWidget.setRowCount(currCount)
-        newItem = QtGui.QTableWidgetItem(self.phonesList[thisID]['label'])
+        newItem = QTableWidgetItem(self.phonesList[thisID]['label'])
         newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
         self.phonesTableWidget.setItem(currCount-1, 0, newItem)
-        newItem = QtGui.QTableWidgetItem(self.currLocale.toString(self.phonesList[thisID]['maxLevel']))
+        newItem = QTableWidgetItem(self.currLocale.toString(self.phonesList[thisID]['maxLevel']))
         newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
         self.phonesTableWidget.setItem(currCount-1, 1, newItem)
-        newItem = QtGui.QTableWidgetItem(self.phonesList[thisID]['default'])
+        newItem = QTableWidgetItem(self.phonesList[thisID]['default'])
         newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
         self.phonesTableWidget.setItem(currCount-1, 2, newItem)
-        self.phonesList[thisID]['qid'] = QtGui.QTableWidgetItem(thisID)
+        self.phonesList[thisID]['qid'] = QTableWidgetItem(thisID)
         self.phonesTableWidget.setItem(currCount-1, 3, self.phonesList[thisID]['qid'])
       
 
     def onClickRemovePhonesButton(self):
         if self.phonesTableWidget.rowCount() == 1:
-            ret = QtGui.QMessageBox.warning(self, self.tr("Warning"),
+            ret = QMessageBox.warning(self, self.tr("Warning"),
                                             self.tr("Only one phone left. Cannot remove!"),
-                                            QtGui.QMessageBox.Ok)
+                                            QMessageBox.Ok)
         else:
             ids = self.findSelectedItemIds()
             wasDefault = False
@@ -321,10 +321,10 @@ class phonesDialog(QDialog):
     def onClickPlayCalibButton(self):
         ids = self.findSelectedItemIds()
         if len(ids) > 1:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one label can be renamed at a time'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('Only one label can be renamed at a time'))
             return
         elif len(ids) < 1:
-            QtGui.QMessageBox.warning(self, self.tr('Warning'), self.tr('Please, select a phone in the table'))
+            QMessageBox.warning(self, self.tr('Warning'), self.tr('Please, select a phone in the table'))
             return
         else:
             selectedSound = ids[0]
@@ -361,11 +361,11 @@ class phonesDialog(QDialog):
         if self.isPlaying == True:
             #self.playThread.__del__()
             self.playThread.terminate()
-        QtGui.QDialog.accept(self)
+        QDialog.accept(self)
     def reject(self): #reimplement reject
         if self.isPlaying == True:
             #self.playThread.__del__()
             self.playThread.terminate()
-        QtGui.QDialog.reject(self)
+        QDialog.reject(self)
 
    

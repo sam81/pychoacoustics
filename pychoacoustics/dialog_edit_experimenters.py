@@ -21,11 +21,11 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale, Qt, QEvent
-    from PyQt4.QtGui import QLabel, QComboBox, QLineEdit, QDialog
+    from PyQt4.QtGui import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, Qt, QEvent
-    from PyQt5.QtWidgets import QLabel, QComboBox, QLineEdit, QDialog
+    from PyQt5.QtWidgets import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout
 import copy, pickle
 from numpy import unique
 
@@ -40,10 +40,10 @@ class experimentersDialog(QDialog):
         self.currLocale = self.parent().prm['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
 
-        self.sizer = QtGui.QGridLayout()
-        self.h1Sizer = QtGui.QHBoxLayout()
-        self.v1Sizer = QtGui.QVBoxLayout()
-        self.v2Sizer = QtGui.QVBoxLayout()
+        self.sizer = QGridLayout()
+        self.h1Sizer = QHBoxLayout()
+        self.v1Sizer = QVBoxLayout()
+        self.v2Sizer = QVBoxLayout()
 
         n = 0
         self.experimenterLabel =  QLabel(self.tr("Experimenter ID:"), self)
@@ -109,42 +109,42 @@ class experimentersDialog(QDialog):
 
 
         #ADD EXPERIMENTER BUTTON
-        addExpButton = QtGui.QPushButton(self.tr("Add Experimenter"), self)
+        addExpButton = QPushButton(self.tr("Add Experimenter"), self)
         #QtCore.QObject.connect(addExpButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickAddExpButton)
         addExpButton.clicked.connect(self.onClickAddExpButton)
         self.v2Sizer.addWidget(addExpButton)
         #REMOVE EXPERIMENTER BUTTON
-        removeExpButton = QtGui.QPushButton(self.tr("Remove Experimenter"), self)
+        removeExpButton = QPushButton(self.tr("Remove Experimenter"), self)
         #QtCore.QObject.connect(removeExpButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickRemoveExpButton)
         removeExpButton.clicked.connect(self.onClickRemoveExpButton)
         self.v2Sizer.addWidget(removeExpButton)
         #CHANGE ID BUTTON
-        changeIdButton = QtGui.QPushButton(self.tr("Change Identifier"), self)
+        changeIdButton = QPushButton(self.tr("Change Identifier"), self)
         #QtCore.QObject.connect(changeIdButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickChangeIdButton)
         changeIdButton.clicked.connect(self.onClickChangeIdButton)
         self.v2Sizer.addWidget(changeIdButton)
         #SET AS DEFAULT BUTTON
-        setAsDefaultButton = QtGui.QPushButton(self.tr("Set as default"), self)
+        setAsDefaultButton = QPushButton(self.tr("Set as default"), self)
         #QtCore.QObject.connect(setAsDefaultButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickSetAsDefaultButton)
         setAsDefaultButton.clicked.connect(self.onClickSetAsDefaultButton)
         self.v2Sizer.addWidget(setAsDefaultButton)
         self.v2Sizer.addStretch()
 
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Apply|QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
         
         #self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
         #             self, QtCore.SLOT("accept()"))
         #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
         #             self, QtCore.SLOT("reject()"))
-        #self.connect(buttonBox.button(QtGui.QDialogButtonBox.Apply),
+        #self.connect(buttonBox.button(QDialogButtonBox.Apply),
         #             QtCore.SIGNAL("clicked()"), self.onClickApplyButton)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
-        buttonBox.button(QtGui.QDialogButtonBox.Apply).clicked.connect(self.onClickApplyButton)
+        buttonBox.button(QDialogButtonBox.Apply).clicked.connect(self.onClickApplyButton)
         
         self.h1Sizer.addLayout(self.v2Sizer)
         self.sizer.setAlignment(Qt.AlignTop)
@@ -208,7 +208,7 @@ class experimentersDialog(QDialog):
             else:
                 self.revertChanges()
         msg = self.tr("Experimenter's Identifier:")
-        name, ok = QtGui.QInputDialog.getText(self, self.tr('Input Dialog'), msg)
+        name, ok = QInputDialog.getText(self, self.tr('Input Dialog'), msg)
         if ok:
             self.tmpPref['experimenter']['defaultExperimenter'].append('')
             self.tmpPref['experimenter']['experimenter_id'].append(name)
@@ -240,10 +240,10 @@ class experimentersDialog(QDialog):
             else:
                 self.revertChanges()
         if self.experimenterChooser.count() > 1:
-            reply = QtGui.QMessageBox.warning(self, self.tr('Message'),
-                                              "Remove experimenter? This action cannot be undone!", QtGui.QMessageBox.Yes | 
-                                              QtGui.QMessageBox.No, QtGui.QMessageBox.No)
-            if reply == QtGui.QMessageBox.Yes:
+            reply = QMessageBox.warning(self, self.tr('Message'),
+                                              "Remove experimenter? This action cannot be undone!", QMessageBox.Yes | 
+                                              QMessageBox.No, QMessageBox.No)
+            if reply == QMessageBox.Yes:
                 self.tmpPref['experimenter']['defaultExperimenter'].pop(self.currIdx)
                 self.tmpPref['experimenter']['experimenter_id'].pop(self.currIdx)
                 self.tmpPref['experimenter']['experimenter_name'].pop(self.currIdx)
@@ -264,8 +264,8 @@ class experimentersDialog(QDialog):
                 self.experimenterTelephoneTF.setText(self.tmpPref['experimenter']['experimenter_telephone'][self.currIdx])
                 self.experimenterMobileTF.setText(self.tmpPref['experimenter']['experimenter_mobile'][self.currIdx])
             else:
-                QtGui.QMessageBox.warning(self, self.tr('Message'),
-                                          self.tr("Only one experimenter left. Experimenter cannot be removed!"), QtGui.QMessageBox.Ok)
+                QMessageBox.warning(self, self.tr('Message'),
+                                          self.tr("Only one experimenter left. Experimenter cannot be removed!"), QMessageBox.Ok)
 
     def onClickChangeIdButton(self):
         self.tryApply(self.currIdx)
@@ -276,7 +276,7 @@ class experimentersDialog(QDialog):
             else:
                 self.revertChanges()
         msg = self.tr("Experimenter's Identifier:")
-        name, ok = QtGui.QInputDialog.getText(self, self.tr('Input Dialog'), msg)
+        name, ok = QInputDialog.getText(self, self.tr('Input Dialog'), msg)
         if ok:
             self.tmpPref['experimenter']['experimenter_id'][self.currIdx] = name
             self.experimenterChooser.setItemText(self.currIdx, name)
@@ -304,13 +304,13 @@ class applyChanges(QDialog):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
 
-        grid = QtGui.QGridLayout()
+        grid = QGridLayout()
         n = 0
-        label = QtGui.QLabel(self.tr('There are unsaved changes. Apply Changes?'))
+        label = QLabel(self.tr('There are unsaved changes. Apply Changes?'))
         grid.addWidget(label, n, 1)
         n = n+1
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|
-                                     QtGui.QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
+                                     QDialogButtonBox.Cancel)
         #self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
         #             self, QtCore.SLOT("accept()"))
         #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),

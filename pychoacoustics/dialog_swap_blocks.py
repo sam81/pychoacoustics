@@ -20,10 +20,11 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QDialog
+    from PyQt4.QtGui import QDialog, QDialogButtonBox, QGridLayout, QIntValidator, QLabel, QLineEdit
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
-    from PyQt5.QtWidgets import QDialog
+    from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QGridLayout, QLabel, QLineEdit
+    from PyQt5.QtGui import QIntValidator
     
 class swapBlocksDialog(QDialog):
     def __init__(self, parent):
@@ -33,24 +34,24 @@ class swapBlocksDialog(QDialog):
         self.currLocale = self.parent().prm['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
       
-        grid = QtGui.QGridLayout()
+        grid = QGridLayout()
         n = 0
             
-        blockALabel = QtGui.QLabel(self.tr('Block A: '))
+        blockALabel = QLabel(self.tr('Block A: '))
         grid.addWidget(blockALabel, n, 0)
-        self.blockAWidget = QtGui.QLineEdit(str(self.prm['currentBlock']))
-        self.blockAWidget.setValidator(QtGui.QIntValidator(self))
+        self.blockAWidget = QLineEdit(str(self.prm['currentBlock']))
+        self.blockAWidget.setValidator(QIntValidator(self))
         grid.addWidget(self.blockAWidget, n, 1)
 
-        blockBLabel = QtGui.QLabel(self.tr('Block B: '))
+        blockBLabel = QLabel(self.tr('Block B: '))
         grid.addWidget(blockBLabel, n, 2)
-        self.blockBWidget = QtGui.QLineEdit('')
-        self.blockBWidget.setValidator(QtGui.QIntValidator(self))
+        self.blockBWidget = QLineEdit('')
+        self.blockBWidget.setValidator(QIntValidator(self))
         grid.addWidget(self.blockBWidget, n, 3)
         
         n = n+1
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|
-                                     QtGui.QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
+                                     QDialogButtonBox.Cancel)
         
         #self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
         #             self, QtCore.SLOT("accept()"))

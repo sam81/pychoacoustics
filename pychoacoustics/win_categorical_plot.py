@@ -19,13 +19,21 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
+    # import the Qt4Agg FigureCanvas object, that binds Figure to
+    # Qt4Agg backend. It also inherits from QWidget
+    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+    # import the NavigationToolbar Qt4Agg widget
+    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    # import the Qt4Agg FigureCanvas object, that binds Figure to
+    # Qt4Agg backend. It also inherits from QWidget
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+    # import the NavigationToolbar Qt4Agg widget
+    from matplotlib.backends.backend_qt5agg import NavigationToolbar2QTAgg as NavigationToolbar
 # Matplotlib Figure object
 from matplotlib.figure import Figure
-# import the Qt4Agg FigureCanvas object, that binds Figure to
-# Qt4Agg backend. It also inherits from QWidget
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-# import the NavigationToolbar Qt4Agg widget
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
+
 from matplotlib.widgets import Cursor
 import numpy as np
 import copy, os

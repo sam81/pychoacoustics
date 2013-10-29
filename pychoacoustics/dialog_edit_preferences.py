@@ -21,11 +21,12 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale, QThread, pyqtSignal
-    from PyQt4.QtGui import QDialog
+    from PyQt4.QtGui import QCheckBox, QComboBox, QDialog, QDialogButtonBox, QGridLayout, QIntValidator, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, QThread, pyqtSignal
-    from PyQt5.QtWidgets import QDialog
+    from PyQt5.QtWidgets import QCheckBox, QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
+    from PyQt5.QtGui import QIntValidator
     
 import copy, pickle, hashlib, base64, smtplib, sys 
 from email.mime.base import MIMEBase
@@ -58,12 +59,13 @@ class preferencesDialog(QDialog):
         self.mailer = emailSender(self)
         self.newMailerMessage.connect(self.popMailerMessage)
         
-        self.tabWidget = QtGui.QTabWidget()
-        self.connect(self.tabWidget, QtCore.SIGNAL("currentChanged(QWidget*)"), self.tabChanged)
-        self.appPrefWidget = QtGui.QWidget()
-        self.soundPrefWidget = QtGui.QWidget()
-        self.notificationPrefWidget = QtGui.QWidget()
-        self.eegPrefWidget = QtGui.QWidget()
+        self.tabWidget = QTabWidget()
+        #self.connect(self.tabWidget, QtCore.SIGNAL("currentChanged(QWidget*)"), self.tabChanged)
+        self.tabWidget.currentChanged.connect(self.tabChanged)
+        self.appPrefWidget = QWidget()
+        self.soundPrefWidget = QWidget()
+        self.notificationPrefWidget = QWidget()
+        self.eegPrefWidget = QWidget()
 
         #the gui widget for these are in an external dialog
         self.wavsPref = {}
@@ -72,90 +74,89 @@ class preferencesDialog(QDialog):
         self.wavsPref['endMessageFilesID'] = self.tmpPref['pref']['general']['endMessageFilesID']
         self.wavsPref['endMessageLevels'] = self.tmpPref['pref']['general']['endMessageLevels']
         #GENERAL PREF
-        appPrefGrid = QtGui.QGridLayout()
+        appPrefGrid = QGridLayout()
         n = 0
-        self.languageChooserLabel = QtGui.QLabel(self.tr('Language (requires restart):'))
+        self.languageChooserLabel = QLabel(self.tr('Language (requires restart):'))
         appPrefGrid.addWidget(self.languageChooserLabel, n, 0)
-        self.languageChooser = QtGui.QComboBox()
+        self.languageChooser = QComboBox()
         self.languageChooser.addItems(self.parent().prm['appData']['available_languages'])
         self.languageChooser.setCurrentIndex(self.languageChooser.findText(self.tmpPref['pref']['language']))
-        self.connect(self.languageChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onLanguageChooserChange)
+        #self.connect(self.languageChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onLanguageChooserChange)
+        self.languageChooser.currentIndexChanged[int].connect(self.onLanguageChooserChange)
         appPrefGrid.addWidget(self.languageChooser, n, 1)
         n = n+1
-        self.countryChooserLabel = QtGui.QLabel(self.tr('Country (requires restart):'))
+        self.countryChooserLabel = QLabel(self.tr('Country (requires restart):'))
         appPrefGrid.addWidget(self.countryChooserLabel, n, 0)
-        self.countryChooser = QtGui.QComboBox()
+        self.countryChooser = QComboBox()
         self.countryChooser.addItems(self.parent().prm['appData']['available_countries'][self.tmpPref['pref']['language']])
         self.countryChooser.setCurrentIndex(self.countryChooser.findText(self.tmpPref['pref']['country']))
         appPrefGrid.addWidget(self.countryChooser, n, 1)
         n = n+1
 
-        self.responseBoxLanguageChooserLabel = QtGui.QLabel(self.tr('Response Box Language (requires restart):'))
+        self.responseBoxLanguageChooserLabel = QLabel(self.tr('Response Box Language (requires restart):'))
         appPrefGrid.addWidget(self.responseBoxLanguageChooserLabel, n, 0)
-        self.responseBoxLanguageChooser = QtGui.QComboBox()
+        self.responseBoxLanguageChooser = QComboBox()
         self.responseBoxLanguageChooser.addItems(self.parent().prm['appData']['available_languages'])
         self.responseBoxLanguageChooser.setCurrentIndex(self.responseBoxLanguageChooser.findText(self.tmpPref['pref']['responseBoxLanguage']))
-        self.connect(self.responseBoxLanguageChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onResponseBoxLanguageChooserChange)
+        #self.connect(self.responseBoxLanguageChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onResponseBoxLanguageChooserChange)
+        self.responseBoxLanguageChooser.currentIndexChanged[int].connect(self.onResponseBoxLanguageChooserChange)
         appPrefGrid.addWidget(self.responseBoxLanguageChooser, n, 1)
         n = n+1
-        self.responseBoxCountryChooserLabel = QtGui.QLabel(self.tr('Response Box Country (requires restart):'))
+        self.responseBoxCountryChooserLabel = QLabel(self.tr('Response Box Country (requires restart):'))
         appPrefGrid.addWidget(self.responseBoxCountryChooserLabel, n, 0)
-        self.responseBoxCountryChooser = QtGui.QComboBox()
+        self.responseBoxCountryChooser = QComboBox()
         self.responseBoxCountryChooser.addItems(self.parent().prm['appData']['available_countries'][self.tmpPref['pref']['responseBoxLanguage']])
         self.responseBoxCountryChooser.setCurrentIndex(self.responseBoxCountryChooser.findText(self.tmpPref['pref']['responseBoxCountry']))
         appPrefGrid.addWidget(self.responseBoxCountryChooser, n, 1)
         
         n = n+1
-        self.csvSeparatorLabel = QtGui.QLabel(self.tr('csv separator:'))
+        self.csvSeparatorLabel = QLabel(self.tr('csv separator:'))
         appPrefGrid.addWidget(self.csvSeparatorLabel, n, 0)
-        self.csvSeparatorWidget = QtGui.QLineEdit(self.tmpPref['pref']["general"]["csvSeparator"])
+        self.csvSeparatorWidget = QLineEdit(self.tmpPref['pref']["general"]["csvSeparator"])
         appPrefGrid.addWidget(self.csvSeparatorWidget, n, 1)
         n = n+1
-        self.listenerNameWarnCheckBox = QtGui.QCheckBox(self.tr('Warn if listener name missing'))
+        self.listenerNameWarnCheckBox = QCheckBox(self.tr('Warn if listener name missing'))
         self.listenerNameWarnCheckBox.setChecked(self.tmpPref["pref"]["general"]["listenerNameWarn"])
         appPrefGrid.addWidget(self.listenerNameWarnCheckBox, n, 0)
         n = n+1
-        self.sessionLabelWarnCheckBox = QtGui.QCheckBox(self.tr('Warn if session label missing'))
+        self.sessionLabelWarnCheckBox = QCheckBox(self.tr('Warn if session label missing'))
         self.sessionLabelWarnCheckBox.setChecked(self.tmpPref["pref"]["general"]["sessionLabelWarn"])
         appPrefGrid.addWidget(self.sessionLabelWarnCheckBox, n, 0)
 
-        ## n = n+1
-        ## self.processResultsCheckBox = QtGui.QCheckBox(self.tr('Process results when finished'))
-        ## self.processResultsCheckBox.setChecked(self.tmpPref["pref"]["general"]["processResultsEnd"])
-        ## appPrefGrid.addWidget(self.processResultsCheckBox, n, 0)
         n = n+1
-        self.dpCorrCheckBox = QtGui.QCheckBox(self.tr('d-prime correction'))
+        self.dpCorrCheckBox = QCheckBox(self.tr('d-prime correction'))
         self.dpCorrCheckBox.setChecked(self.tmpPref['pref']['general']['dprimeCorrection'])
         self.dpCorrCheckBox.setWhatsThis(self.tr("If checked, when automatically processing result files, convert hit rates of 0 and 1 to 1/2N and 1-1/(2N) respectively, where N is the number of trials, to avoid infinite values of d'"))
         appPrefGrid.addWidget(self.dpCorrCheckBox, n, 0)
 
         n = n+1
-        self.recursionLimitLabel = QtGui.QLabel(self.tr('Max Recursion Depth (requires restart):'))
+        self.recursionLimitLabel = QLabel(self.tr('Max Recursion Depth (requires restart):'))
         appPrefGrid.addWidget(self.recursionLimitLabel, n, 0)
-        self.recursionLimitWidget = QtGui.QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["general"]["maxRecursionDepth"]))
-        self.recursionLimitWidget.setValidator(QtGui.QIntValidator(self))
+        self.recursionLimitWidget = QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["general"]["maxRecursionDepth"]))
+        self.recursionLimitWidget.setValidator(QIntValidator(self))
         appPrefGrid.addWidget(self.recursionLimitWidget, n, 1)
         n = n+1
         
         self.appPrefWidget.setLayout(appPrefGrid)
-        self.appPrefWidget.layout().setSizeConstraint(QtGui.QLayout.SetFixedSize)
+        self.appPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
         
         
         #SOUND PREF
-        soundPrefGrid = QtGui.QGridLayout()
+        soundPrefGrid = QGridLayout()
         n = 0
-        self.playChooser = QtGui.QComboBox()
+        self.playChooser = QComboBox()
         self.playChooser.addItems(self.parent().prm['appData']['available_play_commands'])
         self.playChooser.setCurrentIndex(self.playChooser.findText(self.tmpPref['pref']['sound']['playCommandType']))
-        self.connect(self.playChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onPlayChooserChange)
-        self.playChooserLabel = QtGui.QLabel(self.tr('Play Command:'))
+        #self.connect(self.playChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onPlayChooserChange)
+        self.playChooser.currentIndexChanged[int].connect(self.onPlayChooserChange)
+        self.playChooserLabel = QLabel(self.tr('Play Command:'))
         soundPrefGrid.addWidget(self.playChooserLabel, 0, 0)
         soundPrefGrid.addWidget(self.playChooser, 0, 1)
         n = n+1
 
-        self.playCommandLabel = QtGui.QLabel(self.tr('Command:'))
+        self.playCommandLabel = QLabel(self.tr('Command:'))
         soundPrefGrid.addWidget(self.playCommandLabel, n, 0)
-        self.playCommandWidget = QtGui.QLineEdit(self.tmpPref['pref']['sound']['playCommand'])
+        self.playCommandWidget = QLineEdit(self.tmpPref['pref']['sound']['playCommand'])
         if self.playChooser.currentText() != self.tr('custom'):
             self.playCommandWidget.setReadOnly(True)
         soundPrefGrid.addWidget(self.playCommandWidget, n, 1)
@@ -168,9 +169,9 @@ class preferencesDialog(QDialog):
         #if pyalsaaudio is selected, provide device list chooser
         if self.parent().prm["appData"]["alsaaudioAvailable"] == True:
             self.alsaaudioPlaybackCardList = self.listAlsaaudioPlaybackCards()
-            self.alsaaudioDeviceLabel = QtGui.QLabel(self.tr('Device:'))
+            self.alsaaudioDeviceLabel = QLabel(self.tr('Device:'))
             soundPrefGrid.addWidget(self.alsaaudioDeviceLabel, n, 0)
-            self.alsaaudioDeviceChooser = QtGui.QComboBox()
+            self.alsaaudioDeviceChooser = QComboBox()
             self.alsaaudioDeviceChooser.addItems(self.alsaaudioPlaybackCardList)
             self.alsaaudioDeviceChooser.setCurrentIndex(self.alsaaudioDeviceChooser.findText(self.tmpPref["pref"]["sound"]["alsaaudioDevice"]))
             soundPrefGrid.addWidget(self.alsaaudioDeviceChooser, n, 1)
@@ -182,9 +183,9 @@ class preferencesDialog(QDialog):
         #if pyalsaaudio is selected, provide device list chooser
         if self.parent().prm["appData"]["pyaudioAvailable"] == True:
             self.listPyaudioPlaybackDevices()
-            self.pyaudioDeviceLabel = QtGui.QLabel(self.tr('Device:'))
+            self.pyaudioDeviceLabel = QLabel(self.tr('Device:'))
             soundPrefGrid.addWidget(self.pyaudioDeviceLabel, n, 0)
-            self.pyaudioDeviceChooser = QtGui.QComboBox()
+            self.pyaudioDeviceChooser = QComboBox()
             self.pyaudioDeviceChooser.addItems(self.pyaudioDeviceListName)
             try:
                 self.pyaudioDeviceChooser.setCurrentIndex(self.pyaudioDeviceListIdx.index(self.tmpPref["pref"]["sound"]["pyaudioDevice"]))
@@ -200,9 +201,9 @@ class preferencesDialog(QDialog):
 
         if self.parent().prm["appData"]["pactypesAvailable"] == True:
             self.audioManager.listPactypesPlaybackDevices()
-            self.pactypesDeviceLabel = QtGui.QLabel(self.tr('Device:'))
+            self.pactypesDeviceLabel = QLabel(self.tr('Device:'))
             soundPrefGrid.addWidget(self.pactypesDeviceLabel, n, 0)
-            self.pactypesDeviceChooser = QtGui.QComboBox()
+            self.pactypesDeviceChooser = QComboBox()
             self.pactypesDeviceChooser.addItems(self.audioManager.pactypesDeviceListName)
             print(self.audioManager.pactypesDeviceListIdx)
             try:
@@ -219,158 +220,158 @@ class preferencesDialog(QDialog):
 
 
         if self.parent().prm["appData"]["alsaaudioAvailable"] == True or self.parent().prm["appData"]["pyaudioAvailable"] == True or self.parent().prm["appData"]["pactypesAvailable"] == True:
-            self.bufferSizeLabel = QtGui.QLabel(self.tr('Buffer Size (samples):'))
+            self.bufferSizeLabel = QLabel(self.tr('Buffer Size (samples):'))
             soundPrefGrid.addWidget(self.bufferSizeLabel, n, 0)
-            self.bufferSizeWidget =  QtGui.QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["sound"]["bufferSize"]))
-            self.bufferSizeWidget.setValidator(QtGui.QIntValidator(self))
+            self.bufferSizeWidget =  QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["sound"]["bufferSize"]))
+            self.bufferSizeWidget.setValidator(QIntValidator(self))
             soundPrefGrid.addWidget(self.bufferSizeWidget, n, 1)
             n = n+1
             if self.tmpPref['pref']['sound']['playCommandType'] not in ["alsaaudio", "pyaudio", "pactypes"]:
                 self.bufferSizeLabel.hide()
                 self.bufferSizeWidget.hide()
 
-        self.samplerateLabel = QtGui.QLabel(self.tr('Default Sampling Rate:'))
+        self.samplerateLabel = QLabel(self.tr('Default Sampling Rate:'))
         soundPrefGrid.addWidget(self.samplerateLabel, n, 0)
-        self.samplerateWidget = QtGui.QLineEdit(self.tmpPref["pref"]["sound"]["defaultSampleRate"])
-        #self.samplerateWidget.setValidator(QtGui.QIntValidator(self))
+        self.samplerateWidget = QLineEdit(self.tmpPref["pref"]["sound"]["defaultSampleRate"])
+        #self.samplerateWidget.setValidator(QIntValidator(self))
         soundPrefGrid.addWidget(self.samplerateWidget, n, 1)
         n = n+1
 
-        self.nbitsLabel = QtGui.QLabel(self.tr('Default Bits:'))
-        self.nbitsChooser = QtGui.QComboBox()
+        self.nbitsLabel = QLabel(self.tr('Default Bits:'))
+        self.nbitsChooser = QComboBox()
         self.nbitsChooser.addItems(self.parent().prm["nBitsChoices"])
         self.nbitsChooser.setCurrentIndex(self.parent().prm["nBitsChoices"].index(self.tmpPref["pref"]["sound"]["defaultNBits"])) 
         soundPrefGrid.addWidget(self.nbitsLabel, n, 0)
         soundPrefGrid.addWidget(self.nbitsChooser, n, 1)
         n = n+1
 
-        self.wavmanagerLabel = QtGui.QLabel(self.tr('Wav Manager (requires restart):'))
-        self.wavmanagerChooser = QtGui.QComboBox()
+        self.wavmanagerLabel = QLabel(self.tr('Wav Manager (requires restart):'))
+        self.wavmanagerChooser = QComboBox()
         self.wavmanagerChooser.addItems(self.parent().prm['appData']['wavmanagers'])
         self.wavmanagerChooser.setCurrentIndex(self.wavmanagerChooser.findText(self.tmpPref['pref']['sound']['wavmanager']))
         soundPrefGrid.addWidget(self.wavmanagerLabel, n, 0)
         soundPrefGrid.addWidget(self.wavmanagerChooser, n, 1)
         n = n+1
         
-        self.writewav = QtGui.QCheckBox(self.tr('Write wav file'))
+        self.writewav = QCheckBox(self.tr('Write wav file'))
         self.writewav.setChecked(self.tmpPref["pref"]["sound"]["writewav"])
         soundPrefGrid.addWidget(self.writewav, n, 0)
         n = n+1
-        self.writeSndSeqSegments = QtGui.QCheckBox(self.tr('Write sound sequence segments wavs'))
+        self.writeSndSeqSegments = QCheckBox(self.tr('Write sound sequence segments wavs'))
         self.writeSndSeqSegments.setChecked(self.tmpPref["pref"]["sound"]["writeSndSeqSegments"])
         soundPrefGrid.addWidget(self.writeSndSeqSegments, n, 0)
         n = n+1
 
-        self.appendSilenceLabel = QtGui.QLabel(self.tr('Append silence to each sound (ms):'))
+        self.appendSilenceLabel = QLabel(self.tr('Append silence to each sound (ms):'))
         soundPrefGrid.addWidget(self.appendSilenceLabel, n, 0)
-        self.appendSilenceWidget = QtGui.QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["sound"]["appendSilence"]))
+        self.appendSilenceWidget = QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["sound"]["appendSilence"]))
         soundPrefGrid.addWidget(self.appendSilenceWidget, n, 1)
         n = n+1
         
         self.soundPrefWidget.setLayout(soundPrefGrid)
-        self.soundPrefWidget.layout().setSizeConstraint(QtGui.QLayout.SetFixedSize)
+        self.soundPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
         # NOTIFICATION PREF
-        notificationPrefGrid = QtGui.QGridLayout()
+        notificationPrefGrid = QGridLayout()
         
         n = 0
         
-        self.playEndMessage = QtGui.QCheckBox(self.tr('Play End Message'))
+        self.playEndMessage = QCheckBox(self.tr('Play End Message'))
         self.playEndMessage.setChecked(self.tmpPref["pref"]["general"]["playEndMessage"])
         notificationPrefGrid.addWidget(self.playEndMessage, n, 0)
 
-        self.endMessageButton = QtGui.QPushButton(self.tr("Choose Wav"), self)
+        self.endMessageButton = QPushButton(self.tr("Choose Wav"), self)
         #QtCore.QObject.connect(self.endMessageButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickEndMessageButton)
         self.endMessageButton.clicked.connect(self.onClickEndMessageButton)
         notificationPrefGrid.addWidget(self.endMessageButton, n, 1)
         n = n+1
 
-        notificationPrefGrid.addItem(QtGui.QSpacerItem(20,20,QtGui.QSizePolicy.Expanding), n, 0)
+        notificationPrefGrid.addItem(QSpacerItem(20,20,QSizePolicy.Expanding), n, 0)
         n = n+1
         
-        self.nBlocksLabel = QtGui.QLabel(self.tr('blocks before end of experiment:'))
+        self.nBlocksLabel = QLabel(self.tr('blocks before end of experiment:'))
         notificationPrefGrid.addWidget(self.nBlocksLabel, n, 1)
-        self.nBlocksWidget = QtGui.QLineEdit(self.currLocale.toString(self.tmpPref['pref']['email']['nBlocksNotify']))
+        self.nBlocksWidget = QLineEdit(self.currLocale.toString(self.tmpPref['pref']['email']['nBlocksNotify']))
         notificationPrefGrid.addWidget(self.nBlocksWidget, n, 0)
         n = n+1
 
-        self.emailNotify = QtGui.QCheckBox(self.tr('Send Notification e-mail'))
+        self.emailNotify = QCheckBox(self.tr('Send Notification e-mail'))
         #self.connect(self.emailNotify, QtCore.SIGNAL('triggered()'), self.onToggleSendCheckBox)
         self.emailNotify.setChecked(self.tmpPref["pref"]["email"]["notifyEnd"])
         notificationPrefGrid.addWidget(self.emailNotify, n, 0)
         n = n+1
 
-        self.nBlocksCustomCommandLabel = QtGui.QLabel(self.tr('Execute custom command:'))
+        self.nBlocksCustomCommandLabel = QLabel(self.tr('Execute custom command:'))
         notificationPrefGrid.addWidget(self.nBlocksCustomCommandLabel, n, 0)
-        self.nBlocksCustomCommandWidget = QtGui.QLineEdit(self.tmpPref["pref"]["general"]["nBlocksCustomCommand"])
+        self.nBlocksCustomCommandWidget = QLineEdit(self.tmpPref["pref"]["general"]["nBlocksCustomCommand"])
         notificationPrefGrid.addWidget(self.nBlocksCustomCommandWidget, n, 1)
         n = n+1
 
 
-        notificationPrefGrid.addItem(QtGui.QSpacerItem(20,20,QtGui.QSizePolicy.Expanding), n, 0)
+        notificationPrefGrid.addItem(QSpacerItem(20,20,QSizePolicy.Expanding), n, 0)
         n = n+1
-        self.atEndLabel = QtGui.QLabel(self.tr('At the end of the experiment:'))
+        self.atEndLabel = QLabel(self.tr('At the end of the experiment:'))
         notificationPrefGrid.addWidget(self.atEndLabel, n, 0)
         n = n+1
         
-        self.sendData = QtGui.QCheckBox(self.tr('Send data via e-mail'))
+        self.sendData = QCheckBox(self.tr('Send data via e-mail'))
         self.sendData.setChecked(self.tmpPref["pref"]["email"]["sendData"])
         #self.connect(self.sendData, QtCore.SIGNAL('triggered()'), self.onToggleSendCheckBox)
         notificationPrefGrid.addWidget(self.sendData, n, 0)
         n = n+1
 
-        self.atEndCustomCommandLabel = QtGui.QLabel(self.tr('Execute custom command:'))
+        self.atEndCustomCommandLabel = QLabel(self.tr('Execute custom command:'))
         notificationPrefGrid.addWidget(self.atEndCustomCommandLabel, n, 0)
-        self.atEndCustomCommandWidget = QtGui.QLineEdit(self.tmpPref["pref"]["general"]["atEndCustomCommand"])
+        self.atEndCustomCommandWidget = QLineEdit(self.tmpPref["pref"]["general"]["atEndCustomCommand"])
         notificationPrefGrid.addWidget(self.atEndCustomCommandWidget, n, 1)
         n = n+1
 
 
-        notificationPrefGrid.addItem(QtGui.QSpacerItem(20,20,QtGui.QSizePolicy.Expanding), n, 0)
+        notificationPrefGrid.addItem(QSpacerItem(20,20,QSizePolicy.Expanding), n, 0)
         n = n+1
-        self.serverLabel = QtGui.QLabel(self.tr('Outgoing server (SMTP):'))
+        self.serverLabel = QLabel(self.tr('Outgoing server (SMTP):'))
         notificationPrefGrid.addWidget(self.serverLabel, n, 0)
-        self.serverWidget = QtGui.QLineEdit(self.tmpPref['pref']['email']['SMTPServer'])
+        self.serverWidget = QLineEdit(self.tmpPref['pref']['email']['SMTPServer'])
         notificationPrefGrid.addWidget(self.serverWidget, n, 1)
         n = n+1
 
-        self.serverPortLabel = QtGui.QLabel(self.tr('Port:'))
+        self.serverPortLabel = QLabel(self.tr('Port:'))
         notificationPrefGrid.addWidget(self.serverPortLabel, n, 0)
-        self.serverPortWidget = QtGui.QLineEdit(self.currLocale.toString(self.tmpPref['pref']['email']['SMTPServerPort']))
-        self.serverPortWidget.setValidator(QtGui.QIntValidator(self))
+        self.serverPortWidget = QLineEdit(self.currLocale.toString(self.tmpPref['pref']['email']['SMTPServerPort']))
+        self.serverPortWidget.setValidator(QIntValidator(self))
         notificationPrefGrid.addWidget(self.serverPortWidget, n, 1)
         n = n+1
 
-        self.serverSecurityLabel = QtGui.QLabel(self.tr('Security:'))
+        self.serverSecurityLabel = QLabel(self.tr('Security:'))
         notificationPrefGrid.addWidget(self.serverSecurityLabel, n, 0)
-        self.serverSecurityChooser = QtGui.QComboBox()
+        self.serverSecurityChooser = QComboBox()
         self.serverSecurityChooser.addItems(["TLS/SSL (a)", "TLS/SSL (b)", "none"])
         self.serverSecurityChooser.setCurrentIndex(self.serverSecurityChooser.findText(self.tmpPref['pref']['email']['SMTPServerSecurity']))
         notificationPrefGrid.addWidget(self.serverSecurityChooser, n, 1)
         n = n+1
 
-        self.serverRequiresAuthCheckBox = QtGui.QCheckBox(self.tr('Server requires authentication'))
+        self.serverRequiresAuthCheckBox = QCheckBox(self.tr('Server requires authentication'))
         self.serverRequiresAuthCheckBox.setChecked(self.tmpPref["pref"]["email"]["serverRequiresAuthentication"])
         notificationPrefGrid.addWidget(self.serverRequiresAuthCheckBox, n, 0, 1, 2)
         n = n+1
         
-        self.usernameLabel = QtGui.QLabel(self.tr('Username:'))
+        self.usernameLabel = QLabel(self.tr('Username:'))
         notificationPrefGrid.addWidget(self.usernameLabel, n, 0)
-        self.usernameWidget = QtGui.QLineEdit(self.tmpPref['pref']['email']['fromUsername'])
+        self.usernameWidget = QLineEdit(self.tmpPref['pref']['email']['fromUsername'])
         notificationPrefGrid.addWidget(self.usernameWidget, n, 1)
         n = n+1
         
-        self.passwordLabel = QtGui.QLabel(self.tr('Password:'))
+        self.passwordLabel = QLabel(self.tr('Password:'))
         notificationPrefGrid.addWidget(self.passwordLabel, n, 0)
-        self.passwordWidget = QtGui.QLineEdit(self.tmpPref['pref']['email']['fromPassword'])
-        self.passwordWidget.setEchoMode(QtGui.QLineEdit.Password)
+        self.passwordWidget = QLineEdit(self.tmpPref['pref']['email']['fromPassword'])
+        self.passwordWidget.setEchoMode(QLineEdit.Password)
         notificationPrefGrid.addWidget(self.passwordWidget, n, 1)
 
         n = n+1
-        self.passwordWarningLabel = QtGui.QLabel(self.tr('Password is NOT stored safely (see manual), use at your own risk!'))
+        self.passwordWarningLabel = QLabel(self.tr('Password is NOT stored safely (see manual), use at your own risk!'))
         notificationPrefGrid.addWidget(self.passwordWarningLabel, n, 0, 1, 2)
         n = n+1
-        self.testEmailButton = QtGui.QPushButton(self.tr("Send test e-mail"), self)
+        self.testEmailButton = QPushButton(self.tr("Send test e-mail"), self)
         #QtCore.QObject.connect(self.testEmailButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickTestEmailButton)
         self.testEmailButton.clicked.connect(self.onClickTestEmailButton)
@@ -378,34 +379,34 @@ class preferencesDialog(QDialog):
         notificationPrefGrid.addWidget(self.testEmailButton, n, 0, 1, 2)
         
         self.notificationPrefWidget.setLayout(notificationPrefGrid)
-        self.notificationPrefWidget.layout().setSizeConstraint(QtGui.QLayout.SetFixedSize)
+        self.notificationPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
 
 
         ##--#--#--#--#--
         # EEG PREF GRID
-        eegPrefGrid = QtGui.QGridLayout()
+        eegPrefGrid = QGridLayout()
         
         n = 0
-        self.ONTriggerLabel = QtGui.QLabel(self.tr('ON Trigger:'))
+        self.ONTriggerLabel = QLabel(self.tr('ON Trigger:'))
         eegPrefGrid.addWidget(self.ONTriggerLabel, n, 0)
-        self.ONTriggerWidget = QtGui.QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["general"]["ONTrigger"]))
+        self.ONTriggerWidget = QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["general"]["ONTrigger"]))
         eegPrefGrid.addWidget(self.ONTriggerWidget, n, 1)
 
         n = n+1
-        self.OFFTriggerLabel = QtGui.QLabel(self.tr('OFF Trigger:'))
+        self.OFFTriggerLabel = QLabel(self.tr('OFF Trigger:'))
         eegPrefGrid.addWidget(self.OFFTriggerLabel, n, 0)
-        self.OFFTriggerWidget = QtGui.QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["general"]["OFFTrigger"]))
+        self.OFFTriggerWidget = QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["general"]["OFFTrigger"]))
         eegPrefGrid.addWidget(self.OFFTriggerWidget, n, 1)
 
         n = n+1
-        self.triggerDurLabel = QtGui.QLabel(self.tr('Trigger Duration (ms):'))
+        self.triggerDurLabel = QLabel(self.tr('Trigger Duration (ms):'))
         eegPrefGrid.addWidget(self.triggerDurLabel, n, 0)
-        self.triggerDurWidget = QtGui.QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["general"]["triggerDur"]))
+        self.triggerDurWidget = QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["general"]["triggerDur"]))
         eegPrefGrid.addWidget(self.triggerDurWidget, n, 1)
       
         
         self.eegPrefWidget.setLayout(eegPrefGrid)
-        self.eegPrefWidget.layout().setSizeConstraint(QtGui.QLayout.SetFixedSize)
+        self.eegPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
 
 
         # ........................
@@ -414,7 +415,7 @@ class preferencesDialog(QDialog):
         self.tabWidget.addTab(self.notificationPrefWidget, self.tr("Notification&s"))
         self.tabWidget.addTab(self.eegPrefWidget, self.tr("EE&G"))
 
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Apply|QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
        
 
         
@@ -422,18 +423,17 @@ class preferencesDialog(QDialog):
         #              self, QtCore.SLOT("accept()"))
         # self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
         #              self, QtCore.SLOT("reject()"))
-        # self.connect(buttonBox.button(QtGui.QDialogButtonBox.Apply),
+        # self.connect(buttonBox.button(QDialogButtonBox.Apply),
         #              QtCore.SIGNAL("clicked()"), self.permanentApply)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
-        buttonBox.button(QtGui.QDialogButtonBox.Apply).clicked.connect(self.permanentApply)
+        buttonBox.button(QDialogButtonBox.Apply).clicked.connect(self.permanentApply)
         
-        layout = QtGui.QVBoxLayout()
+        layout = QVBoxLayout()
         layout.addWidget(self.tabWidget)
         layout.addWidget(buttonBox)
         self.setLayout(layout)
        
-  
     def onLanguageChooserChange(self):
         for i in range(self.countryChooser.count()):
             self.countryChooser.removeItem(0)
@@ -511,11 +511,11 @@ class preferencesDialog(QDialog):
         
     def popMailerMessage(self, msg, msgtype):
         if msgtype == 'critical':
-            QtGui.QMessageBox.critical(self, self.tr("Error"), msg)
+            QMessageBox.critical(self, self.tr("Error"), msg)
         elif msgtype == 'warning':
-            QtGui.QMessageBox.warning(self, self.tr("Warning"), msg)
+            QMessageBox.warning(self, self.tr("Warning"), msg)
         elif msgtype == 'information':
-            QtGui.QMessageBox.information(self, self.tr("Information"), msg)
+            QMessageBox.information(self, self.tr("Information"), msg)
             
     def tryApply(self):
         self.tmpPref['pref']['language'] = self.tr(self.languageChooser.currentText())
@@ -611,22 +611,18 @@ class preferencesDialog(QDialog):
         if self.tmpPref['pref']['email']['notifyEnd'] == True or self.tmpPref['pref']['email']['sendData'] == True:
             if checkUsernameValid(self.tmpPref["pref"]["email"]['fromUsername']) == False:
                 errMsg = self.tr("Username invalid. Disabling sending e-mails.")
-                QtGui.QMessageBox.warning(self, self.tr("Warning"), errMsg)
+                QMessageBox.warning(self, self.tr("Warning"), errMsg)
                 self.emailNotify.setChecked(False)
                 self.sendData.setChecked(False)
                 self.tmpPref['pref']['email']['notifyEnd'] = False
                 self.tmpPref['pref']['email']['sendData'] = False
             elif checkServerValid(self.tmpPref["pref"]["email"]['SMTPServer']) == False:
                 errMsg = self.tr("SMTP server name invalid. Disabling sending e-mails.")
-                QtGui.QMessageBox.warning(self, self.tr("Warning"), errMsg)
+                QMessageBox.warning(self, self.tr("Warning"), errMsg)
                 self.emailNotify.setChecked(False)
                 self.sendData.setChecked(False)
                 self.tmpPref['pref']['email']['notifyEnd'] = False
                 self.tmpPref['pref']['email']['sendData'] = False
-            
-
-          
-          
             
     def revertChanges(self):
         self.languageChooser.setCurrentIndex(self.languageChooser.findText(self.tmpPref['pref']['language']))
@@ -682,6 +678,7 @@ class preferencesDialog(QDialog):
         self.sendData.setChecked(self.tmpPref["pref"]["email"]["sendData"])
         self.serverRequiresAuthCheckBox.setChecked(self.tmpPref["pref"]["email"]["serverRequiresAuthentication"])
         self.playEndMessage.setChecked(self.tmpPref["pref"]["general"]["playEndMessage"])
+        
     def permanentApply(self):
         self.tryApply()
         if self.parent().prm['pref']['email']['fromPassword'] != self.tmpPref['pref']['email']['fromPassword']:
@@ -696,12 +693,13 @@ class preferencesDialog(QDialog):
         f = open(self.parent().prm['prefFile'], 'wb')
         pickle.dump(self.parent().prm['pref'], f)
         f.close()
+        
     def tabChanged(self):
         self.tryApply()
         if self.tmpPref['pref'] != self.parent().prm['pref']:
-            reply = QtGui.QMessageBox.warning(self, self.tr("Warning"), self.tr('There are unsaved changes. Apply Changes?'), QtGui.QMessageBox.Yes | 
-                                            QtGui.QMessageBox.No, QtGui.QMessageBox.Yes)
-            if reply == QtGui.QMessageBox.Yes:
+            reply = QMessageBox.warning(self, self.tr("Warning"), self.tr('There are unsaved changes. Apply Changes?'), QMessageBox.Yes | 
+                                            QMessageBox.No, QMessageBox.Yes)
+            if reply == QMessageBox.Yes:
                 self.permanentApply()
             else:
                 self.tmpPref['pref'] = copy.deepcopy(self.parent().prm['pref'])
@@ -733,8 +731,6 @@ class preferencesDialog(QDialog):
             if thisDevInfo["maxOutputChannels"] > 0:
                 self.pyaudioDeviceListName.append(thisDevInfo["name"] + ' - ' + self.pyaudioHostApiListName[thisDevInfo["hostApi"]])
                 self.pyaudioDeviceListIdx.append(thisDevInfo["index"])
-        #print(self.pyaudioDeviceListName)
-        #print(self.pyaudioDeviceListIdx)
         return 
                 
 

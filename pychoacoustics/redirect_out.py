@@ -19,10 +19,11 @@
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
 if pyqtversion == 4:
-    from PyQt4 import QtGui
-    from PyQt4.QtCore import*
+    from PyQt4.QtGui import QPlainTextEdit
+elif pyqtversion == 5:
+    from PyQt5.QtWidgets import QPlainTextEdit
 
-class OutputWindow(QtGui.QPlainTextEdit):
+class OutputWindow(QPlainTextEdit):
     def write(self, txt):
         self.appendPlainText(str(txt))
 

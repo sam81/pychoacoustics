@@ -45,7 +45,7 @@ def initialize_freq(prm):
 
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
                              "hasIntervalLights"]
-    prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Geometric","", QApplication.UnicodeUTF8)
+    prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Geometric","")
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2
     prm[exp_name]["execString"] = "freq"

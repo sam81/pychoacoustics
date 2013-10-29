@@ -21,11 +21,12 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale
-    from PyQt4.QtGui import QDialog
+    from PyQt4.QtGui import QDialog, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale
-    from PyQt5.QtWidgets import QDialog
+    from PyQt5.QtWidgets import QDialog, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
+    from PyQt5.QtGui import QFont
 import random
 
 class showFortuneDialog(QDialog):
@@ -34,13 +35,13 @@ class showFortuneDialog(QDialog):
         self.prm = self.parent().prm
         self.currLocale = self.parent().prm['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
-        #self.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        #self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
        
-        self.vBoxSizer = QtGui.QVBoxLayout()
-        self.hBoxSizer = QtGui.QVBoxLayout()
-        self.browser = QtGui.QTextBrowser()
-        self.browser.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
-        self.anotherFortuneButton = QtGui.QPushButton(self.tr("One More!"), self)
+        self.vBoxSizer = QVBoxLayout()
+        self.hBoxSizer = QVBoxLayout()
+        self.browser = QTextBrowser()
+        self.browser.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.anotherFortuneButton = QPushButton(self.tr("One More!"), self)
         #QtCore.QObject.connect(self.anotherFortuneButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickAnotherFortuneButton)
         self.anotherFortuneButton.clicked.connect(self.onClickAnotherFortuneButton)
@@ -53,14 +54,14 @@ class showFortuneDialog(QDialog):
         self.browser.append(self.prm['appData']['fortunesList'][idx]['author'])
         self.browser.append("In:" + self.prm['appData']['fortunesList'][idx]['source'])
 
-        font = QtGui.QFont()
+        font = QFont()
         font.setFamily("Arial")
         font.setPointSize(12)
         self.browser.setFont(font)
         
         self.vBoxSizer.addWidget(self.browser)
         self.vBoxSizer.addLayout(self.hBoxSizer)
-        #self.vBoxSizer.setSizeConstraint(QtGui.QLayout.SetFixedSize)
+        #self.vBoxSizer.setSizeConstraint(QLayout.SetFixedSize)
         
         self.setLayout(self.vBoxSizer)
         self.setWindowTitle(self.tr("pychoacoustics - fortunes"))

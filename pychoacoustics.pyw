@@ -23,8 +23,11 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from pychoacoustics.pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
+    from PyQt4.QtGui import QApplication
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
+    from PyQt5.QtWidgets import QApplication
+    
 import signal
 import argparse, fnmatch, os, sys, time, traceback
 from pychoacoustics import qrc_resources
@@ -160,7 +163,7 @@ def main(argv):
         callArgs = callArgs + ['-display', prm['display']]
     if 'graphicssystem' in prm:
         callArgs = callArgs + ['-graphicssystem', prm['graphicssystem']]
-    app = QtGui.QApplication(callArgs)
+    app = QApplication(callArgs)
      
     sys.excepthook = excepthook
     #LOCALE LOADING

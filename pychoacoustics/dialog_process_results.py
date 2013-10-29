@@ -21,11 +21,12 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale
-    from PyQt4.QtGui import QDialog
+    from PyQt4.QtGui import QCheckBox, QDialog, QDesktopServices, QDialogButtonBox, QFileDialog, QHBoxLayout, QIcon, QIntValidator, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout, QWidget
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale
-    from PyQt5.QtWidgets import QDialog
+    from PyQt5.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout, QWidget
+    from PyQt5.QtGui import QDesktopServices, QIcon, QIntValidator
 import os
 from .utils_process_results import*
 matplotlib_available = True
@@ -34,7 +35,7 @@ try:
     import matplotlib
 except:
     matplotlib_available = False
-#matplotlib_available = False
+
 try:
     import pandas
 except:
@@ -68,91 +69,91 @@ class processResultsDialog(QDialog):
         elif paradigm == self.tr("Constant 1-Pair Same/Different"):
             self.paradigm = "constant1PairSD"
         
-        self.soundPrefWidget = QtGui.QWidget()
-        self.vBoxSizer = QtGui.QVBoxLayout()
-        self.hCsvSeparator =  QtGui.QHBoxLayout()
-        self.plotBox =  QtGui.QHBoxLayout()
-        self.pdfPlotBox =  QtGui.QHBoxLayout()
-        self.hBox1 =  QtGui.QHBoxLayout()
-        self.hBox1_1 =  QtGui.QHBoxLayout()
-        self.hBox2 =  QtGui.QHBoxLayout()
-        self.hBox3 =  QtGui.QHBoxLayout()
-        self.hBox4 =  QtGui.QHBoxLayout()
-        self.hBox5 =  QtGui.QHBoxLayout()
-        self.hBox6 =  QtGui.QHBoxLayout()
-        self.hBox7a =  QtGui.QHBoxLayout()
-        self.hBox7 =  QtGui.QHBoxLayout()
-        self.hBox8 =  QtGui.QHBoxLayout()
-        self.hBox9 =  QtGui.QHBoxLayout()
+        self.soundPrefWidget = QWidget()
+        self.vBoxSizer = QVBoxLayout()
+        self.hCsvSeparator =  QHBoxLayout()
+        self.plotBox =  QHBoxLayout()
+        self.pdfPlotBox =  QHBoxLayout()
+        self.hBox1 =  QHBoxLayout()
+        self.hBox1_1 =  QHBoxLayout()
+        self.hBox2 =  QHBoxLayout()
+        self.hBox3 =  QHBoxLayout()
+        self.hBox4 =  QHBoxLayout()
+        self.hBox5 =  QHBoxLayout()
+        self.hBox6 =  QHBoxLayout()
+        self.hBox7a =  QHBoxLayout()
+        self.hBox7 =  QHBoxLayout()
+        self.hBox8 =  QHBoxLayout()
+        self.hBox9 =  QHBoxLayout()
     
         n = 0
-        self.fileChooseLabel = QtGui.QLabel(self.tr('Input File(s): '))
+        self.fileChooseLabel = QLabel(self.tr('Input File(s): '))
         self.hBox1.addWidget(self.fileChooseLabel)
-        self.fileTF = QtGui.QLineEdit(';'.join(self.fName))
+        self.fileTF = QLineEdit(';'.join(self.fName))
         self.hBox1.addWidget(self.fileTF)
-        self.chooseFileButton = QtGui.QPushButton(self.tr("Change File"), self)
+        self.chooseFileButton = QPushButton(self.tr("Change File"), self)
         #QtCore.QObject.connect(self.chooseFileButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickChooseFileButton)
         self.chooseFileButton.clicked.connect(self.onClickChooseFileButton)
         self.hBox1.addWidget(self.chooseFileButton)
 
         n = n +1
-        self.outfileChooseLabel = QtGui.QLabel(self.tr('Output File: '))
+        self.outfileChooseLabel = QLabel(self.tr('Output File: '))
         self.hBox1_1.addWidget(self.outfileChooseLabel)
-        self.outfileTF = QtGui.QLineEdit("")
+        self.outfileTF = QLineEdit("")
         self.hBox1_1.addWidget(self.outfileTF)
-        self.chooseOutFileButton = QtGui.QPushButton(self.tr("Change File"), self)
+        self.chooseOutFileButton = QPushButton(self.tr("Change File"), self)
         #QtCore.QObject.connect(self.chooseOutFileButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickChooseOutFileButton)
         self.chooseOutFileButton.clicked.connect(self.onClickChooseOutFileButton)
         self.hBox1_1.addWidget(self.chooseOutFileButton)
 
         if self.resformat == 'table':
-            self.csvSeparatorLabel = QtGui.QLabel(self.tr('csv separator:'))
-            self.csvSeparatorTF = QtGui.QLineEdit(sep)#parent.prm['pref']["general"]["csvSeparator"])
+            self.csvSeparatorLabel = QLabel(self.tr('csv separator:'))
+            self.csvSeparatorTF = QLineEdit(sep)#parent.prm['pref']["general"]["csvSeparator"])
             self.hCsvSeparator.addWidget(self.csvSeparatorLabel)
             self.hCsvSeparator.addWidget(self.csvSeparatorTF)
             if self.parent().prm['appData']['plotting_available'] == True:
-                self.plotCheckBox = QtGui.QCheckBox(self.tr('Plot'))
+                self.plotCheckBox = QCheckBox(self.tr('Plot'))
                 #self.plotCheckBox.setChecked(True)
                 self.plotBox.addWidget(self.plotCheckBox)
-                self.pdfPlotCheckBox = QtGui.QCheckBox(self.tr('PDF Plot'))
+                self.pdfPlotCheckBox = QCheckBox(self.tr('PDF Plot'))
                 #self.plotCheckBox.setChecked(True)
                 self.pdfPlotBox.addWidget(self.pdfPlotCheckBox)
 
         n = n+1
-        self.label1 = QtGui.QLabel(self.tr('For each condition process: '))
+        self.label1 = QLabel(self.tr('For each condition process: '))
         self.hBox2.addWidget(self.label1)
 
         n = n+1
-        self.processAllBlocksCheckBox = QtGui.QCheckBox(self.tr('All Blocks'))
+        self.processAllBlocksCheckBox = QCheckBox(self.tr('All Blocks'))
         self.processAllBlocksCheckBox.setChecked(True)
         self.hBox3.addWidget(self.processAllBlocksCheckBox)
 
         n = n+1
-        self.label2 = QtGui.QLabel(self.tr('Last: '))
+        self.label2 = QLabel(self.tr('Last: '))
         self.hBox4.addWidget(self.label2)
-        self.lastNBlocksTF = QtGui.QLineEdit("")
-        self.lastNBlocksTF.setValidator(QtGui.QIntValidator(self))
+        self.lastNBlocksTF = QLineEdit("")
+        self.lastNBlocksTF.setValidator(QIntValidator(self))
         self.hBox4.addWidget(self.lastNBlocksTF)
-        self.processLastNBlocksCheckBox = QtGui.QCheckBox(self.tr('Blocks'))
+        self.processLastNBlocksCheckBox = QCheckBox(self.tr('Blocks'))
         self.processLastNBlocksCheckBox.setChecked(False)
         self.hBox4.addWidget(self.processLastNBlocksCheckBox)
 
         n = n+1
-        self.processBlocksInRangeCheckBox = QtGui.QCheckBox(self.tr('Blocks in the following range'))
+        self.processBlocksInRangeCheckBox = QCheckBox(self.tr('Blocks in the following range'))
         self.processBlocksInRangeCheckBox.setChecked(False)
         self.hBox5.addWidget(self.processBlocksInRangeCheckBox)
         n = n+1
-        self.label3 = QtGui.QLabel(self.tr('From: '))
+        self.label3 = QLabel(self.tr('From: '))
         self.hBox6.addWidget(self.label3)
-        self.label4 = QtGui.QLabel(self.tr('To: '))
-        self.fromTF = QtGui.QLineEdit("")
-        self.fromTF.setValidator(QtGui.QIntValidator(self))
+        self.label4 = QLabel(self.tr('To: '))
+        self.fromTF = QLineEdit("")
+        self.fromTF.setValidator(QIntValidator(self))
         self.hBox6.addWidget(self.fromTF)
         self.hBox6.addWidget(self.label4)
-        self.toTF = QtGui.QLineEdit("")
-        self.toTF.setValidator(QtGui.QIntValidator(self))
+        self.toTF = QLineEdit("")
+        self.toTF.setValidator(QIntValidator(self))
         self.hBox6.addWidget(self.toTF)
 
         #self.connect(self.processAllBlocksCheckBox, QtCore.SIGNAL("clicked()"), self.onCheckProcessAllBlocks)
@@ -164,36 +165,36 @@ class processResultsDialog(QDialog):
         self.processBlocksInRangeCheckBox.clicked.connect(self.onCheckProcessBlocksInRange)
 
         if self.paradigm in ["constant1Interval2Alternatives", "multipleConstants1Interval2Alternatives", "constant1PairSD"]:
-            self.dpCorrCheckBox = QtGui.QCheckBox(self.tr('d-prime correction'))
+            self.dpCorrCheckBox = QCheckBox(self.tr('d-prime correction'))
             self.dpCorrCheckBox.setChecked(self.prm['pref']['general']['dprimeCorrection'])
             self.hBox7a.addWidget(self.dpCorrCheckBox)
         n = n+1
-        self.openResultsFile = QtGui.QCheckBox(self.tr('When Finished, Open Results File'))
+        self.openResultsFile = QCheckBox(self.tr('When Finished, Open Results File'))
         self.openResultsFile.setChecked(False)
         self.hBox7.addWidget(self.openResultsFile)
 
         n = n+1
-        self.openResultsFolder = QtGui.QCheckBox(self.tr('When Finished, Open Results Folder'))
+        self.openResultsFolder = QCheckBox(self.tr('When Finished, Open Results Folder'))
         self.openResultsFolder.setChecked(False)
         self.hBox8.addWidget(self.openResultsFolder)
 
         n = n+1
-        self.runButton = QtGui.QPushButton(self.tr("Run!"), self)
+        self.runButton = QPushButton(self.tr("Run!"), self)
         #QtCore.QObject.connect(self.runButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickRunButton)
         self.runButton.clicked.connect(self.onClickRunButton)
-        self.runButton.setIcon(QtGui.QIcon.fromTheme("system-run", QtGui.QIcon(":/system-run")))
+        self.runButton.setIcon(QIcon.fromTheme("system-run", QIcon(":/system-run")))
         self.hBox9.addWidget(self.runButton)
 
-        ## buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|
-        ##                                    QtGui.QDialogButtonBox.Cancel)
+        ## buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
+        ##                                    QDialogButtonBox.Cancel)
         
         ## self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
         ##              self, QtCore.SLOT("accept()"))
         ## self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
         ##              self, QtCore.SLOT("reject()"))
 
-        buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Close)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.Close)
         
         #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
         #             self, QtCore.SLOT("reject()"))
@@ -223,11 +224,11 @@ class processResultsDialog(QDialog):
     def onClickRunButton(self):
         fList = self.fileTF.text().split(';')
         if len(fList) == 0:
-            QtGui.QMessageBox.warning(self, self.tr("Error"), self.tr("You must select one or more files to process."))
+            QMessageBox.warning(self, self.tr("Error"), self.tr("You must select one or more files to process."))
             return
         for fItem in fList:
             if os.path.exists(fItem) == False:
-                QtGui.QMessageBox.warning(self, self.tr("Error"), self.tr("Selected file does not exist: ")+fItem)
+                QMessageBox.warning(self, self.tr("Error"), self.tr("Selected file does not exist: ")+fItem)
                 return
 
         if self.outfileTF.text() == '': #no output file has been chosen
@@ -249,13 +250,13 @@ class processResultsDialog(QDialog):
             last = None; block_range = None
         elif self.processLastNBlocksCheckBox.isChecked() == True:
             if int(self.lastNBlocksTF.text()) < 1:
-                QtGui.QMessageBox.warning(self, self.tr("Error"), self.tr("Invalid number of blocks specified."))
+                QMessageBox.warning(self, self.tr("Error"), self.tr("Invalid number of blocks specified."))
                 return
             else:   
                 last = int(self.lastNBlocksTF.text()); block_range = None
         else:
             if len(self.fromTF.text()) == 0 or len(self.toTF.text()) == 0 or int(self.fromTF.text()) < 1 or int(self.fromTF.text()) > int(self.toTF.text()):
-                QtGui.QMessageBox.warning(self, self.tr("Error"), self.tr("Invalid number of blocks specified."))
+                QMessageBox.warning(self, self.tr("Error"), self.tr("Invalid number of blocks specified."))
                 return
             else:
                     last = None; block_range=(int(self.fromTF.text()), int(self.toTF.text()))
@@ -299,21 +300,21 @@ class processResultsDialog(QDialog):
           
         if self.openResultsFile.isChecked() == True:
             if self.resformat == 'linear':
-                QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(self.foutName))
+                QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(self.foutName))
             elif self.resformat == 'table':
-                QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(self.foutName))
+                QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(self.foutName))
         if self.openResultsFolder.isChecked() == True:
-            QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(os.path.dirname(self.foutName)))
+            QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(os.path.dirname(self.foutName)))
         
     def onClickChooseFileButton(self):
-        self.fName = QtGui.QFileDialog.getOpenFileNames(self, self.tr("Choose results file to load"), '', self.tr("All Files (*)"))
+        self.fName = QFileDialog.getOpenFileNames(self, self.tr("Choose results file to load"), '', self.tr("All Files (*)"))
         self.fileTF.setText(';'.join(self.fName))
         self.outfileTF.setText('') #clear the out file name
     def onClickChooseOutFileButton(self):
         if self.resformat == 'linear':
-            self.foutName = QtGui.QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "res.txt", self.tr('All Files (*)'))
+            self.foutName = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "res.txt", self.tr('All Files (*)'))
         elif self.resformat == 'table':
-            self.foutName = QtGui.QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "res.csv", self.tr('All Files (*)'))
+            self.foutName = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "res.csv", self.tr('All Files (*)'))
         self.outfileTF.setText(self.foutName)
     def onCheckProcessAllBlocks(self):
         self.processLastNBlocksCheckBox.setChecked(False)

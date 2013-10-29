@@ -99,12 +99,12 @@ def set_global_parameters(prm):
             else:
                 prm[exp][opt] = False
     prm["nIntervalsChoices"] = ["2", "3", "4", "5", "6", "7", "8", "9", "10"]
-    prm["adaptiveTypeChoices"] = [QApplication.translate("","Arithmetic","", QApplication.UnicodeUTF8), QApplication.translate("","Geometric","", QApplication.UnicodeUTF8)]
-    prm['tnpToAverageChoices'] = [QApplication.translate("","All final stepsize (even)","", QApplication.UnicodeUTF8), QApplication.translate("","First N final stepsize","", QApplication.UnicodeUTF8), QApplication.translate("","Last N final stepsize","", QApplication.UnicodeUTF8)]
+    prm["adaptiveTypeChoices"] = [QApplication.translate("","Arithmetic",""), QApplication.translate("","Geometric","")]
+    prm['tnpToAverageChoices'] = [QApplication.translate("","All final stepsize (even)",""), QApplication.translate("","First N final stepsize",""), QApplication.translate("","Last N final stepsize","")]
 
     prm["nBitsChoices"] = ["16", "32"]
-    prm["shuffleChoices"] = [QApplication.translate("","No","", QApplication.UnicodeUTF8), QApplication.translate("","Ask","", QApplication.UnicodeUTF8), QApplication.translate("","Auto","", QApplication.UnicodeUTF8)]
-    prm["responseModeChoices"] = [QApplication.translate("","Real Listener","", QApplication.UnicodeUTF8), QApplication.translate("","Automatic","", QApplication.UnicodeUTF8), QApplication.translate("","Simulated Listener","", QApplication.UnicodeUTF8)]
+    prm["shuffleChoices"] = [QApplication.translate("","No",""), QApplication.translate("","Ask",""), QApplication.translate("","Auto","")]
+    prm["responseModeChoices"] = [QApplication.translate("","Real Listener",""), QApplication.translate("","Automatic",""), QApplication.translate("","Simulated Listener","")]
     prm['trialRunning'] = False
     prm['currentBlock'] = 1
     prm['storedBlocks'] = 0
@@ -144,7 +144,7 @@ def set_global_parameters(prm):
         if os.system("where sndfile-play") == 0:
             prm['appData']['available_play_commands'].append("sndfile-play")
 
-        prm['appData']['available_play_commands'].append(QApplication.translate("","custom","", QApplication.UnicodeUTF8))
+        prm['appData']['available_play_commands'].append(QApplication.translate("","custom",""))
     elif platform.system() == 'Linux':
         prm['appData']['available_play_commands'] = []
         if alsaaudioAvailable == True:
@@ -164,9 +164,9 @@ def set_global_parameters(prm):
             prm['appData']['available_play_commands'].append("pactypes")
       
 
-        prm['appData']['available_play_commands'].append(QApplication.translate("","custom","", QApplication.UnicodeUTF8))
+        prm['appData']['available_play_commands'].append(QApplication.translate("","custom",""))
     else:
-        prm['appData']['available_play_commands'] = [QApplication.translate("","custom","", QApplication.UnicodeUTF8)]
+        prm['appData']['available_play_commands'] = [QApplication.translate("","custom","")]
         if pyaudioAvailable == True:
             prm['appData']['available_play_commands'].append("pyaudio")
             prm['appData']['pyaudioAvailable'] = True
@@ -174,29 +174,29 @@ def set_global_parameters(prm):
             prm['appData']['pyaudioAvailable'] = False
     prm['appData']['wavmanagers'] = ["scipy"]
     
-    prm['appData']['available_languages'] = [QApplication.translate("","System Settings","", QApplication.UnicodeUTF8),
-                                      QApplication.translate("","en","", QApplication.UnicodeUTF8),
-                                      QApplication.translate("","it","", QApplication.UnicodeUTF8),
-                                      QApplication.translate("","fr","", QApplication.UnicodeUTF8),
-                                      QApplication.translate("","es","", QApplication.UnicodeUTF8),
-                                      QApplication.translate("","el","", QApplication.UnicodeUTF8)]
+    prm['appData']['available_languages'] = [QApplication.translate("","System Settings",""),
+                                      QApplication.translate("","en",""),
+                                      QApplication.translate("","it",""),
+                                      QApplication.translate("","fr",""),
+                                      QApplication.translate("","es",""),
+                                      QApplication.translate("","el","")]
 
     prm['appData']['available_countries'] = {}
-    prm['appData']['available_countries'][QApplication.translate("","System Settings","", QApplication.UnicodeUTF8)] = [QApplication.translate("","System Settings","", QApplication.UnicodeUTF8)]
-    prm['appData']['available_countries']['en'] = [QApplication.translate("","US","", QApplication.UnicodeUTF8),
-                                                         QApplication.translate("","GB","", QApplication.UnicodeUTF8)]
+    prm['appData']['available_countries'][QApplication.translate("","System Settings","")] = [QApplication.translate("","System Settings","")]
+    prm['appData']['available_countries']['en'] = [QApplication.translate("","US",""),
+                                                         QApplication.translate("","GB","")]
 
-    prm['appData']['available_countries']['it'] = [QApplication.translate("","IT","", QApplication.UnicodeUTF8),
-                                                         QApplication.translate("","CH","", QApplication.UnicodeUTF8)]
-    prm['appData']['available_countries']['fr'] = [QApplication.translate("","FR","", QApplication.UnicodeUTF8),
-                                                         QApplication.translate("","CA","", QApplication.UnicodeUTF8)]
+    prm['appData']['available_countries']['it'] = [QApplication.translate("","IT",""),
+                                                         QApplication.translate("","CH","")]
+    prm['appData']['available_countries']['fr'] = [QApplication.translate("","FR",""),
+                                                         QApplication.translate("","CA","")]
 
-    prm['appData']['available_countries']['es'] = [QApplication.translate("","ES","", QApplication.UnicodeUTF8),
-                                                         QApplication.translate("","BO","", QApplication.UnicodeUTF8),
-                                                         QApplication.translate("","CL","", QApplication.UnicodeUTF8)]
+    prm['appData']['available_countries']['es'] = [QApplication.translate("","ES",""),
+                                                         QApplication.translate("","BO",""),
+                                                         QApplication.translate("","CL","")]
 
-    prm['appData']['available_countries']['el'] = [QApplication.translate("","GR","", QApplication.UnicodeUTF8),
-                                                         QApplication.translate("","CY","", QApplication.UnicodeUTF8)]
+    prm['appData']['available_countries']['el'] = [QApplication.translate("","GR",""),
+                                                         QApplication.translate("","CY","")]
 
    
 
@@ -250,8 +250,8 @@ def def_pref(prm):
     prm["pref"]["general"]["endMessageFilesUse"] = []
     prm["pref"]["general"]["endMessageLevels"] = []
     
-    prm["pref"]["general"]["defaultShuffle"] = QApplication.translate("","Ask","", QApplication.UnicodeUTF8)
-    prm["pref"]["general"]["defaultResponseMode"] = QApplication.translate("","Real Listener","", QApplication.UnicodeUTF8)
+    prm["pref"]["general"]["defaultShuffle"] = QApplication.translate("","Ask","")
+    prm["pref"]["general"]["defaultResponseMode"] = QApplication.translate("","Real Listener","")
     prm["pref"]["general"]["listenerNameWarn"] = True
     prm["pref"]["general"]["sessionLabelWarn"] = True
     prm["pref"]["general"]["playEndMessage"] = False
@@ -288,10 +288,10 @@ def def_pref(prm):
     prm["pref"]["email"]['fromPassword'] = encoded_passwd
    
 
-    prm['pref']['language'] = QApplication.translate("","en","", QApplication.UnicodeUTF8)
-    prm['pref']['country'] = QApplication.translate("","US","", QApplication.UnicodeUTF8)
-    prm['pref']['responseBoxLanguage'] = QApplication.translate("","en","", QApplication.UnicodeUTF8)
-    prm['pref']['responseBoxCountry'] = QApplication.translate("","US","", QApplication.UnicodeUTF8)
+    prm['pref']['language'] = QApplication.translate("","en","")
+    prm['pref']['country'] = QApplication.translate("","US","")
+    prm['pref']['responseBoxLanguage'] = QApplication.translate("","en","")
+    prm['pref']['responseBoxCountry'] = QApplication.translate("","US","")
 
     #Sound preferences
     prm["pref"]["sound"]["defaultNBits"] = "32"
@@ -307,7 +307,7 @@ def def_pref(prm):
         prm["pref"]["sound"]["playCommandType"] = "winsound"
     else:
         prm["pref"]["sound"]["playCommand"] = "aplay"
-        prm["pref"]["sound"]["playCommandType"] = QApplication.translate("","custom","", QApplication.UnicodeUTF8)
+        prm["pref"]["sound"]["playCommandType"] = QApplication.translate("","custom","")
     if alsaaudioAvailable == True:
         prm["pref"]["sound"]["alsaaudioDevice"] = "default"
     if pyaudioAvailable == True:
@@ -338,7 +338,7 @@ def def_pref(prm):
     prm["preTrialInterval"] = False
     prm["precursorInterval"] = False
     prm["postcursorInterval"] = False
-    prm["intervalLights"] = QApplication.translate("","Yes","", QApplication.UnicodeUTF8)
+    prm["intervalLights"] = QApplication.translate("","Yes","")
   
     return prm
 

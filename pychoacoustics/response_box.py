@@ -21,12 +21,13 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
-    from PyQt4.QtGui import QApplication, QLabel, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QPainter, QMainWindow, QWidget, QFrame
+    from PyQt4.QtGui import QAction, QApplication, QComboBox, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
-    from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QMainWindow, QWidget, QFrame
+    from PyQt5.QtWidgets import QAction, QApplication, QComboBox, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
     from PyQt5.QtGui import QPainter
+    
 from numpy.fft import rfft, irfft, fft, ifft
 import base64, fnmatch, copy, numpy, os, platform, random, string, smtplib, sys, time     
 from numpy import array, concatenate, log10, nan, mean, repeat, std
@@ -51,7 +52,7 @@ try:
     matplotlib_available = True
 except:
     matplotlib_available = False
-#matplotlib_available = False
+
 
 try:
     import pandas
@@ -94,7 +95,7 @@ class responseBox(QMainWindow):
         #FILE MENU
         self.fileMenu = self.menubar.addMenu(self.tr('-'))
        
-        self.toggleControlWin = QtGui.QAction(self.tr('Show/Hide Control Window'), self)
+        self.toggleControlWin = QAction(self.tr('Show/Hide Control Window'), self)
         self.toggleControlWin.setShortcut('Ctrl+C')
         self.toggleControlWin.setCheckable(True)
         #self.toggleControlWin.setStatusTip(self.tr('Toggle Control Window'))
@@ -105,13 +106,13 @@ class responseBox(QMainWindow):
         else:
             self.toggleControlWin.setChecked(True)
         
-        self.toggleGauge = QtGui.QAction(self.tr('Show/Hide Progress Bar'), self)
+        self.toggleGauge = QAction(self.tr('Show/Hide Progress Bar'), self)
         self.toggleGauge.setShortcut('Ctrl+P')
         self.toggleGauge.setCheckable(True)
         #self.connect(self.toggleGauge, QtCore.SIGNAL('triggered()'), self.onToggleGauge)
         self.toggleGauge.triggered.connect(self.onToggleGauge)
 
-        self.toggleBlockGauge = QtGui.QAction(self.tr('Show/Hide Block Progress Bar'), self)
+        self.toggleBlockGauge = QAction(self.tr('Show/Hide Block Progress Bar'), self)
         self.toggleBlockGauge.setShortcut('Ctrl+B')
         self.toggleBlockGauge.setCheckable(True)
         #self.connect(self.toggleBlockGauge, QtCore.SIGNAL('triggered()'), self.onToggleBlockGauge)
@@ -122,26 +123,26 @@ class responseBox(QMainWindow):
         self.fileMenu.addAction(self.toggleGauge)
         self.fileMenu.addAction(self.toggleBlockGauge)
         
-        self.rb = QtGui.QFrame()
-        self.rb.setFrameStyle(QtGui.QFrame.StyledPanel|QtGui.QFrame.Sunken)
-        self.rb_sizer = QtGui.QVBoxLayout()
-        self.intervalSizer = QtGui.QGridLayout()
-        self.responseButtonSizer = QtGui.QGridLayout()
+        self.rb = QFrame()
+        self.rb.setFrameStyle(QFrame.StyledPanel|QFrame.Sunken)
+        self.rb_sizer = QVBoxLayout()
+        self.intervalSizer = QGridLayout()
+        self.responseButtonSizer = QGridLayout()
        
-        self.statusButton = QtGui.QPushButton(self.prm['rbTrans'].translate('rb', "Wait"), self)
+        self.statusButton = QPushButton(self.prm['rbTrans'].translate('rb', "Wait"), self)
         #QtCore.QObject.connect(self.statusButton,
         #                       QtCore.SIGNAL('clicked()'), self.onClickStatusButton)
         self.statusButton.clicked.connect(self.onClickStatusButton)
         self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.statusButton.setProperty("responseBoxButton", True)
-        self.statBtnShortcut = QtGui.QShortcut("Ctrl+R", self, activated = self.onClickStatusButton)
+        self.statBtnShortcut = QShortcut("Ctrl+R", self, activated = self.onClickStatusButton)
         self.statusButton.setToolTip(self.tr("Press Ctrl+R to activate"))
         
         self.responseLight = responseLight(self)
 
-        self.gauge = QtGui.QProgressBar(self)
+        self.gauge = QProgressBar(self)
         self.gauge.setRange(0, 100)
-        self.blockGauge = QtGui.QProgressBar(self)
+        self.blockGauge = QProgressBar(self)
         
         self.rb_sizer.addWidget(self.statusButton)
         self.rb_sizer.addSpacing(20)
@@ -181,11 +182,11 @@ class responseBox(QMainWindow):
         for i in reversed(range(layout.count())):
             item = layout.itemAt(i)
             layout.removeItem(item)
-            if isinstance(item, QtGui.QWidgetItem):
+            if isinstance(item, QWidgetItem):
                 #item.widget().close()
                 # or
                 item.widget().setParent(None)
-            elif isinstance(item, QtGui.QSpacerItem):
+            elif isinstance(item, QSpacerItem):
                 pass
                 # no need to do extra stuff
             else:
@@ -240,23 +241,23 @@ class responseBox(QMainWindow):
 
             r = 0
             if self.prm["warningInterval"] == True:
-                self.responseButtonSizer.addItem(QtGui.QSpacerItem(-1, -1, QtGui.QSizePolicy.Expanding), 0, r)
+                self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
                 r = r+1
             if self.prm["preTrialInterval"] == True:
-                self.responseButtonSizer.addItem(QtGui.QSpacerItem(-1, -1, QtGui.QSizePolicy.Expanding), 0, r)
+                self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
                 r = r+1
             if nAlternatives == nIntervals:
                 for i in range(nAlternatives):
                     if self.prm["precursorInterval"] == True:
-                        self.responseButtonSizer.addItem(QtGui.QSpacerItem(-1, -1, QtGui.QSizePolicy.Expanding), 0, r)
+                        self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
                         r = r+1
-                    self.responseButton.append(QtGui.QPushButton(str(i+1), self))
+                    self.responseButton.append(QPushButton(str(i+1), self))
                     self.responseButtonSizer.addWidget(self.responseButton[i], 1, r)
                     self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
                     self.responseButton[i].setProperty("responseBoxButton", True)
                     r = r+1
                     if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
-                        self.responseButtonSizer.addItem(QtGui.QSpacerItem(-1, -1, QtGui.QSizePolicy.Expanding), 0, r)
+                        self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
                         r = r+1
                     #QtCore.QObject.connect(self.responseButton[i],
                     #                       QtCore.SIGNAL('clicked()'), self.sortResponseButton)
@@ -267,13 +268,13 @@ class responseBox(QMainWindow):
             elif nAlternatives == nIntervals-1:
                 for i in range(nAlternatives):
                     if self.prm[self.parent().currExp]["hasPrecursorInterval"] == True:
-                        self.responseButtonSizer.addItem(QtGui.QSpacerItem(-1, -1, QtGui.QSizePolicy.Expanding), 0, r)
+                        self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
                         r = r+1
                     if i == 0:
-                        self.responseButtonSizer.addItem(QtGui.QSpacerItem(-1, -1, QtGui.QSizePolicy.Expanding), 0, r)
+                        self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
                         r = r+1
                   
-                    self.responseButton.append(QtGui.QPushButton(str(i+1), self))
+                    self.responseButton.append(QPushButton(str(i+1), self))
                     self.responseButtonSizer.addWidget(self.responseButton[i], 1, r)
                     self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
                     self.responseButton[i].setProperty("responseBoxButton", True)
@@ -283,7 +284,7 @@ class responseBox(QMainWindow):
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
                     self.responseButton[i].setFocusPolicy(Qt.NoFocus)
                     if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
-                        self.responseButtonSizer.addItem(QtGui.QSpacerItem(-1, -1, QtGui.QSizePolicy.Expanding), 0, r)
+                        self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
                         r = r+1
                   
                 
@@ -295,7 +296,7 @@ class responseBox(QMainWindow):
                 n = n+1
                 
             for i in range(self.prm['nAlternatives']):
-                self.responseButton.append(QtGui.QPushButton(self.prm[self.tr(self.parent().experimentChooser.currentText())]['buttonLabels'][i], self))
+                self.responseButton.append(QPushButton(self.prm[self.tr(self.parent().experimentChooser.currentText())]['buttonLabels'][i], self))
             
                 self.responseButtonSizer.addWidget(self.responseButton[i], 1, i)
                 self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
@@ -322,13 +323,13 @@ class responseBox(QMainWindow):
             if self.prm['storedBlocks'] > 0:
                 if self.parent().listenerTF.text() == "" and self.prm['pref']['general']['listenerNameWarn'] == True:
                     msg = self.prm['rbTrans'].translate('rb', "Please, enter the listener's name:") 
-                    text, ok = QtGui.QInputDialog.getText(self, self.prm['rbTrans'].translate('rb', "Input Dialog:") , msg)
+                    text, ok = QInputDialog.getText(self, self.prm['rbTrans'].translate('rb', "Input Dialog:") , msg)
                     if ok:
                         self.parent().listenerTF.setText(text)
                         self.prm['listener'] = text
                 if self.parent().sessionLabelTF.text() == "" and self.prm['pref']['general']['sessionLabelWarn'] == True:
                     msg = self.prm['rbTrans'].translate('rb', "Please, enter the session label:") 
-                    text, ok = QtGui.QInputDialog.getText(self, self.prm['rbTrans'].translate('rb', "Input Dialog:") , msg)
+                    text, ok = QInputDialog.getText(self, self.prm['rbTrans'].translate('rb', "Input Dialog:") , msg)
                     if ok:
                         self.parent().sessionLabelTF.setText(text)
                         self.prm['sessionLabel'] = text
@@ -336,7 +337,7 @@ class responseBox(QMainWindow):
                     self.onAskSaveResultsButton()
 
     def onAskSaveResultsButton(self):
-        ftow = QtGui.QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), QtGui.QFileDialog.DontConfirmOverwrite)
+        ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), QFileDialog.DontConfirmOverwrite)
         if os.path.exists(ftow) == False and len(ftow) > 0:
                 fName = open(ftow, 'w')
                 fName.write('')
@@ -369,7 +370,7 @@ class responseBox(QMainWindow):
        
         if self.parent().listenerTF.text() == "" and self.prm['pref']['general']['listenerNameWarn'] == True:
             msg = self.prm['rbTrans'].translate('rb', "Please, enter the listener's name:") 
-            text, ok = QtGui.QInputDialog.getText(self, self.prm['rbTrans'].translate('rb', "Input Dialog:") , msg)
+            text, ok = QInputDialog.getText(self, self.prm['rbTrans'].translate('rb', "Input Dialog:") , msg)
             if ok:
                 self.parent().listenerTF.setText(text)
                 self.prm['listener'] = text
@@ -377,17 +378,17 @@ class responseBox(QMainWindow):
             return
         if self.parent().sessionLabelTF.text() == "" and self.prm['pref']['general']['sessionLabelWarn'] == True:
             msg = self.prm['rbTrans'].translate('rb', "Please, enter the session label:") 
-            text, ok = QtGui.QInputDialog.getText(self, self.prm['rbTrans'].translate('rb', "Input Dialog:") , msg)
+            text, ok = QInputDialog.getText(self, self.prm['rbTrans'].translate('rb', "Input Dialog:") , msg)
             if ok:
                 self.parent().sessionLabelTF.setText(text)
                 self.prm['sessionLabel'] = text
             return
         
         if int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition']) == 1 and self.prm['allBlocks']['shuffleMode'] == self.tr("Ask") and self.prm["shuffled"] == False and self.prm['storedBlocks'] > 1 :
-            reply = QtGui.QMessageBox.question(self, self.prm['rbTrans'].translate('rb', "Message"),
-                                               self.prm['rbTrans'].translate('rb', "Do you want to shuffle the blocks?"), QtGui.QMessageBox.Yes | 
-                                               QtGui.QMessageBox.No, QtGui.QMessageBox.No)
-            if reply == QtGui.QMessageBox.Yes:
+            reply = QMessageBox.question(self, self.prm['rbTrans'].translate('rb', "Message"),
+                                               self.prm['rbTrans'].translate('rb', "Do you want to shuffle the blocks?"), QMessageBox.Yes | 
+                                               QMessageBox.No, QMessageBox.No)
+            if reply == QMessageBox.Yes:
                 self.parent().onClickShuffleBlocksButton()
                 self.prm["shuffled"] = True
         elif int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition']) == 1 and self.prm["shuffled"] == False and self.prm['allBlocks']['shuffleMode'] == self.tr("Auto") and self.prm['storedBlocks'] > 1 :
@@ -2510,7 +2511,7 @@ class responseLight(QWidget):
 class intervalLight(QFrame):
 
     def __init__(self, parent):
-        QtGui.QFrame.__init__(self, parent)
+        QFrame.__init__(self, parent)
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.borderColor = Qt.red
         self.lightColor = Qt.black
