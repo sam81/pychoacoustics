@@ -20,6 +20,8 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4.QtGui import QPlainTextEdit
+elif pyqtversion == -4:
+    from PySide.QtGui import QPlainTextEdit
 elif pyqtversion == 5:
     from PyQt5.QtWidgets import QPlainTextEdit
 

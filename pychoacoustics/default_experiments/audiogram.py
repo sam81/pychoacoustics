@@ -33,6 +33,9 @@ from ..pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtGui import QApplication
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtGui import QApplication
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QApplication

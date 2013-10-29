@@ -28,6 +28,14 @@ if pyqtversion == 4:
         matplotlib_available = True
     except:
         matplotlib_available = False
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtGui import QApplication
+    try:
+        import matplotlib
+        matplotlib_available = True
+    except:
+        matplotlib_available = False
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QApplication

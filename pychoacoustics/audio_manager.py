@@ -23,6 +23,8 @@ from numpy import ceil, concatenate, floor, float32, int16, int32, mean, sqrt, t
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4.QtCore import QLocale, QThread
+elif pyqtversion == -4:
+    from PySide.QtCore import QLocale, QThread
 elif pyqtversion == 5:
     from PyQt5.QtCore import QLocale, QThread
 import ctypes, sys

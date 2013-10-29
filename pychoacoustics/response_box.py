@@ -30,6 +30,15 @@ if pyqtversion == 4:
         matplotlib_available = True
     except:
         matplotlib_available = False
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
+    from PySide.QtGui import QAction, QApplication, QComboBox, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
+    try:
+        import matplotlib
+        matplotlib_available = True
+    except:
+        matplotlib_available = False
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
@@ -89,7 +98,7 @@ class responseBox(QMainWindow):
         self.executerThread = commandExecuter(self)
         self.playThread = threadedPlayer(self)
         self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowMaximizeButtonHint)
-        self.setWindowModality(0)
+        self.setWindowModality(Qt.NonModal)
         self.prm = parent.prm
         self.audioManager = audioManager(self)
         self.currLocale = self.parent().prm['currentLocale']

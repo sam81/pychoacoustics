@@ -22,11 +22,19 @@ if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale, QThread, pyqtSignal
     from PyQt4.QtGui import QCheckBox, QComboBox, QDialog, QDialogButtonBox, QGridLayout, QIntValidator, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
+    QtCore.Signal = QtCore.pyqtSignal
+    QtCore.Slot = QtCore.pyqtSlot
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtCore import QLocale, QThread, Signal
+    from PySide.QtGui import QCheckBox, QComboBox, QDialog, QDialogButtonBox, QGridLayout, QIntValidator, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, QThread, pyqtSignal
     from PyQt5.QtWidgets import QCheckBox, QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
     from PyQt5.QtGui import QIntValidator
+    QtCore.Signal = QtCore.pyqtSignal
+    QtCore.Slot = QtCore.pyqtSlot
     
 import copy, pickle, hashlib, base64, smtplib, sys 
 from email.mime.base import MIMEBase
@@ -47,7 +55,7 @@ except ImportError:
     pass
 
 class preferencesDialog(QDialog):
-    newMailerMessage = pyqtSignal(str, str)
+    newMailerMessage = QtCore.Signal(str, str)
     def __init__(self, parent):
         QDialog.__init__(self, parent)
         self.tmpPref = {}

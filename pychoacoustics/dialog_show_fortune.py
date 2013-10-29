@@ -22,6 +22,10 @@ if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale
     from PyQt4.QtGui import QDialog, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtCore import QLocale
+    from PySide.QtGui import QDialog, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale

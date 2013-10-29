@@ -25,6 +25,10 @@ if pyqtversion == 4:
     QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
     QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
     QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtCore import QLocale, QThread
+    from PySide.QtGui import QAbstractItemView, QDialog, QDialogButtonBox, QFileDialog, QGridLayout, QInputDialog, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, QThread

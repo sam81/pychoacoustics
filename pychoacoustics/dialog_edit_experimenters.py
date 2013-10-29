@@ -22,6 +22,10 @@ if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale, Qt, QEvent
     from PyQt4.QtGui import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtCore import QLocale, Qt, QEvent
+    from PySide.QtGui import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, Qt, QEvent

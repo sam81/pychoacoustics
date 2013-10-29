@@ -30,7 +30,15 @@ if pyqtversion == 4:
         import matplotlib
     except:
         matplotlib_available = False
-        
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtCore import QLocale
+    from PySide.QtGui import QCheckBox, QDialog, QDesktopServices, QDialogButtonBox, QFileDialog, QHBoxLayout, QIcon, QIntValidator, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout, QWidget
+    matplotlib_available = True
+    try:
+        import matplotlib
+    except:
+        matplotlib_available = False
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale

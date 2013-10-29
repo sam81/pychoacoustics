@@ -27,6 +27,9 @@ if pyqtversion == 4:
     QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
     QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
     QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
+elif pyqtversion == -4:
+    from PySide import QtCore
+    from PySide.QtGui import QApplication, QFileDialog
 elif pyqtversion == 5:
     from PyQt5 import QtCore
     from PyQt5.QtWidgets import QApplication, QFileDialog
