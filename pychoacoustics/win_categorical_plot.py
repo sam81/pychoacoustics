@@ -238,9 +238,6 @@ class categoricalPlot(QtGui.QMainWindow):
         else:
             self.deleteLater()
         
-
-
-
     def plotData(self):
         if self.paradigm == 'adaptive':
             if 'threshold_arithmetic' in self.dats.keys():
@@ -285,9 +282,6 @@ class categoricalPlot(QtGui.QMainWindow):
                 for i in range(len(majTicks)-1):
                     minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
                 self.ax.set_yticks(minTicks, minor=True)
-        
-        
-            
 
         elif self.paradigm == 'adaptive_interleaved':
             pass
@@ -326,8 +320,6 @@ class categoricalPlot(QtGui.QMainWindow):
             self.ax.xaxis.set_label_coords(0.5, -0.08)
             self.ax.yaxis.set_label_coords(-0.1, 0.5)
             self.ax.legend([p1[0], p2[0]], ["IO", "Diff."], numpoints=1)
-
-
 
     def toggleGrid(self, state):
         self.ax.grid(True)

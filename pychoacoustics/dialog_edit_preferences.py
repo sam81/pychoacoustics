@@ -46,7 +46,6 @@ try:
 except ImportError:
     pass
 
-
 class preferencesDialog(QDialog):
     newMailerMessage = pyqtSignal(str, str)
     def __init__(self, parent):
@@ -60,7 +59,6 @@ class preferencesDialog(QDialog):
         self.newMailerMessage.connect(self.popMailerMessage)
         
         self.tabWidget = QTabWidget()
-        #self.connect(self.tabWidget, QtCore.SIGNAL("currentChanged(QWidget*)"), self.tabChanged)
         self.tabWidget.currentChanged.connect(self.tabChanged)
         self.appPrefWidget = QWidget()
         self.soundPrefWidget = QWidget()
@@ -81,7 +79,6 @@ class preferencesDialog(QDialog):
         self.languageChooser = QComboBox()
         self.languageChooser.addItems(self.parent().prm['appData']['available_languages'])
         self.languageChooser.setCurrentIndex(self.languageChooser.findText(self.tmpPref['pref']['language']))
-        #self.connect(self.languageChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onLanguageChooserChange)
         self.languageChooser.currentIndexChanged[int].connect(self.onLanguageChooserChange)
         appPrefGrid.addWidget(self.languageChooser, n, 1)
         n = n+1
@@ -98,7 +95,6 @@ class preferencesDialog(QDialog):
         self.responseBoxLanguageChooser = QComboBox()
         self.responseBoxLanguageChooser.addItems(self.parent().prm['appData']['available_languages'])
         self.responseBoxLanguageChooser.setCurrentIndex(self.responseBoxLanguageChooser.findText(self.tmpPref['pref']['responseBoxLanguage']))
-        #self.connect(self.responseBoxLanguageChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onResponseBoxLanguageChooserChange)
         self.responseBoxLanguageChooser.currentIndexChanged[int].connect(self.onResponseBoxLanguageChooserChange)
         appPrefGrid.addWidget(self.responseBoxLanguageChooser, n, 1)
         n = n+1
@@ -147,7 +143,6 @@ class preferencesDialog(QDialog):
         self.playChooser = QComboBox()
         self.playChooser.addItems(self.parent().prm['appData']['available_play_commands'])
         self.playChooser.setCurrentIndex(self.playChooser.findText(self.tmpPref['pref']['sound']['playCommandType']))
-        #self.connect(self.playChooser,  QtCore.SIGNAL("currentIndexChanged(int)"), self.onPlayChooserChange)
         self.playChooser.currentIndexChanged[int].connect(self.onPlayChooserChange)
         self.playChooserLabel = QLabel(self.tr('Play Command:'))
         soundPrefGrid.addWidget(self.playChooserLabel, 0, 0)
@@ -280,8 +275,6 @@ class preferencesDialog(QDialog):
         notificationPrefGrid.addWidget(self.playEndMessage, n, 0)
 
         self.endMessageButton = QPushButton(self.tr("Choose Wav"), self)
-        #QtCore.QObject.connect(self.endMessageButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickEndMessageButton)
         self.endMessageButton.clicked.connect(self.onClickEndMessageButton)
         notificationPrefGrid.addWidget(self.endMessageButton, n, 1)
         n = n+1
@@ -296,7 +289,6 @@ class preferencesDialog(QDialog):
         n = n+1
 
         self.emailNotify = QCheckBox(self.tr('Send Notification e-mail'))
-        #self.connect(self.emailNotify, QtCore.SIGNAL('triggered()'), self.onToggleSendCheckBox)
         self.emailNotify.setChecked(self.tmpPref["pref"]["email"]["notifyEnd"])
         notificationPrefGrid.addWidget(self.emailNotify, n, 0)
         n = n+1
@@ -316,7 +308,6 @@ class preferencesDialog(QDialog):
         
         self.sendData = QCheckBox(self.tr('Send data via e-mail'))
         self.sendData.setChecked(self.tmpPref["pref"]["email"]["sendData"])
-        #self.connect(self.sendData, QtCore.SIGNAL('triggered()'), self.onToggleSendCheckBox)
         notificationPrefGrid.addWidget(self.sendData, n, 0)
         n = n+1
 
@@ -325,7 +316,6 @@ class preferencesDialog(QDialog):
         self.atEndCustomCommandWidget = QLineEdit(self.tmpPref["pref"]["general"]["atEndCustomCommand"])
         notificationPrefGrid.addWidget(self.atEndCustomCommandWidget, n, 1)
         n = n+1
-
 
         notificationPrefGrid.addItem(QSpacerItem(20,20,QSizePolicy.Expanding), n, 0)
         n = n+1
@@ -372,8 +362,6 @@ class preferencesDialog(QDialog):
         notificationPrefGrid.addWidget(self.passwordWarningLabel, n, 0, 1, 2)
         n = n+1
         self.testEmailButton = QPushButton(self.tr("Send test e-mail"), self)
-        #QtCore.QObject.connect(self.testEmailButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickTestEmailButton)
         self.testEmailButton.clicked.connect(self.onClickTestEmailButton)
         self.testEmailButton.setToolTip(self.tr("Send a test e-mail"))
         notificationPrefGrid.addWidget(self.testEmailButton, n, 0, 1, 2)
@@ -408,7 +396,6 @@ class preferencesDialog(QDialog):
         self.eegPrefWidget.setLayout(eegPrefGrid)
         self.eegPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
 
-
         # ........................
         self.tabWidget.addTab(self.appPrefWidget, self.tr("Genera&l"))
         self.tabWidget.addTab(self.soundPrefWidget, self.tr("Soun&d"))
@@ -416,15 +403,6 @@ class preferencesDialog(QDialog):
         self.tabWidget.addTab(self.eegPrefWidget, self.tr("EE&G"))
 
         buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
-       
-
-        
-        # self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-        #              self, QtCore.SLOT("accept()"))
-        # self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-        #              self, QtCore.SLOT("reject()"))
-        # self.connect(buttonBox.button(QDialogButtonBox.Apply),
-        #              QtCore.SIGNAL("clicked()"), self.permanentApply)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
         buttonBox.button(QDialogButtonBox.Apply).clicked.connect(self.permanentApply)
@@ -583,11 +561,6 @@ class preferencesDialog(QDialog):
         else:
             self.tmpPref['pref']['general']['sessionLabelWarn'] = False
 
-        ## if self.processResultsCheckBox.isChecked():
-        ##     self.tmpPref['pref']['general']['processResultsEnd'] = True
-        ## else:
-        ##     self.tmpPref['pref']['general']['processResultsEnd'] = False
-
         if self.emailNotify.isChecked():
             self.tmpPref['pref']['email']['notifyEnd'] = True
         else:
@@ -673,7 +646,6 @@ class preferencesDialog(QDialog):
         self.listenerNameWarnCheckBox.setChecked(self.tmpPref["pref"]["general"]["listenerNameWarn"])
         self.sessionLabelWarnCheckBox.setChecked(self.tmpPref["pref"]["general"]["sessionLabelWarn"])
 
-        #self.processResultsCheckBox.setChecked(self.tmpPref["pref"]["general"]["processResultsEnd"])
         self.emailNotify.setChecked(self.tmpPref["pref"]["email"]["notifyEnd"])
         self.sendData.setChecked(self.tmpPref["pref"]["email"]["sendData"])
         self.serverRequiresAuthCheckBox.setChecked(self.tmpPref["pref"]["email"]["serverRequiresAuthentication"])

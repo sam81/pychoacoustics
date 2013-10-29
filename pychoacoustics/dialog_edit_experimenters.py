@@ -51,7 +51,6 @@ class experimentersDialog(QDialog):
         self.experimenterChooser = QComboBox()
         self.experimenterChooser.addItems(self.tmpPref['experimenter']['experimenter_id'])
         self.sizer.addWidget(self.experimenterChooser, n, 1)
-        #self.connect(self.experimenterChooser, QtCore.SIGNAL('activated(QString)'), self.onExperimenterChange)
         self.experimenterChooser.activated[str].connect(self.onExperimenterChange)
         self.currIdx = self.experimenterChooser.currentIndex()
 
@@ -110,38 +109,23 @@ class experimentersDialog(QDialog):
 
         #ADD EXPERIMENTER BUTTON
         addExpButton = QPushButton(self.tr("Add Experimenter"), self)
-        #QtCore.QObject.connect(addExpButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickAddExpButton)
         addExpButton.clicked.connect(self.onClickAddExpButton)
         self.v2Sizer.addWidget(addExpButton)
         #REMOVE EXPERIMENTER BUTTON
         removeExpButton = QPushButton(self.tr("Remove Experimenter"), self)
-        #QtCore.QObject.connect(removeExpButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickRemoveExpButton)
         removeExpButton.clicked.connect(self.onClickRemoveExpButton)
         self.v2Sizer.addWidget(removeExpButton)
         #CHANGE ID BUTTON
         changeIdButton = QPushButton(self.tr("Change Identifier"), self)
-        #QtCore.QObject.connect(changeIdButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickChangeIdButton)
         changeIdButton.clicked.connect(self.onClickChangeIdButton)
         self.v2Sizer.addWidget(changeIdButton)
         #SET AS DEFAULT BUTTON
         setAsDefaultButton = QPushButton(self.tr("Set as default"), self)
-        #QtCore.QObject.connect(setAsDefaultButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickSetAsDefaultButton)
         setAsDefaultButton.clicked.connect(self.onClickSetAsDefaultButton)
         self.v2Sizer.addWidget(setAsDefaultButton)
         self.v2Sizer.addStretch()
 
         buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
-        
-        #self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-        #             self, QtCore.SLOT("accept()"))
-        #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-        #             self, QtCore.SLOT("reject()"))
-        #self.connect(buttonBox.button(QDialogButtonBox.Apply),
-        #             QtCore.SIGNAL("clicked()"), self.onClickApplyButton)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
         buttonBox.button(QDialogButtonBox.Apply).clicked.connect(self.onClickApplyButton)
@@ -197,8 +181,6 @@ class experimentersDialog(QDialog):
         self.experimenterTelephoneTF.setText(self.prm['experimenter']['experimenter_telephone'][self.currIdx])
         self.experimenterMobileTF.setText(self.prm['experimenter']['experimenter_mobile'][self.currIdx])
    
-        
-       
     def onClickAddExpButton(self):
         self.tryApply(self.currIdx)
         if self.tmpPref['experimenter'] != self.parent().prm['experimenter']:
@@ -281,6 +263,7 @@ class experimentersDialog(QDialog):
             self.tmpPref['experimenter']['experimenter_id'][self.currIdx] = name
             self.experimenterChooser.setItemText(self.currIdx, name)
             self.permanentApply()
+            
     def onClickSetAsDefaultButton(self):
         idx = self.experimenterChooser.currentIndex()
         print(idx)
@@ -311,10 +294,6 @@ class applyChanges(QDialog):
         n = n+1
         buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
                                      QDialogButtonBox.Cancel)
-        #self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-        #             self, QtCore.SLOT("accept()"))
-        #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-        #             self, QtCore.SLOT("reject()"))
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 

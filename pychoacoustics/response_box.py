@@ -99,7 +99,6 @@ class responseBox(QMainWindow):
         self.toggleControlWin.setShortcut('Ctrl+C')
         self.toggleControlWin.setCheckable(True)
         #self.toggleControlWin.setStatusTip(self.tr('Toggle Control Window'))
-        #self.connect(self.toggleControlWin, QtCore.SIGNAL('triggered()'), self.onToggleControlWin)
         self.toggleControlWin.triggered.connect(self.onToggleControlWin)
         if self.prm['hideWins'] == True:
             self.toggleControlWin.setChecked(False)
@@ -109,13 +108,11 @@ class responseBox(QMainWindow):
         self.toggleGauge = QAction(self.tr('Show/Hide Progress Bar'), self)
         self.toggleGauge.setShortcut('Ctrl+P')
         self.toggleGauge.setCheckable(True)
-        #self.connect(self.toggleGauge, QtCore.SIGNAL('triggered()'), self.onToggleGauge)
         self.toggleGauge.triggered.connect(self.onToggleGauge)
 
         self.toggleBlockGauge = QAction(self.tr('Show/Hide Block Progress Bar'), self)
         self.toggleBlockGauge.setShortcut('Ctrl+B')
         self.toggleBlockGauge.setCheckable(True)
-        #self.connect(self.toggleBlockGauge, QtCore.SIGNAL('triggered()'), self.onToggleBlockGauge)
         self.toggleBlockGauge.triggered.connect(self.onToggleBlockGauge)
 
         #self.statusBar()
@@ -130,8 +127,6 @@ class responseBox(QMainWindow):
         self.responseButtonSizer = QGridLayout()
        
         self.statusButton = QPushButton(self.prm['rbTrans'].translate('rb', "Wait"), self)
-        #QtCore.QObject.connect(self.statusButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickStatusButton)
         self.statusButton.clicked.connect(self.onClickStatusButton)
         self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.statusButton.setProperty("responseBoxButton", True)
@@ -259,11 +254,8 @@ class responseBox(QMainWindow):
                     if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
                         self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
                         r = r+1
-                    #QtCore.QObject.connect(self.responseButton[i],
-                    #                       QtCore.SIGNAL('clicked()'), self.sortResponseButton)
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
                     self.responseButton[i].setFocusPolicy(Qt.NoFocus)
-                    #self.responseButton[i].setStyleSheet('QPushButton {color: blue}')
 
             elif nAlternatives == nIntervals-1:
                 for i in range(nAlternatives):
@@ -279,15 +271,12 @@ class responseBox(QMainWindow):
                     self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
                     self.responseButton[i].setProperty("responseBoxButton", True)
                     r = r+1
-                    #QtCore.QObject.connect(self.responseButton[i],
-                    #                       QtCore.SIGNAL('clicked()'), self.sortResponseButton)
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
                     self.responseButton[i].setFocusPolicy(Qt.NoFocus)
                     if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
                         self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
                         r = r+1
                   
-                
         elif self.parent().currParadigm in ["Constant 1-Interval 2-Alternatives", "Multiple Constants 1-Interval 2-Alternatives",
                                    "Constant 1-Pair Same/Different"]:
             for i in range(nIntervals):
@@ -301,8 +290,6 @@ class responseBox(QMainWindow):
                 self.responseButtonSizer.addWidget(self.responseButton[i], 1, i)
                 self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
                 self.responseButton[i].setProperty("responseBoxButton", True)
-                #QtCore.QObject.connect(self.responseButton[i],
-                #                       QtCore.SIGNAL('clicked()'), self.sortResponseButton)
                 self.responseButton[i].clicked.connect(self.sortResponseButton)
                 self.responseButton[i].setFocusPolicy(Qt.NoFocus)
         self.showHideIntervalLights(self.prm['intervalLights'])
@@ -664,12 +651,8 @@ class responseBox(QMainWindow):
        
     def sortResponseButton(self):
         buttonClicked = self.responseButton.index(self.sender())+1
-        #self.statusButton.setFocus(Qt.OtherFocusReason)
-        #self.sender().clearFocus()
-        # self.sender().update()
-        #self.sender().repaint()
-        #QApplication.processEvents()
         self.sortResponse(buttonClicked)
+        
     def keyPressEvent(self, event):
         if (event.type() == QEvent.KeyPress): 
             if event.key()==Qt.Key_0:
@@ -1122,8 +1105,6 @@ class responseBox(QMainWindow):
                 self.writeResultsSummaryLine('Adaptive Interleaved', resLineToWrite)
             elif  method == 'weightedUpDown':
                 self.writeResultsSummaryLine('Weighted Up/Down Interleaved', resLineToWrite)
-
-
             
             self.atBlockEnd()
           
@@ -1938,8 +1919,6 @@ class responseBox(QMainWindow):
             self.fullFileLog.flush()
 
             self.getEndTime()
-           
-
             self.atBlockEnd()
            
         else: #block is not finished, move on to next trial

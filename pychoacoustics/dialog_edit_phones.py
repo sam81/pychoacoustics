@@ -58,47 +58,31 @@ class phonesDialog(QDialog):
         
         self.phonesTableWidget.setHorizontalHeaderLabels([self.tr('Phones'), self.tr('Max Level'), self.tr('Default'), 'id'])
         self.phonesTableWidget.hideColumn(3)
-        #self.connect(self.phonesTableWidget, QtCore.SIGNAL("cellDoubleClicked(int,int)"), self.onCellDoubleClicked)
         self.phonesTableWidget.cellDoubleClicked[int,int].connect(self.onCellDoubleClicked)
 
         #RENAME Phones BUTTON
         self.renamePhonesButton = QPushButton(self.tr("Rename Phones"), self)
-        #QtCore.QObject.connect(self.renamePhonesButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onEditLabel)
         self.renamePhonesButton.clicked.connect(self.onEditLabel)
         #Change Level Phones BUTTON
         self.changeLevelPhonesButton = QPushButton(self.tr("Change Max Level"), self)
-        #QtCore.QObject.connect(self.changeLevelPhonesButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onEditMaxLevel)
         self.changeLevelPhonesButton.clicked.connect(self.onEditMaxLevel)
         
         #ADD Phones BUTTON
         self.addPhonesButton = QPushButton(self.tr("Add Phones"), self)
-        #QtCore.QObject.connect(self.addPhonesButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickAddPhonesButton)
         self.addPhonesButton.clicked.connect(self.onClickAddPhonesButton)
         #REMOVE Phones BUTTON
         self.removePhonesButton = QPushButton(self.tr("Remove Phones"), self)
-        #QtCore.QObject.connect(self.removePhonesButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickRemovePhonesButton)
         self.removePhonesButton.clicked.connect(self.onClickRemovePhonesButton)
         #Set Default Phones BUTTON
         self.setDefaultPhonesButton = QPushButton(self.tr("Set Default"), self)
-        #QtCore.QObject.connect(self.setDefaultPhonesButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onEditDefault)
         self.setDefaultPhonesButton.clicked.connect(self.onEditDefault)
-
-        
 
         self.v1Sizer.addWidget(self.renamePhonesButton)
         self.v1Sizer.addWidget(self.changeLevelPhonesButton)
         self.v1Sizer.addWidget(self.addPhonesButton)
         self.v1Sizer.addWidget(self.removePhonesButton)
         self.v1Sizer.addWidget(self.setDefaultPhonesButton)
-      
-
         self.v1Sizer.addStretch()
-
         self.phonesList = {}
     
         for i in range(len(self.prm['phones']['phonesChoices'])):
@@ -120,8 +104,6 @@ class phonesDialog(QDialog):
             self.phonesTableWidget.setItem(currCount-1, 2, newItem)
             self.phonesList[thisID]['qid'] = QTableWidgetItem(thisID)
             self.phonesTableWidget.setItem(currCount-1, 3, self.phonesList[thisID]['qid'])
-
-
 
         ##CALIBRATION TONE
         n = 0
@@ -159,28 +141,17 @@ class phonesDialog(QDialog):
         self.calibSizer.addWidget(self.earChooser, n, 1)
         n = n+1
         self.playCalibButton = QPushButton(self.tr("Play"), self)
-        #QtCore.QObject.connect(self.playCalibButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickPlayCalibButton)
         self.playCalibButton.clicked.connect(self.onClickPlayCalibButton)
         self.playCalibButton.setIcon(QIcon.fromTheme("media-playback-start", QIcon(":/media-playback-start")))
         self.calibSizer.addWidget(self.playCalibButton, n, 0, 1, 2)
         n = n+1
         self.stopCalibButton = QPushButton(self.tr("Stop"), self)
-        #QtCore.QObject.connect(self.stopCalibButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickStopCalibButton)
         self.stopCalibButton.clicked.connect(self.onClickStopCalibButton)
         self.stopCalibButton.setIcon(QIcon.fromTheme("media-playback-stop", QIcon(":/media-playback-stop")))
         self.calibSizer.addWidget(self.stopCalibButton, n, 0, 1, 2)
 
         
         buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
-        
-        #self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-        #             self, QtCore.SLOT("accept()"))
-        #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-        #             self, QtCore.SLOT("reject()"))
-        #self.connect(buttonBox.button(QDialogButtonBox.Apply),
-        #             QtCore.SIGNAL("clicked()"), self.permanentApply)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
         buttonBox.button(QDialogButtonBox.Apply).clicked.connect(self.permanentApply)
@@ -195,7 +166,6 @@ class phonesDialog(QDialog):
         self.setLayout(self.sizer)
         self.setWindowTitle(self.tr("Edit Phones"))
         self.show()
-
 
     def onCellDoubleClicked(self, row, col):
         if col == 0:

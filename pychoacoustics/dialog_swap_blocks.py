@@ -52,11 +52,6 @@ class swapBlocksDialog(QDialog):
         n = n+1
         buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
                                      QDialogButtonBox.Cancel)
-        
-        #self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-        #             self, QtCore.SLOT("accept()"))
-        #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-        #             self, QtCore.SLOT("reject()"))
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
         grid.addWidget(buttonBox, n, 3)

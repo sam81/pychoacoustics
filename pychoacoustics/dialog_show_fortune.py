@@ -42,8 +42,6 @@ class showFortuneDialog(QDialog):
         self.browser = QTextBrowser()
         self.browser.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.anotherFortuneButton = QPushButton(self.tr("One More!"), self)
-        #QtCore.QObject.connect(self.anotherFortuneButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickAnotherFortuneButton)
         self.anotherFortuneButton.clicked.connect(self.onClickAnotherFortuneButton)
         self.hBoxSizer.addWidget(self.anotherFortuneButton)
 

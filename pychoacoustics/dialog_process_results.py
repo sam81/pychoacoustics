@@ -92,8 +92,6 @@ class processResultsDialog(QDialog):
         self.fileTF = QLineEdit(';'.join(self.fName))
         self.hBox1.addWidget(self.fileTF)
         self.chooseFileButton = QPushButton(self.tr("Change File"), self)
-        #QtCore.QObject.connect(self.chooseFileButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickChooseFileButton)
         self.chooseFileButton.clicked.connect(self.onClickChooseFileButton)
         self.hBox1.addWidget(self.chooseFileButton)
 
@@ -103,8 +101,6 @@ class processResultsDialog(QDialog):
         self.outfileTF = QLineEdit("")
         self.hBox1_1.addWidget(self.outfileTF)
         self.chooseOutFileButton = QPushButton(self.tr("Change File"), self)
-        #QtCore.QObject.connect(self.chooseOutFileButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickChooseOutFileButton)
         self.chooseOutFileButton.clicked.connect(self.onClickChooseOutFileButton)
         self.hBox1_1.addWidget(self.chooseOutFileButton)
 
@@ -156,10 +152,6 @@ class processResultsDialog(QDialog):
         self.toTF.setValidator(QIntValidator(self))
         self.hBox6.addWidget(self.toTF)
 
-        #self.connect(self.processAllBlocksCheckBox, QtCore.SIGNAL("clicked()"), self.onCheckProcessAllBlocks)
-        #self.connect(self.processLastNBlocksCheckBox, QtCore.SIGNAL("clicked()"), self.onCheckProcessLastNBlocks)
-        #self.connect(self.processBlocksInRangeCheckBox, QtCore.SIGNAL("clicked()"), self.onCheckProcessBlocksInRange)
-
         self.processAllBlocksCheckBox.clicked.connect(self.onCheckProcessAllBlocks)
         self.processLastNBlocksCheckBox.clicked.connect(self.onCheckProcessLastNBlocks)
         self.processBlocksInRangeCheckBox.clicked.connect(self.onCheckProcessBlocksInRange)
@@ -180,24 +172,11 @@ class processResultsDialog(QDialog):
 
         n = n+1
         self.runButton = QPushButton(self.tr("Run!"), self)
-        #QtCore.QObject.connect(self.runButton,
-        #                       QtCore.SIGNAL('clicked()'), self.onClickRunButton)
         self.runButton.clicked.connect(self.onClickRunButton)
         self.runButton.setIcon(QIcon.fromTheme("system-run", QIcon(":/system-run")))
         self.hBox9.addWidget(self.runButton)
 
-        ## buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
-        ##                                    QDialogButtonBox.Cancel)
-        
-        ## self.connect(buttonBox, QtCore.SIGNAL("accepted()"),
-        ##              self, QtCore.SLOT("accept()"))
-        ## self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-        ##              self, QtCore.SLOT("reject()"))
-
         buttonBox = QDialogButtonBox(QDialogButtonBox.Close)
-        
-        #self.connect(buttonBox, QtCore.SIGNAL("rejected()"),
-        #             self, QtCore.SLOT("reject()"))
         buttonBox.rejected.connect(self.reject)
        
         self.vBoxSizer.addLayout(self.hBox1)
@@ -310,18 +289,22 @@ class processResultsDialog(QDialog):
         self.fName = QFileDialog.getOpenFileNames(self, self.tr("Choose results file to load"), '', self.tr("All Files (*)"))
         self.fileTF.setText(';'.join(self.fName))
         self.outfileTF.setText('') #clear the out file name
+        
     def onClickChooseOutFileButton(self):
         if self.resformat == 'linear':
             self.foutName = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "res.txt", self.tr('All Files (*)'))
         elif self.resformat == 'table':
             self.foutName = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "res.csv", self.tr('All Files (*)'))
         self.outfileTF.setText(self.foutName)
+        
     def onCheckProcessAllBlocks(self):
         self.processLastNBlocksCheckBox.setChecked(False)
         self.processBlocksInRangeCheckBox.setChecked(False)
+        
     def onCheckProcessLastNBlocks(self):
         self.processAllBlocksCheckBox.setChecked(False)
         self.processBlocksInRangeCheckBox.setChecked(False)
+        
     def onCheckProcessBlocksInRange(self):
         self.processAllBlocksCheckBox.setChecked(False)
         self.processLastNBlocksCheckBox.setChecked(False)
