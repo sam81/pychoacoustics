@@ -16,9 +16,16 @@
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import SIGNAL, Qt, QEvent
-from PyQt4.QtGui import QLabel, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QCheckBox
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtCore, QtGui
+    from PyQt4.QtCore import Qt, QEvent
+    from PyQt4.QtGui import QLabel, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QCheckBox, QMainWindow, QFrame
+elif pyqtversion == 5:
+    from PyQt5 import QtCore, QtGui
+    from PyQt5.QtCore import Qt, QEvent
+    from PyQt5.QtWidgets import QLabel, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QCheckBox, QMainWindow, QFrame
+    
 from .audio_manager import*
 from .global_parameters import*
 from .response_box import*
@@ -48,9 +55,9 @@ try:
 except:
     labexp_exists = False
 
-class pychControlWin(QtGui.QMainWindow):
+class pychControlWin(QMainWindow):
     def __init__(self, parent=None, prm=None):
-        QtGui.QMainWindow.__init__(self, parent)
+        QMainWindow.__init__(self, parent)
         self.prm = prm
         self.audioManager = audioManager(self)
         self.audioManager.initializeAudio()
@@ -165,10 +172,10 @@ class pychControlWin(QtGui.QMainWindow):
         self.prm["storedBlocks"] = 0
         self.par = {}
 
-        self.cw = QtGui.QFrame()
+        self.cw = QFrame()
         self.pw = dropFrame(None)
-        self.cw.setFrameStyle(QtGui.QFrame.StyledPanel|QtGui.QFrame.Sunken)
-        self.pw.setFrameStyle(QtGui.QFrame.StyledPanel|QtGui.QFrame.Sunken)
+        self.cw.setFrameStyle(QFrame.StyledPanel|QFrame.Sunken)
+        self.pw.setFrameStyle(QFrame.StyledPanel|QFrame.Sunken)
         self.splitter = QtGui.QSplitter(QtCore.Qt.Horizontal)
         #QtCore.QObject.connect(self.pw, QtCore.SIGNAL("dropped"), self.onDropPrmFile)
         self.pw.drpd.connect(self.onDropPrmFile)
@@ -2087,10 +2094,12 @@ class pychControlWin(QtGui.QMainWindow):
         self.jumpToPositionChooser.setCurrentIndex(int(self.prm[currBlock]['blockPosition'])-1)
         self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
         self.saveParametersToFile(self.prm["tmpParametersFile"])
+        self.autoSetGaugeValue()
         
     def onClickStoreandgoParametersButton(self):
         self.onClickStoreParametersButton()
         self.moveNextBlock()
+        
     def onClickStoreandaddParametersButton(self):
         self.onClickStoreParametersButton()
         self.onClickNewBlockButton()
@@ -3176,10 +3185,10 @@ class pychControlWin(QtGui.QMainWindow):
             self.winPlotCheckBox.setChecked(False)
             self.pdfPlotCheckBox.setChecked(False)
 
-class dropFrame(QtGui.QFrame):
+class dropFrame(QFrame):
     drpd = QtCore.pyqtSignal(str) 
     def __init__(self, parent):
-        QtGui.QFrame.__init__(self, parent)
+        QFrame.__init__(self, parent)
         self.setAcceptDrops(True)
         
     def dragEnterEvent(self, event):

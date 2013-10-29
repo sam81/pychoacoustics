@@ -17,16 +17,22 @@
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QLocale, QThread
-#from PyQt4.QtGui import QApplication
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtCore import QLocale, QThread
+    from PyQt4.QtGui import QDialog
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtCore import QLocale, QThread
+    from PyQt5.QtWidgets import QDialog
 import copy, pickle
 from numpy import unique
 from .audio_manager import*
 
-class wavListDialog(QtGui.QDialog):
+class wavListDialog(QDialog):
     def __init__(self, parent):
-        QtGui.QDialog.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.prm = self.parent().parent().prm
         self.audioManager = audioManager(self)
         self.currLocale = self.parent().parent().prm['currentLocale']

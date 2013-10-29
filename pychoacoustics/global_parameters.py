@@ -19,8 +19,13 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import os, sys, platform, pickle, hashlib, base64
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtGui import QApplication
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtGui import QApplication
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtWidgets import QApplication
 import ctypes
 from .utils_redirect_stream_to_file import*
 

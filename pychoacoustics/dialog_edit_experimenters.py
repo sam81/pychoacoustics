@@ -17,16 +17,22 @@
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QLocale, SIGNAL, Qt, QEvent
-from PyQt4.QtGui import QLabel, QComboBox, QLineEdit
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtCore import QLocale, Qt, QEvent
+    from PyQt4.QtGui import QLabel, QComboBox, QLineEdit, QDialog
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtCore import QLocale, Qt, QEvent
+    from PyQt5.QtWidgets import QLabel, QComboBox, QLineEdit, QDialog
 import copy, pickle
 from numpy import unique
 
 
-class experimentersDialog(QtGui.QDialog):
+class experimentersDialog(QDialog):
     def __init__(self, parent):
-        QtGui.QDialog.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.prm = self.parent().prm
         self.tmpPref = {}
         self.tmpPref['experimenter'] = {}
@@ -294,9 +300,9 @@ class experimentersDialog(QtGui.QDialog):
         print(self.tmpPref)
         self.permanentApply()
 
-class applyChanges(QtGui.QDialog):
+class applyChanges(QDialog):
     def __init__(self, parent):
-        QtGui.QDialog.__init__(self, parent)
+        QDialog.__init__(self, parent)
 
         grid = QtGui.QGridLayout()
         n = 0

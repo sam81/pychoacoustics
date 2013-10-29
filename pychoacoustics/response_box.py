@@ -17,9 +17,16 @@
 
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import SIGNAL, Qt, QEvent, QThread, QDate, QTime, QDateTime
-from PyQt4.QtGui import QApplication, QLabel, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QPainter
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
+    from PyQt4.QtGui import QApplication, QLabel, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QPainter, QMainWindow, QWidget, QFrame
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
+    from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QComboBox, QScrollArea, QSizePolicy, QMainWindow, QWidget, QFrame
+    from PyQt5.QtGui import QPainter
 from numpy.fft import rfft, irfft, fft, ifft
 import base64, fnmatch, copy, numpy, os, platform, random, string, smtplib, sys, time     
 from numpy import array, concatenate, log10, nan, mean, repeat, std
@@ -44,6 +51,7 @@ try:
     matplotlib_available = True
 except:
     matplotlib_available = False
+#matplotlib_available = False
 
 try:
     import pandas
@@ -68,9 +76,9 @@ try:
 except:
     labexp_exists = False
 
-class responseBox(QtGui.QMainWindow):
+class responseBox(QMainWindow):
     def __init__(self, parent):
-        QtGui.QMainWindow.__init__(self, parent)
+        QMainWindow.__init__(self, parent)
         self.emailThread = emailSender(self)
         self.executerThread = commandExecuter(self)
         self.playThread = threadedPlayer(self)
@@ -253,6 +261,9 @@ class responseBox(QtGui.QMainWindow):
                     #QtCore.QObject.connect(self.responseButton[i],
                     #                       QtCore.SIGNAL('clicked()'), self.sortResponseButton)
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
+                    self.responseButton[i].setFocusPolicy(Qt.NoFocus)
+                    #self.responseButton[i].setStyleSheet('QPushButton {color: blue}')
+
             elif nAlternatives == nIntervals-1:
                 for i in range(nAlternatives):
                     if self.prm[self.parent().currExp]["hasPrecursorInterval"] == True:
@@ -270,6 +281,7 @@ class responseBox(QtGui.QMainWindow):
                     #QtCore.QObject.connect(self.responseButton[i],
                     #                       QtCore.SIGNAL('clicked()'), self.sortResponseButton)
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
+                    self.responseButton[i].setFocusPolicy(Qt.NoFocus)
                     if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
                         self.responseButtonSizer.addItem(QtGui.QSpacerItem(-1, -1, QtGui.QSizePolicy.Expanding), 0, r)
                         r = r+1
@@ -291,6 +303,7 @@ class responseBox(QtGui.QMainWindow):
                 #QtCore.QObject.connect(self.responseButton[i],
                 #                       QtCore.SIGNAL('clicked()'), self.sortResponseButton)
                 self.responseButton[i].clicked.connect(self.sortResponseButton)
+                self.responseButton[i].setFocusPolicy(Qt.NoFocus)
         self.showHideIntervalLights(self.prm['intervalLights'])
 
     def showHideIntervalLights(self, status):
@@ -650,6 +663,11 @@ class responseBox(QtGui.QMainWindow):
        
     def sortResponseButton(self):
         buttonClicked = self.responseButton.index(self.sender())+1
+        #self.statusButton.setFocus(Qt.OtherFocusReason)
+        #self.sender().clearFocus()
+        # self.sender().update()
+        #self.sender().repaint()
+        #QApplication.processEvents()
         self.sortResponse(buttonClicked)
     def keyPressEvent(self, event):
         if (event.type() == QEvent.KeyPress): 
@@ -679,7 +697,7 @@ class responseBox(QtGui.QMainWindow):
         return 
        
     def sortResponse(self, buttonClicked):
-     
+        
         currBlock = 'b'+ str(self.prm['currentBlock'])
         if buttonClicked == 0: #0 is not a response option
             return
@@ -2457,12 +2475,12 @@ class responseBox(QtGui.QMainWindow):
         self.playThread.playThreadedSound(msgSnd, fs, self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['playCommand'], False, 'foo.wav')
 
           
-class responseLight(QtGui.QWidget):
+class responseLight(QWidget):
     def __init__(self, parent):
         super(responseLight, self).__init__(parent)
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding,
                                        QSizePolicy.Expanding))
-        self.borderColor = Qt.red
+        self.borderColor = Qt.black
         self.lightColor = Qt.black
     def giveFeedback(self, feedback):
         self.setStatus(feedback)
@@ -2489,7 +2507,7 @@ class responseLight(QtGui.QWidget):
         painter.setBrush(self.lightColor)
         painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
 
-class intervalLight(QtGui.QFrame):
+class intervalLight(QFrame):
 
     def __init__(self, parent):
         QtGui.QFrame.__init__(self, parent)

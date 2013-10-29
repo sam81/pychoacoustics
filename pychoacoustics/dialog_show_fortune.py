@@ -17,13 +17,20 @@
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QLocale
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtCore import QLocale
+    from PyQt4.QtGui import QDialog
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtCore import QLocale
+    from PyQt5.QtWidgets import QDialog
 import random
 
-class showFortuneDialog(QtGui.QDialog):
+class showFortuneDialog(QDialog):
     def __init__(self, parent):
-        QtGui.QDialog.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.prm = self.parent().prm
         self.currLocale = self.parent().prm['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)

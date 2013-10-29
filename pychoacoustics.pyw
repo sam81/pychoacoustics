@@ -20,8 +20,11 @@
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 #import sip
 #sip.setapi("QString", 2)
-
-from PyQt4 import QtGui, QtCore
+from pychoacoustics.pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
 import signal
 import argparse, fnmatch, os, sys, time, traceback
 from pychoacoustics import qrc_resources

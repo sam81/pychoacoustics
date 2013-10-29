@@ -20,7 +20,11 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from tempfile import mkstemp
 import platform, os, subprocess 
 from numpy import ceil, concatenate, floor, float32, int16, int32, mean, sqrt, transpose, zeros
-from PyQt4.QtCore import QLocale, QThread
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4.QtCore import QLocale, QThread
+elif pyqtversion == 5:
+    from PyQt5.QtCore import QLocale, QThread
 import ctypes, sys
 
 if platform.system() == "Windows":

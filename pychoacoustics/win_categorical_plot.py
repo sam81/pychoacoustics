@@ -16,7 +16,9 @@
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from PyQt4 import QtGui, QtCore
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
 # Matplotlib Figure object
 from matplotlib.figure import Figure
 # import the Qt4Agg FigureCanvas object, that binds Figure to

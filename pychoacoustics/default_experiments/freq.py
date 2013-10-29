@@ -28,7 +28,11 @@ The available choosers are:
 """
 
 from ..sndlib import*
-from PyQt4.QtGui import QApplication
+from ..pyqtver import*
+if pyqtversion == 4:
+    from PyQt4.QtGui import QApplication
+elif pyqtversion == 5:
+    from PyQt5.QtWidgets import QApplication
 
                                                                               
 def initialize_freq(prm):

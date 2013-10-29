@@ -17,8 +17,16 @@
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import QLocale, QThread, SIGNAL, pyqtSignal
+from .pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtCore import QLocale, QThread, pyqtSignal
+    from PyQt4.QtGui import QDialog
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtCore import QLocale, QThread, pyqtSignal
+    from PyQt5.QtWidgets import QDialog
+    
 import copy, pickle, hashlib, base64, smtplib, sys 
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
@@ -38,10 +46,10 @@ except ImportError:
     pass
 
 
-class preferencesDialog(QtGui.QDialog):
+class preferencesDialog(QDialog):
     newMailerMessage = pyqtSignal(str, str)
     def __init__(self, parent):
-        QtGui.QDialog.__init__(self, parent)
+        QDialog.__init__(self, parent)
         self.tmpPref = {}
         self.tmpPref['pref'] = copy.deepcopy(self.parent().prm['pref'])
         self.currLocale = self.parent().prm['currentLocale']
