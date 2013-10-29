@@ -21,11 +21,14 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale, QThread
-    from PyQt4.QtGui import QDialog, QGridLayout, QVBoxLayout, QTableWidget, QAbstractItemView, QPushButton, QTableWidgetItem, QDialogButtonBox, QMessageBox, QInputDialog, QFileDialog
+    from PyQt4.QtGui import QAbstractItemView, QDialog, QDialogButtonBox, QFileDialog, QGridLayout, QInputDialog, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
+    QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
+    QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
+    QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, QThread
-    from PyQt5.QtWidgets import QDialog, QGridLayout, QVBoxLayout, QTableWidget, QAbstractItemView, QPushButton, QTableWidgetItem, QDialogButtonBox, QMessageBox, QInputDialog, QFileDialog
+    from PyQt5.QtWidgets import QAbstractItemView, QDialog, QDialogButtonBox, QFileDialog, QGridLayout, QInputDialog, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
 import copy, pickle
 from numpy import unique
 from .audio_manager import*
@@ -176,7 +179,7 @@ class wavListDialog(QDialog):
       
 
     def onClickAddWavButton(self):
-        fName = QFileDialog.getOpenFileName(self, self.tr("Choose wav file to load"), '', self.tr("wav files (*.wav);;All Files (*)"))
+        fName = QFileDialog.getOpenFileName(self, self.tr("Choose wav file to load"), '', self.tr("wav files (*.wav);;All Files (*)"))[0]
         if len(fName) > 0: #if the user didn't press cancel
 
             if len(self.wavsList.keys()) > 0:

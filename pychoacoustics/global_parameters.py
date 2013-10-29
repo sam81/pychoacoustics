@@ -23,9 +23,15 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtGui import QApplication
+    try:
+        import matplotlib
+        matplotlib_available = True
+    except:
+        matplotlib_available = False
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QApplication
+    matplotlib_available = False
 import ctypes
 from .utils_redirect_stream_to_file import*
 
@@ -47,11 +53,6 @@ except ImportError:
     pyaudioAvailable = False
     pass
 
-try:
-    import matplotlib
-    matplotlib_available = True
-except:
-    matplotlib_available = False
 
 try:
     import pandas

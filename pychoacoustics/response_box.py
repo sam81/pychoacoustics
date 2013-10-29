@@ -22,11 +22,20 @@ if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
     from PyQt4.QtGui import QAction, QApplication, QComboBox, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
+    QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
+    QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
+    QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
+    try:
+        import matplotlib
+        matplotlib_available = True
+    except:
+        matplotlib_available = False
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
     from PyQt5.QtWidgets import QAction, QApplication, QComboBox, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
     from PyQt5.QtGui import QPainter
+    matplotlib_available = False
     
 from numpy.fft import rfft, irfft, fft, ifft
 import base64, fnmatch, copy, numpy, os, platform, random, string, smtplib, sys, time     
@@ -47,11 +56,7 @@ from .sndlib import*
 from .utils_general import*
 from .utils_process_results import*
 
-try:
-    import matplotlib
-    matplotlib_available = True
-except:
-    matplotlib_available = False
+
 
 
 try:
@@ -324,7 +329,7 @@ class responseBox(QMainWindow):
                     self.onAskSaveResultsButton()
 
     def onAskSaveResultsButton(self):
-        ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), QFileDialog.DontConfirmOverwrite)
+        ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), QFileDialog.DontConfirmOverwrite)[0]
         if os.path.exists(ftow) == False and len(ftow) > 0:
                 fName = open(ftow, 'w')
                 fName.write('')

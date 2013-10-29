@@ -22,20 +22,26 @@ if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale
     from PyQt4.QtGui import QCheckBox, QDialog, QDesktopServices, QDialogButtonBox, QFileDialog, QHBoxLayout, QIcon, QIntValidator, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout, QWidget
+    QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
+    QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
+    QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
+    matplotlib_available = True
+    try:
+        import matplotlib
+    except:
+        matplotlib_available = False
+        
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale
     from PyQt5.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout, QWidget
     from PyQt5.QtGui import QDesktopServices, QIcon, QIntValidator
+    matplotlib_available = False
+    
 import os
 from .utils_process_results import*
-matplotlib_available = True
-pandas_available = True
-try:
-    import matplotlib
-except:
-    matplotlib_available = False
 
+pandas_available = True
 try:
     import pandas
 except:
@@ -286,15 +292,15 @@ class processResultsDialog(QDialog):
             QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(os.path.dirname(self.foutName)))
         
     def onClickChooseFileButton(self):
-        self.fName = QFileDialog.getOpenFileNames(self, self.tr("Choose results file to load"), '', self.tr("All Files (*)"))
+        self.fName = QFileDialog.getOpenFileNames(self, self.tr("Choose results file to load"), '', self.tr("All Files (*)"))[0]
         self.fileTF.setText(';'.join(self.fName))
         self.outfileTF.setText('') #clear the out file name
         
     def onClickChooseOutFileButton(self):
         if self.resformat == 'linear':
-            self.foutName = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "res.txt", self.tr('All Files (*)'))
+            self.foutName = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "res.txt", self.tr('All Files (*)'))[0]
         elif self.resformat == 'table':
-            self.foutName = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "res.csv", self.tr('All Files (*)'))
+            self.foutName = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "res.csv", self.tr('All Files (*)'))[0]
         self.outfileTF.setText(self.foutName)
         
     def onCheckProcessAllBlocks(self):

@@ -21,6 +21,9 @@ if pyqtversion == 4:
     from PyQt4 import QtCore, QtGui
     from PyQt4.QtCore import Qt, QEvent
     from PyQt4.QtGui import QAction, QCheckBox, QComboBox, QDesktopServices, QDesktopWidget, QDoubleValidator, QFrame, QFileDialog, QGridLayout, QHBoxLayout, QIcon, QIntValidator, QLabel, QLayout, QLineEdit, QMainWindow, QMessageBox, QScrollArea, QSizePolicy, QSpacerItem, QSplitter, QPushButton, QVBoxLayout, QWhatsThis, QWidget
+    QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
+    QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
+    QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
 elif pyqtversion == 5:
     from PyQt5 import QtCore, QtGui
     from PyQt5.QtCore import Qt, QEvent
@@ -36,8 +39,6 @@ from .dialog_edit_experimenters import*
 from .dialog_process_results import*
 from .dialog_show_fortune import*
 from .dialog_swap_blocks import*
-
-
 
 #from redirect_out import*
 from . import default_experiments
@@ -1884,7 +1885,7 @@ class pychControlWin(QMainWindow):
 
 
     def onClickSaveResultsButton(self):
-        ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), QFileDialog.DontConfirmOverwrite)
+        ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), QFileDialog.DontConfirmOverwrite)[0]
         if len(ftow) > 0:
             if fnmatch.fnmatch(ftow, '*.txt') == False:
                 ftow = ftow + '.txt'
@@ -2272,7 +2273,7 @@ class pychControlWin(QMainWindow):
             self.updateParametersWin()
    
     def onClickLoadParametersButton(self):
-        fName = QFileDialog.getOpenFileName(self, self.tr("Choose parameters file to load"), '', self.tr("prm files (*.prm *PRM *Prm);;All Files (*)"))
+        fName = QFileDialog.getOpenFileName(self, self.tr("Choose parameters file to load"), '', self.tr("prm files (*.prm *PRM *Prm);;All Files (*)"))[0]
         if len(fName) > 0: #if the user didn't press cancel
             self.loadParameters(fName)
                
@@ -2527,9 +2528,9 @@ class pychControlWin(QMainWindow):
                                       QMessageBox.Ok)
         else:
             if self.parametersFile == None:
-                ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write prm'), ".prm", self.tr('All Files (*)'))
+                ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write prm'), ".prm", self.tr('All Files (*)'))[0]
             else:
-                ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write prm'), self.parametersFile, self.tr('All Files (*)'))
+                ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write prm'), self.parametersFile, self.tr('All Files (*)'))[0]
         if len(ftow) > 0 and self.prm["storedBlocks"] > 0:
             self.saveParametersToFile(ftow)
             self.saveParametersToFile(self.prm["tmpParametersFile"])
@@ -2835,7 +2836,7 @@ class pychControlWin(QMainWindow):
 
     def fileChooserButtonClicked(self):
         sender = self.sender()
-        fName = QFileDialog.getOpenFileName(self, self.tr("Choose file"), '', self.tr("files (*);;All Files (*)"))
+        fName = QFileDialog.getOpenFileName(self, self.tr("Choose file"), '', self.tr("file;;All Files (*)"))[0]
         lbls = []
  
         if len(fName) > 0: #if the user didn't press cancel
@@ -2866,7 +2867,7 @@ class pychControlWin(QMainWindow):
             dialog.onClickApplyButton()
 
     def processResultsLinearDialog(self):
-        fList = QFileDialog.getOpenFileNames(self, self.tr("Choose results file to load"), '', self.tr("All Files (*)"))
+        fList = QFileDialog.getOpenFileNames(self, self.tr("Choose results file to load"), '', self.tr("All Files (*)"))[0]
         sep = None
         if len(fList) > 0:
             resformat = 'linear'
@@ -2886,7 +2887,7 @@ class pychControlWin(QMainWindow):
             
 
     def processResultsTableDialog(self):
-        fList = QFileDialog.getOpenFileNames(self, self.tr("Choose results file to load"), '', self.tr("All Files (*)"))
+        fList = QFileDialog.getOpenFileNames(self, self.tr("Choose results file to load"), '', self.tr("All Files (*)"))[0]
         sep = None
         if len(fList) > 0:
            

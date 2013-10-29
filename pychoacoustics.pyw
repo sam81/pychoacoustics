@@ -22,11 +22,14 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 #sip.setapi("QString", 2)
 from pychoacoustics.pyqtver import*
 if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QApplication
+    from PyQt4 import QtCore
+    from PyQt4.QtGui import QApplication, QFileDialog
+    QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
+    QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
+    QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
 elif pyqtversion == 5:
-    from PyQt5 import QtGui, QtCore
-    from PyQt5.QtWidgets import QApplication
+    from PyQt5 import QtCore
+    from PyQt5.QtWidgets import QApplication, QFileDialog
     
 import signal
 import argparse, fnmatch, os, sys, time, traceback
@@ -61,7 +64,7 @@ def excepthook(except_type, except_val, tbck):
     # recover traceback
     tb = traceback.format_exception(except_type, except_val, tbck)
     def onClickSaveTbButton():
-        ftow = QtGui.QFileDialog.getSaveFileName(None, 'Choose where to save the traceback', "traceback.txt", 'All Files (*)')
+        ftow = QFileDialog.getSaveFileName(None, 'Choose where to save the traceback', "traceback.txt", 'All Files (*)')[0]
         if len(ftow) > 0:
             if fnmatch.fnmatch(ftow, '*.txt') == False:
                 ftow = ftow + '.txt'
