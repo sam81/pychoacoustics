@@ -56,7 +56,7 @@ def addSounds(snd1, snd2, delay, fs):
     """
   
     #delay in ms
-    delay = delay / 1000. #convert from ms to sec
+    delay = delay / 1000 #convert from ms to sec
 
     nSnd1 = len(snd1[:,1])
     nSnd2 = len(snd2[:,1])
@@ -95,7 +95,7 @@ def addSounds(snd1, snd2, delay, fs):
         snd = concatenate((seg1, seg2), axis=0)
         snd = concatenate((snd, seg3), axis=0)
         
-    return(snd)
+    return snd
 
 
 
@@ -1596,17 +1596,16 @@ def joinSndISI(sndList, ISIList, fs):
     >>> tone_seq = joinSndISI([pt1, pt2], [500], 48000)
     
     """
-    for i in range(len(sndList)):
-        if i < len(sndList)-1:
+    snd = sndList[0]
+    for i in range(len(sndList)-1):
+        if ISIList[i] >= 0:
             thisSilence = makeSilence(ISIList[i], fs)
-        else:
-            thisSilence = makeSilence(0, fs)
-        if i == 0:
-            snd = sndList[i]
             snd = concatenate((snd, thisSilence), axis=0)
+            snd = concatenate((snd, sndList[i+1]), axis=0)
         else:
-            snd = concatenate((snd, sndList[i]), axis=0)
-            snd = concatenate((snd, thisSilence), axis=0)
+            delay = (snd.shape[0]/fs)*1000 + ISIList[i]
+            snd = addSounds(snd, sndList[i+1], delay, fs)
+            
     return snd
 
 
