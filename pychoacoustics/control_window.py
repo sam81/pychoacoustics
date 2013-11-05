@@ -1894,7 +1894,7 @@ class pychControlWin(QMainWindow):
 
 
     def onClickSaveResultsButton(self):
-        ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), QFileDialog.DontConfirmOverwrite)[0]
+        ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), "", QFileDialog.DontConfirmOverwrite)[0]
         if len(ftow) > 0:
             if fnmatch.fnmatch(ftow, '*.txt') == False:
                 ftow = ftow + '.txt'
