@@ -11,6 +11,8 @@ elif pyqtversion == -4:
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QApplication
+
+from .._version_info import*
 from ..sndlib import*
 from numpy import log10
 
@@ -60,6 +62,8 @@ def initialize_audiogram_mf(prm):
     prm[exp_name]['defaultNAlternatives'] = 2
     
     prm[exp_name]["execString"] = "audiogram_mf"
+    prm[exp_name]["version"] = __name__ + ' ' + pychoacoustics_version + ' ' + pychoacoustics_builddate
+    
     return prm
 
 def select_default_parameters_audiogram_mf(parent, par):

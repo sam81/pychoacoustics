@@ -2042,6 +2042,8 @@ class responseBox(QMainWindow):
             thisFile = filesToWrite[i]
             thisFile.write('*******************************************************\n')
             thisFile.write('pychoacoustics version: ' + self.prm['version'] + '; build date: ' +  self.prm['builddate'] + '\n')
+            if 'version' in self.prm[self.parent().currExp]:
+                thisFile.write('Experiment version: ' + self.prm[self.parent().currExp]['version'] + '\n') 
             thisFile.write('Block Number: ' + str(self.prm['currentBlock']) + '\n')
             thisFile.write('Block Position: ' + self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'] + '\n')
             thisFile.write('Start: ' + self.prm['blockStartTimeStamp']+ '\n') 

@@ -29,6 +29,8 @@ The available choosers are:
 
 from ..sndlib import*
 from ..pyqtver import*
+from .._version_info import*
+
 if pyqtversion == 4:
     from PyQt4.QtGui import QApplication
 elif pyqtversion == -4:
@@ -51,6 +53,8 @@ def initialize_freq(prm):
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2
     prm[exp_name]["execString"] = "freq"
+    prm[exp_name]["version"] = __name__ + ' ' + pychoacoustics_version + ' ' + pychoacoustics_builddate
+    
     return prm
 
 def select_default_parameters_freq(parent, par):

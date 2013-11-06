@@ -40,6 +40,7 @@ elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QApplication
 from ..sndlib import*
+from .._version_info import*
 from numpy import log10
 
 
@@ -58,6 +59,8 @@ def initialize_audiogram(prm):
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2
     prm[exp_name]["execString"] = "audiogram"
+    prm[exp_name]["version"] = __name__ + ' ' + pychoacoustics_version + ' ' + pychoacoustics_builddate
+
     return prm
 
 def select_default_parameters_audiogram(parent, par):
