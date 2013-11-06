@@ -38,12 +38,12 @@
         <translation type="unfinished">Yes</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="58"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="60"/>
         <source>Arithmetic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/freq.py" line="50"/>
+        <location filename="../pychoacoustics/default_experiments/freq.py" line="52"/>
         <source>Geometric</source>
         <translation type="unfinished"></translation>
     </message>
@@ -178,102 +178,102 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram.py" line="48"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram.py" line="49"/>
         <source>Audiogram</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram.py" line="51"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram.py" line="52"/>
         <source>Adaptive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="52"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="54"/>
         <source>Weighted Up/Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram.py" line="53"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram.py" line="54"/>
         <source>Constant m-Intervals n-Alternatives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram.py" line="122"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram.py" line="125"/>
         <source>Frequency (Hz)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="137"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="141"/>
         <source>Bandwidth (Hz)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram.py" line="117"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram.py" line="120"/>
         <source>Level (dB SPL)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="141"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="145"/>
         <source>Duration (ms)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="142"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="146"/>
         <source>Ramps (ms)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="95"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="99"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="91"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="95"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="91"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="95"/>
         <source>Both</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="143"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="147"/>
         <source>Ear:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="152"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="156"/>
         <source>Sinusoid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="146"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="150"/>
         <source>Narrowband Noise</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram.py" line="130"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram.py" line="133"/>
         <source>Signal Type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="48"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="50"/>
         <source>Audiogram Multiple Frequencies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="51"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="53"/>
         <source>Adaptive Interleaved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="53"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="55"/>
         <source>Multiple Constants m-Intervals n-Alternatives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="144"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="148"/>
         <source>Type:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -286,24 +286,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2579"/>
+        <location filename="../pychoacoustics/response_box.py" line="2581"/>
         <source>Experimenter {} e-mail&apos;s address {} not valid 
  Please specify a valid address for the current experimenter 
  in the Edit -&gt; Experimenters dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2583"/>
+        <location filename="../pychoacoustics/response_box.py" line="2585"/>
         <source>username invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2587"/>
+        <location filename="../pychoacoustics/response_box.py" line="2589"/>
         <source>SMTP server name invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2634"/>
+        <location filename="../pychoacoustics/response_box.py" line="2636"/>
         <source>Something went wrong, try to change server settings 
  {}</source>
         <translation type="unfinished"></translation>
@@ -433,7 +433,7 @@
         <translation type="obsolete">Different</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="76"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="80"/>
         <source>Frequency (Hz) </source>
         <translation type="unfinished"></translation>
     </message>
@@ -2050,7 +2050,7 @@
         <translation type="obsolete">Finished</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2087"/>
+        <location filename="../pychoacoustics/response_box.py" line="2089"/>
         <source>Yes</source>
         <translation type="unfinished">Yes</translation>
     </message>
@@ -2110,12 +2110,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2438"/>
+        <location filename="../pychoacoustics/response_box.py" line="2440"/>
         <source>Adaptive Interleaved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2438"/>
+        <location filename="../pychoacoustics/response_box.py" line="2440"/>
         <source>Weighted Up/Down Interleaved</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2135,7 +2135,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2436"/>
+        <location filename="../pychoacoustics/response_box.py" line="2438"/>
         <source>Adaptive</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2220,7 +2220,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2436"/>
+        <location filename="../pychoacoustics/response_box.py" line="2438"/>
         <source>Weighted Up/Down</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2235,17 +2235,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2444"/>
+        <location filename="../pychoacoustics/response_box.py" line="2446"/>
         <source>Constant m-Intervals n-Alternatives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2440"/>
+        <location filename="../pychoacoustics/response_box.py" line="2442"/>
         <source>Constant 1-Interval 2-Alternatives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2448"/>
+        <location filename="../pychoacoustics/response_box.py" line="2450"/>
         <source>Constant 1-Pair Same/Different</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2260,12 +2260,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2442"/>
+        <location filename="../pychoacoustics/response_box.py" line="2444"/>
         <source>Multiple Constants 1-Interval 2-Alternatives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2446"/>
+        <location filename="../pychoacoustics/response_box.py" line="2448"/>
         <source>Multiple Constants m-Intervals n-Alternatives</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2275,7 +2275,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2055"/>
+        <location filename="../pychoacoustics/response_box.py" line="2057"/>
         <source>Automatic</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2340,32 +2340,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2365"/>
+        <location filename="../pychoacoustics/response_box.py" line="2367"/>
         <source>Pychoacoustics Notification: Listener </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2365"/>
+        <location filename="../pychoacoustics/response_box.py" line="2367"/>
         <source> has </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2366"/>
+        <location filename="../pychoacoustics/response_box.py" line="2368"/>
         <source> block(s) to go</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2367"/>
+        <location filename="../pychoacoustics/response_box.py" line="2369"/>
         <source>Experiment: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2368"/>
+        <location filename="../pychoacoustics/response_box.py" line="2370"/>
         <source>Completed Blocks: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2368"/>
+        <location filename="../pychoacoustics/response_box.py" line="2370"/>
         <source> Stored Blocks: </source>
         <translation type="unfinished"></translation>
     </message>

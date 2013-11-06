@@ -1976,6 +1976,14 @@ class responseBox(QMainWindow):
         else:
             self.prm['currentRepetition'] = self.prm['currentRepetition'] + 1
             self.parent().moveToBlockPosition(1)
+            if self.prm['allBlocks']['shuffleMode'] == self.tr('Auto'):
+                self.parent().onClickShuffleBlocksButton()
+                self.prm["shuffled"] = True
+            elif self.prm['allBlocks']['shuffleMode'] == self.tr('Ask') and self.prm['shuffled'] == True:
+                #if user shuffled on first repetion, then shuffle on each repetition, otherwise don't shuffle
+                self.parent().onClickShuffleBlocksButton()
+                self.prm["shuffled"] = True
+
             if self.prm['allBlocks']['responseMode'] == self.tr("Automatic") or self.prm['allBlocks']['responseMode'] == self.tr("Simulated Listener"):
                 self.onClickStatusButton()
                 
