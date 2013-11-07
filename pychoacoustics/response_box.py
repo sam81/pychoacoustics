@@ -338,7 +338,7 @@ class responseBox(QMainWindow):
                     self.onAskSaveResultsButton()
 
     def onAskSaveResultsButton(self):
-        ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), QFileDialog.DontConfirmOverwrite)[0]
+        ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), "", QFileDialog.DontConfirmOverwrite)[0]
         if os.path.exists(ftow) == False and len(ftow) > 0:
                 fName = open(ftow, 'w')
                 fName.write('')

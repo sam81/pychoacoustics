@@ -708,6 +708,73 @@ def complexToneParallel(F0, harmPhase, lowHarm, highHarm, stretch, level, durati
         
     return snd
 
+def delayAdd(sig, delay, gain, iterations, configuration, fs):
+    """
+    Delay and add algorithm for the generation of iterated rippled noise.
+
+    Parameters
+    ----------
+    sig : array of floats
+        The signal to manipulate
+    delay : float
+        delay in seconds
+    gain : float
+        The gain to apply to the delayed signal
+    iterations : int
+        The number of iterations of the delay-add cycle
+    configuration : string
+        If 'Add Same', the output of iteration N-1 is added to delayed signal of the current iteration.
+        If 'Add Original', the original signal is added to delayed signal of the current iteration.
+    fs : int
+        Sampling frequency in Hz.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+        The array has dimensions (nSamples, 2).
+
+    References
+    -------
+    Yost, W. A., Patterson, R., & Sheft, S. (1996). A time domain description for the pitch strength of
+    iterated rippled noise. The Journal of the Acoustical Society of America, 99(2), 1066–78. 
+
+    Examples
+    --------
+    >>> noise = broadbandNoise(spectrumLevel=40, duration=180, ramp=10,
+    ...     channel='Both', fs=48000, maxLevel=100)
+    >>> irn = delayAdd(sig=noise, delay=1/440, gain=1, iterations=6, configuration='Add Same', fs=48000)
+
+    """
+    #delay in seconds
+    delayPnt = round(delay * fs)
+    nSamples = len(sig[:,0])
+    en_input_right = sqrt(sum(sig[:,1]**2))
+    en_input_left = sqrt(sum(sig[:,0]**2))
+    snd = zeros((nSamples, 2))
+    delayed_sig = zeros((nSamples, 2))
+    print(iterations)
+    if configuration == "Add Same":
+        for i in range(iterations):
+            delayed_sig = concatenate((sig[delayPnt:nSamples], sig[0:delayPnt]), axis=0)
+            delayed_sig = delayed_sig * gain
+            sig = sig + delayed_sig
+    elif configuration == "Add Original":
+        original_sig = copy.copy(sig)
+        for i in range(iterations):
+            delayed_sig = concatenate((sig[delayPnt:nSamples], sig[0:delayPnt]), axis=0)
+            delayed_sig = delayed_sig * gain
+            sig = original_sig + delayed_sig
+    snd = sig
+    en_output_right = sqrt(sum(snd[:,1]**2))
+    en_output_left = sqrt(sum(snd[:,0]**2))
+    scale_right = en_input_right / en_output_right
+    scale_left  = en_input_left / en_output_left
+
+    snd[:,1] = snd[:,1] * scale_right
+    snd[:,0] = snd[:,0] * scale_left
+
+    return snd
+
 def ERBDistance(f1, f2):
     """
 
@@ -1666,6 +1733,58 @@ def makeAsynchChord(freqs, levels, phases, tonesDuration, tonesRamps, tonesChann
             snd = thisTone
         else:
             snd = addSounds(snd, thisTone, SOA*i, fs)
+    return snd
+
+def makeIRN(delay, gain, iterations, configuration, spectrumLevel, duration, ramp, channel, fs, maxLevel):
+    """
+    Synthetise a iterated rippled noise
+
+    Parameters
+    ----------
+    delay : float
+        delay in seconds
+    gain : float
+        The gain to apply to the delayed signal
+    iterations : int
+        The number of iterations of the delay-add cycle
+    configuration : string
+        If 'Add Same', the output of iteration N-1 is added to delayed signal of the current iteration.
+        If 'Add Original', the original signal is added to delayed signal of the current iteration.
+    spectrumLevel : float
+        Intensity spectrum level of the noise in dB SPL.
+    duration : float
+        Noise duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    channel : string ('Right', 'Left' or 'Both')
+        Channel in which the noise will be generated.
+    fs : int
+        Sampling frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+        The array has dimensions (nSamples, 2).
+
+    Examples
+    --------
+    >>> irn = makeIRN(delay=1/440, gain=1, iterations=6, configuration='Add Same',
+           spectrumLevel=25, duration=280, ramp=10, channel='Both', fs=48000,
+           maxLevel=101)
+
+    """
+    
+    snd = broadbandNoise(spectrumLevel, duration+(ramp*2), 0, channel, fs, maxLevel) 
+    if configuration == "Add Same":
+        snd = delayAdd(snd, delay, gain, iterations, configuration, fs)
+    elif configuration == "Add Original":
+        snd =  delayAdd(snd, delay, gain, iterations, configuration, fs)
+
+    snd = gate(ramp, snd, fs)
+        
     return snd
 
 def makeHuggins(F0, lowHarm, highHarm, spectrumLevel, bandwidth, phaseRelationship, noiseType, duration, ramp, fs, maxLevel):
