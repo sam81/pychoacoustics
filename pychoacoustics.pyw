@@ -34,8 +34,8 @@ elif pyqtversion == 5:
     from PyQt5 import QtCore
     from PyQt5.QtWidgets import QApplication, QFileDialog
     
-import signal
-import argparse, fnmatch, os, sys, time, traceback
+
+import argparse, fnmatch, numpy, os, random, signal, sys, time, traceback
 from pychoacoustics import qrc_resources
 from pychoacoustics import global_parameters
 from pychoacoustics.control_window import*
@@ -129,6 +129,7 @@ def main(argv):
     parser.add_argument("-a", "--autostart", help="Automatically start the first stored block", action="store_true")
     parser.add_argument("-x", "--recursion-depth", help="Sets the maximum recursion depth", type=int)
     parser.add_argument("-k", "--reset", help="Reset block positions", action="store_true")
+    parser.add_argument("-z", "--seed", help="Set random seed")
     parser.add_argument("-g", "-graphicssystem", "--graphicssystem", help="Sets the backend to be used for on-screen widgets and QPixmaps. Available options are native (default) raster and opengl (experimental)")#, choices=['raster', 'opengl', 'native'])
     parser.add_argument("-d", "--display", help="This option is only valid for X11 and sets the X display (default is $DISPLAY)")
 
@@ -158,6 +159,9 @@ def main(argv):
         prm['cmdLineMaxRecursionDepth'] = args.recursion_depth
     if args.reset:
         prm['calledWithReset'] = True
+    if args.seed:
+        random.seed(int(args.seed))
+        numpy.random.seed(int(args.seed))
     if args.graphicssystem:
         prm['graphicssystem'] = args.graphicssystem
     if args.display:

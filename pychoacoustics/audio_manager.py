@@ -22,11 +22,11 @@ import platform, os, subprocess
 from numpy import ceil, concatenate, floor, float32, int16, int32, mean, sqrt, transpose, zeros
 from .pyqtver import*
 if pyqtversion == 4:
-    from PyQt4.QtCore import QLocale, QThread
+    from PyQt4.QtCore import QThread
 elif pyqtversion == -4:
-    from PySide.QtCore import QLocale, QThread
+    from PySide.QtCore import QThread
 elif pyqtversion == 5:
-    from PyQt5.QtCore import QLocale, QThread
+    from PyQt5.QtCore import QThread
 import ctypes, sys
 
 if platform.system() == "Windows":
@@ -280,6 +280,7 @@ class audioManager():
 
         if nbits != 24:
            self.wavfile.write(fname, fs, data)
+           
     def initializeAudio(self):
         backend = self.prm['pref']['sound']['playCommand']
         devNum = self.prm["pref"]["sound"]["pactypesDevice"]

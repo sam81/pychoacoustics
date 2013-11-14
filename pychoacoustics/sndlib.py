@@ -22,8 +22,8 @@ A module for generating sounds in python.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import copy, numpy, multiprocessing, warnings
-from numpy import array, ceil, cumsum, floor, log, log2, log10, sin, cos, pi, sqrt, abs, arange, zeros, ones, mean, convolve, angle, real, int_, linspace, repeat, logspace, concatenate
-from numpy.fft import rfft, irfft, fft, ifft
+from numpy import abs, angle, arange, array, asarray, ceil, concatenate, convolve, cos, cumsum, floor, int_, log, log2, log10, linspace, logspace, mean, ones, pi, real, repeat, sin, sqrt, where, zeros
+from numpy.fft import fft, ifft, irfft, rfft
 from scipy.signal import firwin2
 
 
@@ -734,9 +734,8 @@ def delayAdd(sig, delay, gain, iterations, configuration, fs):
         The array has dimensions (nSamples, 2).
 
     References
-    -------
-    Yost, W. A., Patterson, R., & Sheft, S. (1996). A time domain description for the pitch strength of
-    iterated rippled noise. The Journal of the Acoustical Society of America, 99(2), 1066–78. 
+    ----------
+    .. [YPS1996] Yost, W. A., Patterson, R., & Sheft, S. (1996). A time domain description for the pitch strength of iterated rippled noise. J. Acoust. Soc. Am., 99(2), 1066–78. 
 
     Examples
     --------
@@ -752,7 +751,6 @@ def delayAdd(sig, delay, gain, iterations, configuration, fs):
     en_input_left = sqrt(sum(sig[:,0]**2))
     snd = zeros((nSamples, 2))
     delayed_sig = zeros((nSamples, 2))
-    print(iterations)
     if configuration == "Add Same":
         for i in range(iterations):
             delayed_sig = concatenate((sig[delayPnt:nSamples], sig[0:delayPnt]), axis=0)
@@ -777,7 +775,28 @@ def delayAdd(sig, delay, gain, iterations, configuration, fs):
 
 def ERBDistance(f1, f2):
     """
+    Compute the distance in equivalent rectangular bandwiths (ERBs) between f1 and f2.
 
+    Parameters
+    ----------
+    f1 : float
+        frequency 1 in Hz
+    f2 : float
+        frequency 2 in Hz
+
+    Returns
+    -------
+    deltaERB : float
+        distance between f1 and f2 in ERBs
+
+    References
+    ----------
+    .. [GM] Glasberg, B. R., & Moore, B. C. J. (1990). Derivation of auditory filter shapes from notched-noise data. Hear. Res., 47(1-2), 103–38.
+    
+    Examples
+    --------
+    >>> ERBDistance(1000, 1200)
+    
     """
     deltaERB = 21.4*log10(0.00437*f2+1) - 21.4*log10(0.00437*f1+1)
 
@@ -1298,8 +1317,37 @@ def fir2Filt(f1, f2, f3, f4, snd, fs):
 
 def freqFromERBInterval(f1, deltaERB):
     """
+    Compute the frequency, in Hz, corresponding to a distance,
+    in equivalent rectangular bandwidths (ERBs), of 'deltaERB' from f1.
+
+    Parameters
+    ----------
+    f1 : float
+        frequency in Hz
+    deltaERB : float
+        distance
+
+    Returns
+    -------
+    deltaERB : float
+        distance in ERBs
+
+    References
+    ----------
+    .. [GM] Glasberg, B. R., & Moore, B. C. J. (1990). Derivation of auditory filter shapes from notched-noise data. Hear. Res., 47(1-2), 103–38.
+    
+    Examples
+    --------
+    >>> freqFromERBInterval(100, 1.5)
+    >>> freqFromERBInterval(100, -1.5)
+    >>> #for several frequencies
+    >>> freqFromERBInterval([100, 200, 300], 1.5)
+    >>> # for several distances
+    >>> freqFromERBInterval(100, [1, 1.5, 2])
     
     """
+    f1 = asarray(f1)
+    deltaERB = asarray(deltaERB)
     f2 = (10**((deltaERB + 21.4*log10(0.00437*f1 +1))/21.4)-1) / 0.00437 
 
     return f2
@@ -1420,7 +1468,7 @@ def glide(freqStart, ftype, excursion, level, duration, phase, ramp, channel, fs
     
     return snd
 
-def harmComplFromNarrowbandNoise(F0, lowHarm, highHarm, level, bandwidth, duration, ramp, channel, fs, maxLevel):
+def harmComplFromNarrowbandNoise(F0, lowHarm, highHarm, level, bandwidth, bandwidthUnit, stretch, duration, ramp, channel, fs, maxLevel):
     """
     Generate an harmonic complex tone from narrow noise bands.
 
@@ -1435,7 +1483,14 @@ def harmComplFromNarrowbandNoise(F0, lowHarm, highHarm, level, bandwidth, durati
     level : float
         The spectrum level of the noise bands in dB SPL.
     bandwidth : float
-        The width of each noise band in hertz.
+        The width of each noise band.
+    bandwidthUnit : string ('Hz', 'Cent', 'ERB')
+        Defines whether the bandwith of the noise bands is expressed
+        in hertz (Hz), cents (Cent), or equivalent rectangular bandwidths (ERB).
+    stretch : float
+        Harmonic stretch in %F0. Increase each harmonic frequency by a fixed value
+        that is equal to (F0*stretch)/100. If 'stretch' is different than
+        zero, an inhanmonic complex tone will be generated.
     duration : float
         Tone duration (excluding ramps) in milliseconds.
     ramp : float
@@ -1462,7 +1517,7 @@ def harmComplFromNarrowbandNoise(F0, lowHarm, highHarm, level, bandwidth, durati
          fs=48000, maxLevel=100)
     
     """
-
+    stretchHz = (F0*stretch)/100
     sDuration = duration / 1000 #convert from ms to sec
     sRamp = ramp / 1000
     totDur = sDuration + (2 * sRamp)
@@ -1477,15 +1532,27 @@ def harmComplFromNarrowbandNoise(F0, lowHarm, highHarm, level, bandwidth, durati
         toneOdd = zeros((nTot, 2))
         toneEven = zeros((nTot, 2))
 
-    for i in range(lowHarm, highHarm+1):
+    cfs = arange(lowHarm, highHarm+1)*F0 #center frequencies
+    cfs = cfs + stretchHz
+    if bandwidthUnit == "Hz":
+        fLo = cfs - (bandwidth/2)
+        fHi = cfs + (bandwidth/2)
+    elif bandwidthUnit == "Cent":
+        fLo = cfs*2**(-(bandwidth/2)/1200)
+        fHi = cfs*2**((bandwidth/2)/1200)
+    elif bandwidthUnit == "ERB":
+        fLo = freqFromERBInterval(cfs, -bandwidth/2)
+        fHi = freqFromERBInterval(cfs, bandwidth/2)
+
+    for i in range(len(fLo)):
         if channel == "Right" or channel == "Left" or channel == "Both":
-            tone =  tone + steepNoise((i*F0) - (bandwidth/2), (i*F0) + (bandwidth/2), level, duration, ramp, channel, fs, maxLevel)
+            tone =  tone + steepNoise(fLo[i], fHi[i], level, duration, ramp, channel, fs, maxLevel)
         elif channel == "Odd Left" or channel == "Odd Right":
             if i%2 > 0: #odd harmonic
                         #make the tone in the left channel, then move it where needed
-                toneOdd = toneOdd + steepNoise((i*F0) - (bandwidth/2), (i*F0) + (bandwidth/2), level, duration, ramp, "Left", fs, maxLevel)
+                toneOdd = toneOdd + steepNoise(fLo[i], fHi[i], level, duration, ramp, "Left", fs, maxLevel)
             else:
-                toneEven = toneEven + steepNoise((i*F0) - (bandwidth/2), (i*F0) + (bandwidth/2), level, duration, ramp, "Left", fs, maxLevel)
+                toneEven = toneEven + steepNoise(fLo[i], fHi[i], level, duration, ramp, "Left", fs, maxLevel)
   
 
     if channel == "Right" or channel == "Left" or channel == "Both":
@@ -1631,7 +1698,7 @@ def itdtoipd(itd, freq):
     
     """
     
-    ipd = (itd / (1.0/freq)) * 2 * pi
+    ipd = (itd / (1/asarray(freq))) * 2 * pi
     return ipd
 
 def joinSndISI(sndList, ISIList, fs):
@@ -1734,6 +1801,8 @@ def makeAsynchChord(freqs, levels, phases, tonesDuration, tonesRamps, tonesChann
         else:
             snd = addSounds(snd, thisTone, SOA*i, fs)
     return snd
+
+
 
 def makeIRN(delay, gain, iterations, configuration, spectrumLevel, duration, ramp, channel, fs, maxLevel):
     """
@@ -1847,13 +1916,11 @@ def makeHuggins(F0, lowHarm, highHarm, spectrumLevel, bandwidth, phaseRelationsh
         makePink(tone, fs)
     for i in range(lowHarm, highHarm+1):
         if phaseRelationship == "NoSpi":
-            #print("NoSpi")
             tone = phaseShift(tone, ((i*F0) - (bandwidth/2)), ((i*F0) + (bandwidth/2)), pi, "Left", fs)
         elif phaseRelationship == "NpiSo":
-            #print("NpiSo")
             if i == lowHarm:
                 tone = phaseShift(tone, 10, (i*F0) - (bandwidth/2), pi, "Left", fs)
-            elif i == highHarm + 1:
+            elif i == highHarm:
                 tone = phaseShift(tone, ((i-1)*F0) + (bandwidth/2), (i*F0) - (bandwidth/2), pi, "Left", fs)
                 tone = phaseShift(tone, (i*F0) + (bandwidth/2), fs/2, pi, "Left", fs)
             else:
@@ -1863,6 +1930,138 @@ def makeHuggins(F0, lowHarm, highHarm, spectrumLevel, bandwidth, phaseRelationsh
     snd = tone
 
     return snd
+
+def makeHugginsPitch(F0, lowHarm, highHarm, spectrumLevel, bandwidth, bandwidthUnit, dichoticDifference,
+                     dichoticDifferenceValue, phaseRelationship, stretch, noiseType, duration, ramp, fs,
+                     maxLevel):
+    """
+    Synthetise a complex Huggings Pitch.
+
+    Parameters
+    ----------
+    F0 : float
+        The centre frequency of the F0 of the complex in hertz.
+    lowHarm : int
+        Lowest harmonic component number.
+    highHarm : int
+        Highest harmonic component number.
+    spectrumLevel : float
+        The spectrum level of the noise from which
+        the Huggins pitch is derived in dB SPL.
+        If 'noiseType' is 'Pink', the spectrum level
+        will be equal to 'spectrumLevel' at 1 kHz.
+    bandwidth : float
+        Bandwidth of the frequency regions in which the
+        phase transitions occurr.
+    bandwidthUnit : string ('Hz', 'Cent', 'ERB')
+        Defines whether the bandwith of the decorrelated bands is expressed
+        in hertz (Hz), cents (Cent), or equivalent rectangular bandwidths (ERB).
+    dichoticDifference : string ('IPD Linear', 'IPD Stepped', 'IPD Random', 'ITD')
+        Selects whether the decorrelation in the target regions will be achieved
+        by applying a costant interaural phase shift (IPD), an costant interaural
+        time difference (ITD), or a random IPD shift.
+    dichoticDifferenceValue : float
+        For 'IPD Linear' this is the phase difference between the start and the end
+        of each transition region, in radians.
+        For 'IPD Stepped', this is the phase offset, in radians, between the correlated
+        and the uncorrelated regions.
+        For 'ITD' this is the ITD in the transition region, in micro seconds.
+        For 'Random Phase', the range of phase shift randomization in the uncorrelated regions.
+    phaseRelationship : string ('NoSpi' or 'NpiSo')
+        If NoSpi, the phase of the regions within each frequency band will
+        be shifted. If NpiSo, the phase of the regions between each
+        frequency band will be shifted.
+    stretch : float
+        Harmonic stretch in %F0. Increase each harmonic frequency by a fixed value
+        that is equal to (F0*stretch)/100. If 'stretch' is different than
+        zero, an inhanmonic complex tone will be generated.
+    noiseType : string ('White' or 'Pink')
+        The type of noise used to derive the Huggins Pitch.
+    duration : float
+        Complex duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    fs : int
+        Samplig frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+        The array has dimensions (nSamples, 2).
+
+    References
+    ----------
+    .. [CH] Cramer, E. M., & Huggins, W. H. (1958). Creation of Pitch through Binaural Interaction. J. Acoust. Soc. Am., 30(5), 413. 
+    .. [AS] Akeroyd, M. A., & Summerfield, a Q. (2000). The lateralization of simple dichotic pitches. J. Acoust. Soc. Am., 108(1), 316–334.
+    .. [ZH] Zhang, P. X., & Hartmann, W. M. (2008). Lateralization of Huggins pitch. J. Acoust. Soc. Am., 124(6), 3873–87. 
+
+    Examples
+    --------
+    >>> hp = makeHuggins(F0=200, lowHarm=1, highHarm=5, spectrumLevel=40,
+            bandwidth=65, phaseRelationship='NoSpi', noiseType='White',
+            duration=280, ramp=10, fs=48000, maxLevel=100)
+    
+    """
+    stretchHz = (F0*stretch)/100
+    sDuration = duration / 1000 #convert from ms to sec
+    sRamp = ramp / 1000
+    totDur = sDuration + (2 * sRamp)
+    nSamples = int(round(sDuration * fs))
+    nRamp = int(round(sRamp * fs))
+    nTot = nSamples + (nRamp * 2)
+    snd = zeros((nTot, 2))
+
+    tone = broadbandNoise(spectrumLevel, duration+(ramp*2), 0, "Both", fs, maxLevel)
+    if noiseType == "Pink":
+        makePink(tone, fs)
+
+    cfs = arange(lowHarm, highHarm+1)*F0 #center frequencies
+    cfs = cfs + stretchHz
+    if phaseRelationship == "NoSpi":
+        if bandwidthUnit == "Hz":
+            shiftLo = cfs - (bandwidth/2)
+            shiftHi = cfs + (bandwidth/2)
+        elif bandwidthUnit == "Cent":
+            shiftLo = cfs*2**(-(bandwidth/2)/1200)
+            shiftHi = cfs*2**((bandwidth/2)/1200)
+        elif bandwidthUnit == "ERB":
+            shiftLo = freqFromERBInterval(cfs, -bandwidth/2)
+            shiftHi = freqFromERBInterval(cfs, bandwidth/2)
+    if phaseRelationship == "NpiSo":
+        nHarms = len(cfs)
+        shiftLo = zeros(nHarms+1)
+        shiftHi = zeros(nHarms+1)
+
+        shiftLo[0] = 10
+        shiftHi[len(shiftHi)-1] = fs/2
+        if bandwidthUnit == "Hz":
+            shiftLo[1:len(shiftLo)] = cfs + (bandwidth/2)
+            shiftHi[0:len(shiftHi)-1] = cfs - (bandwidth/2)
+        elif bandwidthUnit == "Cent":
+            shiftLo[1:len(shiftLo)] = cfs*2**((bandwidth/2)/1200)
+            shiftHi[0:len(shiftHi)-1] = cfs*2**((bandwidth/2)/1200)
+        elif bandwidthUnit == "ERB":
+            shiftLo[1:len(shiftLo)] = freqFromERBInterval(cfs, bandwidth/2)
+            shiftHi[0:len(shiftHi)-1] = freqFromERBInterval(cfs, -bandwidth/2)
+
+    for i in range(len(shiftLo)):
+        if dichoticDifference == "IPD Linear":
+            tone = phaseShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, 'Linear', "Left", fs)
+        elif dichoticDifference == "IPD Stepped":
+            tone = phaseShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, 'Step', "Left", fs)
+        elif dichoticDifference == "IPD Random":
+            tone = phaseShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, 'Random', "Left", fs)
+        elif dichoticDifference == "ITD":
+            tone = setITD(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, "Left", fs)
+    
+    tone = gate(ramp, tone, fs)    
+    snd = tone
+
+    return snd
+
 
 def makePink(sig, fs):
     """
@@ -2017,7 +2216,9 @@ def makeSilence(duration, fs):
     
     return snd
 
-def makeSimpleDichotic(F0, lowHarm, highHarm, cmpLevel, lowFreq, highFreq, spacing, sigBandwidth, phaseRelationship, dichoticDifference, itd, ipd, narrowBandCmpLevel, duration, ramp, fs, maxLevel):
+def makeSimpleDichotic(F0, lowHarm, highHarm, cmpLevel, lowFreq, highFreq, spacing,
+                       sigBandwidth, phaseRelationship, dichoticDifference, itd, ipd,
+                       narrowBandCmpLevel, duration, ramp, fs, maxLevel):
     """
     Generate harmonically related dichotic pitches, or equivalent
     harmonically related narrowband tones in noise.
@@ -2028,7 +2229,7 @@ def makeSimpleDichotic(F0, lowHarm, highHarm, cmpLevel, lowFreq, highFreq, spaci
     level increase to harmonically related narrow frequency bands
     within the noise. In the first two cases (ITD and IPD) the result
     is a dichotic pitch. In the last case the pitch can also be heard
-    monaurally; adjusting the level increase its salience can be closely
+    monaurally; adjusting the level increase, its salience can be closely
     matched to that of a dichotic pitch.
     
     Parameters
@@ -2094,27 +2295,6 @@ def makeSimpleDichotic(F0, lowHarm, highHarm, cmpLevel, lowFreq, highFreq, spaci
         ipd=3.14, narrowBandCmpLevel=0, duration=280, ramp=10,
         fs=48000, maxLevel=100)
 
-    """""" 
-
-    Keyword arguments:
-    F0 -- Fundamental frequency (Hz)
-    lowHarm -- Number of the lowest harmonic
-    highHarm -- Number of the highest harmonic
-    cmpLevel -- level in dB SPL of each sinusoid that makes up the noise
-    lowCmp -- lowest frequency (Hz)
-    highCmp -- highest frequency (Hz)
-    spacing -- spacing between frequency components (Cents)
-    sigBandwidth -- bandwidth of each harmonic band (Cents)
-    phaseRelationship -- NoSpi or NpiSo
-    dichotic difference -- IPD, ITD or Level
-    itd -- interaural time difference microseconds
-    ipd -- interaural phase difference in radians
-    narrowBandCmpLevel - level of frequency components in the harmonic bands (valid only if dichotic difference is Level)
-    duration -- duration (excluding ramps) in ms
-    ramp -- ramp duration in ms
-    fs -- sampling frequency
-    maxLevel --
-    
     """
     
     sDuration = duration/1000 #convert from ms to sec
@@ -2154,11 +2334,11 @@ def makeSimpleDichotic(F0, lowHarm, highHarm, cmpLevel, lowFreq, highFreq, spaci
             freqsToShift = numpy.append(freqsToShift, thisFreqsToShift)
         elif phaseRelationship == "NpiSo":
             if i == 0:
-                thisFreqsToShift = numpy.where((freqs>lowFreq) & (freqs<lo))
+                thisFreqsToShift = where((freqs>lowFreq) & (freqs<lo))
             else:
-                thisFreqsToShift = numpy.where((freqs>hiPrev) & (freqs<lo))
+                thisFreqsToShift = where((freqs>hiPrev) & (freqs<lo))
             if i == highHarm:
-                foo = numpy.where(freqs>hi)
+                foo = where(freqs>hi)
                 thisFreqsToShift = numpy.append(thisFreqsToShift, foo)
             freqsToShift = numpy.append(freqsToShift, thisFreqsToShift)
                 
@@ -2243,9 +2423,115 @@ def nextpow2(x):
 
 
 
-def phaseShift(sig, f1, f2, phase_shift, channel, fs):
+# def phaseShift(sig, f1, f2, phaseShift, channel, fs):
+#     """
+#     Shift the interaural phases of a sound within a given frequency region.
+
+#     Parameters
+#     ----------
+#     sig : array of floats
+#         Input signal.
+#     f1 : float
+#         The start point of the frequency region to be
+#         phase-shifted in hertz.
+#     f2 : float
+#         The end point of the frequency region to be
+#         phase-shifted in hertz.
+#     phaseShift : float
+#         The amount of phase shift in radians.
+#     channel : string (one of 'Right', 'Left' or 'Both')
+#         The channel in which to apply the phase shift.
+#     fs : float
+#         The sampling frequency of the sound.
+        
+#     Returns
+#     -------
+#     out : 2-dimensional array of floats
+
+#     Examples
+#     --------
+#     >>> noise = broadbandNoise(spectrumLevel=40, duration=180, ramp=10,
+#     ...     channel='Both', fs=48000, maxLevel=100)
+#     >>> hp = phaseShift(sig=noise, f1=500, f2=600, phaseShift=3.14,
+#             channel='Left', fs=48000) #this generates a Dichotic Pitch
+    
+#     """
+    
+#     nSamples = len(sig[:,0])
+#     fftPoints = 2**nextpow2(nSamples)
+
+#     #in Matlab 1+ to skip DC component, but python indexing starts from 0
+#     start1 =  round(f1 * fftPoints / fs)
+#     end1   =  round(f2 * fftPoints / fs)
+#     # symmetric points, for Matlab need to add 2 to skip DC component and because start1 subtracts one point more
+#     start2 = fftPoints - start1
+#     end2 = fftPoints - end1
+#     snd = zeros((nSamples, 2))
+
+#     if channel == "Left":
+#         x = fft(sig[:,0], fftPoints)
+#         pnts = int_(arange(start1, end1+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) + phaseShift
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         pnts = int_(arange(end2, start2+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) - phaseShift
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         x = real(ifft(x))
+#         snd[:,0] = x[arange(0, nSamples, 1)]
+#         snd[:,1] = sig[:,1]
+#     elif channel == "Right":
+#         x = fft(sig[:,1], fftPoints)
+#         pnts = int_(arange(start1, end1+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) + phaseShift
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         pnts = int_(arange(end2, start2+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) - phaseShift
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         x = real(ifft(x))
+#         snd[:,1] = x[arange(0, nSamples, 1)]
+#         snd[:,0] = sig[:,0]
+#     elif channel == "Both":
+#         x = fft(sig[:,0], fftPoints)
+#         pnts = int_(arange(start1, end1+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) + phaseShift
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         pnts = int_(arange(end2, start2+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) - phaseShift
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         x = real(ifft(x))
+#         snd[:,0] = x[arange(0, nSamples, 1)]
+
+#         x = fft(sig[:,1], fftPoints)
+#         pnts = int_(arange(start1, end1+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) + phaseShift
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         pnts = int_(arange(end2, start2+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) - phaseShift
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         x = real(ifft(x))
+#         snd[:,1] = x[arange(0, nSamples, 1)]
+
+#     return snd
+
+def phaseShift(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
     """
-    Shift the phases of a sound within a given frequency region.
+    Shift the interaural phases of a sound within a given frequency region.
 
     Parameters
     ----------
@@ -2257,8 +2543,15 @@ def phaseShift(sig, f1, f2, phase_shift, channel, fs):
     f2 : float
         The end point of the frequency region to be
         phase-shifted in hertz.
-    phase_shift : float
-        The amount of phase shift in radians.
+    phaseShift : float
+        The amount of phase shift in radians. 
+    phaseShiftType : string ('Linear', 'Step')
+        If 'Linear' the phase changes progressively
+        on a linear Hz scale from X to X+'phaseShift' from f1 to f2.
+        If 'Stepped' 'phaseShift' is added as a constant to the
+        phases from f1 to f2.
+        If 'Random' a random phase shift from 0 to 'phaseShift'
+        is added to each frequency component from f1 to f2.
     channel : string (one of 'Right', 'Left' or 'Both')
         The channel in which to apply the phase shift.
     fs : float
@@ -2272,83 +2565,289 @@ def phaseShift(sig, f1, f2, phase_shift, channel, fs):
     --------
     >>> noise = broadbandNoise(spectrumLevel=40, duration=180, ramp=10,
     ...     channel='Both', fs=48000, maxLevel=100)
-    >>> hp = phaseShift(sig=noise, f1=500, f2=600, phase_shift=3.14,
+    >>> hp = phaseShift(sig=noise, f1=500, f2=600, phaseShift=3.14,
+            channel='Left', fs=48000) #this generates a Dichotic Pitch
+    
+    """
+
+    nSamples = len(sig[:,0])
+    fftPoints = 2**nextpow2(nSamples)
+    snd = zeros((nSamples, 2))
+    nUniquePnts = ceil((fftPoints+1)/2)
+    freqArray1 = arange(0, nUniquePnts, 1) * (fs / nUniquePnts)
+    freqArray2 = -arange(1, (nUniquePnts-1), 1)[::-1] * (fs / nUniquePnts) #remove DC offset and nyquist
+    sh1 = where((freqArray1>f1) & (freqArray1<f2))
+    sh2 = where((freqArray2<-f1) & (freqArray2>-f2))
+    p1Start = 0; p1End = len(freqArray1)
+    p2Start = len(freqArray1); p2End = fftPoints
+
+    if phaseShiftType == "Linear":
+        phaseShiftArray1 = linspace(0, phaseShift, len(sh1))
+        phaseShiftArray2 = - linspace(phaseShift, 0, len(sh2))
+    elif phaseShiftType == "Step":
+        phaseShiftArray1 = repeat(phaseShift, len(sh1))
+        phaseShiftArray2 = - repeat(phaseShift, len(sh1))
+    elif phaseShiftType == "Random":
+        phaseShiftArray1 = numpy.random.uniform(0, phaseShift, len(sh1))
+        phaseShiftArray2 = -phaseShiftArray1[::-1]
+
+    if channel == "Left":
+        x = fft(sig[:,0], fftPoints)
+        x1 = x[p1Start:p1End]
+        x2 = x[p2Start:p2End]
+        x1mag = abs(x1); x2mag = abs(x2)
+        x1Phase =  angle(x1); x2Phase =  angle(x2);
+        x1Phase[sh1] = x1Phase[sh1] + phaseShiftArray1
+        x2Phase[sh2] =  x2Phase[sh2] + phaseShiftArray2
+        x1 = x1mag * (cos(x1Phase) + (1j * sin(x1Phase)))
+        x2 = x2mag * (cos(x2Phase) + (1j * sin(x2Phase)))
+        x = concatenate((x1, x2))
+        x = real(ifft(x))
+        snd[:,0] = x[0:nSamples]
+        snd[:,1] = sig[:,1]
+    elif channel == "Right":
+        x = fft(sig[:,1], fftPoints)
+        x1 = x[p1Start:p1End]
+        x2 = x[p2Start:p2End]
+        x1mag = abs(x1); x2mag = abs(x2)
+        x1Phase =  angle(x1); x2Phase =  angle(x2);
+        x1Phase[sh1] = x1Phase[sh1] + phaseShiftArray1
+        x2Phase[sh2] = x2Phase[sh2] + phaseShiftArray2
+        x1 = x1mag * (cos(x1Phase) + (1j * sin(x1Phase)))
+        x2 = x2mag * (cos(x2Phase) + (1j * sin(x2Phase)))
+        x = concatenate((x1, x2))
+        x = real(ifft(x))
+        snd[:,1] = x[0:nSamples]
+        snd[:,0] = sig[:,0]
+    elif channel == "Both":
+        x = fft(sig[:,0], fftPoints)
+        x1 = x[p1Start:p1End]
+        x2 = x[p2Start:p2End]
+        x1mag = abs(x1); x2mag = abs(x2)
+        x1Phase =  angle(x1); x2Phase =  angle(x2);
+        x1Phase[sh1] = x1Phase[sh1] + phaseShiftArray1
+        x2Phase[sh2] = x2Phase[sh2] + phaseShiftArray2
+        x1 = x1mag * (cos(x1Phase) + (1j * sin(x1Phase)))
+        x2 = x2mag * (cos(x2Phase) + (1j * sin(x2Phase)))
+        x = concatenate((x1, x2))
+        x = real(ifft(x))
+        snd[:,0] = x[0:nSamples]
+
+        x = fft(sig[:,1], fftPoints)
+        x1 = x[p1Start:p1End]
+        x2 = x[p2Start:p2End]
+        x1mag = abs(x1); x2mag = abs(x2)
+        x1Phase =  angle(x1); x2Phase =  angle(x2);
+        x1Phase[sh1] = x1Phase[sh1] + phaseShiftArray1
+        x2Phase[sh2] = x2Phase[sh2] + phaseShiftArray2
+        x1 = x1mag * (cos(x1Phase) + (1j * sin(x1Phase)))
+        x2 = x2mag * (cos(x2Phase) + (1j * sin(x2Phase)))
+        x = concatenate((x1, x2))
+        x = real(ifft(x))
+        snd[:,1] = x[0:nSamples]
+
+    return snd
+
+# def interauralPhaseShift1(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
+#     """
+#     Shift the interaural phases of a sound within a given frequency region.
+
+#     Parameters
+#     ----------
+#     sig : array of floats
+#         Input signal.
+#     f1 : float
+#         The start point of the frequency region to be
+#         phase-shifted in hertz.
+#     f2 : float
+#         The end point of the frequency region to be
+#         phase-shifted in hertz.
+#     phaseShift : float
+#         The amount of phase shift in radians. 
+#     phaseShiftType : string ('Linear', 'Step')
+#         If 'Linear' the phase changes progressively
+#         on a linear Hz scale by X to X+phaseShift from f1 to f2.
+#         If 'Stepped' 'phaseShift' is added as a constant to the
+#         phases from f1 to f2.
+#         If 'Random' the a random phase shift from 0 to 'phaseShift'
+#         is added to each frequency component from f1 to f2.
+#     channel : string (one of 'Right', 'Left' or 'Both')
+#         The channel in which to apply the phase shift.
+#     fs : float
+#         The sampling frequency of the sound.
+        
+#     Returns
+#     -------
+#     out : 2-dimensional array of floats
+
+#     Examples
+#     --------
+#     >>> noise = broadbandNoise(spectrumLevel=40, duration=180, ramp=10,
+#     ...     channel='Both', fs=48000, maxLevel=100)
+#     >>> hp = phaseShift(sig=noise, f1=500, f2=600, phaseShift=3.14,
+#             channel='Left', fs=48000) #this generates a Dichotic Pitch
+    
+#     """
+    
+#     nSamples = len(sig[:,0])
+#     fftPoints = 2**nextpow2(nSamples)
+
+#     #in Matlab 1+ to skip DC component, but python indexing starts from 0
+#     start1 =  round(f1 * fftPoints / fs)
+#     end1   =  round(f2 * fftPoints / fs)
+#     # symmetric points, for Matlab need to add 2 to skip DC component and because start1 subtracts one point more
+#     start2 = fftPoints - start1
+#     end2 = fftPoints - end1
+#     snd = zeros((nSamples, 2))
+
+#     if phaseShiftType == "Linear":
+#         phaseShiftArray = numpy.linspace(0, phaseShift, (end1+1-start1))
+#     elif phaseShiftType == "Step":
+#         phaseShiftArray = numpy.repeat(phaseShift, (end1+1-start1))
+#     elif phaseShiftType == "Random":
+#         phaseShiftType = numpy.random.uniform(0, phaseShift, (end1+1-start1))
+        
+#     if channel == "Left":
+#         x = fft(sig[:,0], fftPoints)
+#         pnts = int_(arange(start1, end1+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) + phaseShiftArray
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         pnts = int_(arange(end2, start2+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) - phaseShiftArray
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         x = real(ifft(x))
+#         snd[:,0] = x[arange(0, nSamples, 1)]
+#         snd[:,1] = sig[:,1]
+#     elif channel == "Right":
+#         x = fft(sig[:,1], fftPoints)
+#         pnts = int_(arange(start1, end1+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) + phaseShiftArray
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         pnts = int_(arange(end2, start2+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) - phaseShiftArray
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         x = real(ifft(x))
+#         snd[:,1] = x[arange(0, nSamples, 1)]
+#         snd[:,0] = sig[:,0]
+#     elif channel == "Both":
+#         x = fft(sig[:,0], fftPoints)
+#         pnts = int_(arange(start1, end1+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) + phaseShiftArray
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         pnts = int_(arange(end2, start2+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) - phaseShiftArray
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         x = real(ifft(x))
+#         snd[:,0] = x[arange(0, nSamples, 1)]
+
+#         x = fft(sig[:,1], fftPoints)
+#         pnts = int_(arange(start1, end1+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) + phaseShiftArray
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         pnts = int_(arange(end2, start2+1, 1))
+#         mag = abs(x[pnts])
+#         newPhase = angle(x[pnts]) - phaseShiftArray
+#         x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
+
+#         x = real(ifft(x))
+#         snd[:,1] = x[arange(0, nSamples, 1)]
+
+#     return snd
+
+
+def setITD(sig, f1, f2, ITD, channel, fs):
+    """
+    Set the ITD of a sound within the frequency region bounded by 'f1' and 'f2'
+
+    Parameters
+    ----------
+    sig : array of floats
+        Input signal.
+    f1 : float
+        The start point of the frequency region to be
+        phase-shifted in hertz.
+    f2 : float
+        The end point of the frequency region to be
+        phase-shifted in hertz.
+    ITD : float
+        The amount of ITD shift in microseconds
+    channel : string ('Right' or 'Left')
+        The channel in which to apply the shift.
+    fs : float
+        The sampling frequency of the sound.
+        
+    Returns
+    -------
+    out : 2-dimensional array of floats
+
+    Examples
+    --------
+    >>> noise = broadbandNoise(spectrumLevel=40, duration=180, ramp=10,
+    ...     channel='Both', fs=48000, maxLevel=100)
+    >>> hp = setITD(sig=noise, f1=500, f2=600, ITD=5,
             channel='Left', fs=48000) #this generates a Dichotic Pitch
     
     """
     
     nSamples = len(sig[:,0])
     fftPoints = 2**nextpow2(nSamples)
-
-    #in Matlab 1+ to skip DC component, but python indexing starts from 0
-    start1 =  round(f1 * fftPoints / fs)
-    end1   =  round(f2 * fftPoints / fs)
-    # symmetric points, for Matlab need to add 2 to skip DC component and because start1 subtracts one point more
-    start2 = fftPoints - start1
-    end2 = fftPoints - end1
     snd = zeros((nSamples, 2))
-
+    nUniquePnts = ceil((fftPoints+1)/2)
+    #compute the frequencies of the first half of the FFT
+    freqArray1 = arange(0, nUniquePnts, 1) * (fs / nUniquePnts)
+    #remove DC offset and nyquist for the second half of the FFT
+    freqArray2 = -arange(1, (nUniquePnts-1), 1)[::-1] * (fs / nUniquePnts) 
+    #find the indexes of the frequencies for which to set the ITD for the first half of the FFT
+    sh1 = where((freqArray1>f1) & (freqArray1<f2))
+    #same as above for the second half of the FFT
+    sh2 = where((freqArray2<-f1) & (freqArray2>-f2))
+    #compute IPSs for the first half of the FFT
+    phaseShiftArray1 = itdtoipd(ITD/1000000, freqArray1[sh1])
+    #same as above for the second half of the FFT
+    phaseShiftArray2 = itdtoipd(ITD/1000000, freqArray2[sh2])
+    #get the indexes of the first half of the FFT
+    p1Start = 0; p1End = len(freqArray1)
+    #get the indexes of the second half of the FFT
+    p2Start = len(freqArray1); p2End = fftPoints 
+        
     if channel == "Left":
         x = fft(sig[:,0], fftPoints)
-        pnts = int_(arange(start1, end1+1, 1))
-        mag = abs(x[pnts])
-        newPhase = angle(pnts) + phase_shift
-        x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
-
-        pnts = int_(arange(end2, start2+1, 1))
-        mag = abs(x[pnts])
-        newPhase = angle(pnts) - phase_shift
-        x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
-
-        x = real(ifft(x))
-        snd[:,0] = x[arange(0, nSamples, 1)]
-        snd[:,1] = sig[:,1]
     elif channel == "Right":
         x = fft(sig[:,1], fftPoints)
-        pnts = int_(arange(start1, end1+1, 1))
-        mag = abs(x[pnts])
-        newPhase = angle(pnts) + phase_shift
-        x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
-
-        pnts = int_(arange(end2, start2+1, 1))
-        mag = abs(x[pnts])
-        newPhase = angle(pnts) - phase_shift
-        x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
-
-        x = real(ifft(x))
-        snd[:,1] = x[arange(0, nSamples, 1)]
+    
+    x1 = x[p1Start:p1End] #first half of the FFT
+    x2 = x[p2Start:p2End] #second half of the FFT
+    x1mag = abs(x1); x2mag = abs(x2) 
+    x1Phase =  angle(x1); x2Phase =  angle(x2);
+    x1Phase[sh1] = phaseShiftArray1 #change phases
+    x2Phase[sh2] = phaseShiftArray2
+    x1 = x1mag * (cos(x1Phase) + (1j * sin(x1Phase))) #rebuild FFTs
+    x2 = x2mag * (cos(x2Phase) + (1j * sin(x2Phase)))
+    x = concatenate((x1, x2))
+    x = real(ifft(x)) #inverse transform to get the sound back
+    
+    if channel == "Left":
+        snd[:,0] = x[0:nSamples]
+        snd[:,1] = sig[:,1]
+    elif channel == "Right":
+        snd[:,1] = x[0:nSamples]
         snd[:,0] = sig[:,0]
-    elif channel == "Both":
-        x = fft(sig[:,0], fftPoints)
-        pnts = int_(arange(start1, end1+1, 1))
-        mag = abs(x[pnts])
-        newPhase = angle(pnts) + phase_shift
-        x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
-
-        pnts = int_(arange(end2, start2+1, 1))
-        mag = abs(x[pnts])
-        newPhase = angle(pnts) - phase_shift
-        x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
-
-        x = real(ifft(x))
-        snd[:,0] = x[arange(0, nSamples, 1)]
-
-        x = fft(sig[:,1], fftPoints)
-        pnts = int_(arange(start1, end1+1, 1))
-        mag = abs(x[pnts])
-        newPhase = angle(pnts) + phase_shift
-        x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
-
-        pnts = int_(arange(end2, start2+1, 1))
-        mag = abs(x[pnts])
-        newPhase = angle(pnts) - phase_shift
-        x[pnts] = mag * (cos(newPhase) + (1j * sin(newPhase)))
-
-        x = real(ifft(x))
-        snd[:,1] = x[arange(0, nSamples, 1)]
 
     return snd
-
 
 def pinkNoiseFromSin(compLevel, lowCmp, highCmp, spacing, duration, ramp, channel, fs, maxLevel):
     """
@@ -2662,7 +3161,7 @@ def steepNoise(frequency1, frequency2, level, duration, ramp, channel, fs, maxLe
     # 10^(SL/10) = A^2/NHz
     # A^2 = 10^(SL/10) * NHz
     # RMS = 10^(SL/20) * sqrt(NHz) where NHz is the spacing between harmonics
-    amp =  10**((level - maxLevel) / 20.) * sqrt((frequency2 - frequency1) / components)
+    amp =  10**((level - maxLevel) / 20) * sqrt((frequency2 - frequency1) / components)
     
     timeAll = arange(0, nTot) / fs
     timeRamp = arange(0, nRamp)
