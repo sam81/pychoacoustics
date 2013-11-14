@@ -1931,9 +1931,10 @@ def makeHuggins(F0, lowHarm, highHarm, spectrumLevel, bandwidth, phaseRelationsh
 
     return snd
 
-def makeHugginsPitch(F0, lowHarm, highHarm, spectrumLevel, bandwidth, bandwidthUnit, dichoticDifference,
-                     dichoticDifferenceValue, phaseRelationship, stretch, noiseType, duration, ramp, fs,
-                     maxLevel):
+def makeHugginsPitch(F0, lowHarm, highHarm, spectrumLevel, bandwidth,
+                     bandwidthUnit, dichoticDifference,
+                     dichoticDifferenceValue, phaseRelationship, stretch,
+                     noiseType, duration, ramp, fs, maxLevel):
     """
     Synthetise a complex Huggings Pitch.
 
@@ -2055,7 +2056,7 @@ def makeHugginsPitch(F0, lowHarm, highHarm, spectrumLevel, bandwidth, bandwidthU
         elif dichoticDifference == "IPD Random":
             tone = phaseShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, 'Random', "Left", fs)
         elif dichoticDifference == "ITD":
-            tone = setITD(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, "Left", fs)
+            tone = ITDShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, "Left", fs)
     
     tone = gate(ramp, tone, fs)    
     snd = tone
@@ -2574,8 +2575,8 @@ def phaseShift(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
     fftPoints = 2**nextpow2(nSamples)
     snd = zeros((nSamples, 2))
     nUniquePnts = ceil((fftPoints+1)/2)
-    freqArray1 = arange(0, nUniquePnts, 1) * (fs / nUniquePnts)
-    freqArray2 = -arange(1, (nUniquePnts-1), 1)[::-1] * (fs / nUniquePnts) #remove DC offset and nyquist
+    freqArray1 = arange(0, nUniquePnts, 1) * (fs / fftPoints)
+    freqArray2 = -arange(1, (nUniquePnts-1), 1)[::-1] * (fs / fftPoints) #remove DC offset and nyquist
     sh1 = where((freqArray1>f1) & (freqArray1<f2))
     sh2 = where((freqArray2<-f1) & (freqArray2>-f2))
     p1Start = 0; p1End = len(freqArray1)
@@ -2769,7 +2770,7 @@ def phaseShift(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
 #     return snd
 
 
-def setITD(sig, f1, f2, ITD, channel, fs):
+def ITDShift(sig, f1, f2, ITD, channel, fs):
     """
     Set the ITD of a sound within the frequency region bounded by 'f1' and 'f2'
 
@@ -2798,7 +2799,7 @@ def setITD(sig, f1, f2, ITD, channel, fs):
     --------
     >>> noise = broadbandNoise(spectrumLevel=40, duration=180, ramp=10,
     ...     channel='Both', fs=48000, maxLevel=100)
-    >>> hp = setITD(sig=noise, f1=500, f2=600, ITD=5,
+    >>> hp = ITDShift(sig=noise, f1=500, f2=600, ITD=5,
             channel='Left', fs=48000) #this generates a Dichotic Pitch
     
     """
@@ -2808,9 +2809,9 @@ def setITD(sig, f1, f2, ITD, channel, fs):
     snd = zeros((nSamples, 2))
     nUniquePnts = ceil((fftPoints+1)/2)
     #compute the frequencies of the first half of the FFT
-    freqArray1 = arange(0, nUniquePnts, 1) * (fs / nUniquePnts)
+    freqArray1 = arange(0, nUniquePnts, 1) * (fs / fftPoints)
     #remove DC offset and nyquist for the second half of the FFT
-    freqArray2 = -arange(1, (nUniquePnts-1), 1)[::-1] * (fs / nUniquePnts) 
+    freqArray2 = -arange(1, (nUniquePnts-1), 1)[::-1] * (fs / fftPoints) 
     #find the indexes of the frequencies for which to set the ITD for the first half of the FFT
     sh1 = where((freqArray1>f1) & (freqArray1<f2))
     #same as above for the second half of the FFT
@@ -2833,8 +2834,8 @@ def setITD(sig, f1, f2, ITD, channel, fs):
     x2 = x[p2Start:p2End] #second half of the FFT
     x1mag = abs(x1); x2mag = abs(x2) 
     x1Phase =  angle(x1); x2Phase =  angle(x2);
-    x1Phase[sh1] = phaseShiftArray1 #change phases
-    x2Phase[sh2] = phaseShiftArray2
+    x1Phase[sh1] = x1Phase[sh1] + phaseShiftArray1 #change phases
+    x2Phase[sh2] = x2Phase[sh2] + phaseShiftArray2
     x1 = x1mag * (cos(x1Phase) + (1j * sin(x1Phase))) #rebuild FFTs
     x2 = x2mag * (cos(x2Phase) + (1j * sin(x2Phase)))
     x = concatenate((x1, x2))
