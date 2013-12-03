@@ -49,9 +49,10 @@ def initialize_audiogram(prm):
     exp_name = QApplication.translate("","Audiogram","")
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
-    prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Adaptive",""),
-                                        QApplication.translate("","Weighted Up/Down",""),
-                                        QApplication.translate("","Constant m-Intervals n-Alternatives","")]
+    prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Transformed Up-Down",""),
+                                        QApplication.translate("","Weighted Up-Down",""),
+                                        QApplication.translate("","Constant m-Intervals n-Alternatives",""),
+                                        QApplication.translate("","PEST","")]
 
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
                              "hasIntervalLights"]

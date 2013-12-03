@@ -43,9 +43,10 @@ def initialize_freq(prm):
     exp_name = "Frequency Discrimination Demo"
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
-    prm[exp_name]["paradigmChoices"] = ["Adaptive",
-                                        "Weighted Up/Down",
-                                        "Constant m-Intervals n-Alternatives"]
+    prm[exp_name]["paradigmChoices"] = ["Transformed Up-Down",
+                                        "Weighted Up-Down",
+                                        "Constant m-Intervals n-Alternatives",
+                                        "PEST"]
 
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
                              "hasIntervalLights"]

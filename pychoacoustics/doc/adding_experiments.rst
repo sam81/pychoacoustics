@@ -183,7 +183,7 @@ used to set some additional parameters. On line 31 we create a dictionary to hol
 The ``doTrial_`` function
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``doTrial_`` function is called each time a trial is started, and is responsible for generating the sound and presenting them to the listener. The ``doTrial_`` function for our frequency discrimination experiment is shown below:
+The ``doTrial_`` function is called each time a trial is started, and is responsible for generating the sounds and presenting them to the listener. The ``doTrial_`` function for our frequency discrimination experiment is shown below:
 
 .. code-block:: python
    :linenos:

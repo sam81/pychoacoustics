@@ -624,7 +624,7 @@ class pychControlWin(QMainWindow):
         self.cw.setLayout(self.cw_sizer)
 
         #self.pw.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
-        self.setDefaultParameters(self.tr("Audiogram"), self.tr("Adaptive"), self.par)
+        self.setDefaultParameters(self.tr("Audiogram"), self.tr("Transformed Up-Down"), self.par)
         self.cw_scrollarea = QScrollArea()
         self.cw_scrollarea.setWidget(self.cw)
         self.splitter.addWidget(self.cw_scrollarea)
@@ -913,7 +913,7 @@ class pychControlWin(QMainWindow):
          
         #------------------------------------
         #ADAPTIVE PARADIGM WIDGETS
-        if self.currParadigm == self.tr("Adaptive"):
+        if self.currParadigm == self.tr("Transformed Up-Down"):
             n = 0
             self.adaptiveTypeChooserLabel = QLabel(self.tr("Procedure:"), self)
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
@@ -1000,7 +1000,7 @@ class pychControlWin(QMainWindow):
 
         #------------------------------------
         #WEIGHTED UP/DOWN PARADIGM WIDGETS
-        if self.currParadigm == self.tr("Weighted Up/Down"):
+        if self.currParadigm == self.tr("Weighted Up-Down"):
             n = 0
             self.adaptiveTypeChooserLabel = QLabel(self.tr("Procedure:"), self)
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
@@ -1074,7 +1074,7 @@ class pychControlWin(QMainWindow):
 
         #------------------------------------
         #ADAPTIVE INTERLEAVED PARADIGM WIDGETS
-        if self.currParadigm == self.tr("Adaptive Interleaved"):
+        if self.currParadigm == self.tr("Transformed Up-Down Interleaved"):
             n = 0
             self.adaptiveTypeChooserLabel = QLabel(self.tr("Procedure:"), self)
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
@@ -1268,7 +1268,7 @@ class pychControlWin(QMainWindow):
 
         #--------------------------
         #WEIGHTED UP/DOWN INTERLEAVED PARADIGM WIDGETS
-        if self.currParadigm == self.tr("Weighted Up/Down Interleaved"):
+        if self.currParadigm == self.tr("Weighted Up-Down Interleaved"):
             n = 0
             self.adaptiveTypeChooserLabel = QLabel(self.tr("Procedure:"), self)
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
@@ -1444,7 +1444,7 @@ class pychControlWin(QMainWindow):
 
         #------------------------
         #ONE CONSTANT PARADIGM WIDGETS
-        if self.currParadigm in [self.tr("Constant 1-Interval 2-Alternatives"), self.tr("Constant 1-Pair Same/Different"), self.tr("Constant m-Intervals n-Alternatives"), self.tr("Same Different 4")]:
+        if self.currParadigm in [self.tr("Constant 1-Interval 2-Alternatives"), self.tr("Constant 1-Pair Same/Different"), self.tr("Constant m-Intervals n-Alternatives")]:
             n = 0
             self.nTrialsLabel = QLabel(self.tr("No. Trials"), self)
             self.paradigm_widg_sizer.addWidget(self.nTrialsLabel, n, 1)
@@ -1477,7 +1477,7 @@ class pychControlWin(QMainWindow):
       
         #------------------------
         #MULTIPLE CONSTANTS PARADIGM WIDGETS
-        if self.currParadigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), self.tr("Multiple Constants m-Intervals n-Alternatives")]:
+        if self.currParadigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), self.tr("Multiple Constants m-Intervals n-Alternatives"), self.tr("Odd One Out")]:
             n = 0
             self.nTrialsLabel = QLabel(self.tr("No. Trials"), self)
             self.paradigm_widg_sizer.addWidget(self.nTrialsLabel, n, 1)
@@ -1530,6 +1530,91 @@ class pychControlWin(QMainWindow):
             self.paradigmFieldLabelList = [self.nTrialsLabel, self.nPracticeTrialsLabel]
             self.paradigmFieldCheckBoxList = [self.nTrialsCheckBox, self.nPracticeTrialsCheckBox]
 
+        #------------------------------------
+        #PEST PARADIGM WIDGETS
+        if self.currParadigm == self.tr("PEST"):
+            n = 0
+            self.adaptiveTypeChooserLabel = QLabel(self.tr("Procedure:"), self)
+            self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
+            self.adaptiveTypeChooser = QComboBox()
+            self.adaptiveTypeChooser.addItems(self.prm["adaptiveTypeChoices"])
+            self.adaptiveTypeChooser.setCurrentIndex(0)
+            self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooser, n, 2)
+            self.adaptiveTypeCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.adaptiveTypeCheckBox, n, 0)
+
+            n = n+1
+            self.initialTrackDirChooserLabel = QLabel(self.tr("Initial Track Direction:"), self)
+            self.paradigm_widg_sizer.addWidget(self.initialTrackDirChooserLabel, n, 1)
+            self.initialTrackDirChooser = QComboBox()
+            self.initialTrackDirChooser.addItems([self.tr("Up"), self.tr("Down")])
+            self.initialTrackDirChooser.setCurrentIndex(1)
+            self.paradigm_widg_sizer.addWidget(self.initialTrackDirChooser, n, 2)
+            self.initialTrackDirCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.initialTrackDirCheckBox, n, 0)
+
+            n = n+1
+            self.pcTrackedLabel = QLabel(self.tr("Percent Correct Tracked"), self)
+            self.paradigm_widg_sizer.addWidget(self.pcTrackedLabel, n, 1)
+            self.pcTrackedTF = QLineEdit()
+            self.pcTrackedTF.setText('75')
+            self.pcTrackedTF.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.pcTrackedTF, n, 2)
+            self.pcTrackedCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.pcTrackedCheckBox, n, 0)
+
+            #n = n+1
+            self.initialStepSizeLabel = QLabel(self.tr("Initial Step Size"), self)
+            self.paradigm_widg_sizer.addWidget(self.initialStepSizeLabel, n, 4)
+            self.initialStepSizeTF = QLineEdit()
+            self.initialStepSizeTF.setText('5')
+            self.initialStepSizeTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.initialStepSizeTF, n, 5)
+            self.initialStepSizeCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.initialStepSizeCheckBox, n, 3)
+
+            n = n+1
+            self.minStepSizeLabel = QLabel(self.tr("Minimum Step Size"), self)
+            self.paradigm_widg_sizer.addWidget(self.minStepSizeLabel, n, 1)
+            self.minStepSizeTF = QLineEdit()
+            self.minStepSizeTF.setText('1')
+            self.minStepSizeTF.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.minStepSizeTF, n, 2)
+            self.minStepSizeCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.minStepSizeCheckBox, n, 0)
+
+            #n = n+1
+            self.maxStepSizeLabel = QLabel(self.tr("Maximum Step Size"), self)
+            self.paradigm_widg_sizer.addWidget(self.maxStepSizeLabel, n, 4)
+            self.maxStepSizeTF = QLineEdit()
+            self.maxStepSizeTF.setText('10')
+            self.maxStepSizeTF.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.maxStepSizeTF, n, 5)
+            self.maxStepSizeCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.maxStepSizeCheckBox, n, 3)
+
+            n = n+1
+            self.WLabel = QLabel(self.tr("W"), self)
+            self.paradigm_widg_sizer.addWidget(self.WLabel, n, 1)
+            self.WTF = QLineEdit()
+            self.WTF.setText('1.5')
+            self.WTF.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.WTF, n, 2)
+            self.WCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.WCheckBox, n, 0)
+
+            self.paradigmChooserList = [self.adaptiveTypeChooser, self.initialTrackDirChooser]
+            self.paradigmChooserLabelList = [self.adaptiveTypeChooserLabel, self.initialTrackDirChooserLabel]
+            self.paradigmChooserOptionsList = [self.prm["adaptiveTypeChoices"], [self.tr("Up"), self.tr("Down")]]
+            self.paradigmChooserCheckBoxList = [self.adaptiveTypeCheckBox, self.initialTrackDirCheckBox]
+
+            self.paradigmFieldList = [self.initialStepSizeTF, self.minStepSizeTF, self.maxStepSizeTF,
+                                      self.WTF, self.pcTrackedTF]
+            self.paradigmFieldLabelList = [self.initialStepSizeLabel, self.minStepSizeLabel,
+                                           self.maxStepSizeLabel, self.WLabel, self.pcTrackedLabel]
+            self.paradigmFieldCheckBoxList = [self.initialStepSizeCheckBox, self.minStepSizeCheckBox,
+                                              self.maxStepSizeCheckBox, self.WCheckBox, self.pcTrackedCheckBox]
+
             
     def onExperimentChange(self, experimentSelected):
         for i in range(self.paradigmChooser.count()):
@@ -1576,21 +1661,6 @@ class pychControlWin(QMainWindow):
             self.warningIntervalISITF.hide()
         self.responseBox.setupLights()
 
-    ## def onWarningIntervalChange(self):
-    ##     if self.warningInterval.isChecked():
-    ##         self.prm["warningInterval"] = True
-    ##         self.warningIntervalDurLabel.show()
-    ##         self.warningIntervalDurTF.show()
-    ##         self.warningIntervalISILabel.show()
-    ##         self.warningIntervalISITF.show()
-    ##     else:
-    ##         self.prm["warningInterval"] = False
-    ##         self.warningIntervalDurLabel.hide()
-    ##         self.warningIntervalDurTF.hide()
-    ##         self.warningIntervalISILabel.hide()
-    ##         self.warningIntervalISITF.hide()
-    ##     self.responseBox.setupLights()
-
     def onPreTrialIntervalChange(self):
         if self.preTrialIntervalChooser.currentText() == self.tr("Yes"):
             self.prm["preTrialInterval"] = True
@@ -1604,6 +1674,7 @@ class pychControlWin(QMainWindow):
             self.preTrialIntervalISICheckBox.hide()
         self.onChooserChange(None)
         self.responseBox.setupLights()
+        
     def onPrecursorIntervalChange(self):
         if self.precursorIntervalChooser.currentText() == self.tr("Yes"):
             self.prm["precursorInterval"] = True
@@ -1617,6 +1688,7 @@ class pychControlWin(QMainWindow):
             self.precursorIntervalISICheckBox.hide()
         self.onChooserChange(None)
         self.responseBox.setupLights()
+        
     def onPostcursorIntervalChange(self):
         if self.postcursorIntervalChooser.currentText() == self.tr("Yes"):
             self.prm["postcursorInterval"] = True
@@ -1630,10 +1702,13 @@ class pychControlWin(QMainWindow):
             self.postcursorIntervalISICheckBox.hide()
         self.onChooserChange(None)
         self.responseBox.setupLights()
+        
     def onListenerChange(self):
         self.prm['listener'] = self.listenerTF.text()
+        
     def onSessionLabelChange(self):
         self.prm['sessionLabel'] = self.sessionLabelTF.text()
+        
     def onResponseModeChange(self, selectedMode):
         if selectedMode != self.tr("Automatic"):
             self.autoPCorrLabel.hide()
@@ -1652,13 +1727,12 @@ class pychControlWin(QMainWindow):
             else:
                 pass
                 
-            
     def setDefaultParameters(self, experiment, paradigm, par):
         self.prevExp = self.currExp
         self.currExp = experiment
         self.removePrmWidgets()
         
-        if paradigm in [self.tr("Adaptive Interleaved"), self.tr("Weighted Up/Down Interleaved")]:
+        if paradigm in [self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved")]:
             if self.prm[self.currExp]['hasNTracksChooser'] == False:
                 self.par['nDifferences'] = self.prm[self.currExp]['defaultNTracks']
             else:
@@ -1668,7 +1742,7 @@ class pychControlWin(QMainWindow):
                     else:
                         self.par['nDifferences'] = 2
 
-        if paradigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), self.tr("Multiple Constants m-Intervals n-Alternatives")]:
+        if paradigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), self.tr("Multiple Constants m-Intervals n-Alternatives"), self.tr("Odd One Out")]:
             if self.prm[self.currExp]['hasNDifferencesChooser'] == False:
                 self.par['nDifferences'] = self.prm[self.currExp]['defaultNDifferences']
             else:
@@ -1690,7 +1764,6 @@ class pychControlWin(QMainWindow):
             pass
         methodToCall2 = getattr(methodToCall1, 'select_default_parameters_'+ execString)
         tmp = methodToCall2(self, self.par)
-        
         
         self.prm['field'] = tmp['field']
         self.prm['fieldLabel'] = tmp['fieldLabel']
@@ -1758,7 +1831,7 @@ class pychControlWin(QMainWindow):
         self.preTrialSilenceTF.setText(self.prm["pref"]["general"]["preTrialSilence"])
 
         self.setParadigmWidgets(self.currParadigm, self.prevParadigm)
-        if self.currParadigm == self.tr("Adaptive"):
+        if self.currParadigm == self.tr("Transformed Up-Down"):
             self.adaptiveTypeChooser.setCurrentIndex(self.prm["adaptiveTypeChoices"].index(self.prm[self.currExp]['defaultAdaptiveType']))
 
         self.prm['nIntervals'] = self.prm[self.currExp]['defaultNIntervals']  #tmp['nIntervals']
@@ -1789,6 +1862,7 @@ class pychControlWin(QMainWindow):
                 self.fileChooserButton[f].setParent(None)
                 self.pw_prm_sizer_0.removeWidget(self.fileChooserCheckBox[f])
                 self.fileChooserCheckBox[f].setParent(None)
+                
     def updateParametersWin(self):
         #if the next block is already stored show it, otherwise copy the values from the previous block
         currBlock = 'b' + str(self.prm["currentBlock"])
@@ -1800,6 +1874,7 @@ class pychControlWin(QMainWindow):
             block = currBlock
         self.prm["tmpBlockPosition"] = self.prm[currBlock]["blockPosition"]
         self.setNewBlock(block)
+        
     def setNewBlock(self, block):
         self.removePrmWidgets()
         self.conditionLabelTF.setText(self.prm[block]['conditionLabel'])
@@ -1812,12 +1887,11 @@ class pychControlWin(QMainWindow):
         self.paradigmChooser.addItems(self.prm[currExp]['paradigmChoices'])
         self.paradigmChooser.setCurrentIndex(self.prm[currExp]["paradigmChoices"].index(paradigm))
 
-        if paradigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), self.tr("Multiple Constants m-Intervals n-Alternatives")]:
+        if paradigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), self.tr("Multiple Constants m-Intervals n-Alternatives"), self.tr("Odd One Out")]:
             self.par['nDifferences'] = int(self.prm[block]['paradigmChooser'][self.prm[block]['paradigmChooserLabel'].index(self.tr("No. Differences:"))])
-        if paradigm in [self.tr("Adaptive Interleaved"), self.tr("Weighted Up/Down Interleaved")]:
+        if paradigm in [self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved")]:
             self.par['nDifferences'] = int(self.prm[block]['paradigmChooser'][self.prm[block]['paradigmChooserLabel'].index(self.tr("No. Tracks:"))])
       
-        
         self.setDefaultParameters(currExp, self.tr(self.prm[block]['paradigm']), self.par)
         for f in range(len(self.field)):
             self.field[f].setText(self.currLocale.toString(self.prm[block]['field'][f], precision=self.prm["pref"]["general"]["precision"]))
@@ -1838,6 +1912,7 @@ class pychControlWin(QMainWindow):
 
         self.preTrialSilenceTF.setText(self.currLocale.toString(self.prm[block]['preTrialSilence']))
         self.warningIntervalChooser.setCurrentIndex(self.warningIntervalChooser.findText(self.prm[block]['warningInterval']))
+        self.onWarningIntervalChange()
         self.warningIntervalDurTF.setText(self.currLocale.toString(self.prm[block]['warningIntervalDur']))
         self.warningIntervalISITF.setText(self.currLocale.toString(self.prm[block]['warningIntervalISI']))
         self.intervalLightsChooser.setCurrentIndex(self.intervalLightsChooser.findText(self.prm[block]['intervalLights']))
@@ -2519,8 +2594,6 @@ class pychControlWin(QMainWindow):
         #self.prm['allBlocks']['listener'] = self.listenerTF.text()
         #self.prm['allBlocks']['sessionLabel'] = self.sessionLabelTF.text()
 
-
-        
         self.moveToBlockPosition(1)
         self.updateParametersWin()
         #for the moment here, but maybe should have a function for updating all possible dynamic default control widgets

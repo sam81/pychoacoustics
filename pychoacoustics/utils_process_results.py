@@ -101,7 +101,7 @@ def processResultsAdaptive(fName, fout=None, last=None, block_range=None):
                 statsLine = statsLine.split(',')[0]
                 thisMean = statsLine.split('=')[1]
 
-                if statsLine[0:9] == 'geometric':
+                if statsLine[0:9] == 'geometric' or statsLine[0:9] == 'Geometric':
                     avType = 'geometric'
                 else:
                     avType = 'arithmetic'

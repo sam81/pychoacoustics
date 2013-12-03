@@ -850,13 +850,16 @@ def dichoticNoiseFromSin(F0, lowHarm, highHarm, compLevel, narrowBandCompLevel,
 
     Examples
     --------
-    >>> s1 = dichoticNoiseFromSin(F0=250, lowHarm=1, highHarm=3, compLevel=30,
-        lowFreq=40, highFreq=1200, compSpacing=10, sigBandwidth=100,
-        phaseRelationship='NoSpi', dichoticDifference='IPD', itd=0,
-        ipd=3.14, narrowBandCompLevel=0, duration=280, ramp=10,
-        fs=48000, maxLevel=100)
+    >>> s1 = dichoticNoiseFromSin(F0=300, lowHarm=1, highHarm=3,
+        compLevel=30, narrowBandCompLevel=30,
+        lowFreq=40, highFreq=2000, compSpacing=10,
+        sigBandwidth=100, distanceUnit='Cent',
+        phaseRelationship='NoSpi', dichoticDifference='IPD Stepped',
+        dichoticDifferenceValue=pi, duration=380, ramp=10,
+        fs=48000, maxLevel=101)
 
     """
+    
     sDuration = duration/1000 #convert from ms to sec
     sRamp = ramp/1000
 
@@ -1588,6 +1591,7 @@ def gate(ramps, sig, fs):
     >>> gate(ramps=10, sig=noise, fs=48000)
 
     """
+    
     ramps = ramps / 1000.
     nRamp = int(round(ramps * fs))
     timeRamp = arange(0., nRamp)
@@ -2219,11 +2223,13 @@ def makeHugginsPitch(F0, lowHarm, highHarm, spectrumLevel, bandwidth,
 
     Examples
     --------
-    >>> hp = makeHuggins(F0=200, lowHarm=1, highHarm=5, spectrumLevel=40,
-            bandwidth=65, phaseRelationship='NoSpi', noiseType='White',
-            duration=280, ramp=10, fs=48000, maxLevel=100)
+    >>> hp = makeHugginsPitch(F0=300, lowHarm=1, highHarm=3, spectrumLevel=45,
+        bandwidth=100, bandwidthUnit='Hz', dichoticDifference='IPD Stepped',
+        dichoticDifferenceValue=pi, phaseRelationship='NoSpi', stretch=0,
+        noiseType='White', duration=380, ramp=10, fs=48000, maxLevel=101)
     
     """
+
     stretchHz = (F0*stretch)/100
     sDuration = duration / 1000 #convert from ms to sec
     sRamp = ramp / 1000
@@ -2679,7 +2685,6 @@ def pinkNoiseFromSin(compLevel, lowCmp, highCmp, spacing, duration, ramp, channe
         fs=48000, maxLevel=100)
     
     """
-
     sDuration = duration / 1000 #convert from ms to sec
     sRamp = ramp / 1000
 
@@ -2759,7 +2764,6 @@ def pinkNoiseFromSin2(compLevel, lowCmp, highCmp, spacing, duration, ramp, chann
         fs=48000, maxLevel=100)
     
     """
-
     sDuration = duration / 1000 #convert from ms to sec
     sRamp = ramp / 1000
 

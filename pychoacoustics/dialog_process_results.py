@@ -68,9 +68,9 @@ class processResultsDialog(QDialog):
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         self.prm = self.parent().prm
 
-        if paradigm in [self.tr("Adaptive"), self.tr("Weighted Up/Down")]:
+        if paradigm in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"), self.tr("PEST")]:
             self.paradigm = "adaptive"
-        elif paradigm in [self.tr("Adaptive Interleaved"), self.tr("Weighted Up/Down Interleaved")]:
+        elif paradigm in [self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved")]:
             self.paradigm = "adaptive_interleaved"
         elif paradigm == self.tr("Constant 1-Interval 2-Alternatives"):
             self.paradigm = "constant1Interval2Alternatives" 
@@ -82,6 +82,9 @@ class processResultsDialog(QDialog):
             self.paradigm = "multipleConstantsMIntervalsNAlternatives"
         elif paradigm == self.tr("Constant 1-Pair Same/Different"):
             self.paradigm = "constant1PairSD"
+        else:
+            QMessageBox.warning(self, self.tr("Error"), self.tr("File type or paradigm not supported."))
+            return
         
         self.soundPrefWidget = QWidget()
         self.vBoxSizer = QVBoxLayout()

@@ -50,9 +50,9 @@ def initialize_audiogram_mf(prm):
     exp_name = QApplication.translate("","Audiogram Multiple Frequencies","")
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
-    prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Adaptive Interleaved",""),
-                                                                                                      QApplication.translate("","Weighted Up/Down",""),
-                                                                                                      QApplication.translate("","Multiple Constants m-Intervals n-Alternatives","")]
+    prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Transformed Up-Down Interleaved",""),
+                                        QApplication.translate("","Weighted Up-Down Interleaved",""),
+                                        QApplication.translate("","Multiple Constants m-Intervals n-Alternatives","")]
                                                                                                    
                                                                                                    
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",

@@ -227,14 +227,18 @@ class audioManager():
             if writewav == False:
                 os.close(hnl)
                 os.remove(fname)
+
+
     def loadWavFile(self, fName, desiredLevel, maxLevel, channel):
         wavmanager = self.prm["pref"]["sound"]["wavmanager"]
         if wavmanager == "scipy":
             fs, snd = self.wavfile.read(fName)
             if snd.dtype == "int16":
                 snd = snd / (2.**15)
+                nbits = 16
             elif snd.dtype == "int32":
                 snd = snd / (2.**31)
+                nbits = 32
         rms1 = sqrt(mean(snd[:,0]*snd[:,0]))
         rms2 = sqrt(mean(snd[:,1]*snd[:,1]))
         if rms1 > 0:
@@ -255,7 +259,7 @@ class audioManager():
             snd[:, 1] = zeros(len(snd[:,1]))
         elif channel == "Original":
             pass
-        return snd, fs
+        return snd, fs, nbits
 
     def read_wav(self, fName):
         wavmanager = self.prm["pref"]["sound"]["wavmanager"]
