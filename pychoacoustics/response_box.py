@@ -324,7 +324,6 @@ class responseBox(QMainWindow):
                 self.responseButton[i].clicked.connect(self.sortResponseButton)
                 self.responseButton[i].setFocusPolicy(Qt.NoFocus)
 
-
         self.showHideIntervalLights(self.prm['intervalLights'])
 
     def showHideIntervalLights(self, status):

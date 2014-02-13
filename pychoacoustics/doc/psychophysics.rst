@@ -9,10 +9,10 @@ Psychophysics
 Available Paradigms
 -------------------
 
-Adaptive
+Transformed Up-Down
 ^^^^^^^^
 
-This paradigm implements the “up/down” adaptive procedures described by
+This paradigm implements the transformed up-down adaptive procedures described by
 [Levitt1971]_. It can be used with :math:`n`-intervals, :math:`n`-alternatives forced
 choice tasks, in which :math:`n-1` “standard” stimuli and a single
 “comparison” stimulus are presented, each in a different temporal
@@ -25,21 +25,21 @@ Tasks that present a reference stimulus in the first interval, and
 therefore have :math:`n` intervals and :math:`n-1` alternatives are also
 supported (see [GrimaultEtAl2002]_ for an example of such tasks)
 
-Adaptive Interleaved
+Transformed Up-Down Interleaved
 ^^^^^^^^^^^^^^^^^^^^
 
-This paradigm implements the interleaved adaptive procedure described by [Jesteadt1980]_ .
+This paradigm implements the interleaved transformed up-down procedure described by [Jesteadt1980]_ .
 
-Weighted Up/Down
+Weighted Up-Down
 ^^^^^^^^^^^^^^^^
 
-This paradigm implements the weighted up/down adaptive procedure
+This paradigm implements the weighted up-down adaptive procedure
 described by [Kaernbach1991]_.
 
-Weighted Up/Down Interleaved
+Weighted Up-Down Interleaved
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This paradigm combines the interleaved adaptive procedure described by [Jesteadt1980]_ with the weighted up/down method described by [Kaernbach1991]_.
+This paradigm combines the interleaved procedure described by [Jesteadt1980]_ with the weighted up-down method described by [Kaernbach1991]_.
 
 Constant m-Intervals n-Alternatives
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

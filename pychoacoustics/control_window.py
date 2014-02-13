@@ -274,7 +274,7 @@ class pychControlWin(QMainWindow):
         self.experimentLabel =  QLabel(self.tr("Experiment:"), self)
         self.def_widg_sizer.addWidget(self.experimentLabel, n, 0)
         self.experimentChooser = QComboBox()
-        self.experimentChooser.addItems(self.prm['experimentsChoices'])
+        self.experimentChooser.addItems(self.prm["experimentsChoices"])
         self.def_widg_sizer.addWidget(self.experimentChooser, n, 1)
         self.experimentChooser.activated[str].connect(self.onExperimentChange)
         #PARADIGM
@@ -414,7 +414,7 @@ class pychControlWin(QMainWindow):
         self.responseModeChooser.activated[str].connect(self.onResponseModeChange)
         self.def_widg_sizer2.addWidget(self.responseModeChooser, 2, 1)
         
-
+        #AUTO Percent Correct
         self.autoPCorrLabel = QLabel(self.tr("Percent Correct (%):"), self)
         self.def_widg_sizer2.addWidget(self.autoPCorrLabel, 2, 2)
         self.autoPCorrTF = QLineEdit()

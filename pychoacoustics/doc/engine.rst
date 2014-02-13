@@ -162,9 +162,7 @@ experimental session. If processing the result files manually, choose
 “Process Results” from the “File” menu, to convert a block summary file
 into a “\_res” session summary file. Choose “Process Results Table” to
 convert a block summary table file into a “\_table\_processed” session
-summary file. In both cases you will need to use the appropriate
-subfunction for the paradigm (e.g., adaptive, constant 1-interval
-2-alternatives, etc…) that was used in the experiment. You can choose to
+summary file. You can choose to
 process all blocks present in the file (default action), the last
 :math:`n` blocks (of each condition), or a range of blocks (for each
 condition). Once you have selected the file to process and specified the

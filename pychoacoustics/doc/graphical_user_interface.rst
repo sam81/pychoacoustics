@@ -97,7 +97,7 @@ General Widgets (left panel)
 
 -  **Experiment** Selects the experiment for the current block.
 
--  **Paradigm** Selects the paradigm (e.g. adaptive, constant, etc…) for
+-  **Paradigm** Selects the paradigm (e.g. transformed up-down, constant, etc…) for
    the current block. The list of paradigms available depends on the
    experiment that is selected.
 
@@ -244,7 +244,7 @@ General Widgets (right panel)
 Paradigm Widgets
 ~~~~~~~~~~~~~~~~
 
-Adaptive Paradigm Widgets
+Transformed Up-Down Paradigm Widgets
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 -  **Procedure** If “Arithmetic” the quantity defined by the step size
@@ -284,7 +284,7 @@ Adaptive Paradigm Widgets
 -  **Step Size 2** Set the step size to be used after the number of
    initial turnpoints has been reached.
 
-Weighted Up/Down Paradigm Widgets
+Weighted Up-Down Paradigm Widgets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 -  **Procedure** If “Arithmetic” the quantity defined by the step size
@@ -323,7 +323,7 @@ Weighted Up/Down Paradigm Widgets
    automatically calculated to satisfy the “Percent Correct Tracked”
    criterion.
 
-Adaptive Interleaved Paradigm Widgets
+Transformed Up-Down Interleaved Paradigm Widgets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 -  **Procedure** If “Arithmetic” the quantity defined by the step size
@@ -386,7 +386,7 @@ Adaptive Interleaved Paradigm Widgets
 -  **Step Size 2 Track X** Set the step size to be used after the number
    of initial turnpoints has been reached for track number :math:`X`.
 
-Weighted Up/Down Interleaved Paradigm Widgets
+Weighted Up-Down Interleaved Paradigm Widgets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 -  **Procedure** If “Arithmetic” the quantity defined by the step size
