@@ -47,7 +47,7 @@ The available choosers are:
                                                                             
 
 def initialize_audiogram_mf(prm):
-    exp_name = QApplication.translate("","Audiogram Multiple Frequencies","")
+    exp_name = QApplication.translate("","Demo Audiogram Multiple Frequencies","")
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
     prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Transformed Up-Down Interleaved",""),

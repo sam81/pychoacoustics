@@ -40,7 +40,7 @@ elif pyqtversion == 5:
 
                                                                               
 def initialize_freq(prm):
-    exp_name = "Frequency Discrimination Demo"
+    exp_name = "Demo Frequency Discrimination"
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
     prm[exp_name]["paradigmChoices"] = ["Transformed Up-Down",
