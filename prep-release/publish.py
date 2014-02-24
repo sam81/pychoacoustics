@@ -25,7 +25,7 @@ for i in range(len(pack_prefixes)):
 for i in range(2):
     shutil.copyfile("../dist/"+pack_names[i], "../../../../dc/devel/xoom-website/xoom/pychoacoustics/pych_builds/"+pack_names[i])
 
-shutil.copyfile("../../pkg_build/debian_7.2_x86_64/"+pack_names[2], "../../../../dc/devel/xoom-website/xoom/pychoacoustics/pych_builds/"+pack_names[2])
+shutil.copyfile("../../pkg_build/debian_7.4_x86_64/"+pack_names[2], "../../../../dc/devel/xoom-website/xoom/pychoacoustics/pych_builds/"+pack_names[2])
 
 
 #doc
