@@ -2793,8 +2793,9 @@ class responseBox(QMainWindow):
         self.playThread.playThreadedSound(msgSnd, fs, self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['playCommand'], False, 'foo.wav')
 
     def emu0204Quirk(self):
-        sil = makeSilence(500, self.prm['sampRate'])
-        self.playThread.playThreadedSound(sil, self.prm['sampRate'], 32, 'pyaudio', False, 'foo.wav')
+        sil = makeSilence(200, self.prm['sampRate'])
+        #sil = pureTone(1000, 0, 60, 480, 10, "Both", self.prm['sampRate'], 100)
+        self.audioManager.playSound(sil, self.prm['sampRate'], 32, 'pyaudio', False, 'foo.wav')
           
 class responseLight(QWidget):
     def __init__(self, parent):
