@@ -106,6 +106,8 @@ class responseBox(QMainWindow):
         self.setWindowTitle(self.tr('Response Box'))
         self.setStyleSheet("QPushButton[responseBoxButton='true'] {font-weight:bold; font-size: %spx;} " % self.prm['pref']['interface']['responseButtonSize'])
         self.menubar = self.menuBar()
+        if self.prm["pref"]["sound"]["emu0204quirk"] == True:
+            self.emu0204Quirk()
         #FILE MENU
         self.fileMenu = self.menubar.addMenu(self.tr('-'))
        
@@ -2790,6 +2792,9 @@ class responseBox(QMainWindow):
         msgSnd, fs = self.audioManager.loadWavFile(self.prm['pref']['general']['endMessageFiles'][idChosen], self.prm['pref']['general']['endMessageLevels'][idChosen], self.prm['allBlocks']['maxLevel'], 'Both')
         self.playThread.playThreadedSound(msgSnd, fs, self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['playCommand'], False, 'foo.wav')
 
+    def emu0204Quirk(self):
+        sil = makeSilence(500, self.prm['sampRate'])
+        self.playThread.playThreadedSound(sil, self.prm['sampRate'], 32, 'pyaudio', False, 'foo.wav')
           
 class responseLight(QWidget):
     def __init__(self, parent):
