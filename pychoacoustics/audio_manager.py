@@ -81,7 +81,7 @@ class audioManager():
             try:
                 self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=self.prm["pref"]["sound"]["alsaaudioDevice"])
             except:
-                self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=alsaaudio.cards()[0])
+                self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=self.listAlsaaudioPlaybackCards()[0])
         elif self.playCmd == "pyaudio":
             self.paManager = pyaudio.PyAudio()
             
@@ -287,6 +287,16 @@ class audioManager():
 
         if nbits != 24:
            self.wavfile.write(fname, fs, data)
+
+    def listAlsaaudioPlaybackCards(self):
+        playbackCardList = []
+        for card in alsaaudio.cards():
+            try:
+                alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=card)
+                playbackCardList.append(card)
+            except:
+                pass
+        return playbackCardList
     
 class threadedAudioPlayer(QThread):
     def __init__(self, parent):
