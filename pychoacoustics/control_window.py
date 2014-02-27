@@ -72,7 +72,7 @@ class pychControlWin(QMainWindow):
         QMainWindow.__init__(self, parent)
         self.prm = prm
         self.audioManager = audioManager(self)
-        self.audioManager.initializeAudio()
+        #self.audioManager.initializeAudio()
         #
         self.prm['version'] = __version__
         self.prm['builddate'] = pychoacoustics_builddate
@@ -304,6 +304,7 @@ class pychControlWin(QMainWindow):
         self.sampRateTF.setValidator(QIntValidator(self))
         self.def_widg_sizer.addWidget(self.sampRateTF, n, 1)
         self.prm['sampRate'] =  self.currLocale.toInt(self.sampRateTF.text())[0]
+        self.sampRateTF.editingFinished.connect(self.audioManager.initializeAudio)
         #BITS
         n = n+1
         self.nBitsLabel = QLabel(self.tr("Bits:"))
@@ -312,6 +313,7 @@ class pychControlWin(QMainWindow):
         self.nBitsChooser.addItems(self.prm["nBitsChoices"])
         self.nBitsChooser.setCurrentIndex(self.prm["nBitsChoices"].index(self.prm["pref"]["sound"]["defaultNBits"])) 
         self.def_widg_sizer.addWidget(self.nBitsChooser, n, 1)
+        self.nBitsChooser.activated[str].connect(self.audioManager.initializeAudio)
         #self.def_widg_sizer.addItem(QSpacerItem(10,10,QSizePolicy.Expanding), 0, 2)
         #self.def_widg_sizer.addItem(QSpacerItem(10,10,QSizePolicy.Expanding), 0, 3)
         #REPETITIONS
@@ -2602,7 +2604,7 @@ class pychControlWin(QMainWindow):
         self.autoSetGaugeValue()
         self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
         self.saveParametersToFile(self.prm["tmpParametersFile"])
-
+        self.audioManager.initializeAudio()
       
     def onClickSaveParametersButton(self):
         if self.prm["storedBlocks"] < 1:
@@ -2933,7 +2935,6 @@ class pychControlWin(QMainWindow):
         if dialog.exec_():
             dialog.permanentApply()
             self.audioManager.initializeAudio()
-            
     def onEditPhones(self):
         currIdx = self.phonesChooser.currentIndex()
         dialog = phonesDialog(self)

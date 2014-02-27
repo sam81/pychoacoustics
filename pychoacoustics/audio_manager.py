@@ -56,39 +56,45 @@ def decimalToBinary(x, n):
 
 class audioManager():
     def __init__(self, parent):
+        self.parent = parent
         self.prm = parent.prm
-        try:
-            lib = ctypes.cdll.LoadLibrary(self.prm["paSndoutLibPath"])
-            pactypesAvailable = True
-        except:
-            pactypesAvailable = False
-        if pactypesAvailable == True:
-            self.startPA = lib.startPA
-            self.stopPA = lib.stopPA
-            self.playout = lib.playout
-            self.getNDevs = lib.getNDevs
-            self.getDeviceHostApi = lib.getDeviceHostApi
-            self.getDeviceHostApi.restype = ctypes.c_char_p
-            
-            self.getDeviceName = lib.getDeviceName
-            self.getDeviceName.restype = ctypes.c_char_p
-
-            self.getDeviceMaxInputChannels = lib.getDeviceMaxInputChannels
-            self.getDeviceMaxOutputChannels = lib.getDeviceMaxOutputChannels
+      
         if self.prm["pref"]["sound"]["wavmanager"] == "scipy":
             from scipy.io import wavfile
             self.wavfile = wavfile
+        self.initializeAudio()
             
-    def playSound(self, snd, fs, nbits, playCmd, writewav, fname):
+    def initializeAudio(self):
+        self.playCmd = self.prm['pref']['sound']['playCommand']
+        
+        try: #if alsaaudio device was open close it
+            self.device.close()
+        except:
+            pass
+
+        try:#if paManager was open close it
+            self.paManager.terminate() #actually closing the stream introduces offset clicks!
+        except:
+            pass
+
+        if self.playCmd == "alsaaudio":
+            try:
+                self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=self.prm["pref"]["sound"]["alsaaudioDevice"])
+            except:
+                self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=alsaaudio.cards()[0])
+        elif self.playCmd == "pyaudio":
+            self.paManager = pyaudio.PyAudio()
+            
+    def playSound(self, snd, fs, nbits, writewav, fname):
         wavmanager = self.prm["pref"]["sound"]["wavmanager"]
-        playCmd = str(playCmd)
+        playCmd = str(self.playCmd)
         enc = "pcm"+ str(nbits)
         if writewav == True:
             fname = fname
         else:
             (hnl, fname) = mkstemp("tmp_snd.wav")
 
-        if playCmd in ['alsaaudio', 'pyaudio', 'pactypes']:#write wav before appending zeros in this case
+        if playCmd in ['alsaaudio', 'pyaudio']:#write wav before appending zeros in this case
             if writewav == True:
                 if wavmanager == "scipy":
                     self.scipy_wavwrite(fname, fs, nbits, snd)
@@ -98,7 +104,7 @@ class audioManager():
             silenceToAppend = zeros((nSamples, 2))
             snd = concatenate((snd, silenceToAppend), axis=0)
         #alsaaudio
-        if playCmd in ['alsaaudio', 'pyaudio', 'pactypes']:
+        if playCmd in ['alsaaudio', 'pyaudio']:
             nSamples = snd.shape[0]
             nChannels = snd.shape[1]
             bufferSize = self.prm["pref"]["sound"]["bufferSize"]
@@ -112,7 +118,7 @@ class audioManager():
                 snd = concatenate((snd, pad), axis=0)
             
         if playCmd == "alsaaudio":
-            device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=self.prm["pref"]["sound"]["alsaaudioDevice"])
+            device = self.device
             device.setchannels(nChannels)
             device.setrate(fs)
             device.setperiodsize(bufferSize)
@@ -127,11 +133,9 @@ class audioManager():
             for i in range(nSeg):
                 thisData = data[i*bufferSize:((i*bufferSize)+bufferSize)][:]
                 device.write(thisData)
-            device.close()
-
+            
         elif playCmd == "pyaudio":
-            #print('Playing')
-            paManager = pyaudio.PyAudio()
+            
             if nbits == 16:
                 data = snd*(2.**15)
                 data = data.astype(int16)
@@ -141,7 +145,7 @@ class audioManager():
                 data = data.astype(int32)
                 sampleFormat = pyaudio.paInt32
             
-            stream = paManager.open(format=sampleFormat,
+            stream = self.paManager.open(format=sampleFormat,
                 channels = nChannels,
                 rate = fs,
                 output = True,
@@ -153,16 +157,8 @@ class audioManager():
                 thisData = data[i*bufferSize:((i*bufferSize)+bufferSize)][:]
                 stream.write(thisData, num_frames=bufferSize)
 
-            #stream.close()
-            #paManager.terminate() #actually closing the stream introduces offset clicks!
-        elif playCmd == "pactypes":
-             #bufferSize = 512
-             #sndout(snd, bufferSize, snd.shape[0]*2, fs)
-             try:
-                 sndToPlay = snd.astype(float32)
-                 self.playout(ctypes.c_void_p(sndToPlay.ctypes.data), ctypes.c_int(512), ctypes.c_int(snd.shape[0]*2), ctypes.c_int(fs), ctypes.c_void_p(self.prm['PAStream']))
-             except:
-                 self.initializeAudio()
+            stream.close()
+          
 
         else:
             if wavmanager == "scipy":
@@ -183,7 +179,7 @@ class audioManager():
                     os.remove(fname)
         return
 
-    def playSoundWithTrigger(self, snd, fs, nbits, playCmd, writewav, fname, triggerNumber):
+    def playSoundWithTrigger(self, snd, fs, nbits, writewav, fname, triggerNumber):
         if writewav == True:
             fname = fname
         else:
@@ -194,6 +190,7 @@ class audioManager():
         (hnl3, trigoff_fname) = mkstemp("trig-off.wav")
             
         self.scipy_wavwrite(snd_fname, fs, nbits, snd)
+        playCmd = self.playCmd
         if playCmd == "winsound": #does not really play with trigger for the moment
             winsound.PlaySound(snd_fname, winsound.SND_FILENAME)
         else:
@@ -285,50 +282,6 @@ class audioManager():
 
         if nbits != 24:
            self.wavfile.write(fname, fs, data)
-           
-    def initializeAudio(self):
-        backend = self.prm['pref']['sound']['playCommand']
-        devNum = self.prm["pref"]["sound"]["pactypesDevice"]
-        nChannels = 2
-        if 'sampRate' in self.prm:
-            sampRate = self.prm['sampRate']
-        else:
-            sampRate = int(self.prm["pref"]["sound"]["defaultSampleRate"])
-        bufferSize = self.prm["pref"]["sound"]["bufferSize"]
-        if bufferSize < 1:
-            bufferSize = 512
-    
-        if self.prm["pactypesRunning"] == True:
-            self.stopPA(self.prm['PAStream'])
-        if backend == "pactypes":
-            #try:
-            self.prm['PAStream'] = self.startPA(ctypes.c_int(devNum), ctypes.c_int(nChannels), ctypes.c_int(sampRate), ctypes.c_int(bufferSize))
-            self.prm["pactypesRunning"] = True
-            #except:
-            #    pass
-
-    def listPactypesPlaybackDevices(self):
-        self.pactypesDeviceListName = []
-        self.pactypesDeviceListIdx = []
-        if self.prm["pactypesRunning"] == False:
-            pactypeswasrunning = False
-            self.prm['PAStream'] = self.startPA(ctypes.c_int(1), ctypes.c_int(1), ctypes.c_int(44100), ctypes.c_int(1024))
-        else:
-            pactypeswasrunning = True
-       
-        nDevices = self.getNDevs()
-        for i in range(nDevices):
-            thisHostApi = str(self.getDeviceHostApi(i), encoding='latin-1')
-            thisDeviceName = str(self.getDeviceName(i), encoding='latin-1')
-            inputChans = self.getDeviceMaxInputChannels(i)
-            outputChans = self.getDeviceMaxOutputChannels(i)
-            if outputChans > 0:
-                self.pactypesDeviceListName.append(thisDeviceName + ' - ' + thisHostApi)
-                self.pactypesDeviceListIdx.append(i)
-        if  pactypeswasrunning == False:
-            self.stopPA(self.prm['PAStream'])
-        return
-
     
 class threadedAudioPlayer(QThread):
     def __init__(self, parent):

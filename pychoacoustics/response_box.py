@@ -99,7 +99,7 @@ class responseBox(QMainWindow):
         self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowMaximizeButtonHint)
         self.setWindowModality(Qt.NonModal)
         self.prm = parent.prm
-        self.audioManager = audioManager(self)
+        self.audioManager = parent.audioManager#(self)
         self.currLocale = self.parent().prm['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         self.setWindowTitle(self.tr('Response Box'))
@@ -421,8 +421,8 @@ class responseBox(QMainWindow):
 
         if self.prm['allBlocks']['sendTriggers'] == True:
             thisSnd = pureTone(440, 0, -200, 980, 10, "Both", self.prm['allBlocks']['sampRate'], 100)
-            playCmd = self.prm['pref']['sound']['playCommand']
-            self.audioManager.playSoundWithTrigger(thisSnd, self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], playCmd, False, 'ONTrigger.wav', self.prm["pref"]["general"]["ONTrigger"])
+            #playCmd = self.prm['pref']['sound']['playCommand']
+            self.audioManager.playSoundWithTrigger(thisSnd, self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], False, 'ONTrigger.wav', self.prm["pref"]["general"]["ONTrigger"])
             print("SENDING START TRIGGER", self.prm["pref"]["general"]["ONTrigger"])
         if self.prm['currentBlock'] > self.prm['storedBlocks']:
             self.parent().onClickNextBlockPositionButton()
@@ -435,7 +435,7 @@ class responseBox(QMainWindow):
         currBlock = 'b'+ str(self.prm['currentBlock'])
         nAlternatives = self.prm[currBlock]['nAlternatives']
         nIntervals = self.prm[currBlock]['nIntervals']
-        cmd = self.prm['pref']['sound']['playCommand']
+        #cmd = self.prm['pref']['sound']['playCommand']
         if nAlternatives == nIntervals:
             self.correctInterval = numpy.random.randint(0, nIntervals)
             self.correctButton = self.correctInterval + 1
@@ -459,24 +459,24 @@ class responseBox(QMainWindow):
             time.sleep(self.prm[currBlock]['warningIntervalISI']/1000)
         if self.prm["preTrialInterval"] == True:
             self.intervalLight[nLight].setStatus('on')
-            self.audioManager.playSound(preTrialStim, self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], cmd, self.prm['pref']['sound']['writewav'], 'pre-trial_interval' +'.wav')
+            self.audioManager.playSound(preTrialStim, self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'pre-trial_interval' +'.wav')
             self.intervalLight[nLight].setStatus('off')
             nLight = nLight+1
             time.sleep(self.prm[currBlock]['preTrialIntervalISI']/1000)
         for i in range(nIntervals):
             if self.prm["precursorInterval"] == True:
                 self.intervalLight[nLight].setStatus('on')
-                self.audioManager.playSound(precursorStim, self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], cmd, self.prm['pref']['sound']['writewav'], 'precursor_interval'+str(i+1) +'.wav')
+                self.audioManager.playSound(precursorStim, self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'precursor_interval'+str(i+1) +'.wav')
                 self.intervalLight[nLight].setStatus('off')
                 nLight = nLight+1
                 time.sleep(self.prm[currBlock]['precursorIntervalISI']/1000)
             self.intervalLight[nLight].setStatus('on')
-            self.audioManager.playSound(soundList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], cmd, self.prm['pref']['sound']['writewav'], 'interval'+str(i+1) +'.wav')
+            self.audioManager.playSound(soundList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'interval'+str(i+1) +'.wav')
             self.intervalLight[nLight].setStatus('off')
             nLight = nLight+1
             if self.prm["postcursorInterval"] == True:
                 self.intervalLight[nLight].setStatus('on')
-                self.audioManager.playSound(postcursorStim, self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], cmd, self.prm['pref']['sound']['writewav'], 'postcursor_interval'+str(i+1) +'.wav')
+                self.audioManager.playSound(postcursorStim, self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'postcursor_interval'+str(i+1) +'.wav')
                 self.intervalLight[nLight].setStatus('off')
                 nLight = nLight+1
                 time.sleep(self.prm[currBlock]['postcursorIntervalISI']/1000)
@@ -485,7 +485,7 @@ class responseBox(QMainWindow):
 
     def playSequentialIntervals(self, sndList, ISIList=[], trigNum=None):
         currBlock = 'b'+ str(self.prm['currentBlock'])
-        cmd = self.prm['pref']['sound']['playCommand']
+        #cmd = self.prm['pref']['sound']['playCommand']
         for i in range(len(sndList)):
             if self.prm['pref']['sound']['writeSndSeqSegments'] == True:
                 self.audioManager.scipy_wavwrite("sndSeq%i.wav"%(i+1), self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], sndList[i])
@@ -499,9 +499,9 @@ class responseBox(QMainWindow):
         for i in range(len(sndList)):
             self.intervalLight[nLight].setStatus('on')
             if trigNum != None:
-                self.audioManager.playSoundWithTrigger(sndList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], cmd, self.prm['pref']['sound']['writewav'], 'soundSequence.wav', trigNum)
+                self.audioManager.playSoundWithTrigger(sndList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'soundSequence.wav', trigNum)
             else:
-                self.audioManager.playSound(sndList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], cmd, self.prm['pref']['sound']['writewav'], 'soundSequence.wav')
+                self.audioManager.playSound(sndList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'soundSequence.wav')
             self.intervalLight[nLight].setStatus('off')
             nLight = nLight+1
 
@@ -512,7 +512,7 @@ class responseBox(QMainWindow):
     def playSoundsWavComp(self, soundList, fsList, nBitsList):
         currBlock = 'b'+ str(self.prm['currentBlock'])
         nIntervals = self.prm['nIntervals']
-        cmd = self.prm['pref']['sound']['playCommand']
+        #cmd = self.prm['pref']['sound']['playCommand']
 
         nLight = 0
         if self.prm["warningInterval"] == True:
@@ -524,47 +524,11 @@ class responseBox(QMainWindow):
             
         for i in range(nIntervals):
             self.intervalLight[nLight].setStatus('on')
-            self.audioManager.playSound(soundList[i], fsList[i], nBitsList[i], cmd, self.prm['pref']['sound']['writewav'], 'interval'+str(i+1) +'.wav')
+            self.audioManager.playSound(soundList[i], fsList[i], nBitsList[i], self.prm['pref']['sound']['writewav'], 'interval'+str(i+1) +'.wav')
             self.intervalLight[nLight].setStatus('off')
             nLight = nLight+1
             if i < nIntervals-1:
                 time.sleep(self.prm['isi']/1000)
-
-    def playSound2(self, snd, fs, nbits, playCmd, writewav, fname):
-        wavmanager = self.prm["pref"]["sound"]["wavmanager"]
-        playCmd = str(playCmd)
-        enc = "pcm"+ str(nbits)
-        if playCmd in ['alsaaudio', 'pyaudio', 'pactypes']:
-            nSamples = snd.shape[0]
-            nChannels = snd.shape[1]
-            bufferSize = self.prm["pref"]["sound"]["bufferSize"]
-            if bufferSize < 1:
-                bufferSize = nSamples
-                nSeg = 1
-            else:
-                nSeg = int(ceil(nSamples/bufferSize))
-                padSize = (nSeg*bufferSize) - nSamples
-                pad = zeros((padSize, nChannels))
-                snd = concatenate((snd, pad), axis=0)
-
-        if playCmd == "alsaaudio":
-            
-            self.device.setchannels(nChannels)
-            self.device.setrate(fs)
-            self.device.setperiodsize(bufferSize)
-            if nbits == 16:
-                data = snd*(2.**15)
-                data = data.astype(int16)
-                self.device.setformat(alsaaudio.PCM_FORMAT_S16_LE)
-            elif nbits == 32:
-                data = snd*(2.**31)
-                data = data.astype(int32)
-                self.device.setformat(alsaaudio.PCM_FORMAT_S32_LE)
-            for i in range(nSeg):
-                thisData = data[i*bufferSize:((i*bufferSize)+bufferSize)][:]
-                self.device.write(thisData)
-        #device.close()
-
 
     def doTrial(self):
         self.prm['trialRunning'] = True
@@ -2305,9 +2269,9 @@ class responseBox(QMainWindow):
         
         if self.prm['allBlocks']['sendTriggers'] == True:
             thisSnd = pureTone(440, 0, -200, 80, 10, "Both", self.prm['allBlocks']['sampRate'], 100)
-            playCmd = self.prm['pref']['sound']['playCommand']
+            #playCmd = self.prm['pref']['sound']['playCommand']
             time.sleep(1)
-            self.audioManager.playSoundWithTrigger(thisSnd, self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], playCmd, False, 'OFFTrigger.wav', self.prm["pref"]["general"]["OFFTrigger"])
+            self.audioManager.playSoundWithTrigger(thisSnd, self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], False, 'OFFTrigger.wav', self.prm["pref"]["general"]["OFFTrigger"])
             print("SENDING END TRIGGER", self.prm["pref"]["general"]["OFFTrigger"])
 
         if self.prm['currentRepetition'] == self.prm['allBlocks']['repetitions'] and int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition']) + self.prm['pref']['email']['nBlocksNotify'] == self.prm['storedBlocks']:

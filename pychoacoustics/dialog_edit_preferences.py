@@ -169,7 +169,7 @@ class preferencesDialog(QDialog):
             self.playCommandLabel.hide()
             self.playCommandWidget.hide()
 
-        #if pyalsaaudio is selected, provide device list chooser
+        #if alsaaudio is selected, provide device list chooser
         if self.parent().prm["appData"]["alsaaudioAvailable"] == True:
             self.alsaaudioPlaybackCardList = self.listAlsaaudioPlaybackCards()
             self.alsaaudioDeviceLabel = QLabel(self.tr('Device:'))
@@ -183,7 +183,7 @@ class preferencesDialog(QDialog):
                 self.alsaaudioDeviceLabel.hide()
                 self.alsaaudioDeviceChooser.hide()
 
-        #if pyalsaaudio is selected, provide device list chooser
+        #if pyaudio is selected, provide device list chooser
         if self.parent().prm["appData"]["pyaudioAvailable"] == True:
             self.listPyaudioPlaybackDevices()
             self.pyaudioDeviceLabel = QLabel(self.tr('Device:'))
@@ -201,26 +201,6 @@ class preferencesDialog(QDialog):
             if self.tmpPref['pref']['sound']['playCommandType'] != "pyaudio":
                 self.pyaudioDeviceLabel.hide()
                 self.pyaudioDeviceChooser.hide()
-
-        if self.parent().prm["appData"]["pactypesAvailable"] == True:
-            self.audioManager.listPactypesPlaybackDevices()
-            self.pactypesDeviceLabel = QLabel(self.tr('Device:'))
-            soundPrefGrid.addWidget(self.pactypesDeviceLabel, n, 0)
-            self.pactypesDeviceChooser = QComboBox()
-            self.pactypesDeviceChooser.addItems(self.audioManager.pactypesDeviceListName)
-            print(self.audioManager.pactypesDeviceListIdx)
-            try:
-                self.pactypesDeviceChooser.setCurrentIndex(self.audioManager.pactypesDeviceListIdx.index(self.tmpPref["pref"]["sound"]["pactypesDevice"]))
-            except:
-                self.tmpPref["pref"]["sound"]["pactypesDevice"] = self.audioManager.pactypesDeviceListIdx[0]
-                self.parent().prm["pref"]["sound"]["pactypesDevice"] = self.pactypesDeviceListIdx[0]
-                self.pactypesDeviceChooser.setCurrentIndex(self.audioManager.pactypesDeviceListIdx.index(self.tmpPref["pref"]["sound"]["pactypesDevice"]))
-            soundPrefGrid.addWidget(self.pactypesDeviceChooser, n, 1)
-            n = n+1
-            if self.tmpPref['pref']['sound']['playCommandType'] != "pactypes":
-                self.pactypesDeviceLabel.hide()
-                self.pactypesDeviceChooser.hide()
-
 
         if self.parent().prm["appData"]["alsaaudioAvailable"] == True or self.parent().prm["appData"]["pyaudioAvailable"] == True or self.parent().prm["appData"]["pactypesAvailable"] == True:
             self.bufferSizeLabel = QLabel(self.tr('Buffer Size (samples):'))
@@ -686,7 +666,7 @@ class preferencesDialog(QDialog):
                 self.revertChanges()
 
     def listAlsaaudioPlaybackCards(self):
-        playbackCardList = ['default']
+        playbackCardList = []
         for card in alsaaudio.cards():
             try:
                 alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=card)
