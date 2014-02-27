@@ -1,8 +1,17 @@
 # -*- coding: utf-8 -*- 
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from PyQt4 import QtGui, QtCore
-from PyQt4.QtGui import QApplication#.translate
+from ..pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtGui import QApplication
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtGui import QApplication
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtWidgets import QApplication
+    
 from .._version_info import*
 from pychoacoustics.sndlib import*
 import random
