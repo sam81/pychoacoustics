@@ -185,22 +185,31 @@ class responseBox(QMainWindow):
         if self.prm['hideWins'] == True:
             self.parent().hide()
    
-    def clearLayout(self, layout):
-        #http://stackoverflow.com/questions/9374063/pyqt4-remove-widgets-and-layout-as-well
-        for i in reversed(range(layout.count())):
-            item = layout.itemAt(i)
-            layout.removeItem(item)
-            if isinstance(item, QWidgetItem):
-                #item.widget().close()
-                # or
-                item.widget().setParent(None)
-            elif isinstance(item, QSpacerItem):
-                pass
-                # no need to do extra stuff
-            else:
-                self.clearLayout(item.layout())
+    # def clearLayout(self, layout):
+    #     #http://stackoverflow.com/questions/9374063/pyqt4-remove-widgets-and-layout-as-well
+    #     for i in reversed(range(layout.count())):
+    #         item = layout.itemAt(i)
+    #         layout.removeItem(item)
+    #         if isinstance(item, QWidgetItem):
+    #             #item.widget().close()
+    #             # or
+    #             item.widget().setParent(None)
+    #         elif isinstance(item, QSpacerItem):
+    #             pass
+    #             # no need to do extra stuff
+    #         else:
+    #             self.clearLayout(item.layout())
 
-            # remove the item from layout
+    #         # remove the item from layout
+    def clearLayout(self, layout):
+        if layout is not None:
+            while layout.count():
+                item = layout.takeAt(0)
+                widget = item.widget()
+                if widget is not None:
+                    widget.deleteLater()
+                else:
+                    self.clearLayout(item.layout())
              
     def setupLights(self):
         nIntervals = self.prm['nIntervals']
