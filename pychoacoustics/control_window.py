@@ -72,7 +72,6 @@ class pychControlWin(QMainWindow):
         QMainWindow.__init__(self, parent)
         self.prm = prm
         self.audioManager = audioManager(self)
-        #self.audioManager.initializeAudio()
         #
         self.prm['version'] = __version__
         self.prm['builddate'] = pychoacoustics_builddate

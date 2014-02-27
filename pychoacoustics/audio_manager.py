@@ -27,7 +27,7 @@ elif pyqtversion == -4:
     from PySide.QtCore import QThread
 elif pyqtversion == 5:
     from PyQt5.QtCore import QThread
-import ctypes, sys
+import ctypes, sys, time
 
 if platform.system() == "Windows":
     import winsound
@@ -144,20 +144,25 @@ class audioManager():
                 data = snd*(2.**31)
                 data = data.astype(int32)
                 sampleFormat = pyaudio.paInt32
-            
+
+            # try:
+            #     self.stream
+            # except:
             stream = self.paManager.open(format=sampleFormat,
-                channels = nChannels,
-                rate = fs,
-                output = True,
-                input_device_index = self.prm["pref"]["sound"]["pyaudioDevice"],
-                output_device_index=None,
-                frames_per_buffer=bufferSize)
+                                              channels = nChannels,
+                                              rate = fs,
+                                              output = True,
+                                              input_device_index = self.prm["pref"]["sound"]["pyaudioDevice"],
+                                              output_device_index=None,
+                                              frames_per_buffer=bufferSize)
 
             for i in range(nSeg):
                 thisData = data[i*bufferSize:((i*bufferSize)+bufferSize)][:]
                 stream.write(thisData, num_frames=bufferSize)
-
+            stream.stop_stream()
             stream.close()
+            #time.sleep((bufferSize/fs)+0.02)
+            #self.stream.close() #stream seems to close before sound finished playing
           
 
         else:
