@@ -67,7 +67,6 @@ from .utils_process_results import*
 
 
 
-
 try:
     import pandas
     pandas_available = True
@@ -106,8 +105,6 @@ class responseBox(QMainWindow):
         self.setWindowTitle(self.tr('Response Box'))
         self.setStyleSheet("QPushButton[responseBoxButton='true'] {font-weight:bold; font-size: %spx;} " % self.prm['pref']['interface']['responseButtonSize'])
         self.menubar = self.menuBar()
-        if self.prm["pref"]["sound"]["emu0204quirk"] == True:
-            self.emu0204Quirk()
         #FILE MENU
         self.fileMenu = self.menubar.addMenu(self.tr('-'))
        
@@ -187,7 +184,7 @@ class responseBox(QMainWindow):
         self.prm['sessionLabel'] = self.parent().sessionLabelTF.text()
         if self.prm['hideWins'] == True:
             self.parent().hide()
-        
+   
     def clearLayout(self, layout):
         #http://stackoverflow.com/questions/9374063/pyqt4-remove-widgets-and-layout-as-well
         for i in reversed(range(layout.count())):
@@ -531,7 +528,42 @@ class responseBox(QMainWindow):
             self.intervalLight[nLight].setStatus('off')
             nLight = nLight+1
             if i < nIntervals-1:
-                time.sleep(self.prm['isi']/1000.)
+                time.sleep(self.prm['isi']/1000)
+
+    def playSound2(self, snd, fs, nbits, playCmd, writewav, fname):
+        wavmanager = self.prm["pref"]["sound"]["wavmanager"]
+        playCmd = str(playCmd)
+        enc = "pcm"+ str(nbits)
+        if playCmd in ['alsaaudio', 'pyaudio', 'pactypes']:
+            nSamples = snd.shape[0]
+            nChannels = snd.shape[1]
+            bufferSize = self.prm["pref"]["sound"]["bufferSize"]
+            if bufferSize < 1:
+                bufferSize = nSamples
+                nSeg = 1
+            else:
+                nSeg = int(ceil(nSamples/bufferSize))
+                padSize = (nSeg*bufferSize) - nSamples
+                pad = zeros((padSize, nChannels))
+                snd = concatenate((snd, pad), axis=0)
+
+        if playCmd == "alsaaudio":
+            
+            self.device.setchannels(nChannels)
+            self.device.setrate(fs)
+            self.device.setperiodsize(bufferSize)
+            if nbits == 16:
+                data = snd*(2.**15)
+                data = data.astype(int16)
+                self.device.setformat(alsaaudio.PCM_FORMAT_S16_LE)
+            elif nbits == 32:
+                data = snd*(2.**31)
+                data = data.astype(int32)
+                self.device.setformat(alsaaudio.PCM_FORMAT_S32_LE)
+            for i in range(nSeg):
+                thisData = data[i*bufferSize:((i*bufferSize)+bufferSize)][:]
+                self.device.write(thisData)
+        #device.close()
 
 
     def doTrial(self):
@@ -2792,10 +2824,6 @@ class responseBox(QMainWindow):
         msgSnd, fs = self.audioManager.loadWavFile(self.prm['pref']['general']['endMessageFiles'][idChosen], self.prm['pref']['general']['endMessageLevels'][idChosen], self.prm['allBlocks']['maxLevel'], 'Both')
         self.playThread.playThreadedSound(msgSnd, fs, self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['playCommand'], False, 'foo.wav')
 
-    def emu0204Quirk(self):
-        sil = makeSilence(200, self.prm['sampRate'])
-        #sil = pureTone(1000, 0, 60, 480, 10, "Both", self.prm['sampRate'], 100)
-        self.audioManager.playSound(sil, self.prm['sampRate'], 32, 'pyaudio', False, 'foo.wav')
           
 class responseLight(QWidget):
     def __init__(self, parent):

@@ -307,7 +307,6 @@ def def_pref(prm):
     prm["pref"]["sound"]["defaultSampleRate"] = "48000"
     prm["pref"]["sound"]["writewav"] = True
     prm["pref"]["sound"]["writeSndSeqSegments"] = False
-    prm["pref"]["sound"]["emu0204quirk"] = False
     prm["pref"]["sound"]["wavmanager"] = "scipy"
     prm["pref"]["sound"]["bufferSize"] = 1024
     prm["pref"]["sound"]["appendSilence"] = 0

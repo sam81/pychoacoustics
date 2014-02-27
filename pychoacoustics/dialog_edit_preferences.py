@@ -270,11 +270,6 @@ class preferencesDialog(QDialog):
         self.appendSilenceWidget = QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["sound"]["appendSilence"]))
         soundPrefGrid.addWidget(self.appendSilenceWidget, n, 1)
         n = n+1
-
-        self.emu0204quirk = QCheckBox(self.tr('e-mu 0204 quirk'))
-        self.emu0204quirk.setChecked(self.tmpPref["pref"]["sound"]["emu0204quirk"])
-        soundPrefGrid.addWidget(self.emu0204quirk, n, 0)
-        n = n+1
         
         self.soundPrefWidget.setLayout(soundPrefGrid)
         self.soundPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
@@ -559,11 +554,6 @@ class preferencesDialog(QDialog):
         else:
             self.tmpPref['pref']['sound']['writeSndSeqSegments'] = False
 
-        if self.emu0204quirk.isChecked():
-            self.tmpPref['pref']['sound']['emu0204quirk'] = True
-        else:
-            self.tmpPref['pref']['sound']['emu0204quirk'] = False
-
         if self.dpCorrCheckBox.isChecked():
             self.tmpPref['pref']['general']['dprimeCorrection'] = True
         else:
@@ -660,7 +650,6 @@ class preferencesDialog(QDialog):
             self.playCommandWidget.setReadOnly(True)
         self.writewav.setChecked(self.tmpPref["pref"]["sound"]["writewav"])
         self.writeSndSeqSegments.setChecked(self.tmpPref["pref"]["sound"]["writeSndSeqSegments"])
-        self.emu0204quirk.setChecked(self.tmpPref["pref"]["sound"]["emu0204quirk"])
         self.dpCorrCheckBox.setChecked(self.tmpPref["pref"]["general"]["dprimeCorrection"])
         self.listenerNameWarnCheckBox.setChecked(self.tmpPref["pref"]["general"]["listenerNameWarn"])
         self.sessionLabelWarnCheckBox.setChecked(self.tmpPref["pref"]["general"]["sessionLabelWarn"])

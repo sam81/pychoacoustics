@@ -130,6 +130,7 @@ class audioManager():
             device.close()
 
         elif playCmd == "pyaudio":
+            #print('Playing')
             paManager = pyaudio.PyAudio()
             if nbits == 16:
                 data = snd*(2.**15)
@@ -140,7 +141,7 @@ class audioManager():
                 data = data.astype(int32)
                 sampleFormat = pyaudio.paInt32
             
-            stream = paManager.open(format =sampleFormat,
+            stream = paManager.open(format=sampleFormat,
                 channels = nChannels,
                 rate = fs,
                 output = True,
