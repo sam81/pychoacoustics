@@ -256,7 +256,7 @@ Paradigm Widgets
 ~~~~~~~~~~~~~~~~
 
 Transformed Up-Down Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 -  **Procedure** If “Arithmetic” the quantity defined by the step size
    will be added or subtracted to the parameter that is adaptively
@@ -335,7 +335,7 @@ Weighted Up-Down Paradigm Widgets
    criterion.
 
 Transformed Up-Down Interleaved Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 -  **Procedure** If “Arithmetic” the quantity defined by the step size
    will be added or subtracted to the parameter that is adaptively

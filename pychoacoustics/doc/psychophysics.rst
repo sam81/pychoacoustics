@@ -10,7 +10,7 @@ Available Paradigms
 -------------------
 
 Transformed Up-Down
-^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
 This paradigm implements the transformed up-down adaptive procedures described by
 [Levitt1971]_. It can be used with :math:`n`-intervals, :math:`n`-alternatives forced
@@ -26,7 +26,7 @@ therefore have :math:`n` intervals and :math:`n-1` alternatives are also
 supported (see [GrimaultEtAl2002]_ for an example of such tasks)
 
 Transformed Up-Down Interleaved
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This paradigm implements the interleaved transformed up-down procedure described by [Jesteadt1980]_ .
 

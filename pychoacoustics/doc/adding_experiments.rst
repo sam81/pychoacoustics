@@ -407,7 +407,7 @@ at the top of our ``freq.py`` file.
 
 
 Writing a "Constant 1-Interval 2-Alternatives" Paradigm Experiment
-===============================================================
+===================================================================
 
 In the next paragraphs we'll see an example of an experiment using the  
 "Constant 1-Interval 2-Alternatives" paradigm. The experiment is simple "Yes/No" signal

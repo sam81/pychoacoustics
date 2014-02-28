@@ -1,3 +1,6 @@
+**********
+References
+**********
 
 .. [GrimaultEtAl2002] Grimault, N., Micheyl, C., Carlyon, R. P., & Collet, L. (2002). Evidence for two pitch encoding mechanisms using a selective auditory training paradigm. Percept. Psychophys., 64(2), 189–197.
 .. [Jesteadt1980] Jesteadt,W. (1980). An adaptive procedure for subjective judgments. Percept Psychophys, 28(1), 85–88.
