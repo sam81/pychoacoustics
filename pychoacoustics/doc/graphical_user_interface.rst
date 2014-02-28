@@ -190,7 +190,18 @@ General Widgets (left panel)
    control flow to your model. Please, refer to
    Section :ref:`sec-response_mode` for more information.
 
+Additional Widgets (left panel)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+The following widgets are present only in some experiments:
+
+-  **ISI (ms)** Inter-stimulus silent interval, in ms.
+
+-  **Alt. Reps.** If the value set here is greater than 0,
+   in the correct interval the standard and comparison will be
+   alternating for the chosen number of repetitions (e.g. if
+   the number of Alt. Reps. is 2: ABAB). In the incorrect
+   interval, the standard stimulus will be repeated instead (AAAA).
 
 General Widgets (right panel)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
