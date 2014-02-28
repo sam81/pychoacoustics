@@ -733,6 +733,19 @@ class pychControlWin(QMainWindow):
             self.additionalWidgetsChooserLabelList.append(self.nAlternativesLabel)
             self.additionalWidgetsChooserCheckBoxList.append(self.nAlternativesCheckBox)
             n = n+1
+        if self.prm[self.currExp]["hasAltReps"] == True:
+            self.altRepsLabel = QLabel(self.tr("Alt. Reps."), self)
+            self.add_widg_sizer.addWidget(self.altRepsLabel, n, 1)
+            self.altRepsBox = QLineEdit()
+            self.altRepsBox.setText('0')
+            self.altRepsBox.setValidator(QIntValidator(self))
+            self.add_widg_sizer.addWidget(self.altRepsBox, n, 2)
+            self.altRepsBoxCheckBox = QCheckBox()
+            self.add_widg_sizer.addWidget(self.altRepsBoxCheckBox, n, 0)
+            self.additionalWidgetsIntFieldList.append(self.altRepsBox)
+            self.additionalWidgetsIntFieldLabelList.append(self.altRepsLabel)
+            self.additionalWidgetsIntFieldCheckBoxList.append(self.altRepsBoxCheckBox)
+            n = n+1
 
         #Pre-Trial Interval
         if self.prm[self.currExp]["hasPreTrialInterval"] == True:
@@ -1947,6 +1960,9 @@ class pychControlWin(QMainWindow):
             self.onNIntervalsChange(self.nIntervalsChooser.findText(str(self.prm[block]['nIntervals'])))
             self.nAlternativesChooser.setCurrentIndex(self.nAlternativesChooser.findText(str(self.prm[block]['nAlternatives'])))
             self.nAlternativesCheckBox.setChecked(self.prm[block]['nAlternativesCheckBox'])
+        if self.prm[currExp]["hasAltReps"] == True:
+            self.altRepsBox.setText(self.currLocale.toString(self.prm[block]['altReps']))
+            self.altRepsBoxCheckBox.setChecked(self.prm[block]['altRepsCheckBox'])
      
         self.responseLightChooser.setCurrentIndex(self.responseLightChooser.findText(self.prm[block]['responseLight']))
         self.responseLightCheckBox.setChecked(self.prm[block]['responseLightCheckBox'])
@@ -2063,6 +2079,9 @@ class pychControlWin(QMainWindow):
             self.prm[currBlock]['nIntervalsCheckBox'] = self.nIntervalsCheckBox.isChecked()
             self.prm[currBlock]['nAlternatives'] = self.currLocale.toInt(self.nAlternativesChooser.currentText())[0]
             self.prm[currBlock]['nAlternativesCheckBox'] = self.nAlternativesCheckBox.isChecked()
+        if self.prm[currExp]["hasAltReps"] == True:
+            self.prm[currBlock]['altReps'] = self.currLocale.toInt(self.altRepsBox.text())[0]
+            self.prm[currBlock]['altRepsCheckBox'] = self.altRepsBoxCheckBox.isChecked()
         
         self.prm[currBlock]['responseLight'] = self.responseLightChooser.currentText()
         self.prm[currBlock]['responseLightCheckBox'] = self.responseLightCheckBox.isChecked()
@@ -2216,6 +2235,9 @@ class pychControlWin(QMainWindow):
                 tmpPrm[currBlock]['nAlternatives'] = self.currLocale.toInt(self.nAlternativesChooser.currentText())[0]
                 tmpPrm[currBlock]['nAlternativesCheckBox'] = self.nAlternativesCheckBox.isChecked()
                 otherKeysToCompare.extend(['nIntervals', 'nAlternatives'])
+            if tmpPrm[currExp]["hasAltReps"] == True:
+                tmpPrm[currBlock]['altReps'] = self.currLocale.toInt(self.altRepsBox.text())[0]
+                tmpPrm[currBlock]['altRepsCheckBox'] = self.altRepsBoxCheckBox.isChecked()
           
 
             for f in range(tmpPrm['nFields']):
@@ -2505,6 +2527,9 @@ class pychControlWin(QMainWindow):
             if allLines[i].split(':')[0] == 'Postcursor Interval ISI (ms)':
                 tmp['b'+str(blockNumber)]['postcursorIntervalISI'] = self.currLocale.toInt(allLines[i].split(':')[1].strip())[0]
                 tmp['b'+str(blockNumber)]['postcursorIntervalISICheckBox'] = strToBoolean(allLines[i].split(':')[2].strip())
+            if allLines[i].split(':')[0] == 'Alt. Reps.':
+                tmp['b'+str(blockNumber)]['altReps'] = self.currLocale.toInt(allLines[i].split(':')[1].strip())[0]
+                tmp['b'+str(blockNumber)]['altRepsCheckBox'] = strToBoolean(allLines[i].split(':')[2].strip())
             if allLines[i].split(':')[0] == 'Response Light':
                 tmp['b'+str(blockNumber)]['responseLight'] = allLines[i].split(':')[1].strip()
                 tmp['b'+str(blockNumber)]['responseLightCheckBox'] = strToBoolean(allLines[i].split(':')[2].strip())
@@ -2671,6 +2696,8 @@ class pychControlWin(QMainWindow):
                 fName.write(self.tr('Postcursor Interval: ') + self.prm[currBlock]['postcursorInterval'] + ' :' + str(self.prm[currBlock]['postcursorIntervalCheckBox']) + '\n')
                 if self.prm[currBlock]['postcursorInterval'] == self.tr("Yes"):
                     fName.write(self.tr('Postcursor Interval ISI (ms): ') + self.currLocale.toString(self.prm[currBlock]['postcursorIntervalISI']) + ' :' + str(self.prm[currBlock]['postcursorIntervalISICheckBox']) + '\n')
+            if self.prm[currExp]["hasAltReps"] == True:
+                fName.write(self.tr('Alt. Reps.: ') + self.currLocale.toString(self.prm[currBlock]['altReps']) + ' :' + str(self.prm[currBlock]['altRepsCheckBox']) + '\n')
              
 
             fName.write(self.tr('Response Light: ') + str(self.prm[currBlock]['responseLight']) + ' :' + str(self.prm[currBlock]['responseLightCheckBox']) + '\n')

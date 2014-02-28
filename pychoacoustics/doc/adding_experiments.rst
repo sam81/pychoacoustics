@@ -543,6 +543,8 @@ The Experiment “opts”
 
 -  ``hasPreTrialInterval``
 
+-  ``hasAltReps``
+
  
 .. _sec-par:
 

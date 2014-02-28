@@ -106,7 +106,7 @@ def initialize_F0DL(prm):
                                         QApplication.translate("","Weighted Up-Down",""),
                                         QApplication.translate("","Constant m-Intervals n-Alternatives",""),
                                         QApplication.translate("","PEST","")]
-    prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback", "hasIntervalLights"]
+    prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback", "hasIntervalLights", "hasAltReps"]
     prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Geometric","")
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2

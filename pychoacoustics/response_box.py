@@ -452,12 +452,28 @@ class responseBox(QMainWindow):
             self.correctInterval = numpy.random.randint(1, nIntervals)
             self.correctButton = self.correctInterval 
         soundList = []
-        for i in range(nIntervals):
-            if i == self.correctInterval:
-                soundList.append(stimulusCorrect)
-            else:
-                foo = stimulusIncorrect.pop()
-                soundList.append(foo)
+        if self.prm['altReps'] < 1:
+            for i in range(nIntervals):
+                if i == self.correctInterval:
+                    soundList.append(stimulusCorrect)
+                else:
+                    foo = stimulusIncorrect.pop()
+                    soundList.append(foo)
+        else:
+            sCorr = concatenate((stimulusIncorrect[random.choice(range(len(stimulusIncorrect)))], stimulusCorrect), axis=0)
+            for i in range(nIntervals):
+                #this assumes the incorrectSounds are all the same, and picks the first one
+                #not sure what to do if this were not the case
+                if i == self.correctInterval:
+                    for j in range((self.prm['altReps']-1)):
+                        sCorr = concatenate((sCorr, sCorr), axis=0)
+                    soundList.append(sCorr)
+                else:
+                    foo = stimulusIncorrect.pop()
+                    sIncorr = concatenate((foo, foo), axis=0)
+                    for j in range((self.prm['altReps']-1)):
+                        sIncorr = concatenate((sIncorr, sIncorr), axis=0)
+                    soundList.append(sIncorr)
 
         nLight = 0
         if self.prm["warningInterval"] == True:
@@ -466,12 +482,14 @@ class responseBox(QMainWindow):
             self.intervalLight[nLight].setStatus('off')
             nLight = nLight+1
             time.sleep(self.prm[currBlock]['warningIntervalISI']/1000)
+
         if self.prm["preTrialInterval"] == True:
             self.intervalLight[nLight].setStatus('on')
             self.audioManager.playSound(preTrialStim, self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'pre-trial_interval' +'.wav')
             self.intervalLight[nLight].setStatus('off')
             nLight = nLight+1
             time.sleep(self.prm[currBlock]['preTrialIntervalISI']/1000)
+
         for i in range(nIntervals):
             if self.prm["precursorInterval"] == True:
                 self.intervalLight[nLight].setStatus('on')
@@ -553,6 +571,10 @@ class responseBox(QMainWindow):
             self.prm['isi'] = self.prm[currBlock]['ISIVal']
         if self.prm[self.parent().currExp]["hasAlternativesChooser"] == True:
             self.prm['nAlternatives'] = self.prm[currBlock]['nAlternatives']
+        if self.prm[self.parent().currExp]["hasAltReps"] == True:
+            self.prm['altReps'] = self.prm[currBlock]['altReps']
+        else:
+            self.prm['altReps'] = 0
         self.prm["responseLight"] = self.prm[currBlock]['responseLight']
 
         if self.prm['startOfBlock'] == True:
@@ -649,7 +671,6 @@ class responseBox(QMainWindow):
                 self.prm['maxStepSize'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Maximum Step Size"))])
                 self.prm['percentCorrectTracked'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Percent Correct Tracked"))])
                 self.prm['W'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("W"))])
-              
         
         if self.prm['startOfBlock'] == True and 'resultsFile' not in self.prm:
             if self.prm['pref']['general']['resFileFormat'] == 'fixed':
@@ -2364,19 +2385,23 @@ class responseBox(QMainWindow):
             thisFile.write('Response Light: ' + self.prm['responseLight'] + '\n')
             thisFile.write('Response Light Duration (ms): ' + self.currLocale.toString(self.prm[currBlock]['responseLightDuration']) + '\n')
             if self.prm[self.parent().currExp]["hasISIBox"] == True:
-                thisFile.write('ISI:           ' + self.currLocale.toString(self.prm['isi']) + '\n\n')
+                thisFile.write('ISI:           ' + self.currLocale.toString(self.prm['isi']) + '\n')
             if self.prm[self.parent().currExp]["hasPreTrialInterval"] == True:
-                thisFile.write('Pre-Trial Interval:           ' + self.prm[currBlock]['preTrialInterval'] + '\n\n')
+                thisFile.write('Pre-Trial Interval:           ' + self.prm[currBlock]['preTrialInterval'] + '\n')
                 if self.prm[currBlock]['preTrialInterval'] == self.tr("Yes"):
-                    thisFile.write('Pre-Trial Interval ISI:           ' + self.currLocale.toString(self.prm[currBlock]['preTrialIntervalISI']) + '\n\n')
+                    thisFile.write('Pre-Trial Interval ISI:           ' + self.currLocale.toString(self.prm[currBlock]['preTrialIntervalISI']) + '\n')
             if self.prm[self.parent().currExp]["hasPrecursorInterval"] == True:
-                thisFile.write('Precursor Interval:           ' + self.prm[currBlock]['precursorInterval'] + '\n\n')
+                thisFile.write('Precursor Interval:           ' + self.prm[currBlock]['precursorInterval'] + '\n')
                 if self.prm[currBlock]['precursorInterval'] == self.tr("Yes"):
-                    thisFile.write('Precursor Interval ISI:           ' + self.currLocale.toString(self.prm[currBlock]['precursorIntervalISI']) + '\n\n')
+                    thisFile.write('Precursor Interval ISI:           ' + self.currLocale.toString(self.prm[currBlock]['precursorIntervalISI']) + '\n')
             if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
-                thisFile.write('Postcursor Interval:           ' + self.prm[currBlock]['postcursorInterval'] + '\n\n')
+                thisFile.write('Postcursor Interval:           ' + self.prm[currBlock]['postcursorInterval'] + '\n')
                 if self.prm[currBlock]['postcursorInterval'] == self.tr("Yes"):
-                    thisFile.write('Postcursor Interval ISI:           ' + self.currLocale.toString(self.prm[currBlock]['postcursorIntervalISI']) + '\n\n')
+                    thisFile.write('Postcursor Interval ISI:           ' + self.currLocale.toString(self.prm[currBlock]['postcursorIntervalISI']) + '\n')
+            if self.prm[self.parent().currExp]["hasAltReps"] == True:
+                thisFile.write('Alt. Reps.:         ' + self.currLocale.toString(self.prm['altReps']) + '\n')
+
+            thisFile.write('\n')
 
             for j in range(len(self.prm[currBlock]['chooser'])):
                 if j not in self.parent().choosersToHide:
@@ -2601,6 +2626,10 @@ class responseBox(QMainWindow):
                 if self.prm[currBlock]['nAlternativesCheckBox'] == True:
                     headerToWrite = headerToWrite + 'Alternatives' + self.prm['pref']["general"]["csvSeparator"]
 
+        if self.prm[self.parent().currExp]["hasAltReps"] == True:
+            if self.prm[currBlock]['altRepsCheckBox'] == True:
+                headerToWrite = headerToWrite + 'Alt. Reps.' + self.prm['pref']["general"]["csvSeparator"]
+                
         if self.prm[currBlock]['responseLightCheckBox'] == True:
             headerToWrite = headerToWrite + 'Response Light' + self.prm['pref']["general"]["csvSeparator"]
         if self.prm[currBlock]['responseLightDurationCheckBox'] == True:
@@ -2676,6 +2705,10 @@ class responseBox(QMainWindow):
                     resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nIntervals']) + self.prm['pref']["general"]["csvSeparator"] 
                 if self.prm[currBlock]['nAlternativesCheckBox'] == True:
                     resLineToWrite = resLineToWrite + str(self.prm[currBlock]['nAlternatives']) + self.prm['pref']["general"]["csvSeparator"]
+
+        if self.prm[self.parent().currExp]["hasAltReps"] == True:
+            if self.prm[currBlock]['altRepsCheckBox'] == True:
+                resLineToWrite = resLineToWrite + str(self.prm[currBlock]['altReps']) + self.prm['pref']["general"]["csvSeparator"]
        
         if self.prm[currBlock]['responseLightCheckBox'] == True:
             resLineToWrite = resLineToWrite + self.prm[currBlock]['responseLight'] + self.prm['pref']["general"]["csvSeparator"]
