@@ -19,3 +19,5 @@ Frequency Discrimination Demo
 
 .. automodule:: pychoacoustics.default_experiments.freq
    :members:
+
+

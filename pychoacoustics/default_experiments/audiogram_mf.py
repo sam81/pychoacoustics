@@ -1,21 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-from ..pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QApplication
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtGui import QApplication
-elif pyqtversion == 5:
-    from PyQt5 import QtGui, QtCore
-    from PyQt5.QtWidgets import QApplication
-
-from .._version_info import*
-from ..sndlib import*
-from numpy import log10
-
 """
 This experiment can be used to measure thresholds for detecting a signal in quiet.
 The signal can be either a pure tone or a narrow-band noise. Several signal frequencies
@@ -44,6 +28,22 @@ The available choosers are:
     if ``Narrowband Noise``, the signal will be a narrow-band noise
 
 """
+
+from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
+from ..pyqtver import*
+if pyqtversion == 4:
+    from PyQt4 import QtGui, QtCore
+    from PyQt4.QtGui import QApplication
+elif pyqtversion == -4:
+    from PySide import QtGui, QtCore
+    from PySide.QtGui import QApplication
+elif pyqtversion == 5:
+    from PyQt5 import QtGui, QtCore
+    from PyQt5.QtWidgets import QApplication
+
+from .._version_info import*
+from ..sndlib import*
+from numpy import log10
                                                                             
 
 def initialize_audiogram_mf(prm):

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2012-2013 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2012-2014 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysdt
 
 #    pysdt is free software: you can redistribute it and/or modify
