@@ -47,10 +47,26 @@ command
 Installation on Windows
 -----------------------
 
+Installing the Dependencies 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The dependencies need to be installed manually (i.e. you need to download
+them from their respective websites). Make sure that you pick versions
+compatible with your architecture (64 or 32 bits), and compatible with
+you Python version. 
+
+.. Scientific Python bundles, such as Anaconda 
+
 Using the binary installer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-After installing the dependencies (``python``, ``pyqt4``, ``numpy``, and
+Note that a Windows binary installer may not be available for each 
+``pychoacoustics`` release, as I currently don't have enogh time to 
+build ``pychoacoustics`` on Windows. If a binary installer is not
+available for a given release, you'll have to install from source.
+If a Windows binary installer is 
+available for a specific ``pychoacoustics`` release, after installing 
+the dependencies (``python``, ``pyqt4``, ``numpy``, and
 ``scipy``), simply double click on the ``pychoacoustics`` windows
 installer to start the installation procedure. Currently the installer
 does not provide an application launcher. There is, however, a file called
@@ -111,3 +127,6 @@ As mentioned in the previous section, there is also a ``.bat`` launcher
 that can be used to launch ``pychoacoustics`` without needing to open a
 ``DOS`` shell each time. You can read the previous section for further
 info.
+
+
+

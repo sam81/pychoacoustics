@@ -9,3 +9,6 @@ include README.txt
 include BUGS.txt
 include pychoacoustics.desktop
 include x-prm.xml
+include COPYING.txt
+include CREDITS.txt
+recursive-include pychoacoustics/doc/_build/*
