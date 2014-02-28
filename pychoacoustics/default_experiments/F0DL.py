@@ -99,15 +99,15 @@ from numpy import ceil, floor
 
                                                                                          
 def initialize_F0DL(prm):
-    exp_name = QApplication.translate("","F0DL","", QApplication.UnicodeUTF8)
+    exp_name = QApplication.translate("","F0DL","")
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
-    prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Transformed Up-Down","", QApplication.UnicodeUTF8),
-                                        QApplication.translate("","Weighted Up-Down","", QApplication.UnicodeUTF8),
-                                        QApplication.translate("","Constant m-Intervals n-Alternatives","", QApplication.UnicodeUTF8),
-                                        QApplication.translate("","PEST","", QApplication.UnicodeUTF8)]
+    prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Transformed Up-Down",""),
+                                        QApplication.translate("","Weighted Up-Down",""),
+                                        QApplication.translate("","Constant m-Intervals n-Alternatives",""),
+                                        QApplication.translate("","PEST","")]
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback", "hasIntervalLights"]
-    prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Geometric","", QApplication.UnicodeUTF8)
+    prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Geometric","")
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2
     prm[exp_name]["execString"] = "F0DL"
@@ -377,7 +377,7 @@ def get_fields_to_hide_F0DL(parent):
             
  
           
-    if parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Roving:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","No","", QApplication.UnicodeUTF8):
+    if parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Roving:",""))].currentText() == QApplication.translate("","No",""):
         parent.fieldsToHide.extend([parent.prm['fieldLabel'].index(parent.tr("Lower F0 (Hz)")), parent.prm['fieldLabel'].index(parent.tr("Upper F0 (Hz)"))])
         parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("F0 (Hz)"))])
     else:
@@ -391,7 +391,7 @@ def get_fields_to_hide_F0DL(parent):
 
 
     #Noise Type
-    if parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Noise Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","None","", QApplication.UnicodeUTF8):
+    if parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Noise Type:",""))].currentText() == QApplication.translate("","None",""):
         parent.fieldsToHide.extend([parent.prm['fieldLabel'].index(parent.tr("Noise 1 Low Freq. (Hz)")),
                                     parent.prm['fieldLabel'].index(parent.tr("Noise 1 High Freq. (Hz)")),
                                     parent.prm['fieldLabel'].index(parent.tr("Noise 1 S. Level (dB SPL)")),
@@ -407,8 +407,8 @@ def get_fields_to_hide_F0DL(parent):
                                     parent.prm['fieldLabel'].index(parent.tr("Noise 2 S. Level (dB SPL)"))])
 
         
-    if (parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Simple Dichotic","", QApplication.UnicodeUTF8) or
-        parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Type:","", QApplication.UnicodeUTF8))].currentText() == QApplication.translate("","Narrowband Noise 2","", QApplication.UnicodeUTF8)):
+    if (parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Simple Dichotic","") or
+        parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Narrowband Noise 2","")):
         parent.fieldsToHide.extend([parent.prm['fieldLabel'].index(parent.tr("Low Stop")), parent.prm['fieldLabel'].index(parent.tr("High Stop"))])
         
     else:
@@ -418,7 +418,7 @@ def doTrial_F0DL(parent):
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
         parent.prm['additional_parameters_to_write'] = {}
-        parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Starting Difference (%)","", QApplication.UnicodeUTF8))] 
+        parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Starting Difference (%)",""))] 
         parent.prm['conditions'] = [str(parent.prm['adaptiveDifference'])]
         parent.writeResultsHeader('log')
 

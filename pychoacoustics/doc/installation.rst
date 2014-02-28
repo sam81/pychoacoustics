@@ -27,9 +27,9 @@ installed you can proceed with the installtion of ``pychoacoustics``.
 Installation on Linux
 ---------------------
 
-Binary deb packages for recent debian-based distributions are provided
-(starting from Wheezy), and can be installed using gdebi which
-automatically handles dependencies. For other linux systems, once all of
+Binary deb packages for Debian are provided (starting from Wheezy), 
+and can be installed using gdebi which automatically handles dependencies. 
+For other linux systems, once all of
 the dependencies have been installed, ``pychoacoustics`` can be
 installed as a standard python package using
 

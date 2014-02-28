@@ -4,7 +4,7 @@ import glob
 setup(
     name="pychoacoustics",
     version="0.2.71",
-    url="https://bitbucket.org/samuele_c/pychoacoustics",
+    url="http://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html",
     author="Samuele Carcagno",
     author_email="sam.carcagno@google.com;",
     description="Python application for running psychoacoustics experiments",

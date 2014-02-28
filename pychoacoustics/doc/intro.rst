@@ -23,7 +23,19 @@ correct in any of its parts. This document is work in progress.
 What is ``pychoacoustics``?
 ****************************
 
-``pychoacoustics`` is a software for programming and running experiments in auditory psychophysics (psychoacoustics). The software contains a set of predefined experiments that can be immediately run after installation. Importantly, ``pychoacoustics`` is designed to be extensible so that users can add new custom experiments with relative ease. Custom experiments are written in Python, a programming language renowned for its clarity and ease of use. The application is divided in two graphical windows a) the “response box”, shown in Figure :ref:`fig-response_box`, with which listeners interact during the experiment b) the control window, shown in Figure :ref:`fig-control_window`, that contains a series of widgets (choosers, text field and buttons) that are used by the experimenter to set all of the relevant experimental parameters which can also be stored and later reloaded into the application. 
+``pychoacoustics`` is a software for programming and running experiments 
+in auditory psychophysics (psychoacoustics). The software contains a set 
+of predefined experiments that can be immediately run after installation. 
+Importantly, ``pychoacoustics`` is designed to be extensible so that users 
+can add new custom experiments with relative ease. Custom experiments are 
+written in Python, a programming language renowned for its clarity and 
+ease of use. The application is divided in two graphical windows 
+a) the “response box”, shown in Figure :ref:`fig-response_box`, with 
+which listeners interact during the experiment b) the control window, 
+shown in Figure :ref:`fig-control_window`, that contains a series of 
+widgets (choosers, text field and buttons) that are used by the experimenter 
+to set all of the relevant experimental parameters which can also be stored 
+and later reloaded into the application. 
 
 .. _fig-response_box:
 
@@ -47,5 +59,5 @@ learning around 2008 while doing my PhD with Professor Chris Plack at
 Lancaster University. At that time we were using in the lab a MATLAB
 program called the “Earlab” written by Professor Plack.
 ``pychoacoustics`` has been greatly influenced and inspired by the
-“Earlab”. For this reason, as well as for the patience he had to teach
+“Earlab”. For this reason, as well as for the time he dedicated to teach
 me audio programming, I am greatly indebted to Professor Plack.    

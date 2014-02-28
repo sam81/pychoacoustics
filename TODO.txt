@@ -1,6 +1,8 @@
  
 To do:
 
+- automatically build pyqt4, pyside, and pyqt5 versions
+- add beta or other tags to the builds
 - zip files before sending by e-mail
 - edited fields and choosers change color (use on editing finished)
 - add plots for all paradigms

@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2013 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2014 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -23,16 +23,16 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from pychoacoustics.pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtCore
-    from PyQt4.QtGui import QApplication, QFileDialog
+    from PyQt4.QtGui import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QVBoxLayout
     QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
     QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
     QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
 elif pyqtversion == -4:
     from PySide import QtCore
-    from PySide.QtGui import QApplication, QFileDialog
+    from PySide.QtGui import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtCore
-    from PyQt5.QtWidgets import QApplication, QFileDialog
+    from PyQt5.QtWidgets import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QVBoxLayout
     
 
 import argparse, fnmatch, numpy, os, random, signal, sys, time, traceback
@@ -40,6 +40,7 @@ from pychoacoustics import qrc_resources
 from pychoacoustics import global_parameters
 from pychoacoustics.control_window import*
 
+#add to PATH the default location for custom experiments 
 homeExperimentsPath = os.path.expanduser("~") +'/pychoacoustics_exp/'
 if os.path.exists(homeExperimentsPath + 'labexp/__init__.py') == True:
     sys.path.append(homeExperimentsPath)
@@ -50,8 +51,10 @@ try:
     labexp_exists = True
 except:
     labexp_exists = False
+    #if unable to load custom exp. show why
     print(sys.exc_info())
 
+#allows to close the app with CTRL-C from the console
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 #
 import logging
@@ -62,6 +65,8 @@ stderrFile = os.path.expanduser("~") +'/.local/share/data/pychoacoustics/pychoac
 
 logging.basicConfig(filename=stderrFile,level=logging.DEBUG,)
 
+#the except hook allows to see most startup errors in a window
+#rather than the console
 def excepthook(except_type, except_val, tbck):
     """ Show errors in message box"""
     # recover traceback
@@ -75,11 +80,11 @@ def excepthook(except_type, except_val, tbck):
             fName.write("".join(tb))
             fName.close()
     
-    diag = QtGui.QDialog(None, Qt.CustomizeWindowHint | Qt.WindowCloseButtonHint)
+    diag = QDialog(None, Qt.CustomizeWindowHint | Qt.WindowCloseButtonHint)
     diag.window().setWindowTitle("Critical Error!")
-    siz = QtGui.QVBoxLayout()
-    lay = QtGui.QVBoxLayout()
-    saveTbButton = QtGui.QPushButton("Save Traceback", diag)
+    siz = QVBoxLayout()
+    lay = QVBoxLayout()
+    saveTbButton = QPushButton("Save Traceback", diag)
     saveTbButton.clicked.connect(onClickSaveTbButton)
     lab = QLabel("Sorry, something went wrong. The attached traceback can help you troubleshoot the problem: \n\n" + "".join(tb))
     lab.setMargin(10)
@@ -88,11 +93,11 @@ def excepthook(except_type, except_val, tbck):
     lab.setStyleSheet("QLabel { background-color: white }");
     lay.addWidget(lab)
 
-    sc = QtGui.QScrollArea()
+    sc = QScrollArea()
     sc.setWidget(lab)
     siz.addWidget(sc)#SCROLLAREA IS A WIDGET SO IT NEEDS TO BE ADDED TO A LAYOUT
 
-    buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
+    buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
 
     buttonBox.accepted.connect(diag.accept)
     buttonBox.rejected.connect(diag.reject)
