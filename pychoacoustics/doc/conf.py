@@ -209,10 +209,10 @@ htmlhelp_basename = 'pychoacousticsdoc'
 
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
-'papersize': 'a4paper',
+'papersize': 'letterpaper',
 
 # The font size ('10pt', '11pt' or '12pt').
-'pointsize': '12pt',
+'pointsize': '11pt',
 
 #'fontpkg': '\\usepackage{mathpazo,bm}',
 #'fontpkg': '\\usepackage[default]{gfsneohellenic}',

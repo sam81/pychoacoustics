@@ -946,7 +946,10 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
             self.adaptiveTypeChooser = QComboBox()
             self.adaptiveTypeChooser.addItems(self.prm["adaptiveTypeChoices"])
-            self.adaptiveTypeChooser.setCurrentIndex(0)
+            try:
+                self.adaptiveTypeChooser.setCurrentIndex(self.prm["adaptiveTypeChoices"].index(self.prm[self.currExp]['defaultAdaptiveType']))
+            except:
+                self.adaptiveTypeChooser.setCurrentIndex(0)
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooser, n, 2)
             self.adaptiveTypeCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeCheckBox, n, 0)
@@ -1033,7 +1036,10 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
             self.adaptiveTypeChooser = QComboBox()
             self.adaptiveTypeChooser.addItems(self.prm["adaptiveTypeChoices"])
-            self.adaptiveTypeChooser.setCurrentIndex(0)
+            try:
+                self.adaptiveTypeChooser.setCurrentIndex(self.prm["adaptiveTypeChoices"].index(self.prm[self.currExp]['defaultAdaptiveType']))
+            except:
+                self.adaptiveTypeChooser.setCurrentIndex(0)
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooser, n, 2)
             self.adaptiveTypeCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeCheckBox, n, 0)
@@ -1107,7 +1113,10 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
             self.adaptiveTypeChooser = QComboBox()
             self.adaptiveTypeChooser.addItems(self.prm["adaptiveTypeChoices"])
-            self.adaptiveTypeChooser.setCurrentIndex(0)
+            try:
+                self.adaptiveTypeChooser.setCurrentIndex(self.prm["adaptiveTypeChoices"].index(self.prm[self.currExp]['defaultAdaptiveType']))
+            except:
+                self.adaptiveTypeChooser.setCurrentIndex(0)
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooser, n, 2)
             self.adaptiveTypeCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeCheckBox, n, 0)
@@ -1301,7 +1310,10 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
             self.adaptiveTypeChooser = QComboBox()
             self.adaptiveTypeChooser.addItems(self.prm["adaptiveTypeChoices"])
-            self.adaptiveTypeChooser.setCurrentIndex(0)
+            try:
+                self.adaptiveTypeChooser.setCurrentIndex(self.prm["adaptiveTypeChoices"].index(self.prm[self.currExp]['defaultAdaptiveType']))
+            except:
+                self.adaptiveTypeChooser.setCurrentIndex(0)
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooser, n, 2)
             self.adaptiveTypeCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeCheckBox, n, 0)
@@ -1565,7 +1577,10 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
             self.adaptiveTypeChooser = QComboBox()
             self.adaptiveTypeChooser.addItems(self.prm["adaptiveTypeChoices"])
-            self.adaptiveTypeChooser.setCurrentIndex(0)
+            try:
+                self.adaptiveTypeChooser.setCurrentIndex(self.prm["adaptiveTypeChoices"].index(self.prm[self.currExp]['defaultAdaptiveType']))
+            except:
+                self.adaptiveTypeChooser.setCurrentIndex(0)
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooser, n, 2)
             self.adaptiveTypeCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeCheckBox, n, 0)
@@ -1858,8 +1873,13 @@ class pychControlWin(QMainWindow):
         self.preTrialSilenceTF.setText(self.prm["pref"]["general"]["preTrialSilence"])
 
         self.setParadigmWidgets(self.currParadigm, self.prevParadigm)
-        if self.currParadigm == self.tr("Transformed Up-Down"):
-            self.adaptiveTypeChooser.setCurrentIndex(self.prm["adaptiveTypeChoices"].index(self.prm[self.currExp]['defaultAdaptiveType']))
+        if self.currParadigm in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"),
+                                 self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved"),
+                                 self.tr("PEST")]:
+            try: #set to the default adaptive type is specified
+                self.adaptiveTypeChooser.setCurrentIndex(self.prm["adaptiveTypeChoices"].index(self.prm[self.currExp]['defaultAdaptiveType']))
+            except:
+                self.adaptiveTypeChooser.setCurrentIndex(0)
 
         self.prm['nIntervals'] = self.prm[self.currExp]['defaultNIntervals']  #tmp['nIntervals']
         self.prm['nAlternatives'] = self.prm[self.currExp]['defaultNAlternatives']#tmp['nAlternatives']

@@ -76,7 +76,8 @@ generates the sounds and plays them during the experiment.
 The ``initialize_`` function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
- The ``initialize_`` function of our frequency discrimination experiment looks like this:
+The ``initialize_`` function of our frequency discrimination 
+experiment is shown below:
 
 .. code-block:: python
    :linenos:
@@ -101,8 +102,11 @@ The ``initialize_`` function
       return prm
 
 When the function is called, it is passed a dictionary containing
-various parameters through the ``prm`` argument. The function receives
-this dictionary of parameters and adds or modifies some of them. On line 2
+various parameters through the ``prm`` argument. The function modifies 
+this dictionary by adding the parameters of the experiment, and returns
+the dictionary back to the main routine. 
+
+Let's analyze the function for our experiment. On line 2
 we give a label to the experiment, this can be anything we
 want, except the label of an experiment already existing. On line 3
 we add this experiment label to the list of “experimentsChoices”.
@@ -120,10 +124,12 @@ intervals (``hasISIBox``), a widget to choose the number of response
 alternatives (``hasAlternativesChooser``), a widget to set the feedback
 on or off for a given block of trials (``hasFeedback``), and finally we
 want lights to mark the observation intervals (``hasIntervalLights``).
-Next, we specify ``defaultAdaptiveType``, the default type of adaptive 
+
+In the next line we specify ``defaultAdaptiveType``, the default type of adaptive 
 track that will be selected when the experiment is loaded, this could be 
-either "Geometric", or "Arithmetic". It can be later changed by the experimenter
-in the control window.
+either "Geometric", or "Arithmetic". Specifying a "defaultAdaptiveType" is
+optional. The type of the adaptive procedure can in any case be changed
+later by the experimenter in the control window.
 In the next two lines we specify the default number of intervals, and the
 default number of alternatives that will be used when the experiment is
 loaded. Since we have inserted the "hasAlternativesChooser" option, the
@@ -140,7 +146,9 @@ experiment was used in a given session.
 The ``select_default_parameters_`` function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
- The ``select_default_parameters_`` function is the function in which you define all the widgets (text fields and choosers) needed for your experiment. For our frequency discrimination experiment, the function looks as follows:
+All the widgets (text fields and choosers) needed for an experiment are 
+defined in the ``select_default_parameters_`` function. For our frequency 
+discrimination experiment, the function looks as follows:
 
 .. code-block:: python
    :linenos:
@@ -197,9 +205,10 @@ The ``chooser`` and ``chooserLabel`` lists will likewise hold the default
 values of our chooser widgets, and their labels, while the ``chooserOptions`` 
 list will hold  the possible values that our choosers can take. 
 On lines 9 to 29 we populate these lists for our frequency discrimination experiment. 
-From line 31 to line 36 we insert in the dictionary the
+From line 31 to line 36 we insert in a dictionary the
 ``field``, ``fieldLabel``, ``chooser``, ``chooserLabel`` and ``chooserOptions`` 
-lists that we previously creaetd and populated. 
+lists that we previously creaetd and populated. Finally, on line 38, the function returns
+this dictionary.
 
 
 The ``doTrial_`` function
@@ -217,27 +226,36 @@ experiment is shown below:
 
       currBlock = 'b'+ str(parent.prm['currentBlock'])
        if parent.prm['startOfBlock'] == True:
-           parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference (%)")]
+           parent.prm['adaptiveDifference'] = \
+             parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference (%)")]
            parent.writeResultsHeader('log')
 
-       frequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Frequency (Hz)")]
-       level = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Level (dB SPL)")] 
-       duration = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Duration (ms)")] 
-       ramps = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Ramps (ms)")]
-       channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
+       frequency = \
+         parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Frequency (Hz)")]
+       level = \
+         parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Level (dB SPL)")] 
+       duration = \
+         parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Duration (ms)")] 
+       ramps = \
+         parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Ramps (ms)")]
+       channel = \
+         parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
        phase = 0
 
        correctFrequency = frequency + (frequency*parent.prm['adaptiveDifference'])/100
-       stimulusCorrect = pureTone(correctFrequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+       stimulusCorrect = pureTone(correctFrequency, phase, level, duration, 
+                                  ramps, channel, parent.prm['sampRate'], 
+                                  parent.prm['maxLevel'])
       
        stimulusIncorrect = []
        for i in range((parent.prm['nIntervals']-1)):
-           thisSnd = pureTone(frequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+           thisSnd = pureTone(frequency, phase, level, duration, ramps, channel, 
+                              parent.prm['sampRate'], parent.prm['maxLevel'])
            stimulusIncorrect.append(thisSnd)
        
        parent.playRandomisedIntervals(stimulusCorrect, stimulusIncorrect)
 
-As you can see on the first line the ``doTrial_`` function is passed 
+As you can see on the first line, the ``doTrial_`` function is passed 
 as an argument its ``parent``. This is important because the parent contains 
 a dictionary with the parameters for the current experiment (``parent.prm``). 
 The parameters for each stored block of the experiment are stored 
@@ -245,30 +263,74 @@ in the ``parent.prm`` dictionary with keys starting with ``b`` followed by
 the block number. For example ``parent.prm['b3']`` contains the parameters 
 for the third stored block. The current block number is stored in 
 ``parent.prm['currentBlock']``, and on line 3 we retrieve the dictionary 
-key for the current block. On line 4 we start an if block that is executed 
+key for the current block. On line 4 we start an ``if`` block that is executed 
 only at the first trial of each block. In this block we retrieve the % frequency 
 difference between the standard and the comparison stimuli for the first trial, 
-and we store it in the ``parent.prm['adaptiveDifference']`` variable. Since we're 
-using an adaptive procedure, this variable will be automatically increased or decreased 
-by ``pychoacoustics`` on successive trials on the bases of the responses 
-given by the listener. On line 6 we tell ``pychoacoustics`` to write the header of the 'log' result files (see :ref:`sec-log_results_files`).
+and we store it in the ``parent.prm['adaptiveDifference']`` variable. 
+Since we're using an adaptive procedure, this variable will be automatically 
+increased or decreased by ``pychoacoustics`` on successive trials on the bases 
+of the responses given by the listener. On line 7 we tell ``pychoacoustics`` 
+to write the header of the 'log' result files (see :ref:`sec-log_results_files`).
 
-On lines 8-11 we read off the values of the text field widgets for the current block of trials. The values of these field widgets are stored in the list ``parent.prm[currBlock]['field']``, and we exploit the label of each text field widget to retrieve its index in the list. For example ``parent.prm['fieldLabel'].index("Frequency (Hz)")`` retrieves the index of the text widget that stores the frequency of the standard tone for the current block of trials. On line 12 we read off the value of the only chooser widget for the current block of trials. The values of chooser widgets are stored in the list ``parent.prm[currBlock]['chooser']``, and we exploit the label of each chooser widget to retrieve its index in the list as we did for text field widgets.
+On lines 9-16 we read off the values of the text field widgets 
+for the current block of trials. The values of these field widgets 
+are stored in the list ``parent.prm[currBlock]['field']``, and we exploit 
+the label of each text field widget to retrieve its index in the list. 
+For example ``parent.prm['fieldLabel'].index("Frequency (Hz)")`` retrieves 
+the index of the text widget that stores the frequency of the standard tone 
+for the current block of trials. On line 18 we read off the value of the only 
+chooser widget for the current block of trials. The values of chooser widgets 
+are stored in the list ``parent.prm[currBlock]['chooser']``, and we exploit the 
+label of each chooser widget to retrieve its index in the list as we did for 
+text field widgets.
 
 
-Our next step will be to generate the stimuli for the trial. In a `X`-Intervals task we have to generate `X` stimuli. The standard stimuli will have in our case always the same frequency, we retrieved its value on line 8 of our ``doTrial_`` function. If a listener presses the button corresponding to one of the the standard stimuli his response will be incorrect. For this reason we will store the standard stimuli in a list called ``stimulusIncorrect = []``. The comparison stimulus will be instead stored in a variable called ``stimulusCorrect``. The frequency of the comparison stimulus, which can vary from trial to trial, depending on the current value of ``parent.prm['adaptiveDifference']`` is computed on line 15. On line 16 we generate the stimulus using the ``pureTone`` function that is available in the ``sndlib`` module. Note that we need to pass the current samplig rate and the current maximum output level of our headphones (see :ref:`sec-edit_phones_dia`) to the ``pureTone`` function. Their values are stored respectively in the ``parent.prm['sampRate']`` and ``parent.prm['maxLevel']`` variables. On lines 18-21 we generate and store the standard stimuli in the ``stimulusIncorrect`` list. The number of standard stimuli to generate will be equal to the number of intervals minus one. The number of intervals is stored in the ``parent.prm['nIntervals']`` variable. Finally on line 23 we call the ``parent.playRandomisedIntervals`` function to play the stimuli. This function requires two arguments, the correct stimulus, and a list containing the incorrect stimuli. That's it, our frequency discrimination experiment is ready and we can test it on ``pychoacoustics``.
+Our next step will be to generate the stimuli for the trial. 
+In a `X`-Intervals task we have to generate `X` stimuli. In our case, 
+the standard stimuli will have always the same frequency, we retrieved its value 
+on lines 9-10 of our ``doTrial_`` function. If a listener presses the button 
+corresponding to one of the the standard stimuli his response will be incorrect. 
+For this reason we will store the standard stimuli in a list 
+called ``stimulusIncorrect = []``. The comparison stimulus will be instead stored 
+in a variable called ``stimulusCorrect``. The frequency of the comparison 
+stimulus, which can vary from trial to trial, depending on the current value
+of ``parent.prm['adaptiveDifference']`` is computed on line 21. On lines 22-24  we 
+generate the stimulus using the ``pureTone`` function that is available 
+in the ``sndlib`` module. Note that in order to access this function you need
+to import it by adding the following line at the top of the ``freq.py`` file 
+where the experiment is stored:
+
+.. code-block:: python
+
+   from pychoacoustics.sndlib import pureTone
+
+Note also that we need to pass the current samplig rate and the current maximum 
+output level of our headphones (see :ref:`sec-edit_phones_dia`) to 
+the ``pureTone`` function. Their values are stored respectively in the 
+``parent.prm['sampRate']`` and ``parent.prm['maxLevel']`` variables. 
+On lines 26-30 we generate and store the standard stimuli in the 
+``stimulusIncorrect`` list. The number of standard stimuli to generate will 
+be equal to the number of intervals minus one. The number of 
+intervals is stored in the ``parent.prm['nIntervals']`` variable. Finally on line 
+32 we call the ``parent.playRandomisedIntervals`` function to play the stimuli. 
+This function requires two arguments, the correct stimulus, and a list containing 
+the incorrect stimuli. That's it, our frequency discrimination experiment is ready 
+and we can test it on ``pychoacoustics``.
 
 Adding support for the Constant Paradigm
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-So far our frequency discrimination experiment supports only two paradigms, "Adaptive" and "Weighted Up/Down" (which is just a variant of the adaptive paradigm).
-Adding support for the constant paradigm, in which the frequency difference between the standard and comparison stimuli is fixed across a block of trials is easy.
-All we need to do is add "Constant m-Intervals n-Alternatives" to the list of paradigms supported paradims in the ``initialize_`` function:
+So far our frequency discrimination experiment supports only two paradigms:
+the "Transformed Up-Down", and the "Weighted Up-Down" paradigm.
+Adding support for the constant paradigm, in which the frequency difference 
+between the standard and comparison stimuli is fixed across a block of trials 
+is easy. All we need to do is add "Constant m-Intervals n-Alternatives" to the 
+list of paradigms supported paradims in the ``initialize_`` function:
 
 .. code-block:: python
 
-   prm[exp_name]["paradigmChoices"] = ["Adaptive",
-                                       "Weighted Up/Down",
+   prm[exp_name]["paradigmChoices"] = ["Transformed Up-Down",
+                                       "Weighted Up-Down",
                                        "Constant m-Intervals n-Alternatives"]
 
 Now our frequency discrimination task supports also the constant paradigm.
@@ -278,7 +340,7 @@ Showing/Hiding Widgets Dynamically
 
 Often you may want to write a single experiment that can handle a number 
 of different experimental conditions. This usually leads to a growing number 
-of widgets in the experiment user interface that can be distracting. 
+of widgets in the control window that can be distracting. 
 To address this issue, in ``pychoacoustics`` it is possible to dinamically 
 show or hide widgets depending on the value taken by chooser widgets. 
 To do this, you need to write a function called ``get_fields_to_hide_`` 
@@ -336,22 +398,32 @@ The ``get_fields_to_hide_`` for this experiment is shown below:
                                 parent.prm['fieldLabel'].index("Max. Frequency (Hz)")]
 
     
-As for the other experiment functions we have discussed before, the actual name is the concatenation of a prefix, in this case
-``get_fields_to_hide_``, and the name of the experiment file, in this case ``freq``.
-As you can see on line 1, this function takes as an argument ``parent``, which contains the lists of widgets for the current experiment.
-We need to tell the ``get_fields_to_hide_`` function that if the standard frequency is fixed, it should
-show only the ``Frequency (Hz)`` text field, and hide the ``Min. Frequency (Hz)`` and ``Max. Frequency (Hz)``
-text fields. Vice-versa, if the standard frequency is roved, it should show only the ``Min. Frequency (Hz)`` 
-and ``Max. Frequency (Hz)`` text fields, and hide the ``Frequency (Hz)`` text field. On line 2 we start an if block which
-will be executed if the value, retrieved by the ``currentText`` attribute, of the ``Standard Frequency`` chooser is
-set to ``Fixed``. Note how we exploit once again the ``chooserLabel`` to find the index of the chooser we want 
-with ``parent.prm['chooserLabel'].index("Standard Frequency:")``. Next, we define two lists, one containing the indexes
-of the fields to hide ``parent.fieldsToHide``, and one containing the indexes of the fields to show ``parent.fieldsToShow``.
-Once more we exploit the ``fieldLabel`` to retrieve the indexes of the fields we want to get (e.g. ``parent.prm['fieldLabel'].index("Min. Frequency (Hz)")``).
-From line 6 to line 9 we handle the case in which the standard frequency is roved. The logic of the code is the same as for the fixed standard frequency
+As for the other experiment functions that we have discussed before, 
+the actual name is the concatenation of a prefix, in this case
+``get_fields_to_hide_``, and the name of the experiment file, 
+in this case ``freq``. As you can see on line 1, this function takes as an 
+argument ``parent``, which contains the lists of widgets for the current experiment.
+We need to tell the ``get_fields_to_hide_`` function that if the standard frequency 
+is fixed, it should show only the ``Frequency (Hz)`` text field, and hide the 
+``Min. Frequency (Hz)`` and ``Max. Frequency (Hz)`` text fields. Vice-versa, 
+if the standard frequency is roved, it should show only the 
+``Min. Frequency (Hz)`` and ``Max. Frequency (Hz)`` text fields, and hide the 
+``Frequency (Hz)`` text field. On line 2 we start an ``if`` block which
+will be executed if the value of the ``Standard Frequency`` chooser (retrieved 
+by the ``currentText`` attribute), is set to ``Fixed``. Note how we exploit 
+once again the ``chooserLabel`` to find the index of the chooser we want 
+with ``parent.prm['chooserLabel'].index("Standard Frequency:")``. 
+Next, we define two lists, one containing the indexes of the fields to hide 
+``parent.fieldsToHide``, and one containing the indexes of the fields to show 
+``parent.fieldsToShow``. Once more we exploit the ``fieldLabel`` to retrieve 
+the indexes of the fields we want to get 
+(e.g. ``parent.prm['fieldLabel'].index("Min. Frequency (Hz)")``).
+From line 6 to line 9 we handle the case in which the standard frequency is 
+roved. The logic of the code is the same as for the fixed standard frequency
 case.
 
-To complete the experiment we need to add a couple of lines to the ``doTrial_`` function to handle the case in which the standard frequency is roved.
+To complete the experiment we need to add a couple of lines to the ``doTrial_``
+function to handle the case in which the standard frequency is roved.
 The new function is shown below:
 
 .. code-block:: python
@@ -360,40 +432,52 @@ The new function is shown below:
    def doTrial_freq2(parent):
       currBlock = 'b'+ str(parent.prm['currentBlock'])
       if parent.prm['startOfBlock'] == True:
-         parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference (%)")]
+         parent.prm['adaptiveDifference'] = \
+           parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference (%)")]
          parent.writeResultsHeader('log')
 
-      frequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Frequency (Hz)")]
-      minFrequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Min. Frequency (Hz)")]
-      maxFrequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Max. Frequency (Hz)")]
-      level = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Level (dB SPL)")] 
-      duration = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Duration (ms)")] 
-      ramps = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Ramps (ms)")]
+      frequency = \
+        parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Frequency (Hz)")]
+      minFrequency = \
+        parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Min. Frequency (Hz)")]
+      maxFrequency = \
+        parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Max. Frequency (Hz)")]
+      level = \
+        parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Level (dB SPL)")] 
+      duration = \
+        parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Duration (ms)")] 
+      ramps = \
+        parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Ramps (ms)")]
       phase = 0
-      channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
-      stdFreq = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Standard Frequency:")]
+      channel = \
+        parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
+      stdFreq = \
+         parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Standard Frequency:")]
 
       if stdFreq == "Roved":
          frequency = random.uniform(minFrequency, maxFrequency)
       correctFrequency = frequency + (frequency*parent.prm['adaptiveDifference'])/100
-      stimulusCorrect = pureTone(correctFrequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+      stimulusCorrect = pureTone(correctFrequency, phase, level, duration, 
+                                 ramps, channel, parent.prm['sampRate'], 
+                                 parent.prm['maxLevel'])
             
       stimulusIncorrect = []
       for i in range((parent.prm['nIntervals']-1)):
-         thisSnd = pureTone(frequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+         thisSnd = pureTone(frequency, phase, level, duration, ramps, channel, 
+                            parent.prm['sampRate'], parent.prm['maxLevel'])
          stimulusIncorrect.append(thisSnd)
       parent.playRandomisedIntervals(stimulusCorrect, stimulusIncorrect)
    
 
-On lines 8-9 we read off the minimum and maximum frequency values for the roved-standard case. On line 15 we retrieve the
-value of the ``Standard Frequency:`` chooser. On lines 17-18 we state that if the value of the standard frequency chooser 
+On lines 10-13 we read off the minimum and maximum frequency values for the roved-standard case. On line 23-24 we retrieve the
+value of the ``Standard Frequency:`` chooser. On lines 26-27 we state that if the value of the standard frequency chooser 
 is equal to ``Roved``, then the standard frequency for that trial should be drawn from a uniform distribution ranging
 from ``minFrequency`` to ``maxFrequency``. The rest of the function is unchanged. Note that we're using the a Python module
-called ``random`` on line 18, so we need to add ``import random`` at the top of our ``freq.py`` file.
+called ``random`` on line 27, so we need to add ``import random`` at the top of our ``freq.py`` file.
 
 It is also possible to show/hide choosers. Let's extend the frequency-discrimination experiment by allowing for the possibility 
-that the standard frequency is roved on a log scale (which in fact would be a better choice given the frequency scaling in the auditory
-system). To do this, we first add a new chooser to set the roving scale:
+that the standard frequency is roved on a log scale (which in fact would be a better choice given that frequency scaling in the auditory
+system is approximately logarithmic). To do this, we first add a new chooser to set the roving scale:
 
 .. code-block:: python
 
@@ -421,15 +505,16 @@ it depending on the value of the ``Standard Frequency`` chooser. The new ``get_f
 	 parent.choosersToShow = [parent.prm['chooserLabel'].index("Roving Scale:")]
 
 We've just added two lines. Line 6 gets executed if the ``Standard Frequency`` chooser is set to ``Fixed``,
-and adds the ``Roving Scale`` chooser to the ``parent.choosersToHide`` list.  Line 11 instead gets executed 
+and adds the ``Roving Scale`` chooser to the ``parent.choosersToHide`` list.  Line 11 gets executed 
 if the ``Standard Frequency`` chooser is set to ``Roved``, and adds the ``Roving Scale`` chooser to the ``parent.choosersToShow`` list.
 
-Finally, we need to add/modify a couple of lines to the ``doTrial_`` function. 
+Finally, we need to add/modify a couple of lines of the ``doTrial_`` function. 
 First of all we need to read off the value of the new ``Roving Scale`` chooser:
 
 .. code-block:: python
       
-    rovingScale = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Roving Scale:")]
+    rovingScale = \
+      parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Roving Scale:")]
 
 second, we need to set the standard frequency depending on whether it is drawn from a linear or a logarithmic distribution:
 
@@ -572,6 +657,10 @@ function are provided in Section XY.
 The Experiment “opts”
 ^^^^^^^^^^^^^^^^^^^^^
 
+.. todo::
+  
+   Describe the Experiment "opts"
+
 -  ``hasISIBox``
 
 -  ``hasAlternativesChooser``
@@ -590,7 +679,9 @@ The Experiment “opts”
 Using ``par``
 ^^^^^^^^^^^^^
 
-
+.. todo::
+  
+   Illustrate the use of par
 
 .. _sec-simulations:
 

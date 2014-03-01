@@ -102,7 +102,8 @@ def select_default_parameters_freq(parent, par):
 def doTrial_freq(parent):
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
-        parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference (%)")]
+        parent.prm['adaptiveDifference'] = \
+          parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference (%)")]
         parent.writeResultsHeader('log')
 
     frequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Frequency (Hz)")]
@@ -113,12 +114,14 @@ def doTrial_freq(parent):
     channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
     
     correctFrequency = frequency + (frequency*parent.prm['adaptiveDifference'])/100
-    stimulusCorrect = pureTone(correctFrequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+    stimulusCorrect = pureTone(correctFrequency, phase, level, duration, ramps,
+                               channel, parent.prm['sampRate'], parent.prm['maxLevel'])
 
       
             
     stimulusIncorrect = []
     for i in range((parent.prm['nIntervals']-1)):
-        thisSnd = pureTone(frequency, phase, level, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+        thisSnd = pureTone(frequency, phase, level, duration, ramps, channel,
+                           parent.prm['sampRate'], parent.prm['maxLevel'])
         stimulusIncorrect.append(thisSnd)
     parent.playRandomisedIntervals(stimulusCorrect, stimulusIncorrect)
