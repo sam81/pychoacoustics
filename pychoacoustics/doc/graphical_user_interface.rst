@@ -207,7 +207,7 @@ The following widgets are present only in some experiments:
    will contain two alternations of the standard and comparison stimuli (ABAB)
    while the incorrect interval will contain four repetitions of the standard
    and so on.
-- **Alternated (AB) Reps. ISI (ms)** Set silent interval between stimuli
+-  **Alternated (AB) Reps. ISI (ms)** Set silent interval between stimuli
    presented within each AAAA or ABAB interval.
   
 

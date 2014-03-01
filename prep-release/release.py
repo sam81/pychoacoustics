@@ -59,9 +59,9 @@ def main(argv):
     f.close()
     for i in range(len(ln)):
         if ln[i].strip().split('=')[0].strip() == "version":
-            ln[i] = 'version = "' + gittag +'",\n'
+            ln[i] = 'version = "' + gittag +'"\n'
         if ln[i].strip().split('=')[0].strip() == "release":
-            ln[i] = 'release = "' + gittag + '",\n'
+            ln[i] = 'release = "' + gittag + '"\n'
 
     f = open('pychoacoustics/doc/conf.py', 'w')
     f.writelines(ln)
