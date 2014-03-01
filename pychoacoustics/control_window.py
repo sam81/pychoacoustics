@@ -138,13 +138,13 @@ class pychControlWin(QMainWindow):
         #HELP MENU
         self.helpMenu = self.menubar.addMenu(self.tr('&Help'))
 
-        self.onShowManualPdfAction = QAction(self.tr('Manual (pdf)'), self)
-        self.helpMenu.addAction(self.onShowManualPdfAction)
-        self.onShowManualPdfAction.triggered.connect(self.onShowManualPdf)
-
         self.onShowModulesDocAction = QAction(self.tr('Manual (html)'), self)
         self.helpMenu.addAction(self.onShowModulesDocAction)
         self.onShowModulesDocAction.triggered.connect(self.onShowModulesDoc)
+
+        self.onShowManualPdfAction = QAction(self.tr('Manual (pdf)'), self)
+        self.helpMenu.addAction(self.onShowManualPdfAction)
+        self.onShowManualPdfAction.triggered.connect(self.onShowManualPdf)
 
         self.onShowFortuneAction = QAction(self.tr('Fortunes'), self)
         self.helpMenu.addAction(self.onShowFortuneAction)

@@ -4,6 +4,10 @@
 Psychophysics
 **************
 
+.. todo::
+
+   Give better description of the available paradigms.
+
 .. _sec-paradigms:
 
 Available Paradigms
@@ -16,7 +20,7 @@ This paradigm implements the transformed up-down adaptive procedures described b
 [Levitt1971]_. It can be used with :math:`n`-intervals, :math:`n`-alternatives forced
 choice tasks, in which :math:`n-1` “standard” stimuli and a single
 “comparison” stimulus are presented, each in a different temporal
-interval. The order of the temporal intervals is randomized from trial
+interval. The order of the intervals is randomized from trial
 to trial. The “comparison” stimulus usually differs from the “standard”
 stimuli for a single characteristic (e.g. pitch or loudness), and the
 listener has to tell in which temporal interval it was presented. A
@@ -63,4 +67,16 @@ Constant 1-Pair Same/Different
 This paradigm implements a constant difference method for
 “same/different” tasks with a single pair of stimuli to compare.
 
+Odd One Out
+^^^^^^^^^^^
 
+This paradigm implements a three-alternatives oddity procedure (see
+[VersfeldEtAl1996]_).
+
+PEST
+^^^^
+
+This paradigm implements the PEST adaptive procedure described
+by [TaylorAndCreelman1967]_. However, beware that support for 
+this procedure in ``pychoacoustics`` is very experimental.
+Its implementation has recevived very little testing.

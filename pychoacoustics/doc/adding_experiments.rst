@@ -55,7 +55,7 @@ example the names of these functions would be:
     doTrial_freq()
 
 basically the function names consist of a fixed prefix, followed by
-the name of the experiment file. So in the case of the level experiment
+the name of the experiment file. So, in the case of the level experiment
 example, written in the file ``lev.py``, the three functions would be
 called:
 
@@ -86,24 +86,29 @@ The ``initialize_`` function
       exp_name = "Frequency Discrimination Demo"
       prm["experimentsChoices"].append(exp_name)
       prm[exp_name] = {}
-      prm[exp_name]["paradigmChoices"] = ["Adaptive",
+      prm[exp_name]["paradigmChoices"] = ["Transformed Up/Down",
                                           "Weighted Up/Down"]
     
       prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", 
                                "hasFeedback", "hasIntervalLights"]
-        
+
+      prm[exp_name]['defaultAdaptiveType'] = "Geometric"
+      prm[exp_name]['defaultNIntervals'] = 2
+      prm[exp_name]['defaultNAlternatives'] = 2
       prm[exp_name]["execString"] = "freq"
+      prm[exp_name]["version"] = "1"
+
       return prm
 
 When the function is called, it is passed a dictionary containing
-various parameters through the “prm” argument. The function receives
+various parameters through the ``prm`` argument. The function receives
 this dictionary of parameters and adds or modifies some of them. On line 2
 we give a label to the experiment, this can be anything we
 want, except the label of an experiment already existing. On line 3
 we add this experiment label to the list of “experimentsChoices”.
 On line 4 we create a new sub-dictionary that has as a key the
 experiment label. Next we list the paradims that our experiment
-supports by creating a “paradigmChoices” key and giving the names of
+supports by creating a ``paradigmChoices`` key and giving the names of
 the supported paradigms as a list. The paradims listed here must be
 within the set of paradims  supported by ``pychoacoustics`` (see
 Section :ref:`sec-paradigms` for a description of the paradigms currently
@@ -115,9 +120,22 @@ intervals (``hasISIBox``), a widget to choose the number of response
 alternatives (``hasAlternativesChooser``), a widget to set the feedback
 on or off for a given block of trials (``hasFeedback``), and finally we
 want lights to mark the observation intervals (``hasIntervalLights``).
-The penultimate line of the ``initialize_`` function sets the
-“``execString``” of our experiment. This must be the name of our
-experiment file, so in our case “``freq``”.   
+Next, we specify ``defaultAdaptiveType``, the default type of adaptive 
+track that will be selected when the experiment is loaded, this could be 
+either "Geometric", or "Arithmetic". It can be later changed by the experimenter
+in the control window.
+In the next two lines we specify the default number of intervals, and the
+default number of alternatives that will be used when the experiment is
+loaded. Since we have inserted the "hasAlternativesChooser" option, the
+number of intervals and alternatives can be later changed by the experimenter
+using the appropriate choosers in the control window.
+The next line of the ``initialize_`` function sets the
+``execString`` of our experiment. This must be the name of our
+experiment file, so in our case ``freq``.   
+Finally, we give our experiment a version label. This is optional, but it can
+be very useful as this version label will be stored in the result files when
+the experiment is run. This makes it possible to track which version of the
+experiment was used in a given session.
 
 The ``select_default_parameters_`` function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -159,31 +177,38 @@ The ``select_default_parameters_`` function
       chooser.append("Right")
       
       prm = {}
-      if paradigm == None:
-          prm['paradigm'] = "Adaptive"
-      else:
-          prm['paradigm'] = paradigm
-      prm['adType'] =  "Geometric"
       prm['field'] = field
       prm['fieldLabel'] = fieldLabel
       prm['chooser'] = chooser
       prm['chooserLabel'] = chooserLabel
       prm['chooserOptions'] =  chooserOptions
-      prm['nIntervals'] = 2
-      prm['nAlternatives'] = 2
     
       return prm
 
-The ``select_default_parameters_`` function accepts three arguments, “parent” is simply a reference to the pychoacoustics application, “paradigm” is the paradigm with which the function has been called, while “par” is a variable that can hold some special values for initializing the function. The use of the
-“par” argument is discussed in Section :ref:`sec-par`.  From line three to line seven, we create a series of empty lists. The ``field`` and ``fieldLabel`` lists will hold the default values of our text field widgets, and their labels, respectively. The ``chooser`` and ``chooserLabel`` lists will likewise hold the default values of our chooser widgets, and their labels, while the ``chooserOptions`` list will hold  the possible values that our choosers can take. On lines 9 to 29 we populate these lists for our frequency discrimination experiment. The last lines of our ``select_default_parameters_`` function are
-used to set some additional parameters. On line 31 we create a dictionary to hold the parameters. On lines 32–35 we set a default paradigm for our experiment if ``None`` has been passed to our function. On line 36 ``adType`` sets the default type of the adaptive procedure, this could be either ``Geometric``, or ``Arithmetic``. From line 37 to line 41 we insert in the dictionary the
-``field``, ``fieldLabel``, ``chooser``, ``chooserLabel`` and ``chooserOptions`` lists that we previously creaetd and populated. Finally, on lines 42-43, we give the default number of response intervals and response alternatives. 
+The ``select_default_parameters_`` function accepts three arguments, 
+"parent" is simply a reference to the pychoacoustics application, 
+"paradigm" is the paradigm with which the function has been called, 
+while "par" is a variable that can hold some special values for 
+initializing the function. The use of the "par" argument is discussed 
+in Section :ref:`sec-par`.  From line three to line seven, we create a 
+series of empty lists. The ``field`` and ``fieldLabel`` lists will hold 
+the default values of our text field widgets, and their labels, respectively. 
+The ``chooser`` and ``chooserLabel`` lists will likewise hold the default 
+values of our chooser widgets, and their labels, while the ``chooserOptions`` 
+list will hold  the possible values that our choosers can take. 
+On lines 9 to 29 we populate these lists for our frequency discrimination experiment. 
+From line 31 to line 36 we insert in the dictionary the
+``field``, ``fieldLabel``, ``chooser``, ``chooserLabel`` and ``chooserOptions`` 
+lists that we previously creaetd and populated. 
 
 
 The ``doTrial_`` function
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``doTrial_`` function is called each time a trial is started, and is responsible for generating the sounds and presenting them to the listener. The ``doTrial_`` function for our frequency discrimination experiment is shown below:
+The ``doTrial_`` function is called each time a trial is started, and 
+is responsible for generating the sounds and presenting them to the 
+listener. The ``doTrial_`` function for our frequency discrimination 
+experiment is shown below:
 
 .. code-block:: python
    :linenos:
@@ -212,7 +237,21 @@ The ``doTrial_`` function is called each time a trial is started, and is respons
        
        parent.playRandomisedIntervals(stimulusCorrect, stimulusIncorrect)
 
-As you can see on the first line the ``doTrial_`` function is passed as an argument its ``parent``. This is important because the parent contains a dictionary with the parameters for the current experiment (``parent.prm``). The parameters for each stored block of the experiment are stored in the ``parent.prm`` dictionary with keys starting with ``b`` followed by the block number. For example ``parent.prm['b3']`` contains the parameters for the third stored block. The current block number is stored in ``parent.prm['currentBlock']``, and on line 3 we retrieve the dictionary key for the current block. On line 4 we start an if block that is executed only at the first trial of each block. In this block we retrieve the % frequency difference between the standard and the comparison stimuli for the first trial, and we store it in the ``parent.prm['adaptiveDifference']`` variable. Since we're using an adaptive procedure, this variable will be automatically increased or decreased by ``pychoacoustics`` on successive trials on the bases of the responses given by the listener. On line 6 we tell ``pychoacoustics`` to write the header of the 'log' result files (see :ref:`sec-log_results_files`).
+As you can see on the first line the ``doTrial_`` function is passed 
+as an argument its ``parent``. This is important because the parent contains 
+a dictionary with the parameters for the current experiment (``parent.prm``). 
+The parameters for each stored block of the experiment are stored 
+in the ``parent.prm`` dictionary with keys starting with ``b`` followed by 
+the block number. For example ``parent.prm['b3']`` contains the parameters 
+for the third stored block. The current block number is stored in 
+``parent.prm['currentBlock']``, and on line 3 we retrieve the dictionary 
+key for the current block. On line 4 we start an if block that is executed 
+only at the first trial of each block. In this block we retrieve the % frequency 
+difference between the standard and the comparison stimuli for the first trial, 
+and we store it in the ``parent.prm['adaptiveDifference']`` variable. Since we're 
+using an adaptive procedure, this variable will be automatically increased or decreased 
+by ``pychoacoustics`` on successive trials on the bases of the responses 
+given by the listener. On line 6 we tell ``pychoacoustics`` to write the header of the 'log' result files (see :ref:`sec-log_results_files`).
 
 On lines 8-11 we read off the values of the text field widgets for the current block of trials. The values of these field widgets are stored in the list ``parent.prm[currBlock]['field']``, and we exploit the label of each text field widget to retrieve its index in the list. For example ``parent.prm['fieldLabel'].index("Frequency (Hz)")`` retrieves the index of the text widget that stores the frequency of the standard tone for the current block of trials. On line 12 we read off the value of the only chooser widget for the current block of trials. The values of chooser widgets are stored in the list ``parent.prm[currBlock]['chooser']``, and we exploit the label of each chooser widget to retrieve its index in the list as we did for text field widgets.
 

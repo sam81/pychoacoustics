@@ -64,7 +64,7 @@ General Widgets (left panel)
 
 -  **Condition Label** This is a label to identify the experimental
    condition of the current block of trials. It is optional, but it may
-   be useful when sorting the experimental results.
+   be useful when sorting the experimental results (see :ref:`sec-tabular-results-files`).
 
 -  **End Command** Here you can write an operating system command
    (e.g. a bash command on Unix systems or a DOS command on Windows
@@ -82,13 +82,23 @@ General Widgets (left panel)
    themselves and the last four blocks among themselves). Please refer
    to Section :ref:`sec-shuffling` for more details.
 
--  **Results File** Select a file for saving the results. Selecting an
-   existing file will never overwrite its content, it will simply append
-   the new results to its content. If no file is selected, the results
-   will be saved in a file called ``test.txt`` in the current working
-   directory. You can select a file to save the results even after you
-   have started a block of trials, the results get written to the file
-   only at the end of the block.
+-  **Proc. Res.** Process the "block summary" file at the end of the
+   experimental session in order to obtain a "session summary" file
+   (see :ref:`sec-results_files`).
+
+-  **Proc. Res. Table** Process the "table block summary" file at the 
+   end of the experimental session in order to obtain a 
+   "table session summary" file (see :ref:`sec-results_files`).
+
+-  **Plot** Plot the results at the end of the experimental session.
+   This function is available only if both matplotlib and pandas
+   are installed. Plots are available only for some experimental
+   paradigms.
+
+-  **PDF Plot** Create a PDF file plotting the results at the end of 
+   the experimental session. This function is available only if both 
+   matplotlib and pandas are installed. Plots are available only 
+   for some experimental paradigms.
 
 -  **Experimenter** Here you can select one of the experimenters listed
    in the experimenter database. Please refer to
@@ -97,8 +107,8 @@ General Widgets (left panel)
 
 -  **Experiment** Selects the experiment for the current block.
 
--  **Paradigm** Selects the paradigm (e.g. transformed up-down, constant, etc…) for
-   the current block. The list of paradigms available depends on the
+-  **Paradigm** Selects the paradigm (e.g. transformed up-down, constant, etc…) 
+   for the current block. The list of paradigms available depends on the
    experiment that is selected.
 
 -  **Phones** Choose from one of the phone models stored in the phones
@@ -110,18 +120,17 @@ General Widgets (left panel)
    played. Any value can be entered in the text fields. However, you
    should enter a value that is supported by your soundcard. A value
    that is not supported by your souncard may lead to issues, although
-   it’s more likely that your soundcard will perform an automatic sample
-   rate conversion.
+   it’s more likely that your computer will perform an automatic sample
+   rate conversion to a supported sample rate.
 
 -  **Bits** Set the bit depth that ``pychoacoustics`` uses to store
    sounds to a wav file or play them. Currently values of 16 and 32 bits
    are supported. A value of 32 bits can be used for 24-bit soundcards.
-   Notice that to achieve 24-bit output requires both a 24-bit souncard
+   Notice that achieving 24-bit output requires both a 24-bit souncard
    and a play command that can output 24-bit sounds. Therefore selecting
    a value of 32 bits here does not guarantee 24-bit playback even if
    you have a 24-bit souncard. Please, refere to
-   Section :ref:`sec-sound_output` for further information on this
-   issue.
+   Section :ref:`sec-sound_output` for further information on this issue.
 
 -  **Repetitions** Set the number of times the sequence of blocks stored
    in memory should be repeated. If the “Shuffle Mode” (see below) is
@@ -129,10 +138,11 @@ General Widgets (left panel)
    will be shuffled. If the “Shuffle Mode” is set to “Ask”, each time a
    new repetition starts the user will be asked if s/he wants to shuffle
    the block positions. The “Reset” button resets the number of
-   repetitions to zero.
+   repetitions completed by the listener to zero.
 
 -  **Pre-Trial Silence (ms)** Set a silent time interval before the
-   start of each trial.
+   start of each trial. Useful to avoid that a new trial starts
+   immediately after the listener has given his/her response.
 
 -  **Warning Interval** Choose whether to present a warning light at the
    beginning of each trial.
@@ -146,16 +156,6 @@ General Widgets (left panel)
    first observation interval. This widget is shown only if the warning
    interval chooser is set to “Yes”.
 
--  **Pre-Trial Interval** Choose whether to present a pre-trial
-   interval. This widget is shown only for experiments that have a
-   pre-trial interval option.
-
--  **Pre-Trial Interval ISI (ms)** Sets the duration of the silent
-   interval between the end of pre-trial interval and the start of the
-   first observation interval. This widget is shown only if the current
-   experiment has a pre-trial interval option and the pre-trial interval
-   chooser is set to “Yes”.
-
 -  **Response Light** Set the type of response light at the end of each
    trial. "Feedback" will flash a green (correct response) or red
    (incorrect response) light. "Neutral" will flash a white light.
@@ -164,6 +164,14 @@ General Widgets (left panel)
 
 -  **Response Light Duration (ms)** Set the duration of the response
    light.
+
+-  **Results File** Select a file for saving the results. Selecting an
+   existing file will never overwrite its content, it will simply append
+   the new results to its content. If no file is selected, the results
+   will be saved in a file called ``test.txt`` in the current working
+   directory. You can select a file to save the results even after you
+   have started a block of trials, the results get written to the file
+   only at the end of the block.
 
 -  **Shuffle Mode** If the “Shuffle Mode” is “auto”, the block
    presentation positions will be automatically shuffled at the
@@ -197,18 +205,42 @@ The following widgets are present only in some experiments:
 
 -  **ISI (ms)** Inter-stimulus silent interval, in ms.
 
+-  **Intervals** Set the number of observation intervals.
+
+-  **Alternatives** Set the number of response alternatives.
+
 -  **Alternated (AB) Reps.** This setting makes it possible to present stimuli
-   with the ABAB AAAA paradigm (see [KingEtAl2013]_ ). If the value is set to zero, then on
-   each interval only one stimulus will be presented, either the standard (A),
-   or the comparison (B) stimulus. If the value is set to one, then
-   the correct interval will contain the an alternation of the standard
-   and comparison stimuli (AB), while the incorrect interval will contain
-   two standards (AA). If the value is set to two, then the correct interval
-   will contain two alternations of the standard and comparison stimuli (ABAB)
-   while the incorrect interval will contain four repetitions of the standard
-   and so on.
+   with the ABAB AAAA paradigm (see [KingEtAl2013]_ ). If the value is set to 
+   zero, then on each interval only one stimulus will be presented, either 
+   the standard (A), or the comparison (B) stimulus. If the value is set 
+   to one, then the correct interval will contain the an alternation of 
+   the standard and comparison stimuli (AB), while the incorrect interval 
+   will contain two standards (AA). If the value is set to two, then the 
+   correct interval will contain two alternations of the standard and 
+   comparison stimuli (ABAB) while the incorrect interval will contain four 
+   repetitions of the standard and so on.
+
 -  **Alternated (AB) Reps. ISI (ms)** Set silent interval between stimuli
    presented within each AAAA or ABAB interval.
+
+-  **Pre-Trial Interval** Choose whether to present the pre-trial interval. 
+
+-  **Pre-Trial Interval ISI (ms)** Sets the duration of the silent
+   interval between the end of pre-trial interval and the start of the
+   next interval. This widget is shown only if the pre-trial interval 
+   chooser is set to “Yes”.
+
+-  **Precursor Interval** Choose whether to present the precursor interval. 
+
+-  **Precursor Interval ISI (ms)** Sets the duration of the silent interval 
+   between the end of precursor interval and the start of the next interval. 
+   This widget is shown only if the precursor interval chooser is set to “Yes”.
+
+-  **Postcursor Interval** Choose whether to present the postcursor interval. 
+
+-  **Postcursor Interval ISI (ms)** Sets the duration of the silent interval 
+   between the end of postcursor interval and the start of the next interval. 
+   This widget is shown only if the postcursor interval chooser is set to “Yes”.
   
 
 General Widgets (right panel)
@@ -222,7 +254,8 @@ General Widgets (right panel)
    ``.prm`` file. See Section :ref:`sec-parameters_files` for more
    info.
 
--  **Delete** Delete the current block from the blocks list.
+-  **Delete** Delete the current block from the list of blocks stored
+   in memory.
 
 -  **Undo Unsaved** Reset the parameters in the current block to the
    parameters that were last saved.
@@ -242,23 +275,24 @@ General Widgets (right panel)
 
 -  **Next** Move to the next block storage point.
 
--  **Shuffle** Shuffle the block presentation positions.
+-  **Shuffle** Shuffle the block presentation positions (see :ref:`sec-shuffling`).
 
 -  **Reset** Reset the block presentation positions and move to the
-   first block position.
+   first block position (see :ref:`sec-shuffling`).
 
 -  **Jump to Block** Jump to a given block storage point.
 
 -  **Previous Position** Move to the previous block presentation
-   position.
+   position (see :ref:`sec-shuffling`).
 
--  **Next Position** Move to the next block presentation position.
+-  **Next Position** Move to the next block presentation position (see :ref:`sec-shuffling`).
 
--  **Jump to Position** Jump to the given block presentation position.
+-  **Jump to Position** Jump to the given block presentation position (see :ref:`sec-shuffling`).
 
 -  **Shift Blk. Down** Shift the current block to a lower storage point.
 
 -  **Shift Blk. Up** Shift the current block to a higher storage point.
+
 
 Paradigm Widgets
 ~~~~~~~~~~~~~~~~
@@ -465,6 +499,35 @@ Weighted Up-Down Interleaved Paradigm Widgets
    :math:`X`. The “Up” step size is automatically calculated to satisfy
    the “Percent Correct Tracked” criterion.
 
+PEST Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^^
+
+**WARNING** PEST support is experimental and has received very little testing!
+
+-  **Procedure** If “Arithmetic” the quantity defined by the step size
+   will be added or subtracted to the parameter that is adaptively
+   changing. If “Geometric” the parameter that is adaptively changing
+   will be multiplied or divided by the quantity defined by the step
+   size.
+
+-  **Initial Track Direction** This determines when the first turpoint
+   will be called. If the initial track direction is “Down” the first
+   turnpoint will be called the first time the adaptive track turns
+   upward. If the initial track direction is “Up” the first turnpoint
+   will be called the first time the adaptive track turns downward.
+
+-  **Percent Correct Tracked** Set the percentage correct point on the
+   psychometric function to be tracked by the adaptive procedure. 
+
+-  **Initial Step Size** Set the initial step size.
+
+-  **Minimum Step Size** Set the minimum step size. When the minimum 
+   step size is reached the block is terminated.
+
+-  **Initial Step Size** Set the maximum allowed step size.
+
+-  **W** Deviation limit of the sequential test (see [TaylorAndCreelman1967]_).
+
 Constant m-Intervals n-Alternatives Paradigm Widgets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -524,6 +587,20 @@ Multiple Constants 1-Interval 2-Alternatives Paradigm Widgets
    beginning of the block; the responses to these trials are not
    included in the statistics.
 
+Odd One Out Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-  **No. Trials** Set the number of trials to be presented in the
+   current block.
+
+-  **No. Practice Trials** Set the number of practice trials to be
+   presented in the current block. Practice trials are presented at the
+   beginning of the block; the responses to these trials are not
+   included in the statistics.
+
+-  **No. Differences** Set the number of comparisons to perform.
+
+
 The Menu Bar
 ~~~~~~~~~~~~
 
@@ -544,7 +621,7 @@ will be described below.
 The File Menu
 ^^^^^^^^^^^^^
 
--  **Process Results** Process block summary results files to obtain
+-  **Process Results (Plain Text)** Process block summary results files to obtain
    session summary results files. For more info see
    Section :ref:`sec-process_results_dialog`.
 
@@ -555,7 +632,7 @@ The File Menu
 -  **Open Results File** Open the file where ``pychoacoustics`` is
    currently saving data with the default text editor.
 
--  **Exit.** Close ``pychoacoustics``.
+-  **Exit** Close ``pychoacoustics``.
 
 The Edit Menu
 ^^^^^^^^^^^^^
@@ -578,9 +655,13 @@ The Tools Menu
 The Help Menu
 ^^^^^^^^^^^^^
 
+-  **Manual (pdf)** Open a pdf copy of the manual. 
+
+-  **Manual (html)** Open a html copy of the manual. 
+
 -  **Fortunes** Show psychoacoustics fortunes. I’m always collecting new
    ones, so if you happen to know any interesting ones, please, e-mail
-   them to me so that I can add them to the collection.
+   them to me <sam.carcagno@gmail.com> so that I can add them to the collection.
 
 -  **About pychoacoustics** Show information about the licence, the
    version of the software and the version of the libraries it depends
@@ -604,7 +685,10 @@ process results dialog. The dialog is the same for all procedures,
 except that for procedures in which *d’* is computed, there is an
 additional checkbox asking whether to apply a correction to hit/false
 alarm rates of zero or one. For information on the format of the result
-files, please see Section :ref:`sec-results_files`.
+files, please see Section :ref:`sec-results_files`. For tabular results
+files, if both matplotlib and pandas are installed there are additional 
+checkboxes allowing to plot the results in a window or on a pdf file.
+Not all experimental paradigms support plotting.
 
 .. _fig-proc_res_dia:
 
@@ -700,9 +784,9 @@ General
 -  **Max Recursion Depth (requires restart)** Set the maximum recursion
    depth of the Python interpreter stack. This setting should be changed
    only if you intend to run ``pychoacoustics`` in automatic or
-   simulated listener response mode. Beware, setting a max recursion
-   depth value smaller than the default value may cause
-   ``pychoacoustics`` to crash or not even start. In case
+   simulated listener response mode (see :ref:`sec-response_mode`). 
+   Beware, setting a max recursion depth value smaller than the default 
+   value may cause ``pychoacoustics`` to crash or not even start. In case
    ``pychoacoustics`` does not start because of this, delete your
    preferences settings file to restore the default max recursion depth
    value.
@@ -847,9 +931,8 @@ because it can be very loud!
 Edit Experimenters Dialog
 -------------------------
 
- A screenshot of the “Edit
-Experimenters” dialog is shown in
-Figure :ref:`fig-experimenter_database`.
+A screenshot of the “Edit Experimenters” dialog is shown 
+in Figure :ref:`fig-experimenter_database`.
 
 .. _fig-experimenter_database:
 

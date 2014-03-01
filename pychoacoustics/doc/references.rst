@@ -7,6 +7,7 @@ References
 .. [Kaernbach1991] Kaernbach, C. (1991). Simple adaptive testing with the weighted up-down method. Percept Psychophys, 49(3), 227–229.
 .. [KingEtAl2013] King, A., Hopkins, K., & Plack, C. J. (2013). Differences in short-term training for interaural phase difference discrimination between two different forced-choice paradigms. J. Acoust. Soc. Am., 134(4), 2635. doi:10.1121/1.4819116 
 .. [Levitt1971] Levitt, H. (1971). Transformed up-down methods in psychoacoustics. J. Acoust. Soc. Am., 49(2), 467-477.
-
 .. [MacmillanAndCreelman2005] Macmillan, N. A., & Creelman, C. D. (2005). Detection theory: A user’s guide (2dn ed.). Mahwah, NJ: Lawrence Erlbaum Associates.
+.. [TaylorAndCreelman1967] Taylor, M., & Creelman, C. (1967). PEST: Efficient estimates on probability functions. J. Acoust. Soc. Am., 41(4A), 782-787. doi:10.1121/1.1910407
 
+.. [VersfeldEtAl1996] Versfeld, N. J., Dai, H., & Green, D. M. (1996). The optimum decision rules for the oddity task. Percept. Psychophys., 58(1), 10–21.

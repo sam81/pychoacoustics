@@ -15,14 +15,16 @@ Sound Output on Linux
 
 On Linux systems ``pychoacoustics`` can either output sound (numpy
 arrays) directly to the soundcard, or write a ``wav`` file for each sound
-and call an external command to play it. Currently, support for sending
+and call an external command to play it. Currently, sending
 sounds directly to the soundcard is possible only through the
-```alsaaudio`` <http://pyalsaaudio.sourceforge.net/>`_ python module. This
-module is optional, and you need to install it yourself to be able to
-use it.
-
-Once it is installed, it will be detected automatically and you will be
-able to select it as the “Play Command” in the sound preferences dialog.
+```alsaaudio`` <http://pyalsaaudio.sourceforge.net/>`_,
+or through the ```pyaudio`` <http://people.csail.mit.edu/hubert/pyaudio/>`_
+Python modules. These modules are optional, and you need to install them 
+yourself to be able to use them. Note that I've experienced issues (occasional
+pops and crackles) with ``pyaudio`` on the hardware that I have tested.
+Sound output with ``alsaaudio``, on the other hand, has been working very well.
+Once the modules are installed, they will be detected automatically and you will be
+able to select one of them as the “Play Command” in the sound preferences dialog.
 When you select ``alsaaudio`` as the play command, if you have multiple
 soundcards, you can select the device to which the sound will be sent.
 There will be also an option to set the size of the buffer that
@@ -47,6 +49,9 @@ menu and spelling out the name of the command in the box below.
 
 Sound Output on Windows
 ^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   Update pyaudio info.
 
 Currently, on Windows systems ``pychoacoustics`` cannot output sounds
 directly to the soundcard. It writes instead a ``wav`` file and calls an
@@ -73,22 +78,45 @@ foobar2000) may not work well with ``pychoacoustics``.
 Parameters Files
 ----------------
 
-Parameters files are plain text files, that can be modified through ``pychoacoustics`` or through a text editor. They contain a header with information that applies to all all the experimental blocks stored in a parameters file, and sections corresponding to the parameters that are specific to each experimental block store in a parameters file. The header contains the following
-fields:
+Parameters files are plain text files, that can be modified through 
+``pychoacoustics`` or through a text editor. They contain a header 
+with information that applies to all the experimental blocks stored 
+in a parameters file, and sections corresponding to the parameters 
+that are specific to each experimental block store in a parameters 
+file. The header contains the following fields:
 
 -  Phones
 
 -  Shuffle Mode
 
+-  Response Mode
+
+-  Auto Resp. Mode Perc. Corr.
+
 -  Sample Rate
 
 -  Bits
+
+-  Trigger On/Off
 
 -  Experiment Label
 
 -  End Command
 
-You can refer to Section :ref:`sec-gui_left_panel` to know what each of these fields represents.
+-  Shuffling Scheme
+
+-  No. Repetitions
+
+-  Proc. Res.
+
+-  Proc. Res. Table
+
+-  Plot
+
+-  PDF Plot
+
+You can refer to Section :ref:`sec-gui_left_panel` to know what each 
+of these fields represents.
 
 The sections that contain the parameters for each experimental block are
 subdivided into fields that are separated by one or more dots. You
@@ -105,7 +133,8 @@ A fragment from a parameters file is shown below:
 each entry here has two or three elements separated by colons. The first
 element represents the variable of interest, the second element its
 value, and the third element is a logical value that determines whether
-the ``inSummary`` checkbox will be checked or not (see Section :ref:`sec-results_files` for more info on this).
+the ``inSummary`` checkbox will be checked or not (see 
+Section :ref:`sec-results_files` for more info on this).
 You can have one or more spaces between each element and the colon
 separator. Each entry has to be written on a single line.
 
@@ -176,11 +205,20 @@ When processing block summary table files, make sure that the csv
 separator in the “Process Results Table” window matches the separator
 used in the file.
 
+.. _sec-tabular-results-files:
+
 Tabular Results Files
 ^^^^^^^^^^^^^^^^^^^^^
 
-The tabular result files contain a number of default columns, that are specific to the paradigm used in the experiment (e.g., threshold, number of trials etc…). Columns with additional parameters can be stored in these files. Several text fields and choosers in ``pychoacoustics`` have what we will call
-``inSummary`` check boxes. Some of these are shown marked by ellipses in Figure :ref:`fig-inSummaryCheckBoxes`.
+The tabular result files contain a number of default columns, that are specific 
+to the paradigm used in the experiment (e.g., threshold, number of trials etc…). 
+These result files also contain a "condition" column, where the "Condition Label"
+is written (see :ref:`sec-gui_left_panel`). It is a good practice to assign 
+a condition label as it makes it easy to sort the results as a function of the experimental condition.
+Columns with additional parameters can be stored in these files. 
+Several text fields and choosers in ``pychoacoustics`` have what we will call
+``inSummary`` check boxes. Some of these are shown marked by ellipses 
+in Figure :ref:`fig-inSummaryCheckBoxes`.
 
 .. _fig-inSummaryCheckBoxes:
 
@@ -240,6 +278,10 @@ written only once a block of trials has been completed, these log
 results files get written as soon as information is available (e.g., a
 new line in the “full” results file is written at the end of each
 trial).
+
+.. todo::
+   
+   Add description of result files for the various paradigms.
 
 Adaptive and Weighted Up/Down Result Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

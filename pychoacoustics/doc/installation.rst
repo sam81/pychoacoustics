@@ -4,6 +4,11 @@
 Installation
 *************
 
+.. todo::
+   
+   Add info on optional python packages (matplotlib and pandas).
+   Add info on using scientific Python bundles, such as Anaconda.
+
 ``pychoacoustics`` has been successfully installed and used on Linux and
 Windows platforms. Given that it is entirely written in Python, it should be
 fully cross-platform and should work on the Mac as well, but this has
@@ -55,7 +60,6 @@ them from their respective websites). Make sure that you pick versions
 compatible with your architecture (64 or 32 bits), and compatible with
 you Python version. 
 
-.. Scientific Python bundles, such as Anaconda 
 
 Using the binary installer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

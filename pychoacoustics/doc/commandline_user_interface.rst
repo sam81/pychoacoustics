@@ -18,17 +18,19 @@ command line options. The list of possible command line options is shown below:
 
 -  ``-s, --session SESSION`` Set session label to ``SESSION``.
 
--  ``-k, --reset`` Reset block positions.
-
--  ``-q, --quit`` Quit after finished.
-
 -  ``-c, --conceal`` Hide Control and Parameters Windows.
 
 -  ``-p, --progbar`` Show the progress bar.
 
 -  ``-b, --blockprogbar`` Show the progress bar.
 
+-  ``-q, --quit`` Quit after finished.
+
 -  ``-a, --autostart`` Automatically start the first stored block.
+
+-  ``-k, --reset`` Reset block positions.
+
+-  ``-z, --seed`` Set random seed.
 
 -  ``-x, --recursion-depth`` Set the maximum recursion depth (this
    overrides the maximum recursion depth set in the preferences window).

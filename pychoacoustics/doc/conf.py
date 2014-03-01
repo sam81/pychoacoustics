@@ -60,6 +60,8 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.ifconfig',
               'sphinx.ext.viewcode',
               'numpydoc']
+[extensions]
+todo_include_todos=True
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -111,7 +113,7 @@ exclude_patterns = ['_build']
 
 # If true, sectionauthor and moduleauthor directives will be shown in the
 # output. They are ignored by default.
-show_authors = True
+#show_authors = True
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -183,7 +185,7 @@ html_static_path = ['_static']
 #html_split_index = False
 
 # If true, links to the reST sources are added to the pages.
-#html_show_sourcelink = True
+html_show_sourcelink = True
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 #html_show_sphinx = True
@@ -287,7 +289,7 @@ texinfo_documents = [
 epub_title = 'pychoacoustics'
 epub_author = 'Samuele Carcagno'
 epub_publisher = 'Samuele Carcagno'
-epub_copyright = '2013, Samuele Carcagno'
+epub_copyright = '2013-2014, Samuele Carcagno'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.

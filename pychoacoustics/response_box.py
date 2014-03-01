@@ -1934,6 +1934,7 @@ class responseBox(QMainWindow):
             self.doTrial()
 
     def sortResponsePEST(self, buttonClicked):
+        #PEST SUPPORT IS EXPERIMENTAL AND VERY LITTLE TESTED!
         if self.prm['startOfBlock'] == True:
             self.prm['correctCount'] = 0
             self.prm['startOfBlock'] = False
@@ -1997,17 +1998,17 @@ class responseBox(QMainWindow):
         expectedNCorrect = self.prm['percentCorrectTracked']/100*self.prm['nTrialsCurrStepSize']
         print('Correct count: ', self.prm['correctCount'])
         print('ExpectedNCorrect: ', expectedNCorrect)
+        newStepSize = copy.copy(self.prm['currStepSize'])#temporary, it will be changed later if necessary
         if self.prm['correctCount'] > expectedNCorrect + self.prm['W']:
             print("self.prm['correctCount'] > expectedNCorrect + self.prm['W']")
-            if self.prm['trackDir'] == self.tr('Up'): #call for reversal
+            if self.prm['trackDir'] == self.tr('Up'): #CALL REVERSAL
                 self.prm['trackDir'] = self.tr('Down')
                 #halve step size at reversal
-                self.prm['currStepSize'] = self.prm['currStepSize']/2
+                newStepSize = self.prm['currStepSize']/2
                 #reset counters
                 if self.prm['lastStepDoubled'] == True:
                     self.prm['stepBeforeLastReversalDoubled'] = True
                 lastStepDoubled = False
-                self.prm['nTrialsCurrStepSize'] = 0
                 self.prm['nSteps'] = 0
             elif self.prm['trackDir'] == self.tr('Down'):
                 self.prm['nSteps'] = self.prm['nSteps'] + 1
@@ -2015,16 +2016,22 @@ class responseBox(QMainWindow):
                     self.prm['lastStepDoubled'] = False
                 elif self.prm['nSteps'] == 3:
                     if self.prm['stepBeforeLastReversalDoubled'] == False:
-                        self.prm['currStepSize'] = self.prm['currStepSize']*2
+                        newStepSize = self.prm['currStepSize']*2
                         self.prm['lastStepDoubled'] = True
                     else:
                         self.prm['lastStepDoubled'] = False
                 elif self.prm['nSteps'] > 3:
-                    self.prm['currStepSize'] = self.prm['currStepSize']*2
+                    newStepSize = self.prm['currStepSize']*2
                     self.prm['lastStepDoubled'] = True
 
-            self.prm['nTrialsCurrStepSize'] = 0
-            self.prm['correctCount'] = 0
+            #limit maximum step size
+            if newStepSize > self.prm['maxStepSize']:
+                newStepSize = self.prm['maxStepSize']
+            #only reset nTrials counter if step size has really changed
+            if self.prm['currStepSize'] != newStepSize:
+                self.prm['nTrialsCurrStepSize'] = 0
+                self.prm['correctCount'] = 0
+            self.prm['currStepSize'] = newStepSize
 
             if self.prm['adaptiveType'] == self.tr("Arithmetic"):
                 self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] - self.prm['currStepSize']
@@ -2036,36 +2043,40 @@ class responseBox(QMainWindow):
             if self.prm['trackDir'] == self.tr('Down'): #call for reversal
                 self.prm['trackDir'] = self.tr('Up')
                 #halve step size at reversal
-                self.prm['currStepSize'] = self.prm['currStepSize']/2
-  
+                newStepSize = self.prm['currStepSize']/2
                 #reset counters
                 if self.prm['lastStepDoubled'] == True:
                     self.prm['stepBeforeLastReversalDoubled'] = True
-                self.prm['nTrialsCurrStepSize'] = 0
                 self.prm['nSteps'] = 0
             elif self.prm['trackDir'] == self.tr('Up'):
                 self.prm['nSteps'] = self.prm['nSteps'] + 1
                 if self.prm['nSteps'] < 3:
                     self.prm['lastStepDoubled'] = False
+                    newStepSize = copy.copy(self.prm['currStepSize'])
                 elif self.prm['nSteps'] == 3:
                     if self.prm['stepBeforeLastReversalDoubled'] == False:
-                        self.prm['currStepSize'] = self.prm['currStepSize']*2
+                        newStepSize = self.prm['currStepSize']*2
                         self.prm['lastStepDoubled'] = True
                     else:
                         self.prm['lastStepDoubled'] = False
                 elif self.prm['nSteps'] > 3:
-                    self.prm['currStepSize'] = self.prm['currStepSize']*2
+                    newStepSize = self.prm['currStepSize']*2
                     self.prm['lastStepDoubled'] = True
-            self.prm['nTrialsCurrStepSize'] = 0
-            self.prm['correctCount'] = 0
+
+            #limit maximum step size
+            if newStepSize > self.prm['maxStepSize']:
+                newStepSize = self.prm['maxStepSize']
+            #only reset nTrials counter if step size has really changed
+            if self.prm['currStepSize'] != newStepSize:
+                self.prm['nTrialsCurrStepSize'] = 0
+                self.prm['correctCount'] = 0
+            self.prm['currStepSize'] = newStepSize
        
             
             if self.prm['adaptiveType'] == self.tr("Arithmetic"):
                 self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + self.prm['currStepSize']
             elif self.prm['adaptiveType'] == self.tr("Geometric"):
                 self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * self.prm['currStepSize']
-
-
                 
 
         self.fullFileLog.flush()
