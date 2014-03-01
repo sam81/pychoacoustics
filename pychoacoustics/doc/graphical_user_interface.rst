@@ -197,12 +197,19 @@ The following widgets are present only in some experiments:
 
 -  **ISI (ms)** Inter-stimulus silent interval, in ms.
 
--  **Alt. Reps.** This setting makes it possible to present stimuli
-   with the ABAB AAAA paradigm. If the value is set to 0, If the value set here is greater than 0,
-   in the correct interval the standard and comparison will be
-   alternating for the chosen number of repetitions (e.g. if
-   the number of Alt. Reps. is 2: ABAB). In the incorrect
-   interval, the standard stimulus will be repeated instead (AAAA).
+-  **Alternated (AB) Reps.** This setting makes it possible to present stimuli
+   with the ABAB AAAA paradigm (see [KingEtAl2013]_ ). If the value is set to zero, then on
+   each interval only one stimulus will be presented, either the standard (A),
+   or the comparison (B) stimulus. If the value is set to one, then
+   the correct interval will contain the an alternation of the standard
+   and comparison stimuli (AB), while the incorrect interval will contain
+   two standards (AA). If the value is set to two, then the correct interval
+   will contain two alternations of the standard and comparison stimuli (ABAB)
+   while the incorrect interval will contain four repetitions of the standard
+   and so on.
+- **Alternated (AB) Reps. ISI (ms)** Set silent interval between stimuli
+   presented within each AAAA or ABAB interval.
+  
 
 General Widgets (right panel)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

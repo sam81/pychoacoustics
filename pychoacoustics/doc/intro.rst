@@ -8,7 +8,7 @@ Samuele Carcagno
 
 ` <mailto:sam.carcagno@gmail.com>`_
 
-Copyright ©2012–2013 Samuele Carcagno.
+Copyright ©2012–2014 Samuele Carcagno.
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.2 or
 any later version published by the Free Software Foundation; with no

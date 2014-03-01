@@ -460,19 +460,22 @@ class responseBox(QMainWindow):
                     foo = stimulusIncorrect.pop()
                     soundList.append(foo)
         else:
-            sCorr = concatenate((stimulusIncorrect[random.choice(range(len(stimulusIncorrect)))], stimulusCorrect), axis=0)
+            altRepsSilence = makeSilence(self.prm['altRepsISI'], self.prm['allBlocks']['sampRate'])
+            sCorr = concatenate((stimulusIncorrect[random.choice(range(len(stimulusIncorrect)))], altRepsSilence, stimulusCorrect), axis=0)
+            sCorrCopy = copy.copy(sCorr)
             for i in range(nIntervals):
                 #this assumes the incorrectSounds are all the same, and picks the first one
                 #not sure what to do if this were not the case
                 if i == self.correctInterval:
                     for j in range((self.prm['altReps']-1)):
-                        sCorr = concatenate((sCorr, sCorr), axis=0)
+                        sCorr = concatenate((sCorr, altRepsSilence, sCorrCopy), axis=0)
                     soundList.append(sCorr)
                 else:
                     foo = stimulusIncorrect.pop()
-                    sIncorr = concatenate((foo, foo), axis=0)
+                    sIncorr = concatenate((foo, altRepsSilence, foo), axis=0)
+                    sIncorrCopy = copy.copy(sIncorr)
                     for j in range((self.prm['altReps']-1)):
-                        sIncorr = concatenate((sIncorr, sIncorr), axis=0)
+                        sIncorr = concatenate((sIncorr, altRepsSilence, sIncorrCopy), axis=0)
                     soundList.append(sIncorr)
 
         nLight = 0
@@ -573,6 +576,7 @@ class responseBox(QMainWindow):
             self.prm['nAlternatives'] = self.prm[currBlock]['nAlternatives']
         if self.prm[self.parent().currExp]["hasAltReps"] == True:
             self.prm['altReps'] = self.prm[currBlock]['altReps']
+            self.prm['altRepsISI'] = self.prm[currBlock]['altRepsISI']
         else:
             self.prm['altReps'] = 0
         self.prm["responseLight"] = self.prm[currBlock]['responseLight']
@@ -2399,7 +2403,8 @@ class responseBox(QMainWindow):
                 if self.prm[currBlock]['postcursorInterval'] == self.tr("Yes"):
                     thisFile.write('Postcursor Interval ISI:           ' + self.currLocale.toString(self.prm[currBlock]['postcursorIntervalISI']) + '\n')
             if self.prm[self.parent().currExp]["hasAltReps"] == True:
-                thisFile.write('Alt. Reps.:         ' + self.currLocale.toString(self.prm['altReps']) + '\n')
+                thisFile.write('Alternated (AB) Reps.:         ' + self.currLocale.toString(self.prm['altReps']) + '\n')
+                thisFile.write('Alternated (AB) Reps. ISI (ms):         ' + self.currLocale.toString(self.prm['altRepsISI']) + '\n')
 
             thisFile.write('\n')
 
@@ -2628,7 +2633,8 @@ class responseBox(QMainWindow):
 
         if self.prm[self.parent().currExp]["hasAltReps"] == True:
             if self.prm[currBlock]['altRepsCheckBox'] == True:
-                headerToWrite = headerToWrite + 'Alt. Reps.' + self.prm['pref']["general"]["csvSeparator"]
+                headerToWrite = headerToWrite + 'Alternated (AB) Reps.' + self.prm['pref']["general"]["csvSeparator"]
+                headerToWrite = headerToWrite + 'Alternated (AB) Reps. ISI (ms)' + self.prm['pref']["general"]["csvSeparator"]
                 
         if self.prm[currBlock]['responseLightCheckBox'] == True:
             headerToWrite = headerToWrite + 'Response Light' + self.prm['pref']["general"]["csvSeparator"]
@@ -2709,6 +2715,7 @@ class responseBox(QMainWindow):
         if self.prm[self.parent().currExp]["hasAltReps"] == True:
             if self.prm[currBlock]['altRepsCheckBox'] == True:
                 resLineToWrite = resLineToWrite + str(self.prm[currBlock]['altReps']) + self.prm['pref']["general"]["csvSeparator"]
+                resLineToWrite = resLineToWrite + str(self.prm[currBlock]['altRepsISI']) + self.prm['pref']["general"]["csvSeparator"]
        
         if self.prm[currBlock]['responseLightCheckBox'] == True:
             resLineToWrite = resLineToWrite + self.prm[currBlock]['responseLight'] + self.prm['pref']["general"]["csvSeparator"]
