@@ -97,7 +97,7 @@ def set_global_parameters(prm):
             methodToCall1 = getattr(labexp, item)
             methodToCall2 = getattr(methodToCall1, 'initialize_'+item)
             prm = methodToCall2(prm)
-    opts =  ["hasISIBox", "hasAlternativesChooser", "hasFeedback", "hasIntervalLights",
+    opts =  ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
              "hasPreTrialInterval", "hasPrecursorInterval", "hasPostcursorInterval",
              "hasNTracksChooser", "hasNDifferencesChooser", "hasAltReps"]
 

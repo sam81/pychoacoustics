@@ -87,8 +87,8 @@ experiment is shown below:
       exp_name = "Frequency Discrimination Demo"
       prm["experimentsChoices"].append(exp_name)
       prm[exp_name] = {}
-      prm[exp_name]["paradigmChoices"] = ["Transformed Up/Down",
-                                          "Weighted Up/Down"]
+      prm[exp_name]["paradigmChoices"] = ["Transformed Up-Down",
+                                          "Weighted Up-Down"]
     
       prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", 
                                "hasFeedback", "hasIntervalLights"]
@@ -534,13 +534,13 @@ Writing a "Constant 1-Interval 2-Alternatives" Paradigm Experiment
 ===================================================================
 
 In the next paragraphs we'll see an example of an experiment using the  
-"Constant 1-Interval 2-Alternatives" paradigm. The experiment is simple "Yes/No" signal
+"Constant 1-Interval 2-Alternatives" paradigm. The experiment a is simple "Yes/No" signal
 detection task. On each trial the listener is presented with a single interval which may
-or may not contain a sinusoid, and s/he has to tell if the signal was present or not.
+or may not contain a pure tone, and s/he has to tell if the tone was present or not.
 
 The ``initialize_`` function for the signal detection experiment is shown below, since the
-general framework for writing an experiment is the same, only the differences from an adaptive-paradigm
-experiment will be highlited.
+general framework for writing an experiment is the same as for the adaptive paradigm, 
+only the differences from an adaptive-paradigm experiment will be highlited.
 
 .. code-block:: python
    :linenos:
@@ -558,7 +558,15 @@ experiment will be highlited.
       prm[exp_name]["execString"] = "sig_detect"
       return prm
 
-On line 5 we list the available paradigms for the experiment, in this case the only paradigm possible is ``Constant 1-Interval 2-Alternatives``. On line 7 we insert ``hasFeedback`` to the list of experiment options, so that feedback can be provided at the end of each trial. Since we'll have a single observation interval we don't add the ``hasISIBox`` option, because we don't need to have a silent inteval between observation intervals. On line 7, we set the labels for the buttons, which represent the two response alternatives: "Yes" or "No". On line 8 and line 9 we set the number of intervals and the number of response alternatives. 
+On line 5 we list the available paradigms for the experiment, in this case the 
+only paradigm possible is ``Constant 1-Interval 2-Alternatives``. On line 7 we 
+insert ``hasFeedback`` to the list of experiment options, so that feedback can 
+be provided at the end of each trial. Since we'll have a single observation 
+interval we don't add the ``hasISIBox`` option, because we don't need to have a 
+silent inteval between observation intervals. On line 7, we set the labels for 
+the buttons, which represent the two response alternatives: "Yes" or "No". 
+On line 8 and line 9 we set the number of intervals and the number of 
+response alternatives. 
 
 The ``select_default_parameters_`` function for the signal detection 
 experiment is shown below:
@@ -600,9 +608,9 @@ experiment is shown below:
       return prm
 
 there is nothing really new here compared to experiments with adaptive 
-paradigms that we have seen before. We set the text fields that we need
-to set the frequency duration and level of the signal. We also set
-a chooser to set the channels on which the signal should be presented.
+paradigms that we have seen before. We initialize the text fields that we need
+in order to set the frequency duration and level of the signal. We also 
+initialize a chooser to set the channels on which the signal should be presented.
 
 The ``doTrial_`` function for the signal detection task is shown below:
 
@@ -637,43 +645,139 @@ The ``doTrial_`` function for the signal detection task is shown below:
       parent.playSequentialIntervals([sig])
    
 
-For experiments using the "Constant 1-Interval 2-Alternatives" paradigm,
+For experiments using the "Constant 1-Interval 2-Alternatives" paradigm
 it is necessary to list the experimental conditions in the ``doTrial_``
-finction. We do this on line 6. On line 8, we bind the response buttons
+function. We do this on line 6. On line 8, we bind the response buttons
 to the correct response. Since the button number 1 is the "Yes" button, we 
 say that in the case of a signal trial (``parent.currentCondition == "Yes"``)
 the correct button to press is the button number 1, otherwise the correct button to press is the button number 2.
 
-On lines 14-23 we read off the values of the text fields and generates the
+On lines 14-23 we read off the values of the text fields and generate the
 sound to play (signal or silence) according to the experimental condition. 
 Finally, on line 25 we use the ``parent.playSequentialIntervals`` function to
 present the sound to the listener. This function accepts as an argument a
 list of sounds to play sequentially. In our case we have only a single
 sound to insert in the list. More details on the ``playSequentialIntervals``
-function are provided in Section XY.
+function are provided in Section :ref:`sec-play_sound_functions`.
+
+
+Writing an adaptive-paradigm experiment with multiple interleaved tracks
+========================================================================
+
+.. todo::
+  
+   Describe of to write experiments for the "Transformed Up-Down Interleaved" and
+   "Weighted Up-Down Interleaved" paradigms.
+
+Writing a "Constant 1-Pair Same/Different" Paradigm Experiment
+==============================================================
+
+.. todo::
+  
+   Describe of to write experiments for the "Constant 1-Pair Same/Different" paradigm.
+
+Writing an "Odd One Out" Paradigm Experiment
+============================================
+
+.. todo::
+  
+   Describe of to write experiments for the "Odd One Out" paradigm.
+   
 
 .. _sec-experiment_opts: 
 
 The Experiment “opts”
 ^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-  
-   Describe the Experiment "opts"
+-  **``hasAlternativesChooser``** This option adds two chooser widgets, one to dynamically
+   change the number of observation intervals (labelled "Intervals"), and one to dinamically 
+   change the number of response alternatives (labelled "Alternatives). 
+   This option is generally used in adaptive paradigms
+   ("Transformed Up-Down", "Weighted Up-Down", as well as their interleaved versions). 
+   The number of response alternatives that can be choosen from the widget can be either
+   equal to the number of observation intervals, or to the number of observation intervals
+   minus one. In the latter case the standard stimulus is presented in the first interval, 
+   as a reference, with no corresponding response alternative, see [GrimaultEtAl2002]_ 
+   for an example of this :math:`n`-intervals, :math:`n-1` alternatives presentation
+   mode. The selected number of intervals and alternatives can be accessed in the experiment
+   file through the ``parent.prm['nIntervals']``, and ``parent.prm['nAlternatives']`` variables
+   respectively.
 
--  ``hasISIBox``
 
--  ``hasAlternativesChooser``
+-  **``hasAltReps``** This option can be used to change the way in which the 
+   stimuli are presented in the "classic" "Transformed Up-Down" paradigm or 
+   other adaptive paradigms. In these paradigms, normally there is an 
+   observation interval containing the target stimulus (comparison interval), 
+   and one or more other intervals containing the non-target stimuli (standard 
+   intervals). An alternative way to present the stimuli is to have an alternation
+   of the target and non-target stimuli (e.g. ABAB) in the comparison interval,
+   and a repetition of the non-target stimulus in the standard interval (AAAA)
+   [KingEtAl2013]_. If the ``hasAltReps`` option is enabled, there will be two
+   additional text boxes, ``Alternated (AB) Reps.`` and ``Alternated (AB) Reps. ISI (ms)``.
+   The first text box controls the number of times the alternated target and non-target
+   stimuli should be repeated, a value of zero corresponds to no alternation, that is
+   only a single stimulus (either the target, or the non target) is presented in each interval.
+   If the value is one, a single alternation will occur (AB), if the value is two, two alternations
+   occur (ABAB), and so on. The second text box controls the ISI between the stimuli
+   presented within an interval. The selected number of alternated repetitions, 
+   and the ISI between alternating stimuli can be accessed in the experiment file
+   through the ``parent.prm['altReps']``, and ``parent.prm['altRepsISI']`` variables
+   respectively. This is, however, not generally necessary, as the 
+   ``playRandomisedIntervals`` function automatically changes the way the stimuli
+   are presented according to these variables.
 
--  ``hasFeedback``
+-  **``hasFeedback``** This option controls whether the "Response Light" chooser has
+   a "Feedback" option or not. You may want to enable this option for all "objective"
+   experiments that have a clear "correct" response. You may want to disable this option
+   for "subjective" experiments, such as matching experiments, in which there is no
+   "correct" response.
 
--  ``hasIntervalLights``
+-  **``hasISIBox``** If this option is enabled, a box labelled ``ISI (ms)`` is
+   added. This is generally used to set the silent period between observation 
+   intervals in the "Transformed Up-Down" and similar adaptive procedures. 
+   Its value can be accessed in the experiment file through the 
+   ``parent.prm['isi']`` variable. However, normally this should not be
+   necessary because the ``playRandomisedIntervals`` function automatically
+   uses this value to set the silent period between observation intervals.
 
--  ``hasPreTrialInterval``
+-  **``hasNDifferencesChooser``** This option is useful in the 
+   "Multiple Constants 1-Interval 2-Alternatives Paradigm" to dinamically
+   change the number of experimental conditions. For example, if you have
+   a signal detection experiment in which a fixed number of signals (with
+   a constant amplitude) can occur, this option allows to choose the
+   number of conditions dinamically. If this option is enabled, a chooser
+   labelled ``No. Alternatives`` is added. The value selected can be accessed
+   through the ``par['nDifferences']`` variable in the 
+   ``select_default_parameters_`` function, and through the 
+   ``parent.prm['nDifferences']`` variable in the ``doTrial`` function.
 
--  ``hasAltReps``
+-  **``hasNTracksChooser``** This option can be used to dinamically change
+   the number of tracks in interleaved adaptive paradigms (e.g. "Transformed
+   Up-Down Interleaved). If enabled, a ``No. Tracks`` chooser is added.
+   The value selected can be accessed
+   through the ``par['nDifferences']`` variable in the 
+   ``select_default_parameters_`` function, and through the 
+   ``parent.prm['nDifferences']`` variable in the ``doTrial`` function.
 
- 
+-  **``hasPrecursorInterval``** If this option is enabled, a chooser controlling whether
+   a precursor interval should be presented or not is added. This chooser is labelled
+   ``Precursor Interval``. If this option is enabled, and the chooser is set to "Yes",
+   then a ``precursorStim`` sound needs to be passed to the ``playRandomisedIntervals``
+   function. This sound will be presented before each observation interval. 
+
+-  **``hasPostcursorInterval``** If this option is enabled, a chooser controlling whether
+   a postcursor interval should be presented or not is added. This chooser is labelled
+   ``Postcursor Interval``. If this option is enabled, and the chooser is set to "Yes",
+   then a ``postcursorStim`` sound needs to be passed to the ``playRandomisedIntervals``
+   function. This sound will be presented after each observation interval.
+
+-  **``hasPreTrialInterval``** If this option is enabled, a chooser controlling whether
+   a pre-trial interval should be presented or not is added. This chooser is labelled
+   ``Pre-Trial Interval``. If this option is enabled, and the chooser is set to "Yes",
+   then a ``preTrialStim`` sound needs to be passed to the ``playRandomisedIntervals``
+   function. This sound will be presented at the beginning of each trial. 
+
+
 .. _sec-par:
 
 Using ``par``
@@ -683,7 +787,18 @@ Using ``par``
   
    Illustrate the use of par
 
+.. _sec-play_sound_functions:
+
+
+The Play Sound Functions
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+  
+   Illustrate the functions to play sounds
+
 .. _sec-simulations:
+
 
 Simulations
 =============
