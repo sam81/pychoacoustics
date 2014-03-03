@@ -40,7 +40,6 @@ Contents:
    references
    fdl
 
-
 Indices and tables
 ==================
 
