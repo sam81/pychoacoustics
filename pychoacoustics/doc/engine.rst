@@ -17,8 +17,8 @@ On Linux systems ``pychoacoustics`` can either output sound (numpy
 arrays) directly to the soundcard, or write a ``wav`` file for each sound
 and call an external command to play it. Currently, sending
 sounds directly to the soundcard is possible only through the
-```alsaaudio`` <http://pyalsaaudio.sourceforge.net/>`_,
-or through the ```pyaudio`` <http://people.csail.mit.edu/hubert/pyaudio/>`_
+`alsaaudio <http://pyalsaaudio.sourceforge.net/>`_,
+or through the `pyaudio <http://people.csail.mit.edu/hubert/pyaudio/>`_
 Python modules. These modules are optional, and you need to install them 
 yourself to be able to use them. Note that I've experienced issues (occasional
 pops and crackles) with ``pyaudio`` on the hardware that I have tested.
@@ -50,28 +50,28 @@ menu and spelling out the name of the command in the box below.
 Sound Output on Windows
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   Update pyaudio info.
+The command that ``pychoacoustics`` uses by default on Windows is
+``winsound``. This command supports only 16-bit output. ``pychoacoustics``
+can also use ``pyaudio`` to output sound on Windows. ``pyaudio``,
+however, needs to be manually installed. ``pyaudio`` can use several
+Windows sound APIs, including MME, ASIO, and WASAPI. The ``pyaudio``
+binaries available on the official project
+`website <http://people.csail.mit.edu/hubert/pyaudio/support>`_ support
+only the MME API, which is limited to 16-bit output. ASIO and WASAPI
+on the other hand, can play sounds with full 24-bit resolution.
+In order to have ``pyaudio`` built with ASIO and/or WASAPI support
+you need to either build it from source, enabling these APIs (not for the
+faint of heart), or dowload the unoffical binaries made available by  Christoph Gohlke
+on his `website <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`_.
 
-Currently, on Windows systems ``pychoacoustics`` cannot output sounds
-directly to the soundcard. It writes instead a ``wav`` file and calls an
-external play commands to output the sound. The recommended play command
-is ``winsound``. This command supports only 16-bit output.
-
-Other possible play commands are ``play``, which is provided by
+Other possible play commands on Windows are ``play``, which is provided by
 `sox <http://sox.sourceforge.net/>`_ and ``sndfile-play``, which is
 provided by the `libsndfile <http://www.mega-nerd.com/libsndfile/>`_
 tools. These programs need to be installed by the user. If they are in
-the system path, ``pychoacoustics`` will detect them automatically. I am
-not aware of any freely available play command that can output 24-bit
-sound in Windows. Portaudio could be a used, and the Python bindings
-provided by pyaudio have been recently ported to Python 3. I have not
-tried this solution (and don’t have much time to do it), if you want to
-try it, you need to be aware that in order to get 24-bit audio,
-portaudio should be probably compiled with ASIO support, and compiling
-portaudio on Windows with ASIO support is quite a complicated process.
+the system path, ``pychoacoustics`` will detect them automatically. 
 Note that external media players with a graphical user interface (like
 foobar2000) may not work well with ``pychoacoustics``.
+
 
 .. _sec-parameters_files:
 
@@ -184,11 +184,11 @@ stored in the “\_table” file.
 
 In order to obtain the “\_res” and “\_table\_processed” session summary
 files you need to use the appropriate functions that can be accessed
-from the “File” menu. Alternatively, you can check the “Process results
-when finished” checkbox in the “Preferences” window to let
-``pychoacoustics`` automatically process these files at the end of an
+from the “File” menu. Alternatively, you can check the “Proc. Res.” 
+and “Proc. Res. Table” checkboxes in the control window (see :ref:`sec-gui_left_panel`)
+to let ``pychoacoustics`` automatically process these files at the end of an
 experimental session. If processing the result files manually, choose
-“Process Results” from the “File” menu, to convert a block summary file
+“Process Results (Plain Text)” from the “File” menu, to convert a block summary file
 into a “\_res” session summary file. Choose “Process Results Table” to
 convert a block summary table file into a “\_table\_processed” session
 summary file. You can choose to
@@ -283,11 +283,11 @@ trial).
    
    Add description of result files for the various paradigms.
 
-Adaptive and Weighted Up/Down Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Transformed Up-Down, Weighted Up-Down, and PEST Result Files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Adaptive and Weighted Up/Down Interleaved Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Transformed Up-Down, and Weighted Up-Down Interleaved Result Files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Constant m-Intervals n-Alternatives Result Files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -303,6 +303,9 @@ Multiple Constants 1-Intervals 2-Alternatives Result Files
 
 Constant 1-Pair Same/Different Result Files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Odd One Out Result Files
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. _sec-shuffling:
 
