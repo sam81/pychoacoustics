@@ -452,31 +452,13 @@ class responseBox(QMainWindow):
             self.correctInterval = numpy.random.randint(1, nIntervals)
             self.correctButton = self.correctInterval 
         soundList = []
-        if self.prm['altReps'] < 1:
-            for i in range(nIntervals):
-                if i == self.correctInterval:
-                    soundList.append(stimulusCorrect)
-                else:
-                    foo = stimulusIncorrect.pop()
-                    soundList.append(foo)
-        else:
-            altRepsSilence = makeSilence(self.prm['altRepsISI'], self.prm['allBlocks']['sampRate'])
-            sCorr = concatenate((stimulusIncorrect[random.choice(range(len(stimulusIncorrect)))], altRepsSilence, stimulusCorrect), axis=0)
-            sCorrCopy = copy.copy(sCorr)
-            for i in range(nIntervals):
-                #this assumes the incorrectSounds are all the same, and picks the first one
-                #not sure what to do if this were not the case
-                if i == self.correctInterval:
-                    for j in range((self.prm['altReps']-1)):
-                        sCorr = concatenate((sCorr, altRepsSilence, sCorrCopy), axis=0)
-                    soundList.append(sCorr)
-                else:
-                    foo = stimulusIncorrect.pop()
-                    sIncorr = concatenate((foo, altRepsSilence, foo), axis=0)
-                    sIncorrCopy = copy.copy(sIncorr)
-                    for j in range((self.prm['altReps']-1)):
-                        sIncorr = concatenate((sIncorr, altRepsSilence, sIncorrCopy), axis=0)
-                    soundList.append(sIncorr)
+        
+        for i in range(nIntervals):
+            if i == self.correctInterval:
+                soundList.append(stimulusCorrect)
+            else:
+                foo = stimulusIncorrect.pop()
+                soundList.append(foo)
 
         nLight = 0
         if self.prm["warningInterval"] == True:

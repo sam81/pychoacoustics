@@ -1,7 +1,7 @@
 .. autosummary:: 
    :toctree: _autosummary
-   
-   sndlib 
+  
+   sndlib
 
 *****************************************
 :mod:`sndlib` -- Sound Synthesis Library

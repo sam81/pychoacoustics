@@ -163,10 +163,10 @@ The “block summary” results file has no special suffix, and contains
 summaries for each experimental block that was run. The “full” results
 file has a “\_full” suffix and contains information for each single
 trial. The “block summary” results file can be usually processed to
-obtain a “session summary” results file with a “\_res” suffix, that
-contains summaries for an entire experimental session. In this file the
-results are averaged across different blocks that have exactly the same
-parameters.
+obtain a “session summary” results file with a “\_res” suffix.
+The "session summary" file contains summaries for an entire 
+experimental session. In this file the results are averaged across 
+different blocks that have exactly the same parameters.
 
 All these files are human and machine-readable, but they are not very
 machine-friendly for data analysis. That is, they can require quite a
@@ -177,7 +177,7 @@ For this reason, ``pychoacoustics`` outputs also a “block summary table”
 result file with a “\_table” suffix that is written in a tabular format,
 and contains summaries for each experimental block that was run. This
 file can be further processed to obtain a “session summary table”
-results file with a “\_table\_processed” suffix, that contains summaries
+results file with a “\_table\_processed” suffix. The "session summary table" file contains summaries
 for an entire experimental session. In this file the results are
 averaged across different blocks that have exactly the same parameters
 stored in the “\_table” file.
@@ -197,6 +197,11 @@ process all blocks present in the file (default action), the last
 condition). Once you have selected the file to process and specified the
 blocks to process you can click “Run!” to perform the processing.
 
+.. _sec-tabular-results-files:
+
+Tabular Results Files
+^^^^^^^^^^^^^^^^^^^^^
+
 The tabular results files are comma separated value (csv) text files
 that can be opened in a text file editor or a spreadsheet application.
 The separator used by default is the semicolon “;”, but another
@@ -204,11 +209,6 @@ separator can be specified in the ``pychoacoustics`` preferences window.
 When processing block summary table files, make sure that the csv
 separator in the “Process Results Table” window matches the separator
 used in the file.
-
-.. _sec-tabular-results-files:
-
-Tabular Results Files
-^^^^^^^^^^^^^^^^^^^^^
 
 The tabular result files contain a number of default columns, that are specific 
 to the paradigm used in the experiment (e.g., threshold, number of trials etc…). 
@@ -251,33 +251,63 @@ Not all is lost, because the “level” parameter will be nonetheless
 stored in the “block summary” file, but you will need more work before
 you can process your results with a statistical software package.
 
-.. _sec-log_results_files: 
 
-Log Results Files
-^^^^^^^^^^^^^^^^^
+General Structure of Result Files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``pychoacoustics`` automatically saves backup copies of the “block
-summary” and “full” files in a backup folder. On Linux systems this
-folder is located in
-
-::
-
-    ~/.local/share/data/pychoacoustics/data_backup
-
-on Windows systems it is located in
+The "block summary" result files, as well as the "full" result files
+have a header for each experimental block. The start of the header
+is marked by a line of 54 asterixes, an example is given below:
 
 ::
 
-    C:\\Users\username\.local\share\data\pychoacoustics\data_backup
+   *******************************************************
+   pychoacoustics version: 0.2.73; build date: 01-Mar-2014 09:45
+   Experiment version: pychoacoustics.default_experiments.audiogram 0.2.73 01-Mar-2014 09:45
+   Block Number: 1
+   Block Position: 1
+   Start: 01/03/2014 14:07
 
-where ``username`` is your account login name. A separate file is saved
-for each block of trials that is run. These files are named according to
-the date and time at which the blocks were started (the naming follows
-the YY-MM-DD-HH-MM-SS scheme). Unlike other results files, that are
-written only once a block of trials has been completed, these log
-results files get written as soon as information is available (e.g., a
-new line in the “full” results file is written at the end of each
-trial).
+the header gives info on the software version, the experiment
+version (if available), the block storage point (Block Number), 
+the block presentation position (Block Position), and has a 
+timestamp marking the date and time at which the block was started.
+
+After the header, there is a "parameters section" listing the 
+experimental parameters. The beginning and the end of this section
+are marked by a line of 54 plus signs, a snippet of the parameters
+section is shown below:
+
+::
+
+   +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+   Experiment Label: 
+   Session Label: 
+   Condition Label: 
+   Experiment:    Audiogram
+   Listener: L3     
+   [ ... ]
+   Response Light Duration (ms): 500
+   ISI:           500
+
+   Ear: Right
+   Signal Type: Sinusoid
+   Frequency (Hz):  1000
+   Level (dB SPL):  50
+   Duration (ms):  180
+   Ramps (ms):  10
+   +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+After the parameters section there is a "results section". 
+The specific structure of this section
+depends on the procedure (e.g. transformed up-down, or constant
+1-interval 2-alternatives) used.
+The specific structure of the result section for each type of
+procedure will be illustrated later on. The result section ends
+invariably with a timestamp marking the date and time at which the
+experimental block was completed, and a further line indicating
+how much time the listener took to complete the block of trials.
 
 .. todo::
    
@@ -306,6 +336,36 @@ Constant 1-Pair Same/Different Result Files
 
 Odd One Out Result Files
 ~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. _sec-log_results_files: 
+
+Log Results Files
+^^^^^^^^^^^^^^^^^
+
+``pychoacoustics`` automatically saves backup copies of the “block
+summary” and “full” files in a backup folder. On Linux systems this
+folder is located in
+
+::
+
+    ~/.local/share/data/pychoacoustics/data_backup
+
+on Windows systems it is located in
+
+::
+
+    C:\\Users\username\.local\share\data\pychoacoustics\data_backup
+
+where ``username`` is your account login name. A separate file is saved
+for each block of trials that is run. These files are named according to
+the date and time at which the blocks were started (the naming follows
+the YY-MM-DD-HH-MM-SS scheme). Unlike other results files, that are
+written only once a block of trials has been completed, these log
+results files get written as soon as information is available (e.g., a
+new line in the “full” results file is written at the end of each
+trial).
+
+
 
 .. _sec-shuffling:
 

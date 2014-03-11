@@ -33,8 +33,8 @@ def initialize_level_discrimination(prm):
                                         QApplication.translate("","PEST","")]
 
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
-                             "hasIntervalLights"]
-    prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Arithmetic","")
+                             "hasIntervalLights", "hasAltReps"]
+    prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Geometric","")
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2
     prm[exp_name]["execString"] = "level_discrimination"
@@ -131,9 +131,11 @@ def get_fields_to_hide_level_discrimination(parent):
         parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("Noise Low Frequency (Hz)")),
                                     parent.prm['fieldLabel'].index(parent.tr("Noise High Frequency (Hz)")),
                                     parent.prm['fieldLabel'].index(parent.tr("Pedestal Spectrum Level (dB SPL)"))])
-        parent.fieldsToHide.extend([parent.prm['fieldLabel'].index(parent.tr("Pedestal Level (dB SPL)"))])
+        parent.fieldsToHide.extend([parent.prm['fieldLabel'].index(parent.tr("Pedestal Level (dB SPL)")),
+                                    parent.prm['fieldLabel'].index(parent.tr("Frequency (Hz)"))])
     elif parent.chooser[parent.prm['chooserLabel'].index(parent.tr("Signal Type:"))].currentText() == parent.tr("Sinusoid"):
-        parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("Pedestal Level (dB SPL)"))])
+        parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("Pedestal Level (dB SPL)")),
+                                    parent.prm['fieldLabel'].index(parent.tr("Frequency (Hz)"))])
         parent.fieldsToHide.extend([parent.prm['fieldLabel'].index(parent.tr("Noise Low Frequency (Hz)")),
                                     parent.prm['fieldLabel'].index(parent.tr("Noise High Frequency (Hz)")),
                                     parent.prm['fieldLabel'].index(parent.tr("Pedestal Spectrum Level (dB SPL)"))])
@@ -185,7 +187,9 @@ def doTrial_level_discrimination(parent):
     channel   = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Ear:"))]
     sndType   = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Signal Type:"))]
     noiseType = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Additional Noise:"))]
-    
+
+    altReps = parent.prm['altReps']
+    altRepsISI = parent.prm['altRepsISI']
     lowStop = 0.8
     highStop = 1.2
     
@@ -209,33 +213,42 @@ def doTrial_level_discrimination(parent):
         correctLevel = 10*log10(10**(incorrectLevel/10) * (1 + 10**(parent.prm['adaptiveDifference']/10)))
            
        
-
-    if sndType == parent.tr("Noise"):
-            parent.stimulusCorrect = broadbandNoise(correctLevel, duration, ramps,
+    if altReps == 0:
+        nCorrectTones = 1
+        nIncorrectTones = parent.prm['nIntervals']-1
+    else:
+        nCorrectTones = altReps
+        nIncorrectTones = (parent.prm['nIntervals']-1)*altReps*2 + altReps
+    correctTones = []; incorrectTones = []
+  
+    for nt in range(nCorrectTones):
+        if sndType == parent.tr("Noise"):
+            thisStim = broadbandNoise(correctLevel, duration, ramps,
                                                     channel, parent.prm['sampRate'],
                                                     parent.prm['maxLevel'])
-            parent.stimulusCorrect = fir2Filt(noiseLoFreq*lowStop, noiseLoFreq,
+            thisStim = fir2Filt(noiseLoFreq*lowStop, noiseLoFreq,
                                               noiseHiFreq, noiseHiFreq*highStop,
-                                              parent.stimulusCorrect, parent.prm['sampRate'])                           
-    
-    elif sndType == parent.tr("Sinusoid"):
-        parent.stimulusCorrect = pureTone(frequency, phase, correctLevel, duration,
-                                          ramps, channel, parent.prm['sampRate'],
-                                          parent.prm['maxLevel'])
-    if noiseType != parent.tr("None"):
-        noise = broadbandNoise(noise1SpectrumLevel, duration + ramps*6, 0, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
-        if noiseType == parent.tr("Pink"):
-            noise = makePink(noise, parent.prm['sampRate'])
-        noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq, noise1HighFreq*highStop, noise, parent.prm['sampRate'])
-        noise2 = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise)
-        noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq, noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
-        noise = noise1 + noise2
-        noise = noise[0:parent.stimulusCorrect.shape[0],]
-        noise = gate(ramps, noise, parent.prm['sampRate'])
-        parent.stimulusCorrect = parent.stimulusCorrect + noise
+                                              thisStim, parent.prm['sampRate'])                           
+
+        elif sndType == parent.tr("Sinusoid"):
+            thisStim = pureTone(frequency, phase, correctLevel, duration,
+                                              ramps, channel, parent.prm['sampRate'],
+                                              parent.prm['maxLevel'])
+        if noiseType != parent.tr("None"):
+            noise = broadbandNoise(noise1SpectrumLevel, duration + ramps*6, 0, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+            if noiseType == parent.tr("Pink"):
+                noise = makePink(noise, parent.prm['sampRate'])
+            noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq, noise1HighFreq*highStop, noise, parent.prm['sampRate'])
+            noise2 = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise)
+            noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq, noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
+            noise = noise1 + noise2
+            noise = noise[0:thisStim.shape[0],]
+            noise = gate(ramps, noise, parent.prm['sampRate'])
+            thisStim = thisStim + noise
+        correctTones.append(thisStim)
             
-    parent.stimulusIncorrect = []
-    for i in range((parent.prm['nIntervals']-1)):
+
+    for i in range(nIncorrectTones):
         if sndType == parent.tr("Noise"):
             thisSnd = broadbandNoise(incorrectLevel, duration, ramps,
                                      channel, parent.prm['sampRate'],
@@ -254,10 +267,27 @@ def doTrial_level_discrimination(parent):
             noise2 = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise)
             noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq, noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
             noise = noise1 + noise2
-            noise = noise[0:parent.stimulusCorrect.shape[0],]
+            noise = noise[0:thisSnd.shape[0],]
             noise = gate(ramps, noise, parent.prm['sampRate'])
             thisSnd = thisSnd + noise
-        
-        parent.stimulusIncorrect.append(thisSnd)
 
+        incorrectTones.append(thisSnd)
+
+    if altReps == 0:
+        parent.stimulusCorrect = correctTones[0]
+        parent.stimulusIncorrect = incorrectTones
+    else:
+        altRepsSilence = makeSilence(altRepsISI, parent.prm['sampRate'])
+        sCorr = concatenate((incorrectTones.pop(), altRepsSilence, correctTones.pop()), axis=0)
+        for i in range(altReps-1):
+            sCorr = concatenate((sCorr, altRepsSilence, incorrectTones.pop(), altRepsSilence, correctTones.pop()), axis=0)
+        parent.stimulusCorrect = sCorr
+
+        parent.stimulusIncorrect = []
+        for i in range(parent.prm['nIntervals']-1):
+            sIncorr = concatenate((incorrectTones.pop(), altRepsSilence, incorrectTones.pop()), axis=0)
+            for i in range(altReps-1):
+                sIncorr = concatenate((sIncorr, altRepsSilence, incorrectTones.pop(), altRepsSilence, incorrectTones.pop()), axis=0)
+            parent.stimulusIncorrect.append(sIncorr)
+  
     parent.playRandomisedIntervals(parent.stimulusCorrect, parent.stimulusIncorrect)

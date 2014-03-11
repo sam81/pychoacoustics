@@ -52,4 +52,8 @@ os.system(cmd3)
 #move into package build directory
 os.chdir("pychoacoustics-" + ver)
 #build the package
+#For Debian
 os.system("dpkg-buildpackage -F")
+
+#For Launchpad Upload
+#os.system("debuild -S -sa")

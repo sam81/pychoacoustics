@@ -79,4 +79,4 @@ PEST
 This paradigm implements the PEST adaptive procedure described
 by [TaylorAndCreelman1967]_. However, beware that support for 
 this procedure in ``pychoacoustics`` is very experimental.
-Its implementation has recevived very little testing.
+Its implementation has received very little testing.

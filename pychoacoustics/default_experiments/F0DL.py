@@ -464,6 +464,9 @@ def doTrial_F0DL(parent):
     dichoticDifference = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Dichotic Difference:"))]
     roving             = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Roving:"))]
     harmonicity        = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Harmonicity:"))]
+    altReps = parent.prm['altReps']
+    altRepsISI = parent.prm['altRepsISI']
+    
     if dichoticDifference in [parent.tr("IPD Stepped"), parent.tr("IPD Linear"), parent.tr("IPD Random")]:
         dichoticDifferenceValue = ipd
     elif dichoticDifference == parent.tr("ITD"):
@@ -496,7 +499,6 @@ def doTrial_F0DL(parent):
 
     corrF0 = F0 + (F0 * parent.prm['adaptiveDifference']) / 100
     stretchHz = (corrF0*stretch)/100 
-    
     if fixSpectrumLevel == parent.tr("Fixed") and harmType in [parent.tr("Sinusoid"), parent.tr("Narrowband Noise")]:
         corrHarmonicLevel = harmonicLevel + 10 * log10(corrF0/F0)
         corrSpectrumLevel = spectrumLevel + 10 * log10(corrF0/F0) #for narrowband noise
@@ -529,77 +531,158 @@ def doTrial_F0DL(parent):
     corrLowHarm = int(corrLowHarm); corrHighHarm = int(corrHighHarm);
     lowHarm = int(lowHarm); highHarm = int(highHarm);
 
-    if harmType == parent.tr("Sinusoid"):
-        parent.stimulusCorrect = complexTone(corrF0, harmPhase, corrLowHarm, corrHighHarm, stretch, corrHarmonicLevel, duration, ramp, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
-    elif harmType == parent.tr("Narrowband Noise"):
-        parent.stimulusCorrect = harmComplFromNarrowbandNoise(corrF0, corrLowHarm, corrHighHarm, corrSpectrumLevel, bandwidth, bandwidthUnit, stretch, duration, ramp, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
-    elif harmType == parent.tr("IRN"):
-        delay = 1/corrF0
-        parent.stimulusCorrect = makeIRN(delay, gain, iterations, irnConfiguration, spectrumLevel, duration, ramp, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
-    elif harmType == parent.tr("Huggins Pitch"):
-        parent.stimulusCorrect = makeHugginsPitch(corrF0, corrLowHarm, corrHighHarm, spectrumLevel, bandwidth,
-                                                  bandwidthUnit, dichoticDifference, dichoticDifferenceValue,
-                                                  hugginsPhaseRel, stretch, "White", duration, ramp, parent.prm['sampRate'],
-                                                  parent.prm['maxLevel'])
-        channel = parent.tr("Both")
-        
-
-    parent.stimulusCorrect = fir2Filt(lowFreq*lowStopComplex, lowFreq, highFreq, highFreq*highStopComplex, parent.stimulusCorrect, parent.prm['sampRate'])
-        
-    if noiseType != parent.tr("None"):
-        if channel == parent.tr("Odd Left") or channel == parent.tr("Odd Right"): #alternating harmonics, different noise to the two ears
-            noiseR = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0, parent.tr("Right"), parent.prm['sampRate'], parent.prm['maxLevel'])
-            noiseL = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0, parent.tr("Left"), parent.prm['sampRate'], parent.prm['maxLevel'])
-            noise = noiseR + noiseL
-        else:
-            noise = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
-        if noiseType == parent.tr("Pink"):
-            noise = makePink(noise, parent.prm['sampRate'])
-        noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq, noise1HighFreq*highStop, noise, parent.prm['sampRate'])
-        noise2 = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise)
-        noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq, noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
-        noise = noise1 + noise2
-        noise = noise[0:parent.stimulusCorrect.shape[0],]
-        noise = gate(ramp, noise, parent.prm['sampRate'])
-        parent.stimulusCorrect = parent.stimulusCorrect + noise 
-
-
-    parent.stimulusIncorrect = []
-    for i in range((parent.prm['nIntervals']-1)):
+    if altReps == 0:
+        nCorrectTones = 1
+        nIncorrectTones = parent.prm['nIntervals']-1
+    else:
+        nCorrectTones = altReps
+        nIncorrectTones = (parent.prm['nIntervals']-1)*altReps*2 + altReps
+    correctTones = []; incorrectTones = []
+  
+    for nt in range(nCorrectTones):
         if harmType == parent.tr("Sinusoid"):
-            thisSnd = complexTone(F0, harmPhase, lowHarm, highHarm, stretch, harmonicLevel, duration, ramp, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+            thisTone = complexTone(corrF0, harmPhase, corrLowHarm,
+                                   corrHighHarm, stretch,
+                                   corrHarmonicLevel, duration, ramp,
+                                   channel, parent.prm['sampRate'],
+                                   parent.prm['maxLevel'])
+
         elif harmType == parent.tr("Narrowband Noise"):
-            thisSnd = harmComplFromNarrowbandNoise(F0, lowHarm, highHarm, spectrumLevel, bandwidth, bandwidthUnit, stretch, duration, ramp, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+            thisTone = harmComplFromNarrowbandNoise(corrF0,
+                                                    corrLowHarm,
+                                                    corrHighHarm,
+                                                    corrSpectrumLevel,
+                                                    bandwidth,
+                                                    bandwidthUnit,
+                                                    stretch, duration,
+                                                    ramp, channel,
+                                                    parent.prm['sampRate'],
+                                                    parent.prm['maxLevel'])
         elif harmType == parent.tr("IRN"):
-            delay = 1/F0
-            thisSnd = makeIRN(delay, gain, iterations, irnConfiguration, spectrumLevel, duration, ramp, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+            delay = 1/corrF0
+            thisTone = makeIRN(delay, gain, iterations, irnConfiguration,
+                               spectrumLevel, duration, ramp, channel,
+                               parent.prm['sampRate'], parent.prm['maxLevel'])
         elif harmType == parent.tr("Huggins Pitch"):
-            thisSnd = makeHugginsPitch(F0, lowHarm, highHarm, spectrumLevel, bandwidth, bandwidthUnit,
-                                       dichoticDifference, dichoticDifferenceValue, hugginsPhaseRel, stretch, "White",
-                                       duration, ramp, parent.prm['sampRate'], parent.prm['maxLevel'])
+            thisTone = makeHugginsPitch(corrF0, corrLowHarm, corrHighHarm,
+                                        spectrumLevel, bandwidth,
+                                        bandwidthUnit, dichoticDifference,
+                                        dichoticDifferenceValue,
+                                        hugginsPhaseRel, stretch, "White",
+                                        duration, ramp, parent.prm['sampRate'],
+                                        parent.prm['maxLevel'])
             channel = parent.tr("Both")
-    
-        thisSnd = fir2Filt(lowFreq*lowStopComplex, lowFreq, highFreq, highFreq*highStopComplex, thisSnd, parent.prm['sampRate'])
+
+
+        thisTone = fir2Filt(lowFreq*lowStopComplex, lowFreq, highFreq,
+                            highFreq*highStopComplex, thisTone,
+                            parent.prm['sampRate'])
 
         if noiseType != parent.tr("None"):
             if channel == parent.tr("Odd Left") or channel == parent.tr("Odd Right"): #alternating harmonics, different noise to the two ears
-                noiseR = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0, parent.tr("Right"), parent.prm['sampRate'], parent.prm['maxLevel'])
-                noiseL = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0, parent.tr("Left"), parent.prm['sampRate'], parent.prm['maxLevel'])
+                noiseR = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                                        parent.tr("Right"), parent.prm['sampRate'],
+                                        parent.prm['maxLevel'])
+                noiseL = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                                        parent.tr("Left"), parent.prm['sampRate'],
+                                        parent.prm['maxLevel'])
                 noise = noiseR + noiseL
             else:
-                noise = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+                noise = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                                       channel, parent.prm['sampRate'],
+                                       parent.prm['maxLevel'])
+
             if noiseType == parent.tr("Pink"):
                 noise = makePink(noise, parent.prm['sampRate'])
-            noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq, noise1HighFreq*highStop, noise, parent.prm['sampRate'])
+            noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq,
+                              noise1HighFreq*highStop, noise, parent.prm['sampRate'])
             noise2 = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise)
-            noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq, noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
+            noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq,
+                              noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
+            noise = noise1 + noise2
+            noise = noise[0:thisTone.shape[0],]
+            noise = gate(ramp, noise, parent.prm['sampRate'])
+            thisTone = thisTone + noise 
+
+        correctTones.append(thisTone)
+
+    
+    for i in range(nIncorrectTones):
+        if harmType == parent.tr("Sinusoid"):
+            thisSnd = complexTone(F0, harmPhase, lowHarm, highHarm, stretch,
+                                  harmonicLevel, duration, ramp, channel,
+                                  parent.prm['sampRate'], parent.prm['maxLevel'])
+        elif harmType == parent.tr("Narrowband Noise"):
+            thisSnd = harmComplFromNarrowbandNoise(F0, lowHarm, highHarm,
+                                                   spectrumLevel, bandwidth,
+                                                   bandwidthUnit, stretch,
+                                                   duration, ramp, channel,
+                                                   parent.prm['sampRate'],
+                                                   parent.prm['maxLevel'])
+        elif harmType == parent.tr("IRN"):
+            delay = 1/F0
+            thisSnd = makeIRN(delay, gain, iterations, irnConfiguration,
+                              spectrumLevel, duration, ramp, channel,
+                              parent.prm['sampRate'], parent.prm['maxLevel'])
+        elif harmType == parent.tr("Huggins Pitch"):
+            thisSnd = makeHugginsPitch(F0, lowHarm, highHarm, spectrumLevel,
+                                       bandwidth, bandwidthUnit,
+                                       dichoticDifference,
+                                       dichoticDifferenceValue,
+                                       hugginsPhaseRel, stretch, "White",
+                                       duration, ramp, parent.prm['sampRate'],
+                                       parent.prm['maxLevel'])
+            channel = parent.tr("Both")
+    
+        thisSnd = fir2Filt(lowFreq*lowStopComplex, lowFreq, highFreq,
+                           highFreq*highStopComplex, thisSnd, parent.prm['sampRate'])
+
+        if noiseType != parent.tr("None"):
+            if channel == parent.tr("Odd Left") or channel == parent.tr("Odd Right"): #alternating harmonics, different noise to the two ears
+                noiseR = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                                        parent.tr("Right"),
+                                        parent.prm['sampRate'],
+                                        parent.prm['maxLevel'])
+                noiseL = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                                        parent.tr("Left"), parent.prm['sampRate'],
+                                        parent.prm['maxLevel'])
+                noise = noiseR + noiseL
+            else:
+                noise = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                                       channel, parent.prm['sampRate'],
+                                       parent.prm['maxLevel'])
+            if noiseType == parent.tr("Pink"):
+                noise = makePink(noise, parent.prm['sampRate'])
+            noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq,
+                              noise1HighFreq*highStop, noise, parent.prm['sampRate'])
+            noise2 = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise)
+            noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq,
+                              noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
             noise = noise1 + noise2
             noise = noise[0:thisSnd.shape[0],]
             noise = gate(ramp, noise, parent.prm['sampRate'])
             thisSnd = thisSnd + noise 
 
-        parent.stimulusIncorrect.append(thisSnd)
+        incorrectTones.append(thisSnd)
 
-                    
+
+    if altReps == 0:
+        parent.stimulusCorrect = correctTones[0]
+        parent.stimulusIncorrect = incorrectTones
+    else:
+        altRepsSilence = makeSilence(altRepsISI, parent.prm['sampRate'])
+        sCorr = concatenate((incorrectTones.pop(), altRepsSilence, correctTones.pop()), axis=0)
+        for i in range(altReps-1):
+            sCorr = concatenate((sCorr, altRepsSilence, incorrectTones.pop(), altRepsSilence, correctTones.pop()), axis=0)
+        parent.stimulusCorrect = sCorr
+
+        parent.stimulusIncorrect = []
+        for i in range(parent.prm['nIntervals']-1):
+            sIncorr = concatenate((incorrectTones.pop(), altRepsSilence, incorrectTones.pop()), axis=0)
+            for i in range(altReps-1):
+                sIncorr = concatenate((sIncorr, altRepsSilence, incorrectTones.pop(), altRepsSilence, incorrectTones.pop()), axis=0)
+            parent.stimulusIncorrect.append(sIncorr)
+
+
     parent.prm['additional_parameters_to_write'][0] = parent.currF0
     parent.playRandomisedIntervals(parent.stimulusCorrect, parent.stimulusIncorrect)
