@@ -705,7 +705,7 @@ The Experiment “opts”
 
 
 -  **``hasAltReps``** This option can be used to change the way in which the 
-   stimuli are presented in the "classic" "Transformed Up-Down" paradigm or 
+   stimuli are presented in the "Transformed Up-Down" paradigm or 
    other adaptive paradigms. In these paradigms, normally there is an 
    observation interval containing the target stimulus (comparison interval), 
    and one or more other intervals containing the non-target stimuli (standard 
@@ -722,9 +722,8 @@ The Experiment “opts”
    presented within an interval. The selected number of alternated repetitions, 
    and the ISI between alternating stimuli can be accessed in the experiment file
    through the ``parent.prm['altReps']``, and ``parent.prm['altRepsISI']`` variables
-   respectively. This is, however, not generally necessary, as the 
-   ``playRandomisedIntervals`` function automatically changes the way the stimuli
-   are presented according to these variables.
+   respectively. The setup of the alternated repetitions must be done within each
+   experiment file.
 
 -  **``hasFeedback``** This option controls whether the "Response Light" chooser has
    a "Feedback" option or not. You may want to enable this option for all "objective"
