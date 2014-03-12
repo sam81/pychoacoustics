@@ -38,6 +38,17 @@ def main(argv):
     f = open('setup.py', 'w')
     f.writelines(ln)
     f.close()
+
+    f = open('setup-pyside.py', 'r')
+    ln = f.readlines()
+    f.close()
+    for i in range(len(ln)):
+        if ln[i].strip().split('=')[0].strip() == "version":
+            ln[i] = '    version="' + gittag +'",\n'
+
+    f = open('setup.py', 'w')
+    f.writelines(ln)
+    f.close()
     
 
     f = open('pychoacoustics/_version_info.py', 'r')
