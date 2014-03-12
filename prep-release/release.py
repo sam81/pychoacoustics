@@ -46,7 +46,7 @@ def main(argv):
         if ln[i].strip().split('=')[0].strip() == "version":
             ln[i] = '    version="' + gittag +'",\n'
 
-    f = open('setup.py', 'w')
+    f = open('setup-pyside.py', 'w')
     f.writelines(ln)
     f.close()
     
