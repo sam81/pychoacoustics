@@ -153,7 +153,10 @@ class phonesDialog(QDialog):
         self.stopCalibButton.clicked.connect(self.onClickStopCalibButton)
         self.stopCalibButton.setIcon(QIcon.fromTheme("media-playback-stop", QIcon(":/media-playback-stop")))
         self.calibSizer.addWidget(self.stopCalibButton, n, 0, 1, 2)
-
+        if self.prm['pref']['sound']['playCommand'] in ["alsaaudio","pyaudio"]:
+            self.stopCalibButton.show()
+        else:
+            self.stopCalibButton.hide()
         
         buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
         buttonBox.accepted.connect(self.accept)

@@ -409,7 +409,7 @@ class threadedExternalAudioPlayer(QThread):
         
         self.start()
     def run(self):
-        self.audioManager.playSound(self.sound, self.sampRate, self.bits, self.cmd, self.writewav, self.fName)
+        self.audioManager.playSound(self.sound, self.sampRate, self.bits, self.writewav, self.fName)
      
     def __del__(self):
         #the thread will finish before being terminated
