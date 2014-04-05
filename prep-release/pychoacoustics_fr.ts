@@ -551,47 +551,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_phones.py" line="171"/>
+        <location filename="../pychoacoustics/dialog_edit_phones.py" line="174"/>
         <source>Edit Phones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_phones.py" line="301"/>
+        <location filename="../pychoacoustics/dialog_edit_phones.py" line="304"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_phones.py" line="298"/>
+        <location filename="../pychoacoustics/dialog_edit_phones.py" line="301"/>
         <source>Only one label can be renamed at a time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_phones.py" line="190"/>
+        <location filename="../pychoacoustics/dialog_edit_phones.py" line="193"/>
         <source>New name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_phones.py" line="204"/>
+        <location filename="../pychoacoustics/dialog_edit_phones.py" line="207"/>
         <source>Input Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_phones.py" line="212"/>
+        <location filename="../pychoacoustics/dialog_edit_phones.py" line="215"/>
         <source>Only one item can be edited at a time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_phones.py" line="203"/>
+        <location filename="../pychoacoustics/dialog_edit_phones.py" line="206"/>
         <source>Level:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_phones.py" line="278"/>
+        <location filename="../pychoacoustics/dialog_edit_phones.py" line="281"/>
         <source>Only one phone left. Cannot remove!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_phones.py" line="301"/>
+        <location filename="../pychoacoustics/dialog_edit_phones.py" line="304"/>
         <source>Please, select a phone in the table</source>
         <translation type="unfinished"></translation>
     </message>

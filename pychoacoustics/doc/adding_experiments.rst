@@ -3,7 +3,7 @@ Writing your own Experiments
 *****************************
 
 First Steps
-==============
+===========
 
 ``pychoacoustics`` can be easily extended with new experiments written by users. User-written experiments need to reside in a Python package called ``labexp``, and this package needs to be in your Python path. No worries if you're not familiar with packaging Python software, we'll go through the process of adding a new experiment step by step.
 

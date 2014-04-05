@@ -7,11 +7,11 @@ The ``pychoacoustics`` Engine
 .. _sec-sound_output:
 
 Sound Output
-------------
+============
 
 
 Sound Output on Linux
-^^^^^^^^^^^^^^^^^^^^^
+---------------------
 
 On Linux systems ``pychoacoustics`` can either output sound (numpy
 arrays) directly to the soundcard, or write a ``wav`` file for each sound
@@ -48,7 +48,7 @@ another program by choosing “custom” in the “Play Command” drop-down
 menu and spelling out the name of the command in the box below.
 
 Sound Output on Windows
-^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------
 
 The command that ``pychoacoustics`` uses by default on Windows is
 ``winsound``. This command supports only 16-bit output. ``pychoacoustics``
@@ -76,7 +76,7 @@ foobar2000) may not work well with ``pychoacoustics``.
 .. _sec-parameters_files:
 
 Parameters Files
-----------------
+================
 
 Parameters files are plain text files, that can be modified through 
 ``pychoacoustics`` or through a text editor. They contain a header 
@@ -141,7 +141,7 @@ separator. Each entry has to be written on a single line.
 .. _sec-results_files:
 
 Results Files
--------------
+=============
 
 ``pychoacoustics`` outputs several types of
 results files. If you name your results file “myres”, the following
@@ -200,7 +200,7 @@ blocks to process you can click “Run!” to perform the processing.
 .. _sec-tabular-results-files:
 
 Tabular Results Files
-^^^^^^^^^^^^^^^^^^^^^
+---------------------
 
 The tabular results files are comma separated value (csv) text files
 that can be opened in a text file editor or a spreadsheet application.
@@ -214,7 +214,8 @@ The tabular result files contain a number of default columns, that are specific
 to the paradigm used in the experiment (e.g., threshold, number of trials etc…). 
 These result files also contain a "condition" column, where the "Condition Label"
 is written (see :ref:`sec-gui_left_panel`). It is a good practice to assign 
-a condition label as it makes it easy to sort the results as a function of the experimental condition.
+a condition label as it makes it easy to sort the results as a function of the 
+experimental condition.
 Columns with additional parameters can be stored in these files. 
 Several text fields and choosers in ``pychoacoustics`` have what we will call
 ``inSummary`` check boxes. Some of these are shown marked by ellipses 
@@ -252,8 +253,8 @@ stored in the “block summary” file, but you will need more work before
 you can process your results with a statistical software package.
 
 
-General Structure of Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Structure of Result Files
+-------------------------
 
 The "block summary" result files, as well as the "full" result files
 have a header for each experimental block. The start of the header
@@ -309,38 +310,150 @@ invariably with a timestamp marking the date and time at which the
 experimental block was completed, and a further line indicating
 how much time the listener took to complete the block of trials.
 
+The "session summary" result files have a section listing the
+parameters used for each experimental condition. After this
+section, a summary statistic for each block of the given experimental
+condition is presented, followed by a summary statistic for all the blocks.
+
+
 .. todo::
    
    Add description of result files for the various paradigms.
 
 Transformed Up-Down, Weighted Up-Down, and PEST Result Files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Block Summary
+"""""""""""""
+
+The results section of a transformed up-down procedure are shown below
+(weighted up-down and PEST result files have the same structure):
+
+::
+
+   42.00 62.00 58.00 66.00 | 60.00 64.00 58.00 62.00 54.00 56.00 50.00 52.00 | 
+
+   turnpointMean = 57.00, s.d. =  4.90 
+   B1 = 30, B2 = 22
+
+the first line lists the turnpoints; the first ``|`` sign separates 
+the initial turnpoints, which are not included in the threshold estimate, 
+from the other turnpoints. The second line shows the threshold estimate 
+(``turnpointMean``) and its standard deviation. The final line lists the
+number of times each button was pressed by the listener. In the above case
+the listener pressed button one 30 times and button two 22 times. This may be useful
+to detect any biases in button choice. The results above were collected using
+an arithmetic procedure. When the results are obtained with a geometric procedure
+the second line of the results section labels the threshold estimate as 
+``geometric turnpointMean``, as shown in the example below:
+
+::
+
+   0.08  5.00  1.25 80.00 | 10.00 40.00 10.00 200.00 25.00 200.00  6.25 25.00 | 
+
+   geometric turnpointMean = 29.82, s.d. =  3.75 
+   B1 = 22, B2 = 40
+
+
+Full Result Files
+"""""""""""""""""
+
+A snippet from a transformed up-down ``full`` result file is shown
+below:
+
+::
+
+   50.0; 1; 
+   50.0; 1; 
+   46.0; 1; 
+   46.0; 1; 
+   42.0; 1; 
+   42.0; 0; 
+   46.0; 0; 
+   50.0; 1; 
+
+each row represents a trial, the first colum shows the value of the
+adaptive difference for that trial (e.g. the level of the signal in
+a signal detection task), while the second column indicates whether
+the response was correct (``1``), or incorrect (``0``). Note that 
+depending on the experiment, additional variables may be stored in
+a ``full`` result file. For example, in the ``F0DL`` experiment, which
+has an option to use either a fixed, or a roving F0, the F0 for the
+trial is listed in the third column of the ``full`` result file, as shown
+below:
+
+::
+
+   20.0; 1; 408.58891957189206 ;
+   20.0; 1; 409.72312872085564 ;
+   5.0; 1; 474.15423804320403 ;
+   5.0; 1; 404.43567907073964 ;
+   1.25; 1; 456.6493420827598 ;
+   1.25; 1; 406.34270314673716 ;
+
+Session Summary Files
+"""""""""""""""""""""
+
+The result section of a transformed up-down procedure are shown
+below:
+
+::
+
+   57.00
+   44.00
+
+   Mean = 50.50 
+   SE =  6.50 
+
+the session included two blocks of trials, and the first two lines
+list the threshold estimate for each of these blocks. The following
+lines present the mean and the stadandard error of these threshold
+estimates.
+
+Table Block Summary Result Files
+""""""""""""""""""""""""""""""""
+
+The first two columns of a transformed up-down, weighted up-down or PEST
+block summary table result file contain the threshold estimate for each block of trials,
+and its standard deviation. The header of the column with the threshold
+estimate is ``threshold_arithmetic`` if the procedure was arithmetic,
+and ``threshold_geometric`` if the procedure was geometric.
+
+Table Session Summary Result Files
+""""""""""""""""""""""""""""""""""
+
+The first two columns of a transformed up-down, weighted up-down or PEST
+session summary table result file contain the across-blocks mean threshold estimate for each 
+experimental condition, and its standard error. The header of the column with the threshold
+estimate is ``threshold_arithmetic`` if the procedure was arithmetic,
+and ``threshold_geometric`` if the procedure was geometric.
+
 
 Transformed Up-Down, and Weighted Up-Down Interleaved Result Files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Constant m-Intervals n-Alternatives Result Files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Multiple Constants m-Intervals n-Alternatives Result Files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Constant 1-Intervals 2-Alternatives Result Files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Multiple Constants 1-Intervals 2-Alternatives Result Files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Constant 1-Pair Same/Different Result Files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Odd One Out Result Files
-~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. _sec-log_results_files: 
 
 Log Results Files
-^^^^^^^^^^^^^^^^^
+-----------------
 
 ``pychoacoustics`` automatically saves backup copies of the “block
 summary” and “full” files in a backup folder. On Linux systems this
@@ -370,7 +483,7 @@ trial).
 .. _sec-shuffling:
 
 Block Presentation Position
----------------------------
+===========================
 
 
 We will define the serial position at which a block is presented during
@@ -467,7 +580,7 @@ is equivalent to:
 .. _sec-os_commands:
 
 OS Commands
------------
+===========
 
 
 ``pychoacoustics`` can be instructed to run operating system (OS)
@@ -530,7 +643,7 @@ these special strings is given in Table :ref:`tab-pycho_variables`
 
 
 Preferences Settings
---------------------
+====================
 
 All the settings that can be manipulated in the
 “Preferences” dialog, as well as the “Phones” and “Experimenters”
@@ -560,7 +673,7 @@ write down all important info before removing the preferences file.
 .. _sec-response_mode:
 
 Response Mode
--------------
+=============
 
 ``pychoacoustics`` was designed to run interactive experiments in which
 a listener hears some stimuli and gives a response through a button or
