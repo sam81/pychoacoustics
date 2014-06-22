@@ -40,7 +40,7 @@ elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QApplication
     matplotlib_available = False
-import ctypes
+
 from .utils_redirect_stream_to_file import*
 
 if platform.system() == "Linux":
@@ -122,27 +122,14 @@ def set_global_parameters(prm):
     prm['backupDirectoryName'] = os.path.expanduser("~") +'/.local/share/data/pychoacoustics/data_backup/'
     if os.path.exists(prm['backupDirectoryName']) == False:
         os.makedirs(prm['backupDirectoryName'])
-    prm["pactypesRunning"] = False
+
     prm['appData']['alsaaudioAvailable'] = alsaaudioAvailable
     if matplotlib_available and pandas_available:
         prm['appData']['plotting_available'] = True
     else:
         prm['appData']['plotting_available'] = False
-    if platform.system() == 'Linux':
-        prm["paSndoutLibPath"] = os.path.dirname(__file__) + '/sndout.so'
-    elif platform.system() == 'Windows':
-        prm["paSndoutLibPath"] = os.path.dirname(__file__) + '/sndout.dll'
-    else:
-        prm["paSndoutLibPath"] = os.path.dirname(__file__) + '/sndout.so' #don't know what's the name of shared lib for MAC or BSD
-
     
-    try:
-        lib = ctypes.cdll.LoadLibrary(prm["paSndoutLibPath"])
-        pactypesAvailable = True
-        prm['appData']['pactypesAvailable'] = pactypesAvailable
-    except:
-        pactypesAvailable = False
-        prm['appData']['pactypesAvailable'] = pactypesAvailable
+ 
     if platform.system() == 'Windows':
         prm['appData']['available_play_commands'] = ["winsound"]
         if pyaudioAvailable == True:
@@ -169,9 +156,16 @@ def set_global_parameters(prm):
             prm['appData']['available_play_commands'].append("play")
         if os.system("which sndfile-play") == 0:
             prm['appData']['available_play_commands'].append("sndfile-play")
-        if pactypesAvailable == True:
-            prm['appData']['available_play_commands'].append("pactypes")
       
+
+        prm['appData']['available_play_commands'].append(QApplication.translate("","custom",""))
+    elif platform.system() == 'Darwin': #that should be the MAC
+        prm['appData']['available_play_commands'] = ["afplay"]
+        if pyaudioAvailable == True:
+            prm['appData']['available_play_commands'].append("pyaudio")
+            prm['appData']['pyaudioAvailable'] = True
+        else:
+            prm['appData']['pyaudioAvailable'] = False
 
         prm['appData']['available_play_commands'].append(QApplication.translate("","custom",""))
     else:
@@ -321,8 +315,6 @@ def def_pref(prm):
         prm["pref"]["sound"]["alsaaudioDevice"] = "default"
     if pyaudioAvailable == True:
         prm["pref"]["sound"]["pyaudioDevice"] = 0
-    #if pactypesAvailable == True:
-    prm["pref"]["sound"]["pactypesDevice"] = 1
 
     #PHONES
     prm["phones"] = {}

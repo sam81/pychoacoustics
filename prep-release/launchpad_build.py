@@ -5,7 +5,7 @@ import os, platform, time
 
 pparev = input("ppa revision number: ")
 pparev = '-ppa'+str(pparev)
-pparev = ''
+#pparev = ''
 series = input("distro series: ")
 
 thisDir = os.getcwd()

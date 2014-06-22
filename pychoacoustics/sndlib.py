@@ -146,8 +146,8 @@ def AMTone(frequency, AMFreq, AMDepth, phase, level, duration, ramp, channel, fs
     nRamp = int(round(ramp * fs))
     nTot = nSamples + (nRamp * 2)
 
-    timeAll = arange(0., nTot) / fs
-    timeRamp = arange(0., nRamp) 
+    timeAll = arange(0, nTot) / fs
+    timeRamp = arange(0, nRamp) 
 
     snd = zeros((nTot, 2))
 

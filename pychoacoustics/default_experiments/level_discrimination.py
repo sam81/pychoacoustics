@@ -68,9 +68,15 @@ def select_default_parameters_level_discrimination(parent, par):
     
     fieldLabel.append(parent.tr("Delta L (dB)"))
     field.append(10)
+
+    fieldLabel.append(parent.tr("Delta L Limit (dB)"))
+    field.append(100)
     
     fieldLabel.append(parent.tr("Weber Fraction (dB)"))
     field.append(10)
+
+    fieldLabel.append(parent.tr("Weber Fraction Limit (dB)"))
+    field.append(100)
     
     fieldLabel.append(parent.tr("Duration (ms)"))
     field.append(180)
@@ -121,11 +127,15 @@ def select_default_parameters_level_discrimination(parent, par):
 
 def get_fields_to_hide_level_discrimination(parent):
     if parent.chooser[parent.prm['chooserLabel'].index(parent.tr("JND:"))].currentText() == parent.tr("Delta L"):
-        parent.fieldsToHide = [parent.prm['fieldLabel'].index(parent.tr("Weber Fraction (dB)"))]
-        parent.fieldsToShow = [parent.prm['fieldLabel'].index(parent.tr("Delta L (dB)"))]
+        parent.fieldsToHide = [parent.prm['fieldLabel'].index(parent.tr("Weber Fraction (dB)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Weber Fraction Limit (dB)"))]
+        parent.fieldsToShow = [parent.prm['fieldLabel'].index(parent.tr("Delta L (dB)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Delta L Limit (dB)"))]
     elif parent.chooser[parent.prm['chooserLabel'].index(parent.tr("JND:"))].currentText() == parent.tr("Weber Fraction"):
-        parent.fieldsToHide = [parent.prm['fieldLabel'].index(parent.tr("Delta L (dB)"))]
-        parent.fieldsToShow = [parent.prm['fieldLabel'].index(parent.tr("Weber Fraction (dB)"))]
+        parent.fieldsToHide = [parent.prm['fieldLabel'].index(parent.tr("Delta L (dB)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Delta L Limit (dB)"))]
+        parent.fieldsToShow = [parent.prm['fieldLabel'].index(parent.tr("Weber Fraction (dB)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Weber Fraction Limit (dB)"))]
 
     if parent.chooser[parent.prm['chooserLabel'].index(parent.tr("Signal Type:"))].currentText() == parent.tr("Noise"):
         parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("Noise Low Frequency (Hz)")),
@@ -175,6 +185,8 @@ def doTrial_level_discrimination(parent):
     noiseHiFreq = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Noise High Frequency (Hz)"))]
     incorrectLevelSin = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Pedestal Level (dB SPL)"))]
     incorrectLevelNoise = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Pedestal Spectrum Level (dB SPL)"))]
+    deltaLLimit = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Delta L Limit (dB)"))]
+    weberFractionLimit = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Weber Fraction Limit (dB)"))]
     duration = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Duration (ms)"))] 
     ramps = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Ramps (ms)"))]
     noise1LowFreq       = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Noise 1 Low Frequency (Hz)"))]
@@ -197,10 +209,17 @@ def doTrial_level_discrimination(parent):
         incorrectLevel = incorrectLevelSin
     elif sndType == parent.tr("Noise"):
         incorrectLevel = incorrectLevelNoise
-    
+
+ 
     if parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("JND:"))] == parent.tr("Delta L"):
+        if parent.prm['adaptiveDifference'] < -deltaLLimit:
+            parent.prm['adaptiveDifference'] = -deltaLLimit
+        elif  parent.prm['adaptiveDifference'] > deltaLLimit:
+            parent.prm['adaptiveDifference'] = deltaLLimit
         correctLevel = incorrectLevel + parent.prm['adaptiveDifference']
     if parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("JND:"))] == parent.tr("Weber Fraction"):
+        if  parent.prm['adaptiveDifference'] > weberFractionLimit:
+            parent.prm['adaptiveDifference'] = weberFractionLimit
         # correct level computation for Weber:
         # L = level
         # I = 10*(L/10)
@@ -211,7 +230,8 @@ def doTrial_level_discrimination(parent):
         #and the level of the comparison
         # 10*log10(I+DI) = 10*log10(10^(L/10) * (1 + 10^(DW/10)))
         correctLevel = 10*log10(10**(incorrectLevel/10) * (1 + 10**(parent.prm['adaptiveDifference']/10)))
-           
+
+    print(parent.prm['adaptiveDifference'])
        
     if altReps == 0:
         nCorrectTones = 1

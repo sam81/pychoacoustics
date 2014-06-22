@@ -202,14 +202,14 @@ class preferencesDialog(QDialog):
                 self.pyaudioDeviceLabel.hide()
                 self.pyaudioDeviceChooser.hide()
 
-        if self.parent().prm["appData"]["alsaaudioAvailable"] == True or self.parent().prm["appData"]["pyaudioAvailable"] == True or self.parent().prm["appData"]["pactypesAvailable"] == True:
+        if self.parent().prm["appData"]["alsaaudioAvailable"] == True or self.parent().prm["appData"]["pyaudioAvailable"] == True:
             self.bufferSizeLabel = QLabel(self.tr('Buffer Size (samples):'))
             soundPrefGrid.addWidget(self.bufferSizeLabel, n, 0)
             self.bufferSizeWidget =  QLineEdit(self.currLocale.toString(self.tmpPref["pref"]["sound"]["bufferSize"]))
             self.bufferSizeWidget.setValidator(QIntValidator(self))
             soundPrefGrid.addWidget(self.bufferSizeWidget, n, 1)
             n = n+1
-            if self.tmpPref['pref']['sound']['playCommandType'] not in ["alsaaudio", "pyaudio", "pactypes"]:
+            if self.tmpPref['pref']['sound']['playCommandType'] not in ["alsaaudio", "pyaudio"]:
                 self.bufferSizeLabel.hide()
                 self.bufferSizeWidget.hide()
 
@@ -440,16 +440,9 @@ class preferencesDialog(QDialog):
                 self.pyaudioDeviceLabel.hide()
                 self.pyaudioDeviceChooser.hide()
 
-        if self.parent().prm["appData"]["pactypesAvailable"] == True:
-            if foo == "pactypes":
-                self.pactypesDeviceLabel.show()
-                self.pactypesDeviceChooser.show()
-            else:
-                self.pactypesDeviceLabel.hide()
-                self.pactypesDeviceChooser.hide()
 
-        if self.parent().prm["appData"]["alsaaudioAvailable"] == True or self.parent().prm["appData"]["pyaudioAvailable"] == True or self.parent().prm["appData"]["pactypesAvailable"] == True:
-            if foo in ["alsaaudio", "pyaudio", "pactypes"]:
+        if self.parent().prm["appData"]["alsaaudioAvailable"] == True or self.parent().prm["appData"]["pyaudioAvailable"] == True:
+            if foo in ["alsaaudio", "pyaudio"]:
                 self.bufferSizeLabel.show()
                 self.bufferSizeWidget.show()
             else:
@@ -500,10 +493,8 @@ class preferencesDialog(QDialog):
             self.tmpPref['pref']['sound']['alsaaudioDevice'] = self.alsaaudioDeviceChooser.currentText()
         if self.parent().prm["appData"]["pyaudioAvailable"] == True:
             self.tmpPref['pref']['sound']['pyaudioDevice'] =  self.pyaudioDeviceListIdx[self.pyaudioDeviceChooser.currentIndex()]
-        if self.parent().prm["appData"]["pactypesAvailable"] == True:
-            self.tmpPref['pref']['sound']['pactypesDevice'] =  self.audioManager.pactypesDeviceListIdx[self.pactypesDeviceChooser.currentIndex()]
         self.tmpPref['pref']['sound']['wavmanager'] = str(self.wavmanagerChooser.currentText())
-        if self.parent().prm["appData"]["alsaaudioAvailable"] == True or self.parent().prm["appData"]["pyaudioAvailable"] == True or self.parent().prm["appData"]["pactypesAvailable"] == True:
+        if self.parent().prm["appData"]["alsaaudioAvailable"] == True or self.parent().prm["appData"]["pyaudioAvailable"] == True:
             self.tmpPref['pref']['sound']['bufferSize'] = self.currLocale.toInt(self.bufferSizeWidget.text())[0]
         self.tmpPref['pref']['sound']['defaultSampleRate'] = self.samplerateWidget.text()
         self.tmpPref['pref']['sound']['defaultNBits'] = self.nbitsChooser.currentText()
@@ -601,11 +592,9 @@ class preferencesDialog(QDialog):
             self.alsaaudioDeviceChooser.setCurrentIndex(self.alsaaudioDeviceChooser.findText(self.tmpPref['pref']['sound']['alsaaudioDevice']))
         if self.parent().prm["appData"]["pyaudioAvailable"] == True:
             self.pyaudioDeviceChooser.setCurrentIndex(self.pyaudioDeviceListIdx.index(self.tmpPref['pref']['sound']['pyaudioDevice']))
-        if self.parent().prm["appData"]["pactypesAvailable"] == True:
-            self.pactypesDeviceChooser.setCurrentIndex(self.audioManager.pactypesDeviceListIdx.index(self.tmpPref['pref']['sound']['pactypesDevice']))
         self.wavmanagerChooser.setCurrentIndex(self.wavmanagerChooser.findText(self.tmpPref['pref']['sound']['wavmanager']))
         self.playCommandWidget.setText(self.tmpPref['pref']['sound']['playCommand'])
-        if self.parent().prm["appData"]["alsaaudioAvailable"] == True or self.parent().prm["appData"]["pyaudioAvailable"] == True or self.parent().prm["appData"]["pactypesAvailable"] == True:
+        if self.parent().prm["appData"]["alsaaudioAvailable"] == True or self.parent().prm["appData"]["pyaudioAvailable"] == True:
             self.bufferSizeWidget.setText(self.currLocale.toString(self.tmpPref['pref']['sound']['bufferSize']))
         self.samplerateWidget.setText(self.tmpPref['pref']['sound']['defaultSampleRate'])
         self.nbitsChooser.setCurrentIndex(self.nbitsChooser.findText(self.tmpPref['pref']['sound']['defaultNBits']))

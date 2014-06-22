@@ -33,7 +33,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="262"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="256"/>
         <source>Ask</source>
         <translation type="unfinished"></translation>
     </message>
@@ -43,7 +43,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="263"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="257"/>
         <source>Real Listener</source>
         <translation type="unfinished"></translation>
     </message>
@@ -58,97 +58,97 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="319"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="313"/>
         <source>custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="194"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="188"/>
         <source>System Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="302"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="296"/>
         <source>en</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="188"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="182"/>
         <source>it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="189"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="183"/>
         <source>fr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="190"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="184"/>
         <source>es</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="191"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="185"/>
         <source>el</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="303"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="297"/>
         <source>US</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="196"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="190"/>
         <source>GB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="198"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="192"/>
         <source>IT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="199"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="193"/>
         <source>CH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="200"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="194"/>
         <source>FR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="201"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="195"/>
         <source>CA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="203"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="197"/>
         <source>ES</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="204"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="198"/>
         <source>BO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="205"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="199"/>
         <source>CL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="207"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="201"/>
         <source>GR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="208"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="202"/>
         <source>CY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="350"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="342"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -266,7 +266,7 @@
 <context>
     <name>@default</name>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="714"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="703"/>
         <source>pychoacoustics test e-mail</source>
         <translation type="unfinished"></translation>
     </message>
@@ -294,7 +294,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="783"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="772"/>
         <source>e-mail sent successfully</source>
         <translation type="unfinished"></translation>
     </message>
@@ -609,7 +609,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="629"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="618"/>
         <source>custom</source>
         <translation type="unfinished"></translation>
     </message>
@@ -769,32 +769,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="480"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="473"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="660"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="649"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="484"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="477"/>
         <source>Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="574"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="565"/>
         <source>Username invalid. Disabling sending e-mails.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="581"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="572"/>
         <source>SMTP server name invalid. Disabling sending e-mails.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="660"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="649"/>
         <source>There are unsaved changes. Apply Changes?</source>
         <translation type="unfinished"></translation>
     </message>

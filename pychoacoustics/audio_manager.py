@@ -27,7 +27,7 @@ elif pyqtversion == -4:
     from PySide.QtCore import QThread
 elif pyqtversion == 5:
     from PyQt5.QtCore import QThread
-import ctypes, sys, time
+import sys, time
 
 if platform.system() == "Windows":
     import winsound
