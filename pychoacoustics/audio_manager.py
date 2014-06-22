@@ -72,7 +72,7 @@ class audioManager():
         except:
             pass
 
-        try:#if paManager was open close it
+        try: #if paManager was open close it
             self.paManager.terminate() #actually closing the stream introduces offset clicks!
         except:
             pass

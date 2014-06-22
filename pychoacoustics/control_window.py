@@ -72,6 +72,12 @@ class pychControlWin(QMainWindow):
         QMainWindow.__init__(self, parent)
         self.prm = prm
         self.audioManager = audioManager(self)
+        self.executerThread1 = commandExecuter1(self)
+        if len(self.prm["pref"]["general"]["startupCommand"]) > 0:
+            try:
+                self.executerThread1.executeCommand([self.prm["pref"]["general"]["startupCommand"]])
+            except:
+                pass
         #
         self.prm['version'] = __version__
         self.prm['builddate'] = pychoacoustics_builddate
@@ -3306,3 +3312,12 @@ class dropFrame(QFrame):
 
 
   
+class commandExecuter1(QThread):
+    def __init__(self, parent):
+        QThread.__init__(self, parent)
+    def executeCommand(self, cmd):
+        self.cmd = cmd
+        self.start()
+    def run(self):
+        for i in range(len(self.cmd)):
+            os.system(self.cmd[i])

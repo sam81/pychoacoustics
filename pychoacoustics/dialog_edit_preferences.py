@@ -140,6 +140,13 @@ class preferencesDialog(QDialog):
         self.recursionLimitWidget.setValidator(QIntValidator(self))
         appPrefGrid.addWidget(self.recursionLimitWidget, n, 1)
         n = n+1
+
+        n = n+1
+        self.startupCommandLabel = QLabel(self.tr('Execute command at startup:'))
+        appPrefGrid.addWidget(self.startupCommandLabel, n, 0)
+        self.startupCommandWidget = QLineEdit(self.tmpPref["pref"]["general"]["startupCommand"])
+        appPrefGrid.addWidget(self.startupCommandWidget, n, 1)
+        n = n+1
         
         self.appPrefWidget.setLayout(appPrefGrid)
         self.appPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
@@ -486,6 +493,7 @@ class preferencesDialog(QDialog):
         self.tmpPref['pref']['general']['OFFTrigger'] = self.currLocale.toInt(self.OFFTriggerWidget.text())[0]
         self.tmpPref['pref']['general']['triggerDur'] = self.currLocale.toDouble(self.triggerDurWidget.text())[0]
         self.tmpPref['pref']['general']['maxRecursionDepth'] = self.currLocale.toInt(self.recursionLimitWidget.text())[0]
+        self.tmpPref['pref']['general']['startupCommand'] = self.startupCommandWidget.text()
         
         self.tmpPref['pref']['sound']['playCommand'] = self.tr(self.playCommandWidget.text())
         self.tmpPref['pref']['sound']['playCommandType'] = self.tr(self.playChooser.currentText())
@@ -586,6 +594,7 @@ class preferencesDialog(QDialog):
         self.OFFTriggerWidget.setText(self.currLocale.toString(self.tmpPref['pref']['general']['OFFTrigger']))
         self.triggerDurWidget.setText(self.currLocale.toString(self.tmpPref['pref']['general']['triggerDur']))
         self.recursionLimitWidget.setText(self.currLocale.toString(self.tmpPref['pref']['general']['maxRecursionDepth']))
+        self.startupCommandWidget.setText(self.tmpPref['pref']['general']['startupCommand'])
         
         self.playChooser.setCurrentIndex(self.playChooser.findText(self.tmpPref['pref']['sound']['playCommandType']))
         if self.parent().prm["appData"]["alsaaudioAvailable"] == True:

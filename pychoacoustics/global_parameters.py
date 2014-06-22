@@ -246,6 +246,7 @@ def def_pref(prm):
     prm["pref"]["general"]["preTrialSilence"] = "200"
     prm["pref"]["general"]["responseLightDuration"] = "500"
     prm["pref"]["general"]["maxRecursionDepth"] = sys.getrecursionlimit()
+    prm["pref"]["general"]["startupCommand"] = ""
    
 
     prm["pref"]["general"]["endMessageFiles"] = []

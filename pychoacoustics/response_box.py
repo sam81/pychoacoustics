@@ -127,6 +127,7 @@ class responseBox(QMainWindow):
         self.toggleBlockGauge.setShortcut('Ctrl+B')
         self.toggleBlockGauge.setCheckable(True)
         self.toggleBlockGauge.triggered.connect(self.onToggleBlockGauge)
+        #self.toggleBlockGauge.setChecked(True)
 
         #self.statusBar()
         self.fileMenu.addAction(self.toggleControlWin)
@@ -175,8 +176,8 @@ class responseBox(QMainWindow):
             self.toggleBlockGauge.setChecked(True)
             self.onToggleBlockGauge()
         else:
-            self.toggleBlockGauge.setChecked(False)
-            self.onToggleBlockGauge()
+           self.toggleBlockGauge.setChecked(False)
+           self.onToggleBlockGauge()
         self.rb.setLayout(self.rb_sizer)
         self.setCentralWidget(self.rb)
         self.show()
