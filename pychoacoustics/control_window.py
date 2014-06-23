@@ -208,6 +208,17 @@ class pychControlWin(QMainWindow):
         self.listenerTF.editingFinished.connect(self.onListenerChange)
         self.listenerTF.setWhatsThis(self.tr("Set a label (e.g. initials, or full name) for the listener being tested."))
         self.def_widg_sizer.addWidget(self.listenerTF, n, 1)
+
+        #min_pw_butt_size = 22
+        #min_pw_icon_size = 20
+        
+        #self.def_widg_sizer.setRowMinimumHeight(0, min_pw_butt_size)
+        self.soundCheckButton = QPushButton(self.tr("Sound check"), self)
+        self.soundCheckButton.clicked.connect(self.onClickSoundCheckButton)
+        self.soundCheckButton.setIcon(QIcon.fromTheme("media-playback-start", QIcon(":/media-playback-start")))
+        #self.soundCheckButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
+        self.soundCheckButton.setToolTip(self.tr("Test sound"))
+        self.def_widg_sizer.addWidget(self.soundCheckButton, n, 3)
         #EXPERIMENT LABEL
         n = n+1
         self.experimentLabelLabel = QLabel(self.tr('Experiment Label:'), self)
@@ -266,6 +277,8 @@ class pychControlWin(QMainWindow):
         self.def_widg_sizer.addWidget(self.pdfPlotCheckBox, n, 1)
         if self.prm['appData']['plotting_available'] == False:
             self.pdfPlotCheckBox.hide()
+
+            
         #EXPERIMENTER
         n = n+1
         self.experimenterLabel =  QLabel(self.tr("Experimenter:"), self)
@@ -3286,6 +3299,31 @@ class pychControlWin(QMainWindow):
         if self.procResTableCheckBox.isChecked() == False:
             self.winPlotCheckBox.setChecked(False)
             self.pdfPlotCheckBox.setChecked(False)
+
+    def onClickSoundCheckButton(self):
+        G= 196
+        Eb= 155.56
+        F= 174.61
+        D = 146.83
+        tUnit = 250
+        ramp = 10
+        level = 65
+        channel = "Both"
+        
+        for i in range(3):
+            thisSnd = complexTone(G, "Sine", 1, 10, 0, level, tUnit, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
+            self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
+
+        thisSnd = complexTone(Eb, "Sine", 1, 10, 0, level, tUnit*4, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
+        self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
+        time.sleep(0.2)
+        for i in range(3):
+            thisSnd = complexTone(F, "Sine", 1, 10, 0, level, tUnit, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
+            self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
+
+        thisSnd = complexTone(D, "Sine", 1, 10, 0, level, tUnit*4, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
+        self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
+        
 
 class dropFrame(QFrame):
     drpd = QtCore.Signal(str) 

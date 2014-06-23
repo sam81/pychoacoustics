@@ -65,12 +65,15 @@ class audioManager():
         self.initializeAudio()
             
     def initializeAudio(self):
+        print("Initializing audio")
         self.playCmd = self.prm['pref']['sound']['playCommand']
         
         try: #if alsaaudio device was open close it
+            print("Trying to close alsaaudio device")
             self.device.close()
+            print("Closing alsaaudio device")
         except:
-            pass
+            print(sys.exc_info())
 
         try: #if paManager was open close it
             self.paManager.terminate() #actually closing the stream introduces offset clicks!
@@ -80,8 +83,10 @@ class audioManager():
         if self.playCmd == "alsaaudio":
             try:
                 self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=self.prm["pref"]["sound"]["alsaaudioDevice"])
+                print("Opening preferred alsaaudio device")
             except:
                 self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=self.listAlsaaudioPlaybackCards()[0])
+                print("Opening first alsaaudio device")
         elif self.playCmd == "pyaudio":
             self.paManager = pyaudio.PyAudio()
             
@@ -297,6 +302,7 @@ class audioManager():
             except:
                 pass
         return playbackCardList
+        
     
 class threadedAudioPlayer(QThread):
     def __init__(self, parent):

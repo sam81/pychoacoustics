@@ -230,8 +230,6 @@ def doTrial_level_discrimination(parent):
         #and the level of the comparison
         # 10*log10(I+DI) = 10*log10(10^(L/10) * (1 + 10^(DW/10)))
         correctLevel = 10*log10(10**(incorrectLevel/10) * (1 + 10**(parent.prm['adaptiveDifference']/10)))
-
-    print(parent.prm['adaptiveDifference'])
        
     if altReps == 0:
         nCorrectTones = 1
