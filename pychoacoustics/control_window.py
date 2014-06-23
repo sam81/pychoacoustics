@@ -3306,22 +3306,24 @@ class pychControlWin(QMainWindow):
         F= 174.61
         D = 146.83
         tUnit = 250
-        ramp = 10
+        ramp = 25
         level = 65
         channel = "Both"
+        lowHarm = 2
+        highHarm = 2
         
         for i in range(3):
-            thisSnd = complexTone(G, "Sine", 1, 10, 0, level, tUnit, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
+            thisSnd = complexTone(G, "Sine", lowHarm, highHarm, 0, level, tUnit, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
             self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
 
-        thisSnd = complexTone(Eb, "Sine", 1, 10, 0, level, tUnit*4, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
+        thisSnd = complexTone(Eb, "Sine", lowHarm, highHarm, 0, level, tUnit*4, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
         self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
-        time.sleep(0.2)
+        time.sleep(tUnit/1000+ramp/1000*2)
         for i in range(3):
-            thisSnd = complexTone(F, "Sine", 1, 10, 0, level, tUnit, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
+            thisSnd = complexTone(F, "Sine", lowHarm, highHarm, 0, level, tUnit, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
             self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
 
-        thisSnd = complexTone(D, "Sine", 1, 10, 0, level, tUnit*4, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
+        thisSnd = complexTone(D, "Sine", lowHarm, highHarm, 0, level, tUnit*4, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
         self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
         
 
