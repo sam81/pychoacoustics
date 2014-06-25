@@ -52,30 +52,37 @@ command
 Installation on Windows
 -----------------------
 
-Installing the Dependencies 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Currently there is no binary installer for `pychoacoustics`
+on Windows. To use `pychoacoustics` on Windows you need to either
+install Python and all the modules on which `pychoacoustics` depends
+(PyQt4, numpy, scipy), or use a Python distribution such as Pyzo, which
+includes python and the dependencies. Using Pyzo is currently the easiest
+way to get `pychoacoustics` running quickly on Windows.
 
-The dependencies need to be installed manually (i.e. you need to download
-them from their respective websites). Make sure that you pick versions
-compatible with your architecture (64 or 32 bits), and compatible with
-you Python version. 
+Install with Pyzo
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Download the latest version on Pyzo and unpack it to a folder of your choice.
+Download the Windows source package (PySide) of `pychoacoustics`. Open the DOS
+command prompt and change directory to the folder where you unpacked PyZo, which 
+should contain the `python.exe` executable. For example:
+
+::
+
+   cd C:\Users\audiolab\Desktop\pyzo2013c
+
+once you're in the Pyzo folder, you can instruct the Pyzo Python interpreter
+to run `pychoacoustics` by calling python.exe followed by the path where the `pychoacoustics`
+main file is located. For example:
+
+::
+   
+   python.exe "C:\Users\audiolab\Desktop\pychoacoustics-pyside-0.2.81\pychoacoustics.pyw"
 
 
-Using the binary installer
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Note that a Windows binary installer may not be available for each 
-``pychoacoustics`` release, as I currently don't have enogh time to 
-build ``pychoacoustics`` on Windows. If a binary installer is not
-available for a given release, you'll have to install from source.
-If a Windows binary installer is 
-available for a specific ``pychoacoustics`` release, after installing 
-the dependencies (``python``, ``pyqt4``, ``numpy``, and
-``scipy``), simply double click on the ``pychoacoustics`` windows
-installer to start the installation procedure. Currently the installer
-does not provide an application launcher. There is, however, a file called
-``pychoacoustics-qt4.bat`` inside the source distribution of
-pychoacoustics that after some modifications can be used as a launcher.
+Currently there is not an application launcher. There is, however, a file called
+``pychoacoustics-launcher.bat`` inside the `scripts` folder of the source distribution of
+`pychoacoustics` that after some modifications can be used as a launcher.
 The content of the file is the following:
 
 ::
@@ -86,10 +93,28 @@ The content of the file is the following:
 The first statement ``C:\Python32\python`` is the path to the Python
 executable. The second statement is the path to the main file of the
 ``pychoacoustics`` app. You simply need to replace those two statements
-to reflect the Python installation on your system. You can place the ``.bat`` launcher wherever you want, for example on your ``Desktop`` folder. Simply double click on it, and ``pychoacoustics`` should start.
+to reflect the Python installation on your system. Following the example 
+above, you would change the contents of the file to:
 
-Installing from source
-~~~~~~~~~~~~~~~~~~~~~~
+::
+
+    C:\Users\audiolab\Desktop\pyzo2013c\python.exe "C:\Users\audiolab\Desktop\pychoacoustics-pyside-0.2.81\pychoacoustics.pyw"
+    %1 %2 %3 %4 %5 %6 %7 %8
+
+You can place the ``.bat`` 
+launcher wherever you want, for example on your ``Desktop`` folder. 
+Simply double click on it, and ``pychoacoustics`` should start.
+
+
+Install Python and the Dependencies manually
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Please, note that you will need Python version 3 or above to run `pychoacoustics`.
+
+
+To install the dependencies, download them from their respective websites. 
+Make sure that you pick versions compatible with your architecture (64 or 32 bits), 
+and compatible with you Python version. 
 
 After installing the dependencies, it is recommended to add the
 directory where the Python executable resides to the system ``PATH``. In
@@ -108,18 +133,8 @@ because it could corrupt your system. Simply append the name of the full
 path of the folder where Python is installed, at the end of the
 other entries.
 
-To install ``pychoacoustics`` from source, unpack the ``pychoacoustics``
-``.zip`` file containing the source code. Open a ``DOS`` shell and
-``cd`` to the directory where you unzipped pychoacoustics. The program
-can then be installed as a standard python package using the following
-command:
-
-::
-
-    python setup.py install
-
-If you have installed the dependencies, you can also use pychoacoustics
-without installing it. Open a ``DOS`` shell, ``cd`` to the directory
+To run ``pychoacoustics``, unpack the ``pychoacoustics``
+``.zip`` file containing the source code. Open a ``DOS`` shell, ``cd`` to the directory
 where you unzipped pychoacoustics and launch it with the following
 command:
 
@@ -127,10 +142,25 @@ command:
 
     python pychoacoustics.pyw
 
-As mentioned in the previous section, there is also a ``.bat`` launcher
-that can be used to launch ``pychoacoustics`` without needing to open a
-``DOS`` shell each time. You can read the previous section for further
-info.
+
+Currently there is not an application launcher. There is, however, a file called
+``pychoacoustics-launcher.bat`` inside the `scripts` folder of the source distribution of
+`pychoacoustics` that after some modifications can be used as a launcher.
+The content of the file is the following:
+
+::
+
+    C:\Python32\python "C:\Python32\site-packages\pychoacoustics.pyw" 
+    %1 %2 %3 %4 %5 %6 %7 %8
+
+The first statement ``C:\Python32\python`` is the path to the Python
+executable. The second statement is the path to the main file of the
+``pychoacoustics`` app. You simply need to replace those two statements
+to reflect the Python installation on your system. You can place the ``.bat`` 
+launcher wherever you want, for example on your ``Desktop`` folder. 
+Simply double click on it, and ``pychoacoustics`` should start.
+
+
 
 
 

@@ -1,7 +1,8 @@
 
 include pychoacoustics/*.py
 include pychoacoustics/default_experiments/*
-#include scripts/*
+include scripts/*
+include icons/*
 include translations/*
 #include postinstall.py
 include INSTALL.txt

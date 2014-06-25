@@ -98,7 +98,7 @@ def addSounds(snd1, snd2, delay, fs):
     return snd
 
 
-def AMTone(frequency, AMFreq, AMDepth, phase, level, duration, ramp, channel, fs, maxLevel):
+def AMTone(frequency, AMFreq, AMDepth, phase, AMPhase, level, duration, ramp, channel, fs, maxLevel):
     """
     Generate an amplitude modulated tone.
 
@@ -113,6 +113,8 @@ def AMTone(frequency, AMFreq, AMDepth, phase, level, duration, ramp, channel, fs
         corresponds to 100% modulation). 
     phase : float
         Starting phase in radians.
+    AMPhase : float
+        Starting AM phase in radians.
     level : float
         Tone level in dB SPL. 
     duration : float
@@ -133,8 +135,8 @@ def AMTone(frequency, AMFreq, AMDepth, phase, level, duration, ramp, channel, fs
        
     Examples
     --------
-    >>> snd = AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, level=65, duration=180,
-    ...     ramp=10, channel='Both', fs=48000, maxLevel=100)
+    >>> snd = AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=1.5*pi, level=65, 
+    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
     
     """
 
@@ -152,17 +154,17 @@ def AMTone(frequency, AMFreq, AMDepth, phase, level, duration, ramp, channel, fs
     snd = zeros((nTot, 2))
 
     if channel == "Right":
-        snd[0:nRamp, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp])) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
-        snd[nRamp:nRamp+nSamples, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples])) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
-        snd[nRamp+nSamples:len(timeAll), 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:len(timeAll)])) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:len(timeAll)] + phase)
+        snd[0:nRamp, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+AMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
+        snd[nRamp:nRamp+nSamples, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+AMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
+        snd[nRamp+nSamples:nTot, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+AMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + phase)
     elif channel == "Left":
-        snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp])) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
-        snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples])) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
-        snd[nRamp+nSamples:len(timeAll), 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:len(timeAll)])) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:len(timeAll)] + phase)
+        snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+AMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
+        snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+AMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
+        snd[nRamp+nSamples:nTot, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+AMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + phase)
     elif channel == "Both":
-        snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp])) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
-        snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples])) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
-        snd[nRamp+nSamples:len(timeAll), 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:len(timeAll)])) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:len(timeAll)] + phase)
+        snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+AMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
+        snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+AMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
+        snd[nRamp+nSamples:nTot, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+AMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + phase)
         snd[:, 1] = snd[:, 0] 
        
     return snd
