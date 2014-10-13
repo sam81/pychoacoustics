@@ -345,5 +345,5 @@ class categoricalPlot(QtGui.QMainWindow):
             return True
         else:
             return False
-        
-        
+
+

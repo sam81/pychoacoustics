@@ -207,6 +207,12 @@ def select_default_parameters_F0DL(parent, par):
     
     fieldLabel.append(parent.tr("Noise 2 S. Level (dB SPL)"))
     field.append(-200)
+
+    fieldLabel.append(parent.tr("Pure Tone Frequency (Hz)"))
+    field.append(600)
+
+    fieldLabel.append(parent.tr("Pure Tone Level (dB SPL)"))
+    field.append(50)
     
     fieldLabel.append(parent.tr("Stretch (%)"))
     field.append(0)
@@ -260,7 +266,10 @@ def select_default_parameters_F0DL(parent, par):
     chooserOptions.append([parent.tr("Harmonic"), parent.tr("Harmonic Stretched")])
     chooserLabel.append(parent.tr("Harmonicity:"))
     chooser.append(parent.tr("Harmonic"))
-   
+
+    chooserOptions.append([parent.tr("Yes"), parent.tr("No")])
+    chooserLabel.append(parent.tr("Fixed Pure Tone:"))
+    chooser.append(parent.tr("No"))
 
     prm = {}
   
@@ -414,6 +423,15 @@ def get_fields_to_hide_F0DL(parent):
     else:
         parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("Low Stop")), parent.prm['fieldLabel'].index(parent.tr("High Stop"))])
 
+    if parent.chooser[parent.prm['chooserLabel'].index(parent.tr("Fixed Pure Tone:"))].currentText() == parent.tr("No"):
+        parent.fieldsToHide.extend([parent.prm['fieldLabel'].index(parent.tr("Pure Tone Frequency (Hz)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Pure Tone Level (dB SPL)"))])
+        #parent.fieldsToShow.extend([])
+    elif parent.chooser[parent.prm['chooserLabel'].index(parent.tr("Fixed Pure Tone:"))].currentText() == parent.tr("Yes"):
+        parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("Pure Tone Frequency (Hz)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Pure Tone Level (dB SPL)"))])
+        #parent.fieldsToHide = []
+
 def doTrial_F0DL(parent):
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
@@ -450,6 +468,8 @@ def doTrial_F0DL(parent):
     noise2LowFreq       = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Noise 2 Low Freq. (Hz)"))]
     noise2HighFreq      = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Noise 2 High Freq. (Hz)"))]
     noise2SpectrumLevel = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Noise 2 S. Level (dB SPL)"))]
+    fixedPureToneFreq = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Pure Tone Frequency (Hz)"))]
+    fixedPureToneLev = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Pure Tone Level (dB SPL)"))]
     stretch             = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Stretch (%)"))]
 
     channel            = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Ear:"))]
@@ -464,6 +484,7 @@ def doTrial_F0DL(parent):
     dichoticDifference = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Dichotic Difference:"))]
     roving             = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Roving:"))]
     harmonicity        = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Harmonicity:"))]
+    fixedPureTone      = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Fixed Pure Tone:"))]
     altReps = parent.prm['altReps']
     altRepsISI = parent.prm['altRepsISI']
     
@@ -602,7 +623,13 @@ def doTrial_F0DL(parent):
             noise = noise1 + noise2
             noise = noise[0:thisTone.shape[0],]
             noise = gate(ramp, noise, parent.prm['sampRate'])
-            thisTone = thisTone + noise 
+            if fixedPureTone == "Yes":
+                pt = pureTone(fixedPureToneFreq, 0, fixedPureToneLev,
+                              duration, ramp, channel, parent.prm['sampRate'],
+                              parent.prm['maxLevel'])
+                thisTone = thisTone + noise + pt
+            else:
+                thisTone = thisTone + noise 
 
         correctTones.append(thisTone)
 
@@ -661,7 +688,13 @@ def doTrial_F0DL(parent):
             noise = noise1 + noise2
             noise = noise[0:thisSnd.shape[0],]
             noise = gate(ramp, noise, parent.prm['sampRate'])
-            thisSnd = thisSnd + noise 
+            if fixedPureTone == "Yes":
+                pt = pureTone(fixedPureToneFreq, 0, fixedPureToneLev,
+                              duration, ramp, channel, parent.prm['sampRate'],
+                              parent.prm['maxLevel'])
+                thisSnd = thisSnd + noise + pt
+            else:
+                thisSnd = thisSnd + noise 
 
         incorrectTones.append(thisSnd)
 
