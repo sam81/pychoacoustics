@@ -1349,6 +1349,482 @@ def camSinFMTone(fc, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, 
     return snd
 
 
+def fm_complex1(midF0, harmPhase, lowHarm, highHarm, level, duration, ramp, fmFreq, fmDepth, fmStartPhase, fmStartTime, fmDuration, levelAdj, channel, fs, maxLevel):
+    """
+    Synthetise a Complex Tone with an embedded FM starting and stopping
+    at a chosen time after the tone onset.
+
+    Parameters
+    ----------
+    midF0 : float
+        F0 at the FM zero crossing
+    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder'
+        Phase relationship between the partials of the complex tone.
+    lowHarm : int
+        Lowest harmonic component number.
+    highHarm : int
+        Highest harmonic component number.
+    level : float
+        The level of each partial in dB SPL.
+    duration : float
+        Tone duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    fmFreq : float
+        FM frequency in Hz.
+    fmDepth : float
+        FM depth in %
+    fmStartPhase : float
+        Starting phase of FM
+    fmStartTime : float
+        Start of FM in ms after start of tone
+    fmDuration : float
+        Duration of FM, in ms
+    levelAdj : logical
+        If `True`, scale the harmonic level so that for a complex
+        tone within a bandpass filter the overall level does not
+        change with F0 modulations.
+    channel: 'Right', 'Left', 'Both', 'Odd Right' or 'Odd Left'
+        Channel in which the tone will be generated. If 'channel'
+        if 'Odd Right', odd numbered harmonics will be presented
+        to the right channel and even number harmonics to the left
+        channel. The opposite is true if 'channel' is 'Odd Left'.
+    fs : int
+        Samplig frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
+    
+    """
+    
+    amp = 10**((level - maxLevel) / 20)
+    duration = duration / 1000 #convert from ms to sec
+    fmStartTime = fmStartTime / 1000  #convert from ms to sec
+    fmDuration = fmDuration / 1000  #convert from ms to sec
+    ramp = ramp / 1000
+    fmStartPnt = int(round(fmStartTime*fs)) #sample where FM starts
+    nFMSamples = int(round(fmDuration*fs)) #number of FM samples
+    nSamples = int(round(duration * fs))
+    nRamp = int(round(ramp * fs))
+    nTot = nSamples + (nRamp * 2)
+    
+    timeAll = arange(0, nTot) / fs
+    timeRamp = arange(0, nRamp)
+
+    timeAllSamp = arange(0, nTot) #time array not scaled by fs
+    time1 = timeAllSamp[0:fmStartPnt]
+    time2 = timeAllSamp[fmStartPnt:fmStartPnt+nFMSamples]
+    time3 = timeAllSamp[fmStartPnt+nFMSamples:nTot]
+    fmTime = arange(0, nFMSamples)
+
+    fmDepthHz = fmDepth*midF0/100 #convert from % to Hz
+    B = fmDepthHz / fmFreq #Beta
+    fmStartDepth = fmDepthHz*sin(fmStartPhase)
+
+    fmRadFreq = 2*pi*fmFreq/fs
+
+    midF0Rad = 2*pi*midF0/fs
+    startF0Rad = 2*pi*(midF0 + fmDepthHz*sin(fmStartPhase))/fs
+    endF0Rad = 2*pi*(midF0 + fmDepthHz*sin(fmStartPhase + nFMSamples*fmRadFreq)) / fs
+    
+    if channel == "Right" or channel == "Left" or channel == "Both":
+        tone = zeros(nTot)
+    elif channel == "Odd Left" or channel == "Odd Right":
+        toneOdd = zeros(nTot)
+        toneEven = zeros(nTot)
+    snd = zeros((nTot, 2))
+
+    #from Hartmann, WM (1997) Signals, sound, and sensation. New York: AIP Press
+    #angular frequency is the time derivative of the instantaneous phase
+    #if the angular frequency is given by a constant carrier `wc`, plus a
+    #sinusoidal deviation `dw`:
+    #eq.1: w(t) = wc + dw*cos(wm*t+phi)
+    #where `wm` is the modulation frequency, then the instantaneous phase is
+    #given by the integral of the above expression with respect to time
+    #eq.2: PHI(t) = wc*t + (dw/wm)*sin(wm*t+phi)
+    #that's the canonical form of the FM equation
+    #if instead of modulating the angular freq. in eq. 1 by `cos` we modulate it by `sin`:
+    #eq. 3: w(t) = wc + dw*(cos(wm*tphi)
+    #and the resulting integral is:
+    #eq.4: PHI(t) = wc*t - (dw/wm)*cos(wm*t+phi)
+    #this is what we're actually using below
+    
+    if harmPhase == "Sine":
+        for i in range(lowHarm, highHarm+1):
+            if channel == "Right" or channel == "Left" or channel == "Both":
+                tone[0:fmStartPnt] =  tone[0:fmStartPnt] + sin(startF0Rad*i*time1)
+                phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
+                phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                tone[fmStartPnt+nFMSamples:nTot] =  tone[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2)
+            elif channel == "Odd Left" or channel == "Odd Right":
+                if i%2 > 0: #odd harmonic
+                    toneOdd[0:fmStartPnt] = toneOdd[0:fmStartPnt] + sin(startF0Rad*i*time1)
+                    phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                    toneOdd[fmStartPnt:fmStartPnt+nFMSamples] = toneOdd[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
+                    phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                    toneOdd[fmStartPnt+nFMSamples:nTot] =  toneOdd[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2)
+                else:
+                    toneEven[0:fmStartPnt] = toneEven[0:fmStartPnt] + sin(startF0Rad*i*time1)
+                    phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                    toneEven[fmStartPnt:fmStartPnt+nFMSamples] = toneEven[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
+                    phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                    toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2)
+    elif harmPhase == "Cosine":
+        for i in range(lowHarm, highHarm+1):
+            if channel == "Right" or channel == "Left" or channel == "Both":
+                tone[0:fmStartPnt] =  tone[0:fmStartPnt] + cos(startF0Rad*i*time1)
+                phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] + cos(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
+                phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                tone[fmStartPnt+nFMSamples:nTot] =  tone[fmStartPnt+nFMSamples:nTot] + cos(i*endF0Rad*time3 + phaseCorrect2)
+            elif channel == "Odd Left" or channel == "Odd Right":
+                if i%2 > 0: #odd harmonic
+                    toneOdd[0:fmStartPnt] = toneOdd[0:fmStartPnt] + cos(startF0Rad*i*time1)
+                    phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                    toneOdd[fmStartPnt:fmStartPnt+nFMSamples] = toneOdd[fmStartPnt:fmStartPnt+nFMSamples] + cos(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
+                    phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                    toneOdd[fmStartPnt+nFMSamples:nTot] =  toneOdd[fmStartPnt+nFMSamples:nTot] + cos(i*endF0Rad*time3 + phaseCorrect2)
+                else:
+                    toneEven[0:fmStartPnt] = toneEven[0:fmStartPnt] + cos(startF0Rad*i*time1)
+                    phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                    toneEven[fmStartPnt:fmStartPnt+nFMSamples] = toneEven[fmStartPnt:fmStartPnt+nFMSamples] + cos(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
+                    phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                    toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + cos(i*endF0Rad*time3 + phaseCorrect2)
+
+    elif harmPhase == "Alternating":
+        for i in range(lowHarm, highHarm+1):
+            if i%2 > 0: #odd harmonic
+                if channel == "Right" or channel == "Left" or channel == "Both":
+                    tone[0:fmStartPnt] =  tone[0:fmStartPnt] + cos(startF0Rad*i*time1)
+                    phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                    tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] + cos(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
+                    phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                    tone[fmStartPnt+nFMSamples:nTot] =  tone[fmStartPnt+nFMSamples:nTot] + cos(i*endF0Rad*time3 + phaseCorrect2)
+                elif channel == "Odd Left" or channel == "Odd Right":
+                    toneOdd[0:fmStartPnt] = toneOdd[0:fmStartPnt] + cos(startF0Rad*i*time1)
+                    phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                    toneOdd[fmStartPnt:fmStartPnt+nFMSamples] = toneOdd[fmStartPnt:fmStartPnt+nFMSamples] + cos(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
+                    phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                    toneOdd[fmStartPnt+nFMSamples:nTot] =  toneOdd[fmStartPnt+nFMSamples:nTot] + cos(i*endF0Rad*time3 + phaseCorrect2)
+            else: #even harmonic
+                if channel == "Right" or channel == "Left" or channel == "Both":
+                    tone[0:fmStartPnt] =  tone[0:fmStartPnt] + sin(startF0Rad*i*time1)
+                    phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                    tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
+                    phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                    tone[fmStartPnt+nFMSamples:nTot] =  tone[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2)
+                elif channel == "Odd Left" or channel == "Odd Right":
+                    toneEven[0:fmStartPnt] = toneEven[0:fmStartPnt] + sin(startF0Rad*i*time1)
+                    phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                    toneEven[fmStartPnt:fmStartPnt+nFMSamples] = toneEven[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
+                    phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                    toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2)
+    elif harmPhase == "Schroeder":
+        for i in range(lowHarm, highHarm+1):
+            phase = -pi * i * (i - 1) / float(highHarm)
+            if channel == "Right" or channel == "Left" or channel == "Both":
+                tone[0:fmStartPnt] =  tone[0:fmStartPnt] + sin(startF0Rad*i*time1 + phase)
+                phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)) + phase)
+                phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                tone[fmStartPnt+nFMSamples:nTot] =  tone[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2 + phase)
+            elif channel == "Odd Left" or channel == "Odd Right":
+                if i%2 > 0: #odd harmonic
+                    toneOdd[0:fmStartPnt] =  toneOdd[0:fmStartPnt] + sin(startF0Rad*i*time1 + phase)
+                    phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                    toneOdd[fmStartPnt:fmStartPnt+nFMSamples] = toneOdd[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)) + phase)
+                    phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                    toneOdd[fmStartPnt+nFMSamples:nTot] =  toneOdd[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2 + phase)
+                else:
+                    toneEven[0:fmStartPnt] =  toneEven[0:fmStartPnt] + sin(startF0Rad*i*time1 + phase)
+                    phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                    toneEven[fmStartPnt:fmStartPnt+nFMSamples] = toneEven[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)) + phase)
+                    phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                    toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2 + phase)
+    elif harmPhase == "Random":
+        for i in range(lowHarm, highHarm+1):
+            phase = numpy.random.random() * 2 * pi
+            if channel == "Right" or channel == "Left" or channel == "Both":
+                tone[0:fmStartPnt] =  tone[0:fmStartPnt] + sin(startF0Rad*i*time1 + phase)
+                phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)) + phase)
+                phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                tone[fmStartPnt+nFMSamples:nTot] =  tone[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2 + phase)
+            elif channel == "Odd Left" or channel == "Odd Right":
+                if i%2 > 0: #odd harmonic
+                    toneOdd[0:fmStartPnt] =  toneOdd[0:fmStartPnt] + sin(startF0Rad*i*time1 + phase)
+                    phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                    toneOdd[fmStartPnt:fmStartPnt+nFMSamples] = toneOdd[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)) + phase)
+                    phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                    toneOdd[fmStartPnt+nFMSamples:nTot] =  toneOdd[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2 + phase)
+                else:
+                    toneEven[0:fmStartPnt] =  toneEven[0:fmStartPnt] + sin(startF0Rad*i*time1 + phase)
+                    phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
+                    toneEven[fmStartPnt:fmStartPnt+nFMSamples] = toneEven[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)) + phase)
+                    phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
+                    toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2 + phase)
+            
+
+    #numpy.savetxt('ptone.txt', tone)
+    #level correction --------------
+    if levelAdj == True:
+        if channel == "Right" or channel == "Left" or channel == "Both":
+            tone[0:fmStartPnt] = tone[0:fmStartPnt] * sqrt(((startF0Rad / (2*pi)) * (fs))/ midF0)
+            tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] * sqrt((midF0 + (fmDepthHz * sin (fmStartPhase + (fmTime * fmRadFreq)))) / midF0)
+            tone[fmStartPnt+nFMSamples:nTot] = tone[fmStartPnt+nFMSamples:nTot] * sqrt( ((endF0Rad / (2*pi)) * (fs))/ midF0)
+        else:
+            toneEven[0:fmStartPnt] = toneEven[0:fmStartPnt] * sqrt(((startF0Rad / (2*pi)) * (fs))/ midF0)
+            toneEven[fmStartPnt:fmStartPnt+nFMSamples] = toneEven[fmStartPnt:fmStartPnt+nFMSamples]  * sqrt((midF0 + (fmDepthHz * sin (fmStartPhase + (fmTime * fmRadFreq)))) / midF0)
+            toneEven[fmStartPnt+nFMSamples:nTot] = toneEven[fmStartPnt+nFMSamples:nTot] * sqrt(((endF0Rad / (2*pi)) * (fs))/ midF0)
+
+            toneOdd[0:fmStartPnt] = toneOdd[0:fmStartPnt] * sqrt(((startF0Rad / (2*pi)) * (fs))/ midF0)
+            toneOdd[fmStartPnt:fmStartPnt+nFMSamples] = toneOdd[fmStartPnt:fmStartPnt+nFMSamples] * sqrt((midF0 + (fmDepthHz * sin (fmStartPhase + (fmTime * fmRadFreq)))) / midF0)
+            toneOdd[fmStartPnt+nFMSamples:nTot] = toneOdd[fmStartPnt+nFMSamples:nTot] * sqrt(((endF0Rad / (2*pi)) * (fs))/ midF0)
+
+    #end of level correction -----------    
+    
+    if channel == "Right":
+        snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * tone[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 1]        = amp * tone[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:nTot]
+    elif channel == "Left":
+        snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0]        = amp * tone[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:nTot]
+    elif channel == "Both":
+        snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0]        = amp * tone[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:nTot]
+        snd[:, 1] = snd[:, 0]
+    elif channel == "Odd Left":
+        snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneOdd[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0]        = amp * toneOdd[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneOdd[nRamp+nSamples:nTot]
+        snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * toneEven[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 1]        = amp * toneEven[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneEven[nRamp+nSamples:nTot]
+    elif channel == "Odd Right":
+        snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneOdd[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 1]        = amp * toneOdd[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneOdd[nRamp+nSamples:nTot]
+        snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * toneEven[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0]        = amp * toneEven[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneEven[nRamp+nSamples:nTot]
+        
+
+    return snd
+
+def fm_complex2(midF0, harmPhase, lowHarm, highHarm, level, duration, ramp, fmFreq, fmDepth, fmStartPhase, fmStartTime, fmDuration, levelAdj, channel, fs, maxLevel):
+    """
+    Synthetise a Complex Tone with an embedded FM starting and stopping
+    at a chosen time after the tone onset.
+
+    Parameters
+    ----------
+    midF0 : float
+        F0 at the FM zero crossing
+    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder'
+        Phase relationship between the partials of the complex tone.
+    lowHarm : int
+        Lowest harmonic component number.
+    highHarm : int
+        Highest harmonic component number.
+    level : float
+        The level of each partial in dB SPL.
+    duration : float
+        Tone duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    fmFreq : float
+        FM frequency in Hz.
+    fmDepth : float
+        FM depth in %
+    fmStartPhase : float
+        Starting phase of FM
+    fmStartTime : float
+        Start of FM in ms after start of tone
+    fmDuration : float
+        Duration of FM, in ms
+    levelAdj : logical
+        If `True`, scale the harmonic level so that for a complex
+        tone within a bandpass filter the overall level does not
+        change with F0 modulations.
+    channel: 'Right', 'Left', 'Both', 'Odd Right' or 'Odd Left'
+        Channel in which the tone will be generated. If 'channel'
+        if 'Odd Right', odd numbered harmonics will be presented
+        to the right channel and even number harmonics to the left
+        channel. The opposite is true if 'channel' is 'Odd Left'.
+    fs : int
+        Samplig frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
+    
+    """
+    
+    amp = 10**((level - maxLevel) / 20)
+    duration = duration / 1000 #convert from ms to sec
+    fmStartTime = fmStartTime / 1000  #convert from ms to sec
+    fmDuration = fmDuration / 1000  #convert from ms to sec
+    ramp = ramp / 1000
+    fmStartPnt = int(round(fmStartTime*fs)) #sample where FM starts
+    nFMSamples = int(round(fmDuration*fs)) #number of FM samples
+    nSamples = int(round(duration * fs))
+    nRamp = int(round(ramp * fs))
+    nTot = nSamples + (nRamp * 2)
+    
+    timeAll = arange(0, nTot) / fs
+    timeRamp = arange(0, nRamp)
+
+    timeAllSamp = arange(0, nTot) #time array not scaled by fs
+    time1 = timeAllSamp[0:fmStartPnt]
+    time2 = timeAllSamp[fmStartPnt:fmStartPnt+nFMSamples]
+    time3 = timeAllSamp[fmStartPnt+nFMSamples:nTot]
+    fmTime = arange(0, nFMSamples)
+
+    fmDepthHz = fmDepth*midF0/100 #convert from % to Hz
+    B = fmDepthHz / fmFreq #Beta
+    fmStartDepth = fmDepthHz*sin(fmStartPhase)
+
+    fmRadFreq = 2*pi*fmFreq/fs
+
+    midF0Rad = 2*pi*midF0/fs
+    startF0Rad = 2*pi*(midF0 + fmDepthHz*sin(fmStartPhase))/fs
+    endF0Rad = 2*pi*(midF0 + fmDepthHz*sin(fmStartPhase + nFMSamples*fmRadFreq)) / fs
+
+    startF0 = midF0 + fmDepthHz*sin(fmStartPhase)
+    endF0 = midF0 + fmDepthHz*sin(fmStartPhase + nFMSamples*fmRadFreq)
+    
+    if channel == "Right" or channel == "Left" or channel == "Both":
+        tone = zeros(nTot)
+    elif channel == "Odd Left" or channel == "Odd Right":
+        toneOdd = zeros(nTot)
+        toneEven = zeros(nTot)
+    snd = zeros((nTot, 2))
+
+    #from Hartmann, WM (1997) Signals, sound, and sensation. New York: AIP Press
+    #angular frequency is the time derivative of the instantaneous phase
+    #if the angular frequency is given by a constant carrier `wc`, plus a
+    #sinusoidal deviation `dw`:
+    #eq.1: w(t) = wc + dw*cos(wm*t+phi)
+    #where `wm` is the modulation frequency, then the instantaneous phase is
+    #given by the integral of the above expression with respect to time
+    #eq.2: PHI(t) = wc*t + (dw/wm)*sin(wm*t+phi)
+    #that's the canonical form of the FM equation
+    #if instead of modulating the angular freq. in eq. 1 by `cos` we modulate it by `sin`:
+    #eq. 3: w(t) = wc + dw*(cos(wm*tphi)
+    #and the resulting integral is:
+    #eq.4: PHI(t) = wc*t - (dw/wm)*cos(wm*t+phi)
+    #this is what we're actually using below
+    
+    for i in range(lowHarm, highHarm+1):
+            fArr = zeros(nTot)
+            fArr[0:fmStartPnt] = startF0*i
+            fArr[fmStartPnt:fmStartPnt+nFMSamples] = (midF0*i + fmDepthHz*i*sin(2*pi*fmFreq*fmTime/fs+fmStartPhase))
+            fArr[fmStartPnt+nFMSamples:nTot] = endF0*i
+            if harmPhase == "Sine":
+                ang = cumsum(2*pi*fArr/fs)
+                if channel == "Right" or channel == "Left" or channel == "Both":
+                    tone = tone + sin(ang)
+                elif channel == "Odd Left" or channel == "Odd Right":
+                    if i%2 > 0: #odd harmonic
+                        toneOdd = toneOdd + sin(ang)
+                    else:
+                        toneEven = toneEven + sin(ang)
+            elif harmPhase == "Cosine":
+                ang = cumsum(2*pi*fArr/fs)
+                if channel == "Right" or channel == "Left" or channel == "Both":
+                    tone = tone + cos(ang)
+                elif channel == "Odd Left" or channel == "Odd Right":
+                    if i%2 > 0: #odd harmonic
+                        toneOdd = toneOdd + cos(ang)
+                    else:
+                        toneEven = toneEven + cos(ang)
+
+            elif harmPhase == "Alternating":
+                ang = cumsum(2*pi*fArr/fs)
+                if i%2 > 0: #odd harmonic
+                    if channel == "Right" or channel == "Left" or channel == "Both":
+                        tone = tone + cos(ang)
+                    elif channel == "Odd Left" or channel == "Odd Right":
+                        toneOdd = toneOdd + cos(ang)
+                else: #even harmonic
+                    if channel == "Right" or channel == "Left" or channel == "Both":
+                        tone = tone + sin(ang)
+                    elif channel == "Odd Left" or channel == "Odd Right":
+                        toneEven = toneEven + sin(ang)
+            elif harmPhase == "Schroeder":
+                phase = -pi * i * (i - 1) / highHarm
+                ang = cumsum(2*pi*fArr/fs + phase)
+                if channel == "Right" or channel == "Left" or channel == "Both":
+                    tone = tone + sin(ang)
+                elif channel == "Odd Left" or channel == "Odd Right":
+                    if i%2 > 0: #odd harmonic
+                        toneOdd = toneOdd + sin(ang)
+                    else:
+                        toneEven = toneEven + sin(ang)
+            elif harmPhase == "Random":
+                phase = numpy.random.random() * 2 * pi
+                ang = cumsum(2*pi*fArr/fs + phase)
+                if channel == "Right" or channel == "Left" or channel == "Both":
+                    tone = tone + sin(ang)
+                elif channel == "Odd Left" or channel == "Odd Right":
+                    if i%2 > 0: #odd harmonic
+                        toneOdd = toneOdd + sin(ang)
+                    else:
+                        toneEven = toneEven + sin(ang)
+
+
+    #level correction --------------
+    if levelAdj == True:
+        if channel == "Right" or channel == "Left" or channel == "Both":
+            tone[0:fmStartPnt] = tone[0:fmStartPnt] * sqrt(((startF0Rad / (2*pi)) * (fs))/ midF0)
+            tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] * sqrt((midF0 + (fmDepthHz * sin (fmStartPhase + (fmTime * fmRadFreq)))) / midF0)
+            tone[fmStartPnt+nFMSamples:nTot] = tone[fmStartPnt+nFMSamples:nTot] * sqrt( ((endF0Rad / (2*pi)) * (fs))/ midF0)
+        else:
+            toneEven[0:fmStartPnt] = toneEven[0:fmStartPnt] * sqrt(((startF0Rad / (2*pi)) * (fs))/ midF0)
+            toneEven[fmStartPnt:fmStartPnt+nFMSamples] = toneEven[fmStartPnt:fmStartPnt+nFMSamples]  * sqrt((midF0 + (fmDepthHz * sin (fmStartPhase + (fmTime * fmRadFreq)))) / midF0)
+            toneEven[fmStartPnt+nFMSamples:nTot] = toneEven[fmStartPnt+nFMSamples:nTot] * sqrt(((endF0Rad / (2*pi)) * (fs))/ midF0)
+
+            toneOdd[0:fmStartPnt] = toneOdd[0:fmStartPnt] * sqrt(((startF0Rad / (2*pi)) * (fs))/ midF0)
+            toneOdd[fmStartPnt:fmStartPnt+nFMSamples] = toneOdd[fmStartPnt:fmStartPnt+nFMSamples] * sqrt((midF0 + (fmDepthHz * sin (fmStartPhase + (fmTime * fmRadFreq)))) / midF0)
+            toneOdd[fmStartPnt+nFMSamples:nTot] = toneOdd[fmStartPnt+nFMSamples:nTot] * sqrt(((endF0Rad / (2*pi)) * (fs))/ midF0)
+
+    #end of level correction -----------    
+    
+    if channel == "Right":
+        snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * tone[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 1]        = amp * tone[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:nTot]
+    elif channel == "Left":
+        snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0]        = amp * tone[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:nTot]
+    elif channel == "Both":
+        snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0]        = amp * tone[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:nTot]
+        snd[:, 1] = snd[:, 0]
+    elif channel == "Odd Left":
+        snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneOdd[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0]        = amp * toneOdd[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneOdd[nRamp+nSamples:nTot]
+        snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * toneEven[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 1]        = amp * toneEven[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneEven[nRamp+nSamples:nTot]
+    elif channel == "Odd Right":
+        snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneOdd[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 1]        = amp * toneOdd[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneOdd[nRamp+nSamples:nTot]
+        snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * toneEven[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0]        = amp * toneEven[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneEven[nRamp+nSamples:nTot]
+        
+
+    return snd
+
+
 def FMTone(fc, fm, mi, phase, level, duration, ramp, channel, fs, maxLevel):
     """
     Generate a frequency modulated tone.
