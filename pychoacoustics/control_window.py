@@ -959,7 +959,7 @@ class pychControlWin(QMainWindow):
          
         #------------------------------------
         #ADAPTIVE PARADIGM WIDGETS
-        if self.currParadigm == self.tr("Transformed Up-Down"):
+        if self.currParadigm in [self.tr("Transformed Up-Down"), self.tr("Transformed Up-Down Limited")]:
             n = 0
             self.adaptiveTypeChooserLabel = QLabel(self.tr("Procedure:"), self)
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
@@ -1049,7 +1049,7 @@ class pychControlWin(QMainWindow):
 
         #------------------------------------
         #WEIGHTED UP/DOWN PARADIGM WIDGETS
-        if self.currParadigm == self.tr("Weighted Up-Down"):
+        if self.currParadigm in [self.tr("Weighted Up-Down"), self.tr("Weighted Up-Down Limited")]:
             n = 0
             self.adaptiveTypeChooserLabel = QLabel(self.tr("Procedure:"), self)
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
@@ -1893,6 +1893,7 @@ class pychControlWin(QMainWindow):
 
         self.setParadigmWidgets(self.currParadigm, self.prevParadigm)
         if self.currParadigm in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"),
+                                 self.tr("Transformed Up-Down Limited"), self.tr("Weighted Up-Down Limited"),
                                  self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved"),
                                  self.tr("PEST")]:
             try: #set to the default adaptive type is specified
