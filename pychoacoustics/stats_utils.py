@@ -18,20 +18,35 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import numpy
-from numpy import sqrt, log10, mean, sqrt
+from numpy import array, sqrt, log10, mean, sign, sqrt, unique
 from scipy.stats.distributions import norm
+from scipy.stats.mstats import gmean
+
 def geoMean(vals):
-     n = float(len(vals))
-     m = numpy.prod(vals)**(1/n)
+     vals = array(vals)
+     if len(unique(sign(vals))) != 1:
+          raise ArithmeticError("Sequence of numbers for geometric mean must be all positive or all negative")
+     if sign(vals[0]) == 1:
+          m = gmean(vals)
+     elif sign(vals[0]) == -1:
+          m = -gmean(-vals)
      return m
+
 def geoSd(vals):
+    if len(unique(sign(vals))) != 1:
+         raise ArithmeticError("Sequence of numbers for geometric standard deviation must be all positive or all negative")
     vals = numpy.abs(vals)
     res = 10**numpy.std(numpy.log10(vals), ddof=1)
     return res
+
 def geoSe(vals):
+    if len(unique(sign(vals))) != 1:
+         raise ArithmeticError("Sequence of numbers for geometric standard error must be all positive or all negative")
+    vals = numpy.abs(vals)
     n = len(vals)
-    standardErr = 10**sqrt(sum((log10(vals) - mean(log10(vals)))**2) / float(((n-1)* n)))
+    standardErr = 10**sqrt(sum((log10(vals) - mean(log10(vals)))**2) / ((n-1)* n))
     return(standardErr)
+
 def se(vals):
     standardDev = numpy.std(vals, ddof=1)
     standardErr = standardDev / sqrt(len(vals))
