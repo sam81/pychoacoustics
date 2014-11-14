@@ -48,7 +48,7 @@ elif pyqtversion == 5:
     
 from numpy.fft import rfft, irfft, fft, ifft
 import base64, fnmatch, copy, numpy, os, platform, random, string, smtplib, sys, time     
-from numpy import array, concatenate, log10, nan, mean, repeat, std
+from numpy import abs, array, concatenate, float64, log10, nan, mean, repeat, std
 from .utils_general import*
 from .stats_utils import*
 from .pysdt import*
@@ -926,15 +926,17 @@ class responseBox(QMainWindow):
                 if i == self.prm['totalTurnpoints']-1:
                     self.resFile.write('| ')
             if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                turnpointMean = mean(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : self.prm['totalTurnpoints']])
-                turnpointSd = std(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : self.prm['totalTurnpoints']], ddof=1)
+                finalTurnpoints = array(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : self.prm['totalTurnpoints']], dtype=float64)
+                turnpointMean = mean(finalTurnpoints)
+                turnpointSd = std(finalTurnpoints, ddof=1)
                 self.resFile.write('\n\n')
                 self.resFile.write('turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
                 self.resFileLog.write('\n\n')
                 self.resFileLog.write('turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
             elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                turnpointMean = geoMean(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : self.prm['totalTurnpoints']])
-                turnpointSd = geoSd(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : self.prm['totalTurnpoints']])
+                finalTurnpoints = abs(array(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : self.prm['totalTurnpoints']], dtype=float64))
+                turnpointMean = geoMean(finalTurnpoints)
+                turnpointSd = geoSd(finalTurnpoints)
                 self.resFile.write('\n\n')
                 self.resFile.write('geometric turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
                 self.resFileLog.write('\n\n')
@@ -1134,21 +1136,21 @@ class responseBox(QMainWindow):
                         self.resFile.write('| ')
                         self.resFileLog.write('| ')
                 if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                    turnpointMean = mean(self.prm['turnpointVal'][j][tnpStart : tnpEnd])
-                    turnpointSd = std(self.prm['turnpointVal'][j][tnpStart : tnpEnd], ddof=1)
+                    turnpointMean = mean(array(self.prm['turnpointVal'][j][tnpStart : tnpEnd], dtype=float64))
+                    turnpointSd = std(array(self.prm['turnpointVal'][j][tnpStart : tnpEnd], dtype=float64), ddof=1)
                     self.resFile.write('\n\n')
-                    self.resFile.write('turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
+                    self.resFile.write('turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean, turnpointSd))
                     self.resFileLog.write('\n\n')
-                    self.resFileLog.write('turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
+                    self.resFileLog.write('turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean, turnpointSd))
                     turnpointMeanList.append(turnpointMean)
                     turnpointSdList.append(turnpointSd)
                 elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                    turnpointMean = geoMean(self.prm['turnpointVal'][j][tnpStart : tnpEnd])
-                    turnpointSd = geoSd(self.prm['turnpointVal'][j][tnpStart : tnpEnd])
+                    turnpointMean = geoMean(abs(array(self.prm['turnpointVal'][j][tnpStart : tnpEnd], dtype=float64)))
+                    turnpointSd = geoSd(abs(array(self.prm['turnpointVal'][j][tnpStart : tnpEnd], dtype=float64)))
                     self.resFile.write('\n\n')
-                    self.resFile.write('geometric turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
+                    self.resFile.write('geometric turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean, turnpointSd))
                     self.resFileLog.write('\n\n')
-                    self.resFileLog.write('geometric turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
+                    self.resFileLog.write('geometric turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean, turnpointSd))
                     turnpointMeanList.append(turnpointMean)
                     turnpointSdList.append(turnpointSd)
                 for a in range(self.prm['nAlternatives']):
@@ -1322,19 +1324,21 @@ class responseBox(QMainWindow):
                 if i == self.prm['totalTurnpoints']-1:
                     self.resFile.write('| ')
             if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                turnpointMean = mean(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : self.prm['totalTurnpoints']])
-                turnpointSd = std(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : self.prm['totalTurnpoints']], ddof=1)
+                finalTurnpoints = array(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : self.prm['totalTurnpoints']], dtype=float64)
+                turnpointMean = mean(finalTurnpoints)
+                turnpointSd = std(finalTurnpoints, ddof=1)
                 self.resFile.write('\n\n')
-                self.resFile.write('turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
+                self.resFile.write('turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean, turnpointSd))
                 self.resFileLog.write('\n\n')
-                self.resFileLog.write('turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
+                self.resFileLog.write('turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean, turnpointSd))
             elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                turnpointMean = geoMean(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : self.prm['totalTurnpoints']])
-                turnpointSd = geoSd(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : self.prm['totalTurnpoints']])
+                finalTurnpoints = abs(array(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : self.prm['totalTurnpoints']], dtype=float64))
+                turnpointMean = geoMean(finalTurnpoints)
+                turnpointSd = geoSd(finalTurnpoints)
                 self.resFile.write('\n\n')
-                self.resFile.write('geometric turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
+                self.resFile.write('geometric turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean, turnpointSd))
                 self.resFileLog.write('\n\n')
-                self.resFileLog.write('geometric turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
+                self.resFileLog.write('geometric turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean, turnpointSd))
 
             for i in range(self.prm['nAlternatives']):
                 self.resFile.write("B{0} = {1}".format(i+1, self.prm['buttonCounter'][i]))

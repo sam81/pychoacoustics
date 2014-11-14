@@ -26,10 +26,8 @@ def geoMean(vals):
      vals = array(vals)
      if len(unique(sign(vals))) != 1:
           raise ArithmeticError("Sequence of numbers for geometric mean must be all positive or all negative")
-     if sign(vals[0]) == 1:
-          m = gmean(vals)
-     elif sign(vals[0]) == -1:
-          m = -gmean(-vals)
+     vals = numpy.abs(vals)
+     m = gmean(vals)
      return m
 
 def geoSd(vals):
