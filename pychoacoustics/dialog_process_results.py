@@ -68,7 +68,7 @@ class processResultsDialog(QDialog):
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         self.prm = self.parent().prm
 
-        if paradigm in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"), self.tr("PEST")]:
+        if paradigm in [self.tr("Transformed Up-Down"), self.tr("Transformed Up-Down Limited"), self.tr("Weighted Up-Down"), self.tr("PEST"), self.tr("Weighted Up-Down Limited")]:
             self.paradigm = "adaptive"
         elif paradigm in [self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved")]:
             self.paradigm = "adaptive_interleaved"

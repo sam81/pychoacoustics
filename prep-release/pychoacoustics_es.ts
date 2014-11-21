@@ -271,24 +271,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="3127"/>
+        <location filename="../pychoacoustics/response_box.py" line="3131"/>
         <source>Experimenter {} e-mail&apos;s address {} not valid 
  Please specify a valid address for the current experimenter 
  in the Edit -&gt; Experimenters dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="3131"/>
+        <location filename="../pychoacoustics/response_box.py" line="3135"/>
         <source>username invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="3135"/>
+        <location filename="../pychoacoustics/response_box.py" line="3139"/>
         <source>SMTP server name invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="3182"/>
+        <location filename="../pychoacoustics/response_box.py" line="3186"/>
         <source>Something went wrong, try to change server settings 
  {}</source>
         <translation type="unfinished"></translation>
@@ -1997,7 +1997,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2424"/>
+        <location filename="../pychoacoustics/response_box.py" line="2428"/>
         <source>Finished</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2012,7 +2012,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2477"/>
+        <location filename="../pychoacoustics/response_box.py" line="2481"/>
         <source>Blocks Completed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2050,7 +2050,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2578"/>
+        <location filename="../pychoacoustics/response_box.py" line="2582"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2070,12 +2070,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2463"/>
+        <location filename="../pychoacoustics/response_box.py" line="2467"/>
         <source>Ask</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2460"/>
+        <location filename="../pychoacoustics/response_box.py" line="2464"/>
         <source>Auto</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2185,17 +2185,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2987"/>
+        <location filename="../pychoacoustics/response_box.py" line="2991"/>
         <source>Constant m-Intervals n-Alternatives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2983"/>
+        <location filename="../pychoacoustics/response_box.py" line="2987"/>
         <source>Constant 1-Interval 2-Alternatives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2991"/>
+        <location filename="../pychoacoustics/response_box.py" line="2995"/>
         <source>Constant 1-Pair Same/Different</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2210,12 +2210,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2985"/>
+        <location filename="../pychoacoustics/response_box.py" line="2989"/>
         <source>Multiple Constants 1-Interval 2-Alternatives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2989"/>
+        <location filename="../pychoacoustics/response_box.py" line="2993"/>
         <source>Multiple Constants m-Intervals n-Alternatives</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2225,112 +2225,112 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2546"/>
+        <location filename="../pychoacoustics/response_box.py" line="2550"/>
         <source>Automatic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2259"/>
+        <location filename="../pychoacoustics/response_box.py" line="2263"/>
         <source>Arithmetic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2264"/>
+        <location filename="../pychoacoustics/response_box.py" line="2268"/>
         <source>Geometric</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2140"/>
+        <location filename="../pychoacoustics/response_box.py" line="2144"/>
         <source>Feedback</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2142"/>
+        <location filename="../pychoacoustics/response_box.py" line="2146"/>
         <source>Neutral</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2144"/>
+        <location filename="../pychoacoustics/response_box.py" line="2148"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2215"/>
+        <location filename="../pychoacoustics/response_box.py" line="2219"/>
         <source>Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2207"/>
+        <location filename="../pychoacoustics/response_box.py" line="2211"/>
         <source>Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="1116"/>
+        <location filename="../pychoacoustics/response_box.py" line="1118"/>
         <source>All final stepsize (even)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="1121"/>
+        <location filename="../pychoacoustics/response_box.py" line="1123"/>
         <source>First N final stepsize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="1124"/>
+        <location filename="../pychoacoustics/response_box.py" line="1126"/>
         <source>Last N final stepsize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2494"/>
+        <location filename="../pychoacoustics/response_box.py" line="2498"/>
         <source>Simulated Listener</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2905"/>
+        <location filename="../pychoacoustics/response_box.py" line="2909"/>
         <source>Pychoacoustics Notification: Listener </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2905"/>
+        <location filename="../pychoacoustics/response_box.py" line="2909"/>
         <source> has </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2906"/>
+        <location filename="../pychoacoustics/response_box.py" line="2910"/>
         <source> block(s) to go</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2907"/>
+        <location filename="../pychoacoustics/response_box.py" line="2911"/>
         <source>Experiment: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2908"/>
+        <location filename="../pychoacoustics/response_box.py" line="2912"/>
         <source>Completed Blocks: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2908"/>
+        <location filename="../pychoacoustics/response_box.py" line="2912"/>
         <source> Stored Blocks: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2981"/>
+        <location filename="../pychoacoustics/response_box.py" line="2985"/>
         <source>Transformed Up-Down Interleaved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2981"/>
+        <location filename="../pychoacoustics/response_box.py" line="2985"/>
         <source>Weighted Up-Down Interleaved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2979"/>
+        <location filename="../pychoacoustics/response_box.py" line="2983"/>
         <source>Transformed Up-Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2979"/>
+        <location filename="../pychoacoustics/response_box.py" line="2983"/>
         <source>Weighted Up-Down</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2340,7 +2340,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2979"/>
+        <location filename="../pychoacoustics/response_box.py" line="2983"/>
         <source>PEST</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2365,12 +2365,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2979"/>
+        <location filename="../pychoacoustics/response_box.py" line="2983"/>
         <source>Transformed Up-Down Limited</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="2979"/>
+        <location filename="../pychoacoustics/response_box.py" line="2983"/>
         <source>Weighted Up-Down Limited</source>
         <translation type="unfinished"></translation>
     </message>
