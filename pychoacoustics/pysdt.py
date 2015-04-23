@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2012-2014 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2012-2015 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysdt
 
 #    pysdt is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ from scipy.stats import norm
 from scipy.integrate import quad
 from scipy import Inf
 import numpy, scipy
-from numpy import sign, sqrt
+from numpy import exp, log, sign, sqrt
 
 
 
@@ -262,3 +262,59 @@ def dprime_yes_no_from_counts(nCA, nTA, nCB, nTB, corr):
         tB = nCB/nTB
 
     return norm.ppf(tA) - norm.ppf(1-tB)
+
+def logistic(x, alphax, betax, gammax, lambdax):
+    """
+    Compute the logistic function
+
+    Parameters
+    ----------
+    x : 
+        Stimulus level(s).
+    alphax:
+        Mid-point(s) of the psychometric function.
+    betax:
+        The slope of the psychometric function.
+    gammax:
+        Lower limit of the psychometric function.
+    lambdax:
+        The lapse rate.
+    
+    """
+    
+    out = gammax + (1-gammax-lambdax) *(1/(1+exp(betax*(alphax-x))))
+    return out
+
+def invLogistic(p, alphax, betax, gammax, lambdax):
+    """
+    Compute the inverse of the logistic function
+
+    Parameters
+    ----------
+    p : 
+        Proportion correct on the psychometric function.
+    alphax:
+        Mid-point(s) of the psychometric function.
+    betax:
+        The slope of the psychometric function.
+    gammax:
+        Lower limit of the psychometric function.
+    lambdax:
+        The lapse rate.
+    
+    """
+
+    x = alphax - (1/betax)*log((1-gammax-lambdax)/(p-gammax) - 1)
+    return x
+
+def logisticLikelihood(lev, response, alphax, betax, gammax, lambdax):
+
+    p = logistic(lev, alphax, betax, gammax, lambdax)
+    if response == 1:
+        ll = log(p)
+    elif response == 0:
+        ll = log(1-p)
+    
+
+    return ll
+

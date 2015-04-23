@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2008-2014 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2015 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -1675,6 +1675,126 @@ class pychControlWin(QMainWindow):
                                            self.maxStepSizeLabel, self.WLabel, self.pcTrackedLabel]
             self.paradigmFieldCheckBoxList = [self.initialStepSizeCheckBox, self.minStepSizeCheckBox,
                                               self.maxStepSizeCheckBox, self.WCheckBox, self.pcTrackedCheckBox]
+
+        #Maximum Likelihood
+        if self.currParadigm in [self.tr("Maximum Likelihood")]:
+            n = 0
+            #priorsOptions = ["Uniform"]
+            psyFunOptions = ["Logistic"]
+            #centTendOptions = ["mode", "median", "mean"]
+            # self.priorChooserLabel = QLabel(self.tr("Prior:"), self)
+            # self.paradigm_widg_sizer.addWidget(self.adaptivePriorChooserLabel, n, 1)
+            # self.priorChooser = QComboBox()
+            # self.priorChooser.addItems(priorOptions)
+            # self.priorCheckBox = QCheckBox()
+            # self.paradigm_widg_sizer.addWidget(self.priorCheckBox, n, 0)
+            # n = n+1
+            self.psyFunChooserLabel = QLabel(self.tr("Psychometric Function:"), self)
+            self.paradigm_widg_sizer.addWidget(self.psyFunChooserLabel, n, 1)
+            self.psyFunChooser = QComboBox()
+            self.psyFunChooser.addItems(psyFunOptions)
+            self.paradigm_widg_sizer.addWidget(self.psyFunChooser, n, 2)
+            self.psyFunCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.psyFunCheckBox, n, 0)
+            n = n+1
+ 
+            #min thresh
+            self.loMidPointLabel = QLabel(self.tr("Mid Point Minimum"), self)
+            self.paradigm_widg_sizer.addWidget(self.loMidPointLabel, n, 1)
+            self.loMidPoint = QLineEdit()
+            self.loMidPoint.setText('0.001')
+            self.loMidPoint.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.loMidPoint, n, 2)
+            self.loMidPointCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.loMidPointCheckBox, n, 0)
+            #n = n+1
+            #max thresh
+            self.hiMidPointLabel = QLabel(self.tr("Mid Point Maximum"), self)
+            self.paradigm_widg_sizer.addWidget(self.hiMidPointLabel, n, 4)
+            self.hiMidPoint = QLineEdit()
+            self.hiMidPoint.setText('200')
+            self.hiMidPoint.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.hiMidPoint, n, 5)
+            self.hiMidPointCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.hiMidPointCheckBox, n, 3)
+            n = n+1
+            #step
+            self.threshGridStepLabel = QLabel(self.tr("Mid Point Step"), self)
+            self.paradigm_widg_sizer.addWidget(self.threshGridStepLabel, n, 1)
+            self.threshGridStep = QLineEdit()
+            self.threshGridStep.setText('0.001')
+            self.threshGridStep.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.threshGridStep, n, 2)
+            self.threshGridStepCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.threshGridStepCheckBox, n, 0)
+            #n = n+1
+            #percent tracked
+            self.percCorrTrackedLabel = QLabel(self.tr("Percent Correct Tracked"), self)
+            self.paradigm_widg_sizer.addWidget(self.percCorrTrackedLabel, n, 4)
+            self.percCorrTracked = QLineEdit()
+            self.percCorrTracked.setText('75')
+            self.percCorrTracked.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.percCorrTracked, n, 5)
+            self.percCorrTrackedCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.percCorrTrackedCheckBox, n, 3)
+            n = n+1
+            #psyfunslope
+            self.psyFunSlopeLabel = QLabel(self.tr("Psychometric Function Slope"), self)
+            self.paradigm_widg_sizer.addWidget(self.psyFunSlopeLabel, n, 1)
+            self.psyFunSlope = QLineEdit()
+            self.psyFunSlope.setText('1')
+            self.psyFunSlope.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.psyFunSlope, n, 2)
+            self.psyFunSlopeCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.psyFunSlopeCheckBox, n, 0)
+            #n = n+1
+            self.lapseRateLabel = QLabel(self.tr("Lapse Rate"), self)
+            self.paradigm_widg_sizer.addWidget(self.lapseRateLabel, n, 4)
+            self.lapseRate = QLineEdit()
+            self.lapseRate.setText('0.001')
+            self.lapseRate.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.lapseRate, n, 5)
+            self.lapseRateCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.lapseRateCheckBox, n, 3)
+            # #mode, median, mean
+            # self.centTendChooserLabel = QLabel(self.tr("Central Tendency:"), self)
+            # self.paradigm_widg_sizer.addWidget(self.centTendChooserLabel, n, 1)
+            # self.centTendChooser = QComboBox()
+            # self.centTendChooser.addItems(centTendOptions)
+            # self.centTendCheckBox = QCheckBox()
+            # self.paradigm_widg_sizer.addWidget(self.centTendCheckBox, n, 0)
+            n = n+1
+
+            self.logSpaceStimChooserLabel = QLabel(self.tr("Log scale:"), self)
+            self.paradigm_widg_sizer.addWidget(self.logSpaceStimChooserLabel, n, 1)
+            self.logSpaceStimChooser = QComboBox()
+            self.logSpaceStimChooser.addItems(["No", "Yes"])
+            self.paradigm_widg_sizer.addWidget(self.logSpaceStimChooser, n, 2)
+            self.logSpaceStimCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.logSpaceStimCheckBox, n, 0)
+
+            n = n+1
+            
+            self.nTrialsLabel = QLabel(self.tr("No. Trials"), self)
+            self.paradigm_widg_sizer.addWidget(self.nTrialsLabel, n, 1)
+            self.nTrialsTF = QLineEdit()
+            self.nTrialsTF.setText("30")
+            self.nTrialsTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.nTrialsTF, n, 2)
+            self.nTrialsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.nTrialsCheckBox, n, 0)
+
+ 
+         
+
+            self.paradigmChooserList = [self.psyFunChooser, self.logSpaceStimChooser]
+            self.paradigmChooserLabelList = [self.psyFunChooserLabel, self.logSpaceStimChooserLabel]
+            self.paradigmChooserOptionsList = [psyFunOptions, ["No", "Yes"]]
+            self.paradigmChooserCheckBoxList = [self.psyFunCheckBox, self.logSpaceStimCheckBox]
+
+            self.paradigmFieldList = [self.psyFunSlope, self.loMidPoint, self.hiMidPoint, self.threshGridStep, self.percCorrTracked, self.lapseRate, self.nTrialsTF]
+            self.paradigmFieldLabelList = [self.psyFunSlopeLabel, self.loMidPointLabel, self.hiMidPointLabel, self.threshGridStepLabel, self.percCorrTrackedLabel, self.lapseRateLabel, self.nTrialsLabel]
+            self.paradigmFieldCheckBoxList = [self.psyFunSlopeCheckBox, self.loMidPointCheckBox, self.hiMidPointCheckBox, self.threshGridStepCheckBox, self.percCorrTrackedCheckBox, self.lapseRateCheckBox, self.nTrialsCheckBox]
 
             
     def onExperimentChange(self, experimentSelected):

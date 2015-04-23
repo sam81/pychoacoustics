@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2014 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2015 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
+import numpy
 
 def get_list_indices(li, value):
     """ Get the indices of the elements of a list matching a certain value.
@@ -72,3 +73,14 @@ def isEven(number):
         out = False
 
     return out
+
+def stimSpacingGrid(lo, hi, step, scale='linear'):
+    if scale == "linear":
+        seq = numpy.arange(lo, hi+step, step)
+    elif scale == "log":
+        cnt = 0
+        seq = numpy.array([lo])
+        while seq[cnt] < hi:
+            seq = numpy.concatenate((seq, [seq[cnt]*step]), 1)
+            cnt = cnt+1
+    return seq

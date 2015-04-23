@@ -436,6 +436,7 @@ def doTrial_F0DL(parent):
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
         parent.prm['additional_parameters_to_write'] = {}
+        parent.prm['additional_parameters_to_write_labels'] = ["current_F0"]
         parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Starting Difference (%)",""))] 
         parent.prm['conditions'] = [str(parent.prm['adaptiveDifference'])]
         parent.writeResultsHeader('log')
