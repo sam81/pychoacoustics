@@ -68,11 +68,11 @@ def doTrial_sig_detect(parent):
   
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
-        parent.prm['additional_parameters_to_write'] = {}
-        parent.prm['additional_parameters_to_write'][0] = [] #chord frequencies
-        parent.prm['additional_parameters_to_write'][1] = 0  #chord component number
-        parent.prm['additional_parameters_to_write'][2] = 0 #probeFreq 
-        parent.prm['additional_parameters_to_write'][3] = []##phases
+        # parent.prm['additional_parameters_to_write'] = {}
+        # parent.prm['additional_parameters_to_write'][0] = [] #chord frequencies
+        # parent.prm['additional_parameters_to_write'][1] = 0  #chord component number
+        # parent.prm['additional_parameters_to_write'][2] = 0 #probeFreq 
+        # parent.prm['additional_parameters_to_write'][3] = []##phases
         parent.writeResultsHeader('log')
         parent.prm['conditions'] = ["Yes","No"]
 

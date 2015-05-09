@@ -47,7 +47,8 @@ def initialize_freq(prm):
                                         "Weighted Up-Down",
                                         "Constant m-Intervals n-Alternatives",
                                         "PEST",
-                                        "Maximum Likelihood"]
+                                        "Maximum Likelihood",
+                                        "PSI"]
 
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
                              "hasIntervalLights"]

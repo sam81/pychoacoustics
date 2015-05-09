@@ -64,6 +64,7 @@ from .stats_utils import*
 from .sndlib import*
 from .utils_general import*
 from .utils_process_results import*
+from .psi_method import*
 
 
 
@@ -235,7 +236,7 @@ class responseBox(QMainWindow):
             nAlternatives = nIntervals
         
         if self.parent().currParadigm in ["Transformed Up-Down", "Transformed Up-Down Limited", "Weighted Up-Down", "Weighted Up-Down Limited", "Constant m-Intervals n-Alternatives",
-                                 "Transformed Up-Down Interleaved", "Weighted Up-Down Interleaved", "Multiple Constants m-Intervals n-Alternatives", "PEST", "Maximum Likelihood"]:
+                                          "Transformed Up-Down Interleaved", "Weighted Up-Down Interleaved", "Multiple Constants m-Intervals n-Alternatives", "PEST", "Maximum Likelihood", "PSI"]:
 
             if self.prm["preTrialInterval"] == True:
                 self.intervalLight.append(intervalLight(self))
@@ -672,6 +673,43 @@ class responseBox(QMainWindow):
                 self.prm['psyFunSlope'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Psychometric Function Slope"))])
                 self.prm['psyFunLapseRate'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse Rate"))])
                 self.prm['nTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Trials"))])
+            elif self.prm["paradigm"] == self.tr("PSI"):
+                self.prm['psyFunType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Psychometric Function:"))]
+                self.prm['nTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Trials"))])
+                self.prm['stimScale'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Stim. Scaling:"))]
+
+                self.prm['stimLo'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Stim. Min"))])
+                self.prm['stimHi'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Stim. Max"))])
+                self.prm['stimStep'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Stim. Step"))])
+
+                self.prm['loMidPoint'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point Min"))])
+                self.prm['hiMidPoint'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point Max"))])
+                self.prm['midPointStep'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point Step"))])
+                self.prm['midPointPrior'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Mid Point Prior:"))]
+                self.prm['midPointPriorMu'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point mu"))])
+                self.prm['midPointPriorSTD'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point STD"))])
+
+                self.prm['loSlope'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope Min"))])
+                self.prm['hiSlope'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope Max"))])
+                self.prm['slopeStep'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope Step"))])
+                self.prm['slopeSpacing'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Slope Spacing:"))]
+                self.prm['slopePrior'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Slope Prior:"))]
+                self.prm['slopePriorMu'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope mu"))])
+                self.prm['slopePriorSTD'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope STD"))])
+
+                self.prm['loLapse'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse Min"))])
+                self.prm['hiLapse'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse Max"))])
+                self.prm['lapseStep'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse Step"))])
+                self.prm['lapseSpacing'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Lapse Spacing:"))]
+                self.prm['lapsePrior'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Lapse Prior:"))]
+                self.prm['lapsePriorMu'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse mu"))])
+                self.prm['lapsePriorSTD'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse STD"))])
+
+                self.prm['margLapse'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Marginalize Lapse:"))]
+                self.prm['margSlope'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Marginalize Slope:"))]
+                self.prm['margThresh'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Marginalize Mid Point:"))]
+                self.prm['startLevelType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Start Level:"))]
+
                 
         if self.prm['startOfBlock'] == True and 'resultsFile' not in self.prm:
             if self.prm['pref']['general']['resFileFormat'] == 'fixed':
@@ -814,6 +852,8 @@ class responseBox(QMainWindow):
             self.sortResponsePEST(buttonClicked)
         elif self.prm['paradigm'] == self.tr("Maximum Likelihood"):
             self.sortResponseMaximumLikelihood(buttonClicked)
+        elif self.prm['paradigm'] == self.tr("PSI"):
+            self.sortResponsePSI(buttonClicked)
         elif self.prm['paradigm'] == self.tr("Odd One Out"):
             self.sortResponseOddOneOut(buttonClicked)
         self.prm['sortingResponse'] = False
@@ -2483,7 +2523,172 @@ class responseBox(QMainWindow):
 
             self.atBlockEnd()
         else:
-                self.doTrial()
+            self.doTrial()
+
+
+    def sortResponsePSI(self, buttonClicked):
+        currBlock = 'b' + str(self.prm['currentBlock'])
+        if self.prm['startOfBlock'] == True:
+            self.fullFileLines = []
+            self.fullFileSummLines = []
+            if self.prm['margThresh'] == "Yes" or self.prm['margSlope'] == "Yes" or self.prm['margLapse'] == "Yes":
+                ax = np.array([])
+                if self.prm['margThresh'] == "Yes":
+                    ax = numpy.append(ax, 0)
+                if self.prm['margSlope'] == "Yes":
+                    ax = numpy.append(ax, 1)
+                if self.prm['margLapse'] == "Yes":
+                    ax = numpy.append(ax, 2)
+                ax = tuple(np.sort(ax))
+            else:
+                ax = None
+                    
+
+            gammax = 1/self.prm[currBlock]['nAlternatives']
+                    
+            self.PSI = setupPSI(model=self.prm['psyFunType'], x0=self.prm['adaptiveDifference'], xLim=(self.prm['stimLo'], self.prm['stimHi']), xStep=self.prm['stimStep'], stimScale=self.prm['stimScale'],
+                                alphaLim=(self.prm['loMidPoint'],self.prm['hiMidPoint']), alphaStep=self.prm['midPointStep'], alphaSpacing="Linear",
+                                alphaDist=self.prm['midPointPrior'], alphaMu=self.prm['slopePriorMu'], alphaSTD=self.prm['slopePriorSTD'],
+                                betaLim=(self.prm['loSlope'],self.prm['hiSlope']), betaStep=self.prm['slopeStep'], betaSpacing=self.prm['slopeSpacing'],
+                                betaDist=self.prm['slopePrior'], betaMu=self.prm['slopePriorMu'], betaSTD=self.prm['slopePriorSTD'],
+                                gamma=gammax,
+                                lambdaLim=(self.prm['loLapse'],self.prm['hiLapse']), lambdaStep=self.prm['lapseStep'], lambdaSpacing=self.prm['lapseSpacing'],
+                                lambdaDist=self.prm['lapsePrior'], lambdaMu=self.prm['lapsePriorMu'], lambdaSTD=self.prm['lapsePriorSTD'],
+                                marginalize = ax)
+
+            self.prm['startOfBlock'] = False
+            self.trialCount = 0
+            self.fullFileLines = []
+            self.prm['buttonCounter'] = [0 for i in range(self.prm['nAlternatives'])]
+
+        self.prm['buttonCounter'][buttonClicked-1] = self.prm['buttonCounter'][buttonClicked-1] + 1
+            
+        if buttonClicked == self.correctButton:
+            response = 1
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback("correct")
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback("neutral")
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback("off")
+        elif buttonClicked != self.correctButton:
+            response = 0
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback("incorrect")
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback("neutral")
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback("off")
+
+        self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"]])
+        self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
+        self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+        self.fullFileLog.write(str(response)+'; ')
+        self.fullFileLines.append(str(response)+'; ')
+        self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(response) + self.prm['pref']["general"]["csvSeparator"])
+        if 'additional_parameters_to_write' in self.prm:
+             for p in range(len(self.prm['additional_parameters_to_write'])):
+                 self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                 self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                 self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(self.prm['additional_parameters_to_write'][p]))
+                 self.fullFileLog.write(' ;')
+                 self.fullFileLines.append(' ;')
+                 self.fullFileSummLines[len(self.fullFileSummLines)-1].append(self.prm['pref']["general"]["csvSeparator"])
+        self.fullFileLog.write('\n')
+        self.fullFileLines.append('\n')
+
+        self.trialCount = self.trialCount +1
+
+        self.fullFileLog.flush()
+        pcDone = (self.trialCount / self.prm['nTrials']) * 100
+        bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
+        pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
+        pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
+        self.gauge.setValue(pcTot)
+        
+        if self.trialCount == self.prm['nTrials']:
+            
+            self.writeResultsHeader('standard')
+            self.fullFileLog.write('\n')
+            self.fullFileLines.append('\n')
+            for i in range(len(self.fullFileLines)):
+                self.fullFile.write(self.fullFileLines[i])
+            self.resFile.write('\n\n')
+            self.resFileLog.write('\n\n')
+            self.resFile.write('Midpoint = %5.2f ' %self.PSI['est_midpoint'])
+            self.resFileLog.write('Midpoint = %5.2f ' %self.PSI['est_midpoint'])
+            self.resFile.write('\n')
+            self.resFileLog.write('\n')
+            self.resFile.write('Slope = %5.2f ' %self.PSI['est_slope'])
+            self.resFileLog.write('Slope = %5.2f ' %self.PSI['est_slope'])
+            self.resFile.write('\n')
+            self.resFileLog.write('\n')
+            self.resFile.write('Lapse = %5.2f ' %self.PSI['est_lapse'])
+            self.resFileLog.write('Lapse = %5.2f ' %self.PSI['est_lapse'])
+            self.resFile.write('\n\n')
+            self.resFileLog.write('\n\n')
+  
+
+            for i in range(self.prm['nAlternatives']):
+                self.resFile.write("B{0} = {1}".format(i+1, self.prm['buttonCounter'][i]))
+                self.resFileLog.write("B{0} = {1}".format(i+1, self.prm['buttonCounter'][i]))
+                if i != self.prm['nAlternatives']-1:
+                    self.resFile.write(', ')
+                    self.resFileLog.write(', ')
+            self.resFile.write('\n\n')
+            self.resFile.flush()
+            self.resFileLog.write('\n\n')
+            self.resFileLog.flush()
+            self.getEndTime()
+
+            durString = '{0:5.3f}'.format(self.prm['blockEndTime'] - self.prm['blockStartTime'])
+            resLineToWrite = '{0:5.3f}'.format(self.PSI['est_midpoint']) + self.prm['pref']["general"]["csvSeparator"] + \
+                             '{0:5.3f}'.format(self.PSI['est_slope']) + self.prm['pref']["general"]["csvSeparator"] + \
+                             '{0:5.3f}'.format(self.PSI['est_lapse']) + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             durString + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
+            resLineToWrite = resLineToWrite + '\n'
+            
+            self.writeResultsSummaryLine('PSI', resLineToWrite)
+
+            resLineToWriteSummFull = ""
+            for i in range(len(self.fullFileSummLines)):
+              resLineToWriteSummFull = resLineToWriteSummFull + " ".join(self.fullFileSummLines[i]) + \
+                             self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             durString + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+             
+              resLineToWriteSummFull = self.getCommonTabFields(resLineToWriteSummFull)
+              resLineToWriteSummFull = resLineToWriteSummFull + '\n'
+            
+            
+            self.writeResultsSummaryFullLine('PSI', resLineToWriteSummFull)
+
+            del self.PSI #clear memory
+            self.atBlockEnd()
+        else:
+            self.PSI = PSI_update(self.PSI, response)
+            self.prm['adaptiveDifference'] = self.PSI["xnextLinear"]
+            print("Est. thresh: " + str(self.PSI['est_midpoint']))  
+            print('Next Stim: ' + str(self.prm['adaptiveDifference']))
+            print(self.PSI["phi"])
+            self.doTrial()
 
 
     def sortResponseOddOneOut(self, buttonClicked):
@@ -2970,6 +3175,20 @@ class responseBox(QMainWindow):
                             'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
+        elif paradigm in ['PSI']:
+            headerToWrite = 'threshold' +  self.prm['pref']["general"]["csvSeparator"] + \
+                            'slope' +  self.prm['pref']["general"]["csvSeparator"] + \
+                            'lapse' +  self.prm['pref']["general"]["csvSeparator"] + \
+                            'condition' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
                             'paradigm' + self.prm['pref']["general"]["csvSeparator"] 
             
 
@@ -3222,6 +3441,22 @@ class responseBox(QMainWindow):
         elif paradigm in ['Maximum Likelihood']:
             headerToWrite = 'threshold' +  self.prm['pref']["general"]["csvSeparator"] + \
                             'condition' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
+        if paradigm in ['PSI']:
+            headerToWrite = 'adaptive_difference' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'response' + self.prm['pref']["general"]["csvSeparator"]
+            if 'additional_parameters_to_write' in self.prm:
+                for p in range(len(self.prm['additional_parameters_to_write_labels'])):
+                    headerToWrite = headerToWrite + self.prm['additional_parameters_to_write_labels'][p] +  self.prm['pref']["general"]["csvSeparator"]
+            headerToWrite = headerToWrite + 'condition' + self.prm['pref']["general"]["csvSeparator"] + \
                             'listener' + self.prm['pref']["general"]["csvSeparator"] + \
                             'session'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \

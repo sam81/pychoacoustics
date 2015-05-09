@@ -4,7 +4,7 @@
 import copy, os
 
 thisDir = os.getcwd()
-#read the current pyat version
+#read the current pyqt version
 f = open('../pychoacoustics/pyqtver.py', 'r')
 pyqtverLines = f.readlines()
 pyqtverLinesPyside = copy.copy(pyqtverLines)

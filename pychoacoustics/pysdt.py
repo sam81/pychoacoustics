@@ -32,6 +32,7 @@ from numpy import exp, log, sign, sqrt
 
 
 
+
 def dprime_mAFC(Pc, m):
     """
     Compute d' corresponding to a certain proportion of correct
@@ -318,3 +319,14 @@ def logisticLikelihood(lev, response, alphax, betax, gammax, lambdax):
 
     return ll
 
+
+def gaussian(x, alphax, betax, gammax, lambdax):
+    out = gammax+(1-gammax-lambdax)*(1+erf((x-alphax)/sqrt(2*betax**2)))/2
+    return out
+
+def weibull(x, alphax, betax, gammax, lambdax):
+    out = gammax+(1-gammax-lambdax)*(1-numpy.exp(-(x/alphax)**betax))
+    return out
+def gumbel(x, alphax, betax, gammax, lambdax):
+    out = gammax + (1-gammax-lambdax) * (1-numpy.exp(-10**(betax*(x-alphax))))
+    return out
