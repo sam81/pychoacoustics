@@ -444,6 +444,54 @@ class pychControlWin(QMainWindow):
         self.def_widg_sizer2.addWidget(self.autoPCorrTF, 2, 3)
         self.autoPCorrLabel.hide()
         self.autoPCorrTF.hide()
+
+        #For psychometric listener
+        n = 2+1
+        self.psyListFunChooserLabel = QLabel(self.tr("Psychometric Listener Function:"))
+        self.def_widg_sizer2.addWidget(self.psyListFunChooserLabel, n, 0)
+        self.psyListFunChooser = QComboBox()
+        self.psyListFunChooser.addItems(self.prm['psyListFunChoices'])
+        #self.psyListFunChooser.setCurrentIndex(self.prm['psyListFunChoices'].index(QApplication.translate("",self.prm['pref']['general']['defaultResponseMode'],"")))
+        #self.psyListFunChooser.activated[str].connect(self.onResponseModeChange)
+        self.def_widg_sizer2.addWidget(self.psyListFunChooser, n, 1)
+        self.psyListFunChooserLabel.hide()
+        self.psyListFunChooser.hide()
+        n = n+1
+        self.psyListFunFitChooserLabel = QLabel(self.tr("Psychometric Listener Function Fit:"))
+        self.def_widg_sizer2.addWidget(self.psyListFunFitChooserLabel, n, 0)
+        self.psyListFunFitChooser = QComboBox()
+        self.psyListFunFitChooser.addItems(["Linear", "Logarithmic"])
+        self.def_widg_sizer2.addWidget(self.psyListFunFitChooser, n, 1)
+        self.psyListFunFitChooserLabel.hide()
+        self.psyListFunFitChooser.hide()
+        n = n+1
+        self.psyListMidpointLabel = QLabel(self.tr("Psychometric Listener Midpoint:"), self)
+        self.def_widg_sizer2.addWidget(self.psyListMidpointLabel, n, 0)
+        self.psyListMidpoint = QLineEdit()
+        self.psyListMidpoint.setText('0')
+        self.psyListMidpoint.setValidator(QDoubleValidator(self))
+        self.def_widg_sizer2.addWidget(self.psyListMidpoint, n, 1)
+        self.psyListMidpointLabel.hide()
+        self.psyListMidpoint.hide()
+        
+        self.psyListSlopeLabel = QLabel(self.tr("Psychometric Listener Slope:"), self)
+        self.def_widg_sizer2.addWidget(self.psyListSlopeLabel, n, 2)
+        self.psyListSlope = QLineEdit()
+        self.psyListSlope.setText('0')
+        self.psyListSlope.setValidator(QDoubleValidator(self))
+        self.def_widg_sizer2.addWidget(self.psyListSlope, n, 3)
+        self.psyListSlopeLabel.hide()
+        self.psyListSlope.hide()
+        n = n+1
+        self.psyListLapseLabel = QLabel(self.tr("Psychometric Listener Lapse:"), self)
+        self.def_widg_sizer2.addWidget(self.psyListLapseLabel, n, 0)
+        self.psyListLapse = QLineEdit()
+        self.psyListLapse.setText('0')
+        self.psyListLapse.setValidator(QDoubleValidator(self))
+        self.def_widg_sizer2.addWidget(self.psyListLapse, n, 1)
+        self.psyListLapseLabel.hide()
+        self.psyListLapse.hide()
+        
         #PARADIGM WIDGETS SIZER
         self.paradigm_widg_sizer = QGridLayout()
 
@@ -2154,7 +2202,8 @@ class pychControlWin(QMainWindow):
             self.onChangeThreshPrior()
             self.onChangeSlopePrior()
             self.onChangeLapsePrior()
-            
+
+
     def onExperimentChange(self, experimentSelected):
         for i in range(self.paradigmChooser.count()):
             self.paradigmChooser.removeItem(0)
@@ -2167,6 +2216,13 @@ class pychControlWin(QMainWindow):
         self.prevParadigm = self.currParadigm
         self.currParadigm = self.tr(paradigmSelected)
         self.setParadigmWidgets(self.currParadigm, self.prevParadigm)
+        # if self.currParadigm in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"),
+        #                           self.tr("Transformed Up-Down Limited"), self.tr("Weighted Up-Down Limited"),
+        #                           self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved"),
+        #                           self.tr("PEST"), self.tr("Maximum Likelihood"), self.tr("PSI")]:
+        #     self.prm['responseModeChoices'] = ["Real Listener", "Automatic", "Simulated Listener", "Psychometric"]
+        # else:
+        #     self.prm['responseModeChoices'] = ["Real Listener", "Automatic", "Simulated Listener"]
         self.responseBox.setupLights()
 
     def onNIntervalsChange(self, nIntervalsSelected):
@@ -2255,6 +2311,28 @@ class pychControlWin(QMainWindow):
         else:
             self.autoPCorrLabel.show()
             self.autoPCorrTF.show()
+        if selectedMode != self.tr("Psychometric"):
+            self.psyListFunChooser.hide()
+            self.psyListFunChooserLabel.hide()
+            self.psyListFunFitChooser.hide()
+            self.psyListFunFitChooserLabel.hide()
+            self.psyListMidpoint.hide()
+            self.psyListMidpointLabel.hide()
+            self.psyListSlope.hide()
+            self.psyListSlopeLabel.hide()
+            self.psyListLapse.hide()
+            self.psyListLapseLabel.hide()
+        else:
+            self.psyListFunChooser.show()
+            self.psyListFunChooserLabel.show()
+            self.psyListFunFitChooser.show()
+            self.psyListFunFitChooserLabel.show()
+            self.psyListMidpoint.show()
+            self.psyListMidpointLabel.show()
+            self.psyListSlope.show()
+            self.psyListSlopeLabel.show()
+            self.psyListLapse.show()
+            self.psyListLapseLabel.show()
             
     def onDropPrmFile(self, l):
         lastFileDropped = l #l[len(l)-1]
@@ -2382,6 +2460,7 @@ class pychControlWin(QMainWindow):
         self.prm['nIntervals'] = self.prm[self.currExp]['defaultNIntervals']  #tmp['nIntervals']
         self.prm['nAlternatives'] = self.prm[self.currExp]['defaultNAlternatives']#tmp['nAlternatives']
         self.setAdditionalWidgets(self.currExp, self.prevExp)
+        
         self.onChooserChange(None)
         
     def removePrmWidgets(self):
@@ -2461,6 +2540,15 @@ class pychControlWin(QMainWindow):
         self.warningIntervalDurTF.setText(self.currLocale.toString(self.prm[block]['warningIntervalDur']))
         self.warningIntervalISITF.setText(self.currLocale.toString(self.prm[block]['warningIntervalISI']))
         self.intervalLightsChooser.setCurrentIndex(self.intervalLightsChooser.findText(self.prm[block]['intervalLights']))
+
+        self.psyListFunChooser.setCurrentIndex( self.psyListFunChooser.findText(self.prm[block]['psyListFun']))
+        self.psyListFunFitChooser.setCurrentIndex( self.psyListFunFitChooser.findText(self.prm[block]['psyListFunFit']))
+        self.psyListMidpoint.setText(self.currLocale.toString(self.prm[block]['psyListMidpoint']))
+        self.psyListSlope.setText(self.currLocale.toString(self.prm[block]['psyListSlope']))
+        self.psyListLapse.setText(self.currLocale.toString(self.prm[block]['psyListLapse']))
+        
+        
+        
         self.onIntervalLightsChange()
 
         if self.prm[currExp]["hasISIBox"] == True:
@@ -2588,6 +2676,13 @@ class pychControlWin(QMainWindow):
         self.prm[currBlock]['warningInterval'] = self.warningIntervalChooser.currentText()
         self.prm[currBlock]['warningIntervalDur'] = self.currLocale.toInt(self.warningIntervalDurTF.text())[0]
         self.prm[currBlock]['warningIntervalISI'] = self.currLocale.toInt(self.warningIntervalISITF.text())[0]
+
+        self.prm[currBlock]['psyListFun'] = self.psyListFunChooser.currentText()
+        self.prm[currBlock]['psyListFunFit'] = self.psyListFunFitChooser.currentText()
+        self.prm[currBlock]['psyListMidpoint'] = self.currLocale.toDouble(self.psyListMidpoint.text())[0]
+        self.prm[currBlock]['psyListSlope'] = self.currLocale.toDouble(self.psyListSlope.text())[0]
+        self.prm[currBlock]['psyListLapse'] = self.currLocale.toDouble(self.psyListLapse.text())[0]
+        
         if self.prm[currExp]["hasISIBox"] == True:
             self.prm[currBlock]['ISIVal'] = self.currLocale.toInt(self.ISIBox.text())[0]
             self.prm[currBlock]['ISIValCheckBox'] = self.ISIBoxCheckBox.isChecked()
@@ -2726,7 +2821,9 @@ class pychControlWin(QMainWindow):
             tmpPrm[currBlock]['paradigmFieldCheckBox'] = []
          
 
-            otherKeysToCompare = ['preTrialSilence', 'intervalLights', 'responseLight', 'responseLightDuration', 'conditionLabel', 'warningInterval', 'warningIntervalDur', 'warningIntervalISI']
+            otherKeysToCompare = ['preTrialSilence', 'intervalLights', 'responseLight', 'responseLightDuration',
+                                  'conditionLabel', 'warningInterval', 'warningIntervalDur', 'warningIntervalISI',
+                                  'psyListFun', 'psyListFunFit', 'psyListMidpoint', 'psyListSlope', 'psyListLapse']
         
             tmpPrm[currBlock]['preTrialSilence'] = self.currLocale.toInt(self.preTrialSilenceTF.text())[0]
             tmpPrm[currBlock]['intervalLights'] = self.intervalLightsChooser.currentText()
@@ -2737,6 +2834,11 @@ class pychControlWin(QMainWindow):
             tmpPrm[currBlock]['responseLightCheckBox'] = self.responseLightCheckBox.isChecked()
             tmpPrm[currBlock]['responseLightDuration'] = self.currLocale.toInt(self.responseLightDurationTF.text())[0]
             tmpPrm[currBlock]['responseLightDurationCheckBox'] = self.responseLightDurationCheckBox.isChecked()
+            tmpPrm[currBlock]['psyListFun'] = self.psyListFunChooser.currentText()
+            tmpPrm[currBlock]['psyListFunFit'] = self.psyListFunFitChooser.currentText()
+            tmpPrm[currBlock]['psyListMidpoint'] = self.currLocale.toDouble(self.psyListMidpoint.text())[0]
+            tmpPrm[currBlock]['psyListSlope'] = self.currLocale.toDouble(self.psyListSlope.text())[0]
+            tmpPrm[currBlock]['psyListLapse'] = self.currLocale.toDouble(self.psyListLapse.text())[0]
         
             if tmpPrm[currExp]["hasISIBox"] == True:
                 tmpPrm[currBlock]['ISIVal'] = self.currLocale.toInt(self.ISIBox.text())[0]
@@ -2824,7 +2926,8 @@ class pychControlWin(QMainWindow):
                 if tmpPrm['b'+str(i+1)][otherKeysToCompare[j]] != self.prm['b'+str(i+1)][thisKey]:
                     prmChanged = True
                 if thisKey not in ['conditionLabel', 'preTrialSilence', 'warningInterval', #these ones don't have check boxes
-                                   'warningIntervalDur', 'warningIntervalISI', 'intervalLights']:
+                                   'warningIntervalDur', 'warningIntervalISI', 'intervalLights', 'psyListFun',
+                                   'psyListFunFit', 'psyListMidpoint', 'psyListSlope', 'psyListLapse']:
                     if tmpPrm['b'+str(i+1)][otherKeysToCompare[j]+'CheckBox'] != self.prm['b'+str(i+1)][thisKey+'CheckBox']:
                         prmChanged = True
 
@@ -3075,6 +3178,21 @@ class pychControlWin(QMainWindow):
             if allLines[i].split(':')[0] == 'Response Light Duration (ms)':
                 tmp['b'+str(blockNumber)]['responseLightDuration'] = self.currLocale.toInt(allLines[i].split(':')[1].strip())[0]
                 tmp['b'+str(blockNumber)]['responseLightDurationCheckBox'] = strToBoolean(allLines[i].split(':')[2].strip())
+            if allLines[i].split(':')[0] == 'Psychometric Listener Function':
+                tmp['b'+str(blockNumber)]['psyListFun'] = allLines[i].split(':')[1].strip()
+                #tmp['b'+str(blockNumber)]['responseLightDurationCheckBox'] = strToBoolean(allLines[i].split(':')[2].strip())
+            if allLines[i].split(':')[0] == 'Psychometric Listener Function Fit':
+                tmp['b'+str(blockNumber)]['psyListFunFit'] = allLines[i].split(':')[1].strip()
+                #tmp['b'+str(blockNumber)]['responseLightDurationCheckBox'] = strToBoolean(allLines[i].split(':')[2].strip())
+            if allLines[i].split(':')[0] == 'Psychometric Listener Midpoint':
+                tmp['b'+str(blockNumber)]['psyListMidpoint'] = self.currLocale.toDouble(allLines[i].split(':')[1].strip())[0]
+                #tmp['b'+str(blockNumber)]['responseLightDurationCheckBox'] = strToBoolean(allLines[i].split(':')[2].strip())
+            if allLines[i].split(':')[0] == 'Psychometric Listener Slope':
+                tmp['b'+str(blockNumber)]['psyListSlope'] = self.currLocale.toDouble(allLines[i].split(':')[1].strip())[0]
+                #tmp['b'+str(blockNumber)]['responseLightDurationCheckBox'] = strToBoolean(allLines[i].split(':')[2].strip())
+            if allLines[i].split(':')[0] == 'Psychometric Listener Lapse':
+                tmp['b'+str(blockNumber)]['psyListLapse'] = self.currLocale.toDouble(allLines[i].split(':')[1].strip())[0]
+                #tmp['b'+str(blockNumber)]['responseLightDurationCheckBox'] = strToBoolean(allLines[i].split(':')[2].strip())
             if allLines[i].strip() == '.':
                 foo['b'+str(blockNumber)]['startParadigmChooser'] = i+1
             if allLines[i].strip() == '..':
@@ -3221,6 +3339,11 @@ class pychControlWin(QMainWindow):
                 fName.write(self.tr('Warning Interval Duration (ms): ') + self.currLocale.toString(self.prm[currBlock]['warningIntervalDur']) + '\n')
                 fName.write(self.tr('Warning Interval ISI (ms): ') + self.currLocale.toString(self.prm[currBlock]['warningIntervalISI']) + '\n')
             fName.write(self.tr('Interval Lights: ') + self.prm[currBlock]['intervalLights'] + '\n')
+            fName.write(self.tr('Psychometric Listener Function: ') + self.prm[currBlock]['psyListFun']+ '\n')
+            fName.write(self.tr('Psychometric Listener Function Fit: ') + self.prm[currBlock]['psyListFunFit']+ '\n')
+            fName.write(self.tr('Psychometric Listener Midpoint: ') + self.currLocale.toString(self.prm[currBlock]['psyListMidpoint']) + '\n')
+            fName.write(self.tr('Psychometric Listener Slope: ') + self.currLocale.toString(self.prm[currBlock]['psyListSlope']) + '\n')
+            fName.write(self.tr('Psychometric Listener Lapse: ') + self.currLocale.toString(self.prm[currBlock]['psyListLapse']) + '\n')
             if self.prm[currExp]["hasISIBox"] == True:
                 fName.write(self.tr('ISI (ms): ') + self.currLocale.toString(self.prm[currBlock]['ISIVal']) + ' :' + str(self.prm[currBlock]['ISIValCheckBox']) + '\n')
             if self.prm[currExp]["hasPreTrialInterval"] == True:

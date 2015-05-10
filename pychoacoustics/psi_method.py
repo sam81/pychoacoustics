@@ -90,16 +90,16 @@ def setupPSI(model="Logistic", stimScale="Linear", x0=None, xLim=(-10, 10), xSte
     PSI["lik_corr"] = np.zeros((len(PSI["stims"]), PSI["p"].shape[0], PSI["p"].shape[1], PSI["p"].shape[2]))
     if PSI["par"]["model"] == "Logistic":
         for i in range(len(PSI["stims"])):
-            PSI["lik_corr"][i,:,:,:] = logistic(PSI["stims"][i], PSI["a"], PSI["b"], PSI["gamma"], PSI["l"])
+            PSI["lik_corr"][i,:,:,:] = logisticPsy(PSI["stims"][i], PSI["a"], PSI["b"], PSI["gamma"], PSI["l"])
     elif PSI["par"]["model"] == "Gaussian":
         for i in range(len(PSI["stims"])):
-            PSI["lik_corr"][i,:,:,:] = gaussian(PSI["stims"][i], PSI["a"], PSI["b"], PSI["gamma"], PSI["l"])
+            PSI["lik_corr"][i,:,:,:] = gaussianPsy(PSI["stims"][i], PSI["a"], PSI["b"], PSI["gamma"], PSI["l"])
     elif PSI["par"]["model"] == "Weibull":
         for i in range(len(PSI["stims"])):
-            PSI["lik_corr"][i,:,:,:] = weibull(PSI["stims"][i], PSI["a"], PSI["b"], PSI["gamma"], PSI["l"])
+            PSI["lik_corr"][i,:,:,:] = weibullPsy(PSI["stims"][i], PSI["a"], PSI["b"], PSI["gamma"], PSI["l"])
     elif PSI["par"]["model"] == "Gumbel":
         for i in range(len(PSI["stims"])):
-            PSI["lik_corr"][i,:,:,:] = gumbel(PSI["stims"][i], PSI["a"], PSI["b"], PSI["gamma"], PSI["l"])
+            PSI["lik_corr"][i,:,:,:] = gumbelPsy(PSI["stims"][i], PSI["a"], PSI["b"], PSI["gamma"], PSI["l"])
     PSI["marginalize"] = marginalize
 
     if x0 == None:

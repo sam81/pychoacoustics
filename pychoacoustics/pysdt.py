@@ -264,7 +264,7 @@ def dprime_yes_no_from_counts(nCA, nTA, nCB, nTB, corr):
 
     return norm.ppf(tA) - norm.ppf(1-tB)
 
-def logistic(x, alphax, betax, gammax, lambdax):
+def logisticPsy(x, alphax, betax, gammax, lambdax):
     """
     Compute the logistic function
 
@@ -286,7 +286,7 @@ def logistic(x, alphax, betax, gammax, lambdax):
     out = gammax + (1-gammax-lambdax) *(1/(1+exp(betax*(alphax-x))))
     return out
 
-def invLogistic(p, alphax, betax, gammax, lambdax):
+def invLogisticPsy(p, alphax, betax, gammax, lambdax):
     """
     Compute the inverse of the logistic function
 
@@ -320,13 +320,13 @@ def logisticLikelihood(lev, response, alphax, betax, gammax, lambdax):
     return ll
 
 
-def gaussian(x, alphax, betax, gammax, lambdax):
+def gaussianPsy(x, alphax, betax, gammax, lambdax):
     out = gammax+(1-gammax-lambdax)*(1+erf((x-alphax)/sqrt(2*betax**2)))/2
     return out
 
-def weibull(x, alphax, betax, gammax, lambdax):
+def weibullPsy(x, alphax, betax, gammax, lambdax):
     out = gammax+(1-gammax-lambdax)*(1-numpy.exp(-(x/alphax)**betax))
     return out
-def gumbel(x, alphax, betax, gammax, lambdax):
+def gumbelPsy(x, alphax, betax, gammax, lambdax):
     out = gammax + (1-gammax-lambdax) * (1-numpy.exp(-10**(betax*(x-alphax))))
     return out

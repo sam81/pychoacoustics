@@ -776,7 +776,62 @@ class responseBox(QMainWindow):
         QApplication.processEvents()
         self.prm['trialRunning'] = False
         if self.prm['allBlocks']['responseMode'] == self.tr("Automatic"):
-            if numpy.random.uniform(0, 1, 1)[0] < self.prm['allBlocks']['autoPCCorr']:
+            resp = np.random.binomial(1, self.prm['allBlocks']['autoPCCorr'], 1)[0]
+            if resp == 1:
+                self.sortResponse(self.correctButton)
+            else:
+                self.sortResponse(random.choice(numpy.delete(numpy.arange(self.prm['nAlternatives'])+1, self.correctButton-1)))
+
+        if self.prm['allBlocks']['responseMode'] == self.tr("Psychometric"):
+            if self.prm['paradigm'] not in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"),
+                                         self.tr("Transformed Up-Down Limited"), self.tr("Weighted Up-Down Limited"),
+                                         self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved"),
+                                         self.tr("PEST"), self.tr("Maximum Likelihood"), self.tr("PSI")]:
+                ret = QMessageBox.warning(self, self.tr("Warning"),
+                                          self.tr("Sorry, psychometric listener not supported by current paradigm. Please, choose another response mode."),
+                                          QMessageBox.Ok)
+                return
+                
+            self.prm['responseModeChoices'] = ["Real Listener", "Automatic", "Simulated Listener", "Psychometric"]
+            if self.prm[currBlock]['psyListFun'] == "Logistic":
+                if self.prm[currBlock]['psyListFunFit'] == "Linear":
+                    probCorr = logisticPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
+                                           self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
+                                           self.prm[currBlock]['psyListLapse'])
+                elif self.prm[currBlock]['psyListFunFit'] == "Logarithmic":
+                    probCorr = logisticPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
+                                           self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
+                                           self.prm[currBlock]['psyListLapse'])
+            elif self.prm[currBlock]['psyListFun'] == "Gaussian":
+                if self.prm[currBlock]['psyListFunFit'] == "Linear":
+                    probCorr = GaussianPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
+                                           self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
+                                           self.prm[currBlock]['psyListLapse'])
+                elif self.prm[currBlock]['psyListFunFit'] == "Logarithmic":
+                    probCorr = GaussianPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
+                                           self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
+                                           self.prm[currBlock]['psyListLapse'])
+            elif self.prm[currBlock]['psyListFun'] == "Gumbel":
+                if self.prm[currBlock]['psyListFunFit'] == "Linear":
+                    probCorr = GumbelPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
+                                         self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
+                                         self.prm[currBlock]['psyListLapse'])
+                elif self.prm[currBlock]['psyListFunFit'] == "Logarithmic":
+                    probCorr = GumbelPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
+                                         self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
+                                         self.prm[currBlock]['psyListLapse'])
+            elif self.prm[currBlock]['psyListFun'] == "Weibull":
+                if self.prm[currBlock]['psyListFunFit'] == "Linear":
+                    probCorr = WeibullPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
+                                          self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
+                                          self.prm[currBlock]['psyListLapse'])
+                elif self.prm[currBlock]['psyListFunFit'] == "Logarithmic":
+                    probCorr = WeibullPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
+                                          self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
+                                          self.prm[currBlock]['psyListLapse'])
+            resp = np.random.binomial(1, probCorr, 1)[0]
+            print(self.prm['adaptiveDifference'])
+            if resp == 1:
                 self.sortResponse(self.correctButton)
             else:
                 self.sortResponse(random.choice(numpy.delete(numpy.arange(self.prm['nAlternatives'])+1, self.correctButton-1)))

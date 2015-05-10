@@ -113,7 +113,8 @@ def set_global_parameters(prm):
 
     prm["nBitsChoices"] = ["16", "32"]
     prm["shuffleChoices"] = [QApplication.translate("","No",""), QApplication.translate("","Ask",""), QApplication.translate("","Auto","")]
-    prm["responseModeChoices"] = [QApplication.translate("","Real Listener",""), QApplication.translate("","Automatic",""), QApplication.translate("","Simulated Listener","")]
+    prm["responseModeChoices"] = [QApplication.translate("","Real Listener",""), QApplication.translate("","Automatic",""), QApplication.translate("","Simulated Listener",""), QApplication.translate("","Psychometric","")]
+    prm["psyListFunChoices"] = [QApplication.translate("","Logistic",""), QApplication.translate("","Gaussian",""), QApplication.translate("","Gumbel",""), QApplication.translate("","Weibull","")]
     prm['trialRunning'] = False
     prm['currentBlock'] = 1
     prm['storedBlocks'] = 0
