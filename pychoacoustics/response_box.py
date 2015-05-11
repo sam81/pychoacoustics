@@ -787,7 +787,7 @@ class responseBox(QMainWindow):
             if self.prm['paradigm'] not in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"),
                                          self.tr("Transformed Up-Down Limited"), self.tr("Weighted Up-Down Limited"),
                                          self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved"),
-                                         self.tr("PEST"), self.tr("Maximum Likelihood"), self.tr("PSI"), , self.tr("UML")]:
+                                         self.tr("PEST"), self.tr("Maximum Likelihood"), self.tr("PSI"), self.tr("UML")]:
                 ret = QMessageBox.warning(self, self.tr("Warning"),
                                           self.tr("Sorry, psychometric listener not supported by current paradigm. Please, choose another response mode."),
                                           QMessageBox.Ok)
