@@ -236,7 +236,8 @@ class responseBox(QMainWindow):
             nAlternatives = nIntervals
         
         if self.parent().currParadigm in ["Transformed Up-Down", "Transformed Up-Down Limited", "Weighted Up-Down", "Weighted Up-Down Limited", "Constant m-Intervals n-Alternatives",
-                                          "Transformed Up-Down Interleaved", "Weighted Up-Down Interleaved", "Multiple Constants m-Intervals n-Alternatives", "PEST", "Maximum Likelihood", "PSI"]:
+                                          "Transformed Up-Down Interleaved", "Weighted Up-Down Interleaved", "Multiple Constants m-Intervals n-Alternatives", "PEST", "Maximum Likelihood", "PSI",
+                                          "UML"]:
 
             if self.prm["preTrialInterval"] == True:
                 self.intervalLight.append(intervalLight(self))
@@ -786,7 +787,7 @@ class responseBox(QMainWindow):
             if self.prm['paradigm'] not in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"),
                                          self.tr("Transformed Up-Down Limited"), self.tr("Weighted Up-Down Limited"),
                                          self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved"),
-                                         self.tr("PEST"), self.tr("Maximum Likelihood"), self.tr("PSI")]:
+                                         self.tr("PEST"), self.tr("Maximum Likelihood"), self.tr("PSI"), , self.tr("UML")]:
                 ret = QMessageBox.warning(self, self.tr("Warning"),
                                           self.tr("Sorry, psychometric listener not supported by current paradigm. Please, choose another response mode."),
                                           QMessageBox.Ok)
@@ -830,7 +831,7 @@ class responseBox(QMainWindow):
                                           self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                           self.prm[currBlock]['psyListLapse'])
             resp = np.random.binomial(1, probCorr, 1)[0]
-            print(self.prm['adaptiveDifference'])
+            #print(self.prm['adaptiveDifference'])
             if resp == 1:
                 self.sortResponse(self.correctButton)
             else:
@@ -909,6 +910,8 @@ class responseBox(QMainWindow):
             self.sortResponseMaximumLikelihood(buttonClicked)
         elif self.prm['paradigm'] == self.tr("PSI"):
             self.sortResponsePSI(buttonClicked)
+        elif self.prm['paradigm'] == self.tr("UML"):
+            self.sortResponseUML(buttonClicked)
         elif self.prm['paradigm'] == self.tr("Odd One Out"):
             self.sortResponseOddOneOut(buttonClicked)
         self.prm['sortingResponse'] = False
@@ -2670,16 +2673,16 @@ class responseBox(QMainWindow):
                 self.fullFile.write(self.fullFileLines[i])
             self.resFile.write('\n\n')
             self.resFileLog.write('\n\n')
-            self.resFile.write('Midpoint = %5.2f ' %self.PSI['est_midpoint'])
-            self.resFileLog.write('Midpoint = %5.2f ' %self.PSI['est_midpoint'])
+            self.resFile.write('Midpoint = %5.3f ' %self.PSI['est_midpoint'])
+            self.resFileLog.write('Midpoint = %5.3f ' %self.PSI['est_midpoint'])
             self.resFile.write('\n')
             self.resFileLog.write('\n')
-            self.resFile.write('Slope = %5.2f ' %self.PSI['est_slope'])
-            self.resFileLog.write('Slope = %5.2f ' %self.PSI['est_slope'])
+            self.resFile.write('Slope = %5.3f ' %self.PSI['est_slope'])
+            self.resFileLog.write('Slope = %5.3f ' %self.PSI['est_slope'])
             self.resFile.write('\n')
             self.resFileLog.write('\n')
-            self.resFile.write('Lapse = %5.2f ' %self.PSI['est_lapse'])
-            self.resFileLog.write('Lapse = %5.2f ' %self.PSI['est_lapse'])
+            self.resFile.write('Lapse = %5.3f ' %self.PSI['est_lapse'])
+            self.resFileLog.write('Lapse = %5.3f ' %self.PSI['est_lapse'])
             self.resFile.write('\n\n')
             self.resFileLog.write('\n\n')
   
@@ -2745,7 +2748,8 @@ class responseBox(QMainWindow):
             print(self.PSI["phi"])
             self.doTrial()
 
-
+    def sortResponseUML(self, buttonClicked):
+        pass
     def sortResponseOddOneOut(self, buttonClicked):
         if self.prm['startOfBlock'] == True: #Initialize counts and data structures
             self.prm['startOfBlock'] = False
@@ -2934,7 +2938,7 @@ class responseBox(QMainWindow):
                 self.sendEndNotification()
         if int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition']) < self.prm['storedBlocks']:
             self.parent().onClickNextBlockPositionButton()
-            if self.prm['allBlocks']['responseMode'] == self.tr("Automatic") or self.prm['allBlocks']['responseMode'] == self.tr("Simulated Listener"):
+            if self.prm['allBlocks']['responseMode'] == self.tr("Automatic") or self.prm['allBlocks']['responseMode'] == self.tr("Simulated Listener") or self.prm['allBlocks']['responseMode'] == self.tr("Psychometric"):
                 self.onClickStatusButton()
             else:
                 return
