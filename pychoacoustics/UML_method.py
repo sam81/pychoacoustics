@@ -21,7 +21,7 @@
 
 import copy, scipy
 import numpy as np
-from numpy import exp, linspace, logspace, log, log10, meshgrid, pi, ravel
+from numpy import arange, exp, linspace, logspace, log, log10, meshgrid, pi, ravel
 from scipy.stats import norm
 from scipy.special import erf
 from .pysdt import*
