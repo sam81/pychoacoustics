@@ -2227,7 +2227,7 @@ class pychControlWin(QMainWindow):
         if self.currParadigm in [self.tr("UML")]:
             n = 0
             priorOptions = ["Uniform", "Normal"]
-            psyFunOptions = ["Logistic"]#, "Gaussian", "Gumbel", "Weibull"]
+            psyFunOptions = ["Logistic", "Gaussian", "Weibull"]
             # n = n+1
             self.psyFunChooserLabel = QLabel(self.tr("Psychometric Function:"), self)
             self.paradigm_widg_sizer.addWidget(self.psyFunChooserLabel, n, 1)
