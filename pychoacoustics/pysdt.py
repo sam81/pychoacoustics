@@ -26,9 +26,12 @@ http://cran.r-project.org/web/packages/psyphy/index.html
 
 from scipy.stats import norm
 from scipy.integrate import quad
+from scipy.special import erf, erfinv
 from scipy import Inf
 import numpy, scipy
-from numpy import exp, log, sign, sqrt
+from numpy import exp, log, log10, sign, sqrt
+import numpy as np
+#from numpy.lib.scimath import logn #log with arbitrary base
 
 
 
@@ -321,12 +324,26 @@ def logisticLikelihood(lev, response, alphax, betax, gammax, lambdax):
 
 
 def gaussianPsy(x, alphax, betax, gammax, lambdax):
+    # as in UML toolbox
     out = gammax+(1-gammax-lambdax)*(1+erf((x-alphax)/sqrt(2*betax**2)))/2
+    return out
+
+def invGaussianPsy(p, alphax, betax, gammax, lambdax):
+    out = alphax + sqrt(2*betax**2)*erfinv(2*(p-gammax)/(1-gammax-lambdax)-1)
     return out
 
 def weibullPsy(x, alphax, betax, gammax, lambdax):
     out = gammax+(1-gammax-lambdax)*(1-numpy.exp(-(x/alphax)**betax))
     return out
+
+def invWeibullPsy(p, alphax, betax, gammax, lambdax):
+    out = alphax * (np.power(-log(1-(p-gammax)/(1-gammax-lambdax)), 1/betax))
+    return out
+    
 def gumbelPsy(x, alphax, betax, gammax, lambdax):
     out = gammax + (1-gammax-lambdax) * (1-numpy.exp(-10**(betax*(x-alphax))))
+    return out
+
+def invGumbelPsy(p, alphax, betax, gammax, lambdax):
+    out = alphax + (log10(-log(1 - (p-gammax)/(1-gammax-lambdax))))/betax
     return out

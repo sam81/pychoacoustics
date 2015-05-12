@@ -15,6 +15,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
+# This is an implementation of the PSI+ and PSI-marginal method of Prins.
+# - Prins, N. (2013). The psi-marginal adaptive method: How to give nuisance parameters the attention they deserve (no more, no less). Journal of Vision, 13, 1–17.
+# - Prins, N. (2012). The psychometric function: The lapse rate revisited. Journal of Vision, 12(6), 25–25.
 
 import copy, scipy
 import numpy as np

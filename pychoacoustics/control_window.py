@@ -48,6 +48,7 @@ from .dialog_edit_experimenters import*
 from .dialog_process_results import*
 from .dialog_show_fortune import*
 from .dialog_swap_blocks import*
+from .pysdt import*
 
 
 #from redirect_out import*
@@ -445,6 +446,14 @@ class pychControlWin(QMainWindow):
         self.autoPCorrLabel.hide()
         self.autoPCorrTF.hide()
 
+        self.psyListSaveButton = QPushButton(self.tr("Save psychometric listener data"), self)
+        self.psyListSaveButton.clicked.connect(self.onClickPsyListSaveButton)
+        self.psyListSaveButton.setIcon(QIcon.fromTheme("document-save", QIcon(":/document-save")))
+        self.psyListSaveButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
+        self.psyListSaveButton.setToolTip(self.tr("Choose file to save results"))
+        self.def_widg_sizer2.addWidget(self.psyListSaveButton, 2, 2)
+        self.psyListSaveButton.hide()
+
         #For psychometric listener
         n = 2+1
         self.psyListFunChooserLabel = QLabel(self.tr("Psychometric Listener Function:"))
@@ -491,6 +500,8 @@ class pychControlWin(QMainWindow):
         self.def_widg_sizer2.addWidget(self.psyListLapse, n, 1)
         self.psyListLapseLabel.hide()
         self.psyListLapse.hide()
+
+  
         
         #PARADIGM WIDGETS SIZER
         self.paradigm_widg_sizer = QGridLayout()
@@ -2226,27 +2237,37 @@ class pychControlWin(QMainWindow):
             self.psyFunCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.psyFunCheckBox, n, 0)
 
-            self.ruleDownLabel = QLabel(self.tr("Rule Down"), self)
-            self.paradigm_widg_sizer.addWidget(self.ruleDownLabel, n, 4)
-            self.ruleDownTF = QLineEdit()
-            self.ruleDownTF.setText('2')
-            self.ruleDownTF.setValidator(QIntValidator(self))
-            self.paradigm_widg_sizer.addWidget(self.ruleDownTF, n, 5)
-            self.ruleDownCheckBox = QCheckBox()
-            self.paradigm_widg_sizer.addWidget(self.ruleDownCheckBox, n, 3)
-
-            self.nTrialsLabel = QLabel(self.tr("No. Trials"), self)
-            self.paradigm_widg_sizer.addWidget(self.nTrialsLabel, n, 7)
-            self.nTrialsTF = QLineEdit()
-            self.nTrialsTF.setText("100")
-            self.nTrialsTF.setValidator(QIntValidator(self))
-            self.paradigm_widg_sizer.addWidget(self.nTrialsTF, n, 8)
-            self.nTrialsCheckBox = QCheckBox()
-            self.paradigm_widg_sizer.addWidget(self.nTrialsCheckBox, n, 6)
+            self.psyFunPostSummChooserLabel = QLabel(self.tr("Posterior Summary:"), self)
+            self.paradigm_widg_sizer.addWidget(self.psyFunPostSummChooserLabel, n, 4)
+            self.psyFunPostSummChooser = QComboBox()
+            self.psyFunPostSummChooser.addItems(["Mean", "Mode"])
+            self.paradigm_widg_sizer.addWidget(self.psyFunPostSummChooser, n, 5)
+            self.psyFunPostSummCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.psyFunPostSummCheckBox, n, 3)
 
             n = n+1
 
-            #min midpoint
+            self.ruleDownLabel = QLabel(self.tr("Rule Down"), self)
+            self.paradigm_widg_sizer.addWidget(self.ruleDownLabel, n, 1)
+            self.ruleDownTF = QLineEdit()
+            self.ruleDownTF.setText('2')
+            self.ruleDownTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.ruleDownTF, n, 2)
+            self.ruleDownCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.ruleDownCheckBox, n, 0)
+
+            self.nTrialsLabel = QLabel(self.tr("No. Trials"), self)
+            self.paradigm_widg_sizer.addWidget(self.nTrialsLabel, n, 4)
+            self.nTrialsTF = QLineEdit()
+            self.nTrialsTF.setText("100")
+            self.nTrialsTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.nTrialsTF, n, 5)
+            self.nTrialsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.nTrialsCheckBox, n, 3)
+            
+            n = n+1
+
+            #min stim
             self.loStimLabel = QLabel(self.tr("Stim. Min"), self)
             self.paradigm_widg_sizer.addWidget(self.loStimLabel, n, 1)
             self.loStim = QLineEdit()
@@ -2256,7 +2277,7 @@ class pychControlWin(QMainWindow):
             self.loStimCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.loStimCheckBox, n, 0)
             #n = n+1
-            #max midpoint
+            #max stim
             self.hiStimLabel = QLabel(self.tr("Stim. Max"), self)
             self.paradigm_widg_sizer.addWidget(self.hiStimLabel, n, 4)
             self.hiStim = QLineEdit()
@@ -2265,6 +2286,15 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.hiStim, n, 5)
             self.hiStimCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.hiStimCheckBox, n, 3)
+
+            self.stimScalingChooserLabel = QLabel(self.tr("Stim. Scaling:"), self)
+            self.paradigm_widg_sizer.addWidget(self.stimScalingChooserLabel, n, 7)
+            self.stimScalingChooser = QComboBox()
+            self.stimScalingChooser.addItems(["Linear", "Logarithmic"])
+            self.paradigm_widg_sizer.addWidget(self.stimScalingChooser, n, 8)
+            self.stimScalingCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.stimScalingCheckBox, n, 6)
+            
             n = n+1
             #min midpoint
             self.loMidPointLabel = QLabel(self.tr("Mid Point Min"), self)
@@ -2460,24 +2490,32 @@ class pychControlWin(QMainWindow):
                                         self.slopePriorChooser,
                                         self.lapsePriorChooser,
                                         self.psyFunChooser,
+                                        self.psyFunPostSummChooser,
+                                        self.stimScalingChooser,
                                         self.slopeSpacingChooser,
                                         self.lapseSpacingChooser]
             self.paradigmChooserLabelList = [self.threshPriorChooserLabel,
                                              self.slopePriorChooserLabel,
                                              self.lapsePriorChooserLabel,
                                              self.psyFunChooserLabel,
+                                             self.psyFunPostSummChooserLabel,
+                                             self.stimScalingChooserLabel,
                                              self.slopeSpacingChooserLabel,
                                              self.lapseSpacingChooserLabel]
             self.paradigmChooserOptionsList = [priorOptions,
                                                priorOptions,
                                                priorOptions,
                                                psyFunOptions,
+                                               ["Mean", "Mode"],
+                                               ["Linear", "Logarithmic"],
                                                ["Linear", "Logarithmic"],
                                                ["Linear", "Logarithmic"]]
             self.paradigmChooserCheckBoxList = [self.threshPriorChooserCheckBox,
                                                 self.slopePriorChooserCheckBox,
                                                 self.lapsePriorChooserCheckBox,
                                                 self.psyFunCheckBox,
+                                                self.psyFunPostSummCheckBox,
+                                                self.stimScalingCheckBox,
                                                 self.slopeSpacingChooserCheckBox,
                                                 self.lapseSpacingChooserCheckBox]
 
@@ -2629,6 +2667,7 @@ class pychControlWin(QMainWindow):
             self.psyListSlopeLabel.hide()
             self.psyListLapse.hide()
             self.psyListLapseLabel.hide()
+            self.psyListSaveButton.hide()
         else:
             self.psyListFunChooser.show()
             self.psyListFunChooserLabel.show()
@@ -2640,6 +2679,7 @@ class pychControlWin(QMainWindow):
             self.psyListSlopeLabel.show()
             self.psyListLapse.show()
             self.psyListLapseLabel.show()
+            self.psyListSaveButton.show()
             
     def onDropPrmFile(self, l):
         lastFileDropped = l #l[len(l)-1]
@@ -3072,6 +3112,53 @@ class pychControlWin(QMainWindow):
     def onClickStoreandaddParametersButton(self):
         self.onClickStoreParametersButton()
         self.onClickNewBlockButton()
+
+    def onClickPsyListSaveButton(self):
+        ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "psy_list.txt", self.tr('All Files (*)'), "")[0]
+        if len(ftow) > 0:
+            if fnmatch.fnmatch(ftow, '*.txt') == False:
+                ftow = ftow + '.txt'
+            #self.prm['resultsFile'] = ftow
+            psyFun = self.psyListFunChooser.currentText()
+            psyFunFit = self.psyListFunFitChooser.currentText()
+            alphax = self.currLocale.toDouble(self.psyListMidpoint.text())[0]
+            betax = self.currLocale.toDouble(self.psyListSlope.text())[0]
+            lambdax = self.currLocale.toDouble(self.psyListLapse.text())[0]
+            gammax = 1/self.currLocale.toDouble(self.nAlternativesChooser.currentText())[0]
+            pcCorr = numpy.round(numpy.arange(numpy.round(gammax, 3), 1.001, 0.001), 3)
+            if psyFun == "Logistic":
+                if psyFunFit == "Linear":
+                    stim = invLogisticPsy(pcCorr, alphax, betax, gammax, lambdax)
+                elif psyFunFit == "Logarithmic":
+                    stim = invLogisticPsy(pcCorr, log(alphax), betax, gammax, lambdax)
+                    stim = numpy.exp(stim)
+            elif psyFun == "Gaussian":
+                if psyFunFit == "Linear":
+                    stim = invGaussianPsy(pcCorr, alphax, betax, gammax, lambdax)
+                elif psyFunFit == "Logarithmic":
+                    stim = invGaussianPsy(pcCorr, log(alphax), betax, gammax, lambdax)
+                    stim = numpy.exp(stim)
+            elif psyFun == "Gumbel":
+                if psyFunFit == "Linear":
+                    stim = invGumbelPsy(pcCorr, alphax, betax, gammax, lambdax)
+                elif psyFunFit == "Logarithmic":
+                    stim = invGumbelPsy(pcCorr, log(alphax), betax, gammax, lambdax)
+                    stim = numpy.exp(stim)
+            elif psyFun == "Weibull":
+                if psyFunFit == "Linear":
+                    stim = invWeibullPsy(pcCorr, alphax, betax, gammax, lambdax)
+                elif psyFunFit == "Logarithmic":
+                    stim = invWeibullPsy(pcCorr, log(alphax), betax, gammax, lambdax)
+                    stim = numpy.exp(stim)
+            else:
+                print("sorry only available for logistic function")
+            #if os.path.exists(ftow) == False:
+            fName = open(ftow, 'w')
+            for i in range(len(pcCorr)):
+                fName.write(str(pcCorr[i]) + ' ' + str(stim[i]) + '\n')
+            fName.close()
+
+            self.statusBar().showMessage(self.tr('Saved psychometric listener data to: ') + ftow)
 
     def compareGuiStoredParameters(self):
         tmpPrm = copy.copy(self.prm)

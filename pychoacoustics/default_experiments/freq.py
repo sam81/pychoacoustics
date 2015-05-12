@@ -48,7 +48,8 @@ def initialize_freq(prm):
                                         "Constant m-Intervals n-Alternatives",
                                         "PEST",
                                         "Maximum Likelihood",
-                                        "PSI"]
+                                        "PSI",
+                                        "UML"]
 
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
                              "hasIntervalLights"]

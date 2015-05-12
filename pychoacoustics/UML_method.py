@@ -15,14 +15,19 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
+# This is a Python port of the UML method of Shen and Richards http://hearlab.ss.uci.edu/UML/uml.html
+# - Shen, Y., & Richards, V. (2012). A maximum-likelihood procedure for estimating psychometric functions: Thresholds, slopes, and lapses of attention. The Journal of the Acoustical Society of America, 132, 957–967.
+# - Shen, Y., Dai, W., & Richards, V. M. (2014). A MATLAB toolbox for the efficient estimation of the psychometric function using the updated maximum-likelihood adaptive procedure. Behavior Research Methods, 13–26.
+
 import copy, scipy
 import numpy as np
-from numpy import exp, linspace, logspace, log, log10, meshgrid, ravel
+from numpy import exp, linspace, logspace, log, log10, meshgrid, pi, ravel
 from scipy.stats import norm
+from scipy.special import erf
 from .pysdt import*
 
 
-def setupUML(model="Logistic", nDown=2, centTend="mean", stimScale="Linear", x0=None, xLim=(-10, 10), 
+def setupUML(model="Logistic", nDown=2, centTend="Mean", stimScale="Linear", x0=None, xLim=(-10, 10), 
              alphaLim=(-10,10), alphaStep=1, alphaSpacing="Linear", alphaDist="Uniform", alphaMu=0, alphaSTD=20,
              betaLim=(0.1,10), betaStep=0.1, betaSpacing="Linear", betaDist="Uniform", betaMu=1, betaSTD=2,
              gamma=0.5,
@@ -72,7 +77,6 @@ def setupUML(model="Logistic", nDown=2, centTend="mean", stimScale="Linear", x0=
 
     if stimScale == "Logarithmic":
         UML["par"]["x"]["limits"] = log(xLim)
-        UML["par"]["x"]["step"] = log(xStep)
         UML["par"]["alpha"]["limits"] = log(alphaLim)
         UML["par"]["alpha"]["step"] = log(alphaStep)
         UML["par"]["alpha"]["mu"] = log(alphaMu)
@@ -165,13 +169,23 @@ def UML_update(UML, r):
     UML["x"] = np.append(UML["x"], UML["xnext"])
     UML["r"] = np.append(UML["r"], r)
 
-    UML["p"] = UML["p"] + \
-    log(prepare_prob(logisticPsy(UML["xnext"], UML["a"], UML["b"], UML["gamma"], UML["l"]))**r) + \
-    log(prepare_prob(1-logisticPsy(UML["xnext"], UML["a"], UML["b"], UML["gamma"], UML["l"]))**(1-r))
+    if UML["par"]["model"] == "Logistic":
+        UML["p"] = UML["p"] + \
+                   log(prepare_prob(logisticPsy(UML["xnext"], UML["a"], UML["b"], UML["gamma"], UML["l"]))**r) + \
+                   log(prepare_prob(1-logisticPsy(UML["xnext"], UML["a"], UML["b"], UML["gamma"], UML["l"]))**(1-r))
+    elif UML["par"]["model"] == "Gaussian":
+        UML["p"] = UML["p"] + \
+                   log(prepare_prob(gaussianPsy(UML["xnext"], UML["a"], UML["b"], UML["gamma"], UML["l"]))**r) + \
+                   log(prepare_prob(1-gaussianPsy(UML["xnext"], UML["a"], UML["b"], UML["gamma"], UML["l"]))**(1-r))
+    elif UML["par"]["model"] == "Weibull":
+        UML["p"] = UML["p"] + \
+                   log(prepare_prob(weibullPsy(UML["xnext"], UML["a"], UML["b"], UML["gamma"], UML["l"]))**r) + \
+                   log(prepare_prob(1-weibullPsy(UML["xnext"], UML["a"], UML["b"], UML["gamma"], UML["l"]))**(1-r))
+
 
     UML["p"] = UML["p"]-np.max(np.max(np.max(UML["p"])))
   
-    if UML["par"]["method"] == "mode":
+    if UML["par"]["method"] == "Mode":
         # idx = np.where(UML["p"] == np.max(UML["p"]))
         # if UML["n"] < 2:
         #     UML["phi"] = np.array([UML["a"][idx[0][0], idx[1][0], idx[2][0]], UML["b"][idx[0][0], idx[1][0], idx[2][0]], UML["gamma"], UML["l"][idx[0][0], idx[1][0], idx[2][0]]], ndmin=2)
@@ -183,7 +197,7 @@ def UML_update(UML, r):
             UML["phi"] = np.array([ravel(UML["a"])[idx], ravel(UML["b"])[idx], UML["gamma"], ravel(UML["l"])[idx]], ndmin=2)
         else:
             UML["phi"] = np.concatenate((UML["phi"], np.array([ravel(UML["a"])[idx], ravel(UML["b"])[idx], UML["gamma"], ravel(UML["l"])[idx]], ndmin=2)), axis=0)
-    elif UML["par"]["method"] == "mean":
+    elif UML["par"]["method"] == "Mean":
         pdf_tmp = np.exp(UML["p"])
         pdf_tmp = pdf_tmp/pdf_tmp.sum()
         alpha_est_tmp = np.sum(pdf_tmp*UML["a"])
@@ -195,11 +209,24 @@ def UML_update(UML, r):
         else:
             UML["phi"] = np.concatenate((UML["phi"], np.array([alpha_est_tmp, beta_est_tmp, UML["gamma"], lambda_est_tmp], ndmin=2)), axis=0)
 
+    if UML["par"]["stimScale"] == "Logarithmic":
+        UML["est_midpoint"] = exp(UML["phi"][UML["phi"].shape[0]-1, 0])
+    else:
+        UML["est_midpoint"] = UML["phi"][UML["phi"].shape[0]-1, 0]
+    UML["est_slope"] = UML["phi"][UML["phi"].shape[0]-1, 1]
+    UML["est_lapse"] = UML["phi"][UML["phi"].shape[0]-1, 3]
+
     if UML["par"]["model"] == "Logistic":
         swpt = logit_sweetpoints(UML["phi"][-1,:])
-        swpt = np.append(swpt, UML["par"]["x"]["limits"][1])
-        UML["swpt"] = swpt
-        swpt = np.maximum(np.minimum(swpt[UML["swpts_idx"]], UML["par"]["x"]["limits"][1]), UML["par"]["x"]["limits"][0])#; % limit the sweet points to be within the stimulus space
+    elif UML["par"]["model"] == "Gaussian":
+        swpt = gaussian_sweetpoints(UML["phi"][-1,:])
+    elif UML["par"]["model"] == "Weibull":
+        swpt = weibull_sweetpoints(UML["phi"][-1,:])
+    
+    swpt = np.append(swpt, UML["par"]["x"]["limits"][1])
+    UML["swpt"] = swpt
+    swpt = np.maximum(np.minimum(swpt[UML["swpts_idx"]], UML["par"]["x"]["limits"][1]), UML["par"]["x"]["limits"][0])#; % limit the sweet points to be within the stimulus space
+
     UML["rev_flag"] = np.append(UML["rev_flag"], 0)
     if r >= 0.5:
         if UML["step_flag"] == UML["par"]["nDown"]-1:
@@ -226,6 +253,11 @@ def UML_update(UML, r):
     else:
         UML["swpts"] = np.concatenate((UML["swpts"], np.array(swpt, ndmin=2)), axis=0)
     UML["xnext"] = newx
+
+    if UML["par"]["stimScale"] == "Logarithmic":
+        UML["xnextLinear"] = exp(UML["xnext"])
+    else:
+        UML["xnextLinear"] = UML["xnext"]
         
     return UML
 
@@ -285,3 +317,99 @@ def logit_sweetpoints(phi):
 
 
 
+def weibull_sweetpoints(phi):
+
+    k = phi[0]
+    beta = phi[1]
+    gamma = phi[2]
+    lambdax = phi[3]
+
+    def kvar_est(x):
+
+        term1 = k**2*(x/k)**(-2*beta)
+        term2 = -1+gamma-exp((x/k)**beta)*(-1+lambdax)+lambdax
+        term3 = -1+gamma+lambdax-exp((x/k)**beta)*lambdax
+        term4 = beta**2*(-1+gamma+lambdax)**2
+
+        sigmaksq = -term1*term2*term3/term4
+        return sigmaksq
+
+    def betavar_est1(x):
+
+        term1 = (x/k)**(-2*beta)
+        term2 = -1+gamma-exp((x/k)**beta)*(-1+lambdax)+lambdax
+        term3 = -1+gamma+lambdax-exp((x/k)**beta)*lambdax
+        term4 = (-1+gamma+lambdax)**2*log(x/k)**2
+
+        sigmabetasq = -term1*term2*term3/term4 + (x>=k)*1e10
+        return sigmabetasq
+
+    def betavar_est2(x):
+
+        term1 = (x/k)**(-2*beta)
+        term2 = -1+gamma-exp((x/k)**beta)*(-1+lambdax)+lambdax
+        term3 = -1+gamma+lambdax-exp((x/k)**beta)*lambdax
+        term4 = (-1+gamma+lambdax)**2*log(x/k)**2
+
+        sigmabetasq = -term1*term2*term3/term4 + (x<=k)*1e10
+        return sigmabetasq
+
+    # swpts[0] = fminsearch(@(x) betavar_est(x,k,beta,gamma,lambdax)+(x>=k)*1e10,k/2,opt)
+    # swpts[2] = fminsearch(@(x) betavar_est(x,k,beta,gamma,lambdax)+(x<=k)*1e10,k*2,opt)
+    # swpts[1] = fminsearch(@(x) kvar_est(x,k,beta,gamma,lambdax),k,opt)
+    
+    swpts = np.zeros(3)
+    swpts[0] = scipy.optimize.fmin(betavar_est1, x0=k/2)
+    swpts[2] = scipy.optimize.fmin(betavar_est2, x0=k*2)
+    swpts[1] = scipy.optimize.fmin(kvar_est, x0=k)
+    swpts = np.maximum(np.sort(swpts), 0)
+
+    return swpts
+
+def gaussian_sweetpoints(phi):
+    
+    def psycfunc(x, phi):
+        mu = phi[0]
+        sigma = phi[1]
+        gamma = phi[2]
+        lambdax = phi[3]
+        p = gamma+((1-gamma-lambdax)/2)*(1+erf((x-mu)/sqrt(2*sigma**2)))
+        return p
+
+    def psycfunc_derivative_mu(x, phi):
+        mu = phi[0]
+        sigma = phi[1]
+        gamma = phi[2]
+        lambdax = phi[3]
+        dpdm = -(1-gamma-lambdax)/(sqrt(2*pi)*sigma)*exp(-(x-mu)**2/(2*sigma**2))
+        return dpdm
+
+    def psycfunc_derivative_sigma(x, phi):
+        mu = phi[0]
+        sigma = phi[1]
+        gamma = phi[2]
+        lambdax = phi[3]
+        dpds = -(1-gamma-lambdax)*(x-mu)/(sqrt(2*pi)*sigma**2)*exp(-(x-mu)**2/(2*sigma**2))
+        return dpds
+
+    #sigma2_mu = @(x) psycfunc(x,phi)*(1-psycfunc(x,phi))/ (psycfunc_derivative_mu(x,phi))**2
+    
+    #sigma2_sigma = @(x) psycfunc(x,phi)*(1-psycfunc(x,phi))/ (psycfunc_derivative_sigma(x,phi))**2
+
+    def sigma2_mu(x):
+        out = psycfunc(x, phi)*(1-psycfunc(x, phi))/ (psycfunc_derivative_mu(x, phi))**2
+        return out
+    def sigma2_sigma(x):
+        out = psycfunc(x, phi)*(1-psycfunc(x, phi))/ (psycfunc_derivative_sigma(x, phi))**2
+        return out
+    
+    # swpt_mu = fminsearch(sigma2_mu, phi(1))
+    # swpt_sigma_L = fminsearch(sigma2_sigma, phi(1)-10)
+    # swpt_sigma_H = fminsearch(sigma2_sigma, phi(1)+10)
+
+    swpt_mu = scipy.optimize.fmin(sigma2_mu, x0=phi[0])
+    swpt_sigma_L = scipy.optimize.fmin(sigma2_sigma, x0=phi[0]-10)
+    swpt_sigma_H = scipy.optimize.fmin(sigma2_sigma, x0=phi[0]+10)
+    swpts = np.array([swpt_sigma_L, swpt_mu, swpt_sigma_H])
+
+    return swpts

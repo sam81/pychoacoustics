@@ -31,7 +31,8 @@ def initialize_level_discrimination(prm):
                                         QApplication.translate("","Weighted Up-Down",""),
                                         QApplication.translate("","Constant m-Intervals n-Alternatives",""),
                                         QApplication.translate("","PEST",""),
-                                        QApplication.translate("","PSI","")]
+                                        QApplication.translate("","PSI",""),
+                                        QApplication.translate("","UML","")]
 
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
                              "hasIntervalLights", "hasAltReps"]
