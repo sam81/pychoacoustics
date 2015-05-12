@@ -3193,6 +3193,12 @@ class responseBox(QMainWindow):
             thisFile.write('Response Mode: ' + self.prm['allBlocks']['responseMode'] + '\n')
             if self.prm['allBlocks']['responseMode'] == self.tr("Automatic"):
                 thisFile.write('Auto Resp. Mode Perc. Corr.: ' + str(self.prm['allBlocks']['autoPCCorr']) + '\n')
+            elif self.prm['allBlocks']['responseMode'] == self.tr("Psychometric"):
+                thisFile.write('Psychometric Listener Function: ' + str(self.prm[currBlock]['psyListFun']) + '\n')
+                thisFile.write('Psychometric Listener Function Fit: ' + str(self.prm[currBlock]['psyListFunFit']) + '\n')
+                thisFile.write('Psychometric Listener Midpoint: ' + str(self.prm[currBlock]['psyListMidpoint']) + '\n')
+                thisFile.write('Psychometric Listener Slope: ' + str(self.prm[currBlock]['psyListSlope']) + '\n')
+                thisFile.write('Psychometric Listener Lapse: ' + str(self.prm[currBlock]['psyListLapse']) + '\n')
             thisFile.write('Paradigm:      ' + self.prm['paradigm'] +'\n')
             thisFile.write('Intervals:     ' + self.currLocale.toString(self.prm['nIntervals']) + '\n')
             thisFile.write('Alternatives:  ' + self.currLocale.toString(self.prm['nAlternatives']) + '\n')
