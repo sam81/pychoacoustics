@@ -840,29 +840,29 @@ class responseBox(QMainWindow):
                                            self.prm[currBlock]['psyListLapse'])
             elif self.prm[currBlock]['psyListFun'] == "Gaussian":
                 if self.prm[currBlock]['psyListFunFit'] == "Linear":
-                    probCorr = GaussianPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
+                    probCorr = gaussianPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
                                            self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                            self.prm[currBlock]['psyListLapse'])
                 elif self.prm[currBlock]['psyListFunFit'] == "Logarithmic":
-                    probCorr = GaussianPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
+                    probCorr = gaussianPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
                                            self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                            self.prm[currBlock]['psyListLapse'])
             elif self.prm[currBlock]['psyListFun'] == "Gumbel":
                 if self.prm[currBlock]['psyListFunFit'] == "Linear":
-                    probCorr = GumbelPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
+                    probCorr = gumbelPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
                                          self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                          self.prm[currBlock]['psyListLapse'])
                 elif self.prm[currBlock]['psyListFunFit'] == "Logarithmic":
-                    probCorr = GumbelPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
+                    probCorr = gumbelPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
                                          self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                          self.prm[currBlock]['psyListLapse'])
             elif self.prm[currBlock]['psyListFun'] == "Weibull":
                 if self.prm[currBlock]['psyListFunFit'] == "Linear":
-                    probCorr = WeibullPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
+                    probCorr = weibullPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
                                           self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                           self.prm[currBlock]['psyListLapse'])
                 elif self.prm[currBlock]['psyListFunFit'] == "Logarithmic":
-                    probCorr = WeibullPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
+                    probCorr = weibullPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
                                           self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                           self.prm[currBlock]['psyListLapse'])
             resp = np.random.binomial(1, probCorr, 1)[0]
