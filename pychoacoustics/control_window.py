@@ -1594,7 +1594,10 @@ class pychControlWin(QMainWindow):
       
         #------------------------
         #MULTIPLE CONSTANTS PARADIGM WIDGETS
-        if self.currParadigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), self.tr("Multiple Constants m-Intervals n-Alternatives"), self.tr("Odd One Out")]:
+        if self.currParadigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"),
+                                 self.tr("Multiple Constants m-Intervals n-Alternatives"),
+                                 self.tr("Multiple Constants 1-Pair Same/Different"),
+                                 self.tr("Odd One Out")]:
             n = 0
             self.nTrialsLabel = QLabel(self.tr("No. Trials"), self)
             self.paradigm_widg_sizer.addWidget(self.nTrialsLabel, n, 1)
@@ -2706,7 +2709,10 @@ class pychControlWin(QMainWindow):
                     else:
                         self.par['nDifferences'] = 2
 
-        if paradigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), self.tr("Multiple Constants m-Intervals n-Alternatives"), self.tr("Odd One Out")]:
+        if paradigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), 
+                        self.tr("Multiple Constants m-Intervals n-Alternatives"), 
+                        self.tr("Multiple Constants 1-Pair Same/Different"), 
+                        self.tr("Odd One Out")]:
             if self.prm[self.currExp]['hasNDifferencesChooser'] == False:
                 self.par['nDifferences'] = self.prm[self.currExp]['defaultNDifferences']
             else:
@@ -2858,7 +2864,8 @@ class pychControlWin(QMainWindow):
         self.paradigmChooser.addItems(self.prm[currExp]['paradigmChoices'])
         self.paradigmChooser.setCurrentIndex(self.prm[currExp]["paradigmChoices"].index(paradigm))
 
-        if paradigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), self.tr("Multiple Constants m-Intervals n-Alternatives"), self.tr("Odd One Out")]:
+        if paradigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), self.tr("Multiple Constants m-Intervals n-Alternatives"), 
+                        self.tr("Multiple Constants 1-Pair Same/Different"), self.tr("Odd One Out")]:
             self.par['nDifferences'] = int(self.prm[block]['paradigmChooser'][self.prm[block]['paradigmChooserLabel'].index(self.tr("No. Differences:"))])
         if paradigm in [self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved")]:
             self.par['nDifferences'] = int(self.prm[block]['paradigmChooser'][self.prm[block]['paradigmChooserLabel'].index(self.tr("No. Tracks:"))])

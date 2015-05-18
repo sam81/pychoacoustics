@@ -304,7 +304,7 @@ class responseBox(QMainWindow):
                         r = r+1
                   
         elif self.parent().currParadigm in ["Constant 1-Interval 2-Alternatives", "Multiple Constants 1-Interval 2-Alternatives",
-                                   "Constant 1-Pair Same/Different"]:
+                                            "Constant 1-Pair Same/Different", "Multiple Constants 1-Pair Same/Different"]:
             for i in range(nIntervals):
                 self.intervalLight.append(intervalLight(self))
                 self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
@@ -651,7 +651,7 @@ class responseBox(QMainWindow):
                 self.prm['nTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Trials"))])
                 self.prm['nPracticeTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Practice Trials"))])
             elif self.prm['paradigm'] in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), self.tr("Multiple Constants m-Intervals n-Alternatives"),
-                                          self.tr("Odd One Out")]:
+                                          self.tr("Multiple Constants 1-Pair Same/Different"), self.tr("Odd One Out")]:
                 self.prm['nTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Trials"))])
                 self.prm['nPracticeTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Practice Trials"))])
                 self.prm['nDifferences'] = int(self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("No. Differences:"))])
@@ -939,6 +939,8 @@ class responseBox(QMainWindow):
             self.sortResponseMultipleConstantsMIntervalsNAlternatives(buttonClicked)
         elif self.prm['paradigm'] == self.tr("Constant 1-Pair Same/Different"):
             self.sortResponseConstant1PairSameDifferent(buttonClicked)
+        elif self.prm['paradigm'] == self.tr("Multiple Constants 1-Pair Same/Different"):
+            self.sortResponseMultipleConstants1PairSameDifferent(buttonClicked)
         elif self.prm['paradigm'] == self.tr("PEST"):
             self.sortResponsePEST(buttonClicked)
         elif self.prm['paradigm'] == self.tr("Maximum Likelihood"):
@@ -2276,6 +2278,160 @@ class responseBox(QMainWindow):
             resLineToWrite = self.getCommonTabFields(resLineToWrite)
             resLineToWrite = resLineToWrite + '\n'
             self.writeResultsSummaryLine('Constant 1-Pair Same/Different', resLineToWrite)
+
+            self.atBlockEnd()
+           
+        else: #block is not finished, move on to next trial
+            self.doTrial()
+
+    def sortResponseMultipleConstants1PairSameDifferent(self, buttonClicked):
+        if self.prm['startOfBlock'] == True:
+            self.prm['startOfBlock'] = False
+
+            self.fullFileLines = []
+            self.trialCount = {} #trial count by difference, excluding practice trials
+            self.trialCountCnds = {} #trial count by difference and condition, excluding practice trials
+            self.correctCountCnds = {}
+            self.trialCountAll = {} #this includes also the practice trials
+            for j in range(self.prm['nDifferences']):
+                self.trialCount[j] = 0
+                self.trialCountCnds[j] = {}
+                self.correctCountCnds[j] = {}
+                for i in range(len(self.prm['conditions'])):
+                    self.trialCountCnds[j][self.prm['conditions'][i]] = 0
+                    self.correctCountCnds[j][self.prm['conditions'][i]] = 0
+                self.trialCountAll[j] = 0
+        
+        self.currentDifferenceName = self.prm['differenceNames'][self.prm['currentDifference']]
+        self.trialCountAll[self.prm['currentDifference']] = self.trialCountAll[self.prm['currentDifference']] + 1
+        if self.trialCountAll[self.prm['currentDifference']] > self.prm['nPracticeTrials']:
+            self.trialCountCnds[self.prm['currentDifference']][self.currentCondition] = self.trialCountCnds[self.prm['currentDifference']][self.currentCondition] + 1
+            self.trialCount[self.prm['currentDifference']] = self.trialCount[self.prm['currentDifference']] + 1
+        if buttonClicked == self.correctButton:
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback('correct')
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback('neutral')
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback('off')
+            if self.trialCountAll[self.prm['currentDifference']] > self.prm['nPracticeTrials']:
+                self.correctCountCnds[self.prm['currentDifference']][self.currentCondition] = self.correctCountCnds[self.prm['currentDifference']][self.currentCondition] + 1
+            resp = '1'
+        elif buttonClicked != self.correctButton:
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback('incorrect')
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback('neutral')
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback('off')
+            resp = '0'
+        self.fullFileLog.write(   self.currentDifferenceName + '_' + self.stim1 + '-' + self.stim2 + '_' + self.currentCondition + '; ' + resp + '; ')
+        self.fullFileLines.append(self.currentDifferenceName + '_' + self.stim1 + '-' + self.stim2 + '_' + self.currentCondition + '; ' + resp + '; ')
+        if 'additional_parameters_to_write' in self.prm:
+            for p in range(len(self.prm['additional_parameters_to_write'])):
+                self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLog.write('; ')
+                self.fullFileLines.append('; ')
+        self.fullFileLog.write('\n')
+        self.fullFileLines.append('\n')
+        self.fullFileLog.flush()
+      
+        cnt = 0
+        for j in range(self.prm['nDifferences']):
+            cnt = cnt + self.trialCountAll[j]
+        pcDone = cnt / ((self.prm['nTrials']+self.prm['nPracticeTrials']) *self.prm['nDifferences']) * 100
+        bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
+        pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
+        pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
+        self.gauge.setValue(pcTot)
+
+     
+
+        if self.trialCount[self.prm['currentDifference']] == self.prm['nTrials']:
+            self.prm['differenceChoices'].remove(self.currentDifferenceName)
+
+        print('Trial Count:', self.trialCount)
+        print('Trial Count All:', self.trialCountAll)
+        print('Difference Choices:', self.prm['differenceChoices'])
+        print(self.currentDifferenceName)
+
+        if len(self.prm['differenceChoices']) == 0:
+            totalCorrectCount = {}
+            for j in range(self.prm['nDifferences']):
+                totalCorrectCount[j] = 0
+                for i in range(len(self.prm['conditions'])):
+                    totalCorrectCount[j] = totalCorrectCount[j] + self.correctCountCnds[j][self.prm['conditions'][i]]
+            self.writeResultsHeader('standard')
+            for i in range(len(self.fullFileLines)):
+                self.fullFile.write(self.fullFileLines[i])
+            self.fullFileLog.write('\n')
+            self.fullFile.write('\n')
+            self.fullFile.flush()
+            self.fullFileLog.flush()
+            A_correct = {}; A_total = {}; B_correct = {}; B_total = {}
+            dp_IO = {}; dp_diff = {}
+            for j in range(self.prm['nDifferences']):
+                A_correct[j] = self.correctCountCnds[j][self.prm['conditions'][0]]
+                A_total[j] = self.trialCountCnds[j][self.prm['conditions'][0]]
+                B_correct[j] = self.correctCountCnds[j][self.prm['conditions'][1]]
+                B_total[j] = self.trialCountCnds[j][self.prm['conditions'][1]]
+
+                try:
+                    dp_IO[j] = dprime_SD_from_counts(nCA=A_correct[j], nTA=A_total[j], nCB=B_correct[j], nTB=B_total[j], meth='IO', corr=self.prm['pref']['general']['dprimeCorrection'])
+                except:
+                    dp_IO[j] = nan
+                try:
+                    dp_diff[j] = dprime_SD_from_counts(nCA=A_correct[j], nTA=A_total[j], nCB=B_correct[j], nTB=B_total[j], meth='diff', corr=self.prm['pref']['general']['dprimeCorrection'])
+                except:
+                    dp_diff[j] = nan
+
+                for ftyp in [self.resFile, self.resFileLog]:
+                    ftyp.write("DIFFERENCE: " + self.prm['differenceNames'][j] + '\n')
+                    ftyp.write('No. Correct = %d\n' %(totalCorrectCount[j]))
+                    ftyp.write('No. Total = %d\n' %(self.trialCount[j]))
+                    ftyp.write('Percent Correct = %5.2f \n' %(totalCorrectCount[j]/self.trialCount[j]*100))
+                    ftyp.write("d-prime IO = %5.3f \n" %(dp_IO[j]))
+                    ftyp.write("d-prime diff = %5.3f \n\n" %(dp_diff[j]))
+                    
+                    
+                    for i in range(len(self.prm['conditions'])):
+                        try:
+                            thisPercentCorrect = (self.correctCountCnds[j][self.prm['conditions'][i]]*100)/self.trialCountCnds[j][self.prm['conditions'][i]]
+                        except:
+                            thisPercentCorrect = nan
+                        ftyp.write('No. Correct Condition %s = %d\n' %(self.prm['conditions'][i], self.correctCountCnds[j][self.prm['conditions'][i]]))
+                        ftyp.write('No. Total Condition %s = %d \n' %(self.prm['conditions'][i], self.trialCountCnds[j][self.prm['conditions'][i]]))
+                        ftyp.write('Percent Correct Condition %s = %5.2f \n' %(self.prm['conditions'][i], thisPercentCorrect))
+            
+                    ftyp.write('\n\n')
+                    ftyp.flush()
+
+            self.getEndTime()
+           
+            currBlock = 'b' + str(self.prm['currentBlock'])
+            durString = '{0:5.3f}'.format(self.prm['blockEndTime'] - self.prm['blockStartTime'])
+            
+            # #'dprime condition listener session experimentLabel nCorrectA nTotalA nCorrectB nTotalB nCorrect nTotal date time duration block experiment'
+            # resLineToWrite = '{0:5.3f}'.format(dp_IO) + self.prm['pref']["general"]["csvSeparator"]
+            # resLineToWrite = resLineToWrite + '{0:5.3f}'.format(dp_diff) + self.prm['pref']["general"]["csvSeparator"] 
+            # resLineToWrite = resLineToWrite + str(self.trialCount) + self.prm['pref']["general"]["csvSeparator"]
+            # for i in range(len(self.prm['conditions'])):
+            #     resLineToWrite = resLineToWrite + str(self.correctCountCnds[self.prm['conditions'][i]]) + self.prm['pref']["general"]["csvSeparator"] + \
+            #                      str(self.trialCountCnds[self.prm['conditions'][i]]) + self.prm['pref']["general"]["csvSeparator"]
+            # resLineToWrite = resLineToWrite + self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+            #                  self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+            #                  self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+            #                  self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+            #                  self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+            #                  self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+            #                  durString + self.prm['pref']["general"]["csvSeparator"] + \
+            #                  self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+            #                  self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
+            #                  self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+            # resLineToWrite = self.getCommonTabFields(resLineToWrite)
+            # resLineToWrite = resLineToWrite + '\n'
+            # self.writeResultsSummaryLine('Constant 1-Pair Same/Different', resLineToWrite)
 
             self.atBlockEnd()
            
