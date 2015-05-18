@@ -26,7 +26,7 @@ def initialize_wav_sameDifferent(prm):
     prm[exp_name]["opts"] = ["hasISIBox", "hasFeedback", "hasIntervalLights", "hasNDifferencesChooser"]
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2
-    prm[exp_name]["buttonLabels"] = [prm['buttonTranslator'].translate('rb', "Same"), prm['buttonTranslator'].translate('rb', "Different")]
+    prm[exp_name]["buttonLabels"] = ["Same", "Different"]#[prm['buttonTranslator'].translate('rb', "Same"), prm['buttonTranslator'].translate('rb', "Different")]
     prm[exp_name]["execString"] = "wav_sameDifferent"
     prm[exp_name]["version"] = __name__ + ' ' + pychoacoustics_version + ' ' + pychoacoustics_builddate
     #prm[exp_name]["version"] = __name__ + ' ' + labexp_version + ' ' + labexp_builddate

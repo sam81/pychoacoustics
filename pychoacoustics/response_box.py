@@ -2289,6 +2289,7 @@ class responseBox(QMainWindow):
             self.prm['startOfBlock'] = False
 
             self.fullFileLines = []
+            self.fullFileSummLines = []
             self.trialCount = {} #trial count by difference, excluding practice trials
             self.trialCountCnds = {} #trial count by difference and condition, excluding practice trials
             self.correctCountCnds = {}
@@ -2327,16 +2328,23 @@ class responseBox(QMainWindow):
             resp = '0'
         self.fullFileLog.write(   self.currentDifferenceName + '_' + self.stim1 + '-' + self.stim2 + '_' + self.currentCondition + '; ' + resp + '; ')
         self.fullFileLines.append(self.currentDifferenceName + '_' + self.stim1 + '-' + self.stim2 + '_' + self.currentCondition + '; ' + resp + '; ')
+        self.fullFileSummLines.append([self.currentDifferenceName + self.prm['pref']["general"]["csvSeparator"] +
+                                      self.stim1  + self.prm['pref']["general"]["csvSeparator"] +
+                                      self.stim2 + self.prm['pref']["general"]["csvSeparator"] +
+                                      self.currentCondition + self.prm['pref']["general"]["csvSeparator"] +
+                                      resp + self.prm['pref']["general"]["csvSeparator"]])
+
         if 'additional_parameters_to_write' in self.prm:
             for p in range(len(self.prm['additional_parameters_to_write'])):
                 self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
                 self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(self.prm['additional_parameters_to_write'][p]) + self.prm['pref']["general"]["csvSeparator"])
                 self.fullFileLog.write('; ')
                 self.fullFileLines.append('; ')
         self.fullFileLog.write('\n')
         self.fullFileLines.append('\n')
         self.fullFileLog.flush()
-      
+        print(self.fullFileSummLines)
         cnt = 0
         for j in range(self.prm['nDifferences']):
             cnt = cnt + self.trialCountAll[j]
@@ -2412,26 +2420,47 @@ class responseBox(QMainWindow):
             currBlock = 'b' + str(self.prm['currentBlock'])
             durString = '{0:5.3f}'.format(self.prm['blockEndTime'] - self.prm['blockStartTime'])
             
-            # #'dprime condition listener session experimentLabel nCorrectA nTotalA nCorrectB nTotalB nCorrect nTotal date time duration block experiment'
-            # resLineToWrite = '{0:5.3f}'.format(dp_IO) + self.prm['pref']["general"]["csvSeparator"]
-            # resLineToWrite = resLineToWrite + '{0:5.3f}'.format(dp_diff) + self.prm['pref']["general"]["csvSeparator"] 
-            # resLineToWrite = resLineToWrite + str(self.trialCount) + self.prm['pref']["general"]["csvSeparator"]
-            # for i in range(len(self.prm['conditions'])):
-            #     resLineToWrite = resLineToWrite + str(self.correctCountCnds[self.prm['conditions'][i]]) + self.prm['pref']["general"]["csvSeparator"] + \
-            #                      str(self.trialCountCnds[self.prm['conditions'][i]]) + self.prm['pref']["general"]["csvSeparator"]
-            # resLineToWrite = resLineToWrite + self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
-            #                  self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
-            #                  self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
-            #                  self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
-            #                  self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
-            #                  self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
-            #                  durString + self.prm['pref']["general"]["csvSeparator"] + \
-            #                  self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
-            #                  self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
-            #                  self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
-            # resLineToWrite = self.getCommonTabFields(resLineToWrite)
-            # resLineToWrite = resLineToWrite + '\n'
-            # self.writeResultsSummaryLine('Constant 1-Pair Same/Different', resLineToWrite)
+            #'dprime condition listener session experimentLabel nCorrectA nTotalA nCorrectB nTotalB nCorrect nTotal date time duration block experiment'
+            resLineToWrite = ''
+            for j in range(self.prm['nDifferences']):
+                resLineToWrite = resLineToWrite + '{0:5.3f}'.format(dp_IO[j]) + self.prm['pref']["general"]["csvSeparator"]
+                resLineToWrite = resLineToWrite + '{0:5.3f}'.format(dp_diff[j]) + self.prm['pref']["general"]["csvSeparator"] 
+                resLineToWrite = resLineToWrite + str(self.trialCount[j]) + self.prm['pref']["general"]["csvSeparator"]
+                for i in range(len(self.prm['conditions'])):
+                    resLineToWrite = resLineToWrite + str(self.correctCountCnds[j][self.prm['conditions'][i]]) + self.prm['pref']["general"]["csvSeparator"] + \
+                                     str(self.trialCountCnds[j][self.prm['conditions'][i]]) + self.prm['pref']["general"]["csvSeparator"]
+            resLineToWrite = resLineToWrite + self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             durString + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
+            resLineToWrite = resLineToWrite + '\n'
+            self.writeResultsSummaryLine('Multiple Constants 1-Pair Same/Different', resLineToWrite)
+
+
+            resLineToWriteSummFull = ""
+            for i in range(len(self.fullFileSummLines)):
+                resLineToWriteSummFull = resLineToWriteSummFull + " ".join(self.fullFileSummLines[i]) + \
+                                         self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                                         self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+                                         self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                                         self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+                                         self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                                         self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                                         durString + self.prm['pref']["general"]["csvSeparator"] + \
+                                         self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+                                         self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
+                                         self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+             
+                resLineToWriteSummFull = self.getCommonTabFields(resLineToWriteSummFull)
+                resLineToWriteSummFull = resLineToWriteSummFull + '\n'
+            self.writeResultsSummaryFullLine('Multiple Constants 1-Pair Same/Different', resLineToWriteSummFull)
 
             self.atBlockEnd()
            
@@ -3484,6 +3513,28 @@ class responseBox(QMainWindow):
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
                             'paradigm' + self.prm['pref']["general"]["csvSeparator"]
+        elif paradigm in ['Multiple Constants 1-Pair Same/Different']:
+            headerToWrite = ''
+            for j in range(self.prm['nDifferences']):
+                headerToWrite =  headerToWrite + 'dprime_IO_pair' + str(j+1) +  self.prm['pref']["general"]["csvSeparator"] + \
+                                'dprime_diff_pair' + str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'nTotal_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'nCorrectA_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'nTotalA_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'nCorrectB_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'nTotalB_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] 
+                                
+                
+            headerToWrite = headerToWrite + 'condition' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
         elif paradigm in ['Multiple Constants 1-Interval 2-Alternatives']:
             headerToWrite =  'dprime_ALL' +  self.prm['pref']["general"]["csvSeparator"] + \
                             'nTotal_ALL'+ self.prm['pref']["general"]["csvSeparator"] + \
@@ -3887,7 +3938,29 @@ class responseBox(QMainWindow):
                             'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'paradigm' + self.prm['pref']["general"]["csvSeparator"] 
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
+
+        if paradigm in ['Multiple Constants 1-Pair Same/Different']:
+            headerToWrite = 'pair' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'stim1' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'stim2' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'case' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'response' + self.prm['pref']["general"]["csvSeparator"]
+            if 'additional_parameters_to_write' in self.prm:
+                for p in range(len(self.prm['additional_parameters_to_write_labels'])):
+                    headerToWrite = headerToWrite + self.prm['additional_parameters_to_write_labels'][p] +  self.prm['pref']["general"]["csvSeparator"]
+            headerToWrite = headerToWrite + 'condition' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
+
+
             
      
                     
