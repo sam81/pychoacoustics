@@ -247,6 +247,10 @@ class audioManager():
             elif snd.dtype == "int32":
                 snd = snd / (2.**31)
                 nbits = 32
+
+        if snd.ndim == 1:
+            snd = snd.reshape(snd.shape[0], 1)
+            snd = concatenate((snd,snd), axis=1)
         rms1 = sqrt(mean(snd[:,0]*snd[:,0]))
         rms2 = sqrt(mean(snd[:,1]*snd[:,1]))
         if rms1 > 0:
