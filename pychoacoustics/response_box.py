@@ -3499,10 +3499,10 @@ class responseBox(QMainWindow):
             headerToWrite =  'dprime_IO' +  self.prm['pref']["general"]["csvSeparator"] + \
                             'dprime_diff' +  self.prm['pref']["general"]["csvSeparator"] + \
                             'nTotal'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nCorrectA'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nTotalA'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nCorrectB'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nTotalB'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'nCorrect_same'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'nTotal_same'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'nCorrect_different'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'nTotal_different'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'condition' + self.prm['pref']["general"]["csvSeparator"] + \
                             'listener' + self.prm['pref']["general"]["csvSeparator"] + \
                             'session'+ self.prm['pref']["general"]["csvSeparator"] + \
@@ -3519,10 +3519,10 @@ class responseBox(QMainWindow):
                 headerToWrite =  headerToWrite + 'dprime_IO_pair' + str(j+1) +  self.prm['pref']["general"]["csvSeparator"] + \
                                 'dprime_diff_pair' + str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
                                 'nTotal_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
-                                'nCorrectA_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
-                                'nTotalA_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
-                                'nCorrectB_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
-                                'nTotalB_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] 
+                                'nCorrect_same_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'nTotal_same_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'nCorrect_different_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'nTotal_different_pair'+ str(j+1) + self.prm['pref']["general"]["csvSeparator"] 
                                 
                 
             headerToWrite = headerToWrite + 'condition' + self.prm['pref']["general"]["csvSeparator"] + \
