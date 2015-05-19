@@ -3642,7 +3642,7 @@ class pychControlWin(QMainWindow):
 
             for i in range(foo['b'+str(blockNumber)]['startField'] - foo['b'+str(blockNumber)]['startFileChooser'] -1):
                 tmp['b'+str(blockNumber)]['fileChooser'].append(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(':')[1].strip())
-                tmp['b'+str(blockNumber)]['fileChooserButton'].append(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(':')[0].strip()+':')
+                tmp['b'+str(blockNumber)]['fileChooserButton'].append(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(':')[0].strip())#+':')
                 tmp['b'+str(blockNumber)]['fileChooserCheckBox'].append(strToBoolean(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(':')[2].strip()))
 
             for i in range(foo['b'+str(blockNumber)]['endField'] - foo['b'+str(blockNumber)]['startField'] ):
@@ -3698,13 +3698,14 @@ class pychControlWin(QMainWindow):
                 ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write prm'), ".prm", self.tr('All Files (*)'))[0]
             else:
                 ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write prm'), self.parametersFile, self.tr('All Files (*)'))[0]
-        if len(ftow) > 0 and self.prm["storedBlocks"] > 0:
-            self.saveParametersToFile(ftow)
-            self.saveParametersToFile(self.prm["tmpParametersFile"])
-            #if self.parametersFile == self.prm["tmpParametersFile"]:
-            #    if os.path.exists(self.parametersFile) == True:
-            #        os.remove(self.parametersFile)
-            self.parametersFile = ftow
+
+            if len(ftow) > 0 and self.prm["storedBlocks"] > 0:
+                self.saveParametersToFile(ftow)
+                self.saveParametersToFile(self.prm["tmpParametersFile"])
+                #if self.parametersFile == self.prm["tmpParametersFile"]:
+                #    if os.path.exists(self.parametersFile) == True:
+                #        os.remove(self.parametersFile)
+                self.parametersFile = ftow
     def saveParametersToFile(self, ftow):
         fName = open(ftow, 'w')
         fName.write('Phones: ' + self.phonesChooser.currentText() + '\n')

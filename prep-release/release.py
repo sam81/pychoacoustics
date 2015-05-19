@@ -13,7 +13,7 @@ def main(argv):
         if opt in ("-m", "--message"):
             message = arg
     major_v = 0
-    minor_v = 2
+    minor_v = 3
 
     #read minor minor release number
     f = open('prep-release/minor_minor_number.txt', 'r')
