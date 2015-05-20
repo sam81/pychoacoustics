@@ -67,6 +67,12 @@ Constant 1-Pair Same/Different
 This paradigm implements a constant difference method for
 “same/different” tasks with a single pair of stimuli to compare.
 
+Multiple Constants 1-Pair Same/Different
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This paradigm implements a constant difference method for
+“same/different” tasks with multiple pairs of stimuli to compare.
+
 Odd One Out
 ^^^^^^^^^^^
 
@@ -80,3 +86,15 @@ This paradigm implements the PEST adaptive procedure described
 by [TaylorAndCreelman1967]_. However, beware that support for 
 this procedure in ``pychoacoustics`` is very experimental.
 Its implementation has received very little testing.
+
+PSI
+^^^^
+
+This paradigm implements the PSI+ and PSI-marginal adaptive procedures described
+by [Prins2013]_. 
+
+UML
+^^^^
+
+This paradigm implements the updated maximum likelihood (UML) adaptive procedure described
+by [ShenAndRichards2012]_. 

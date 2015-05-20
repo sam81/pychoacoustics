@@ -9,10 +9,8 @@ Installation
    Add info on optional python packages (matplotlib and pandas).
    Add info on using scientific Python bundles, such as Anaconda.
 
-``pychoacoustics`` has been successfully installed and used on Linux and
-Windows platforms. Given that it is entirely written in Python, it should be
-fully cross-platform and should work on the Mac as well, but this has
-never been tested. ``pychoacoustics`` depends on the installation of a
+``pychoacoustics`` has been successfully installed and used on Linux,
+Windows, and Mac platforms. ``pychoacoustics`` depends on the installation of a
 handful of other programs:
 
 -  Python (version 3) `http://www.python.org/ <http://www.python.org/>`_
@@ -104,6 +102,15 @@ above, you would change the contents of the file to:
 You can place the ``.bat`` 
 launcher wherever you want, for example on your ``Desktop`` folder. 
 Simply double click on it, and ``pychoacoustics`` should start.
+
+Installation on the Mac
+------------------------
+
+The easiest way to install ``pychoacoustics`` on the Mac is 
+to use Pyzo as a Python distribution.
+The steps are the same as for the installation with Pyzo on 
+Windows (see above). Please, note that if you install with Pyzo you
+will need to use the PySide version of ``pychoacoustics``.
 
 
 Install Python and the Dependencies manually
