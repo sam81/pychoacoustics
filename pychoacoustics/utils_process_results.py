@@ -60,6 +60,8 @@ def getBlockRangeToProcess(last, block_range, conditionsList):
 def checkMixedProceduresInTableFile(allLines, separator):
     """
     Function to check that a given table file does not contain more than one header.
+    It relies on the assumption that the first field in each row of the table (except
+    the table header) should contain a numeric value. 
     """
     for line in allLines[1:len(allLines)]:
         try:

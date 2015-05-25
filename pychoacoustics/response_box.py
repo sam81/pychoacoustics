@@ -318,6 +318,20 @@ class responseBox(QMainWindow):
                 self.responseButton[i].setProperty("responseBoxButton", True)
                 self.responseButton[i].clicked.connect(self.sortResponseButton)
                 self.responseButton[i].setFocusPolicy(Qt.NoFocus)
+        elif self.parent().currParadigm in ["ABX"]:
+            for i in range(3):
+                self.intervalLight.append(intervalLight(self))
+                self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
+                n = n+1
+                
+            for i in range(2):
+                self.responseButton.append(QPushButton(self.prm[self.tr(self.parent().experimentChooser.currentText())]['buttonLabels'][i], self))
+            
+                self.responseButtonSizer.addWidget(self.responseButton[i], 1, i)
+                self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+                self.responseButton[i].setProperty("responseBoxButton", True)
+                self.responseButton[i].clicked.connect(self.sortResponseButton)
+                self.responseButton[i].setFocusPolicy(Qt.NoFocus)
         elif self.parent().currParadigm in ["Odd One Out"]:
             for i in range(nIntervals):
                 self.intervalLight.append(intervalLight(self))
@@ -335,6 +349,7 @@ class responseBox(QMainWindow):
                 self.responseButton[i].setProperty("responseBoxButton", True)
                 self.responseButton[i].clicked.connect(self.sortResponseButton)
                 self.responseButton[i].setFocusPolicy(Qt.NoFocus)
+        
 
         self.showHideIntervalLights(self.prm['intervalLights'])
 
@@ -3758,171 +3773,7 @@ class responseBox(QMainWindow):
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
                             'paradigm' + self.prm['pref']["general"]["csvSeparator"] 
-
-        elif paradigm in ['Transformed Up-Down Interleaved', 'Weighted Up-Down Interleaved']:
-            headerToWrite = ''
-            for j in range(self.prm['nDifferences']):
-                headerToWrite = headerToWrite + 'threshold_' + self.prm['adaptiveType'].lower() + '_track' + str(j+1) +  self.prm['pref']["general"]["csvSeparator"] 
-
-            headerToWrite =  headerToWrite + 'condition' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'paradigm' + self.prm['pref']["general"]["csvSeparator"] 
-        elif paradigm in ['Constant 1-Interval 2-Alternatives']:
-            headerToWrite =  'dprime' +  self.prm['pref']["general"]["csvSeparator"] + \
-                            'nTotal'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nCorrectA'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nTotalA'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nCorrectB'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nTotalB'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'condition' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"] +\
-                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
-        elif paradigm in ['Constant 1-Pair Same/Different']:
-            headerToWrite =  'dprime_IO' +  self.prm['pref']["general"]["csvSeparator"] + \
-                            'dprime_diff' +  self.prm['pref']["general"]["csvSeparator"] + \
-                            'nTotal'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nCorrectA'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nTotalA'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nCorrectB'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nTotalB'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'condition' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
-        elif paradigm in ['Multiple Constants 1-Interval 2-Alternatives']:
-            headerToWrite =  'dprime_ALL' +  self.prm['pref']["general"]["csvSeparator"] + \
-                            'nTotal_ALL'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nCorrectA_ALL'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nTotalA_ALL'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nCorrectB_ALL'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'nTotalB_ALL'+ self.prm['pref']["general"]["csvSeparator"] 
-            for j in range(len(self.prm['conditions'])):
-                headerToWrite =  headerToWrite +  'dprime_subc' + str(j+1)+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'nTotal_subc'+  str(j+1) + self.prm['pref']["general"]["csvSeparator"] + \
-                                'nCorrectA_subc'+  str(j+1)+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'nTotalA_subc'+  str(j+1)+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'nCorrectB_subc'+  str(j+1)+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'nTotalB_subc'+  str(j+1)+ self.prm['pref']["general"]["csvSeparator"]
-                                
-            headerToWrite = headerToWrite + 'condition' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'paradigm' + self.prm['pref']["general"]["csvSeparator"] 
-        elif paradigm in ['Constant m-Intervals n-Alternatives']:
-            headerToWrite = ''
-          
-            headerToWrite = headerToWrite + 'dprime' +  self.prm['pref']["general"]["csvSeparator"] + \
-                            'perc_corr' +  self.prm['pref']["general"]["csvSeparator"] + \
-                            'n_corr'+ self.prm['pref']["general"]["csvSeparator"] +\
-                            'n_trials' + self.prm['pref']["general"]["csvSeparator"]+\
-                            'condition' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'duration' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"] +\
-                            'paradigm' + self.prm['pref']["general"]["csvSeparator"] +\
-                            'nIntervals' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'nAlternatives' + self.prm['pref']["general"]["csvSeparator"]
-
-        elif paradigm in ['Multiple Constants m-Intervals n-Alternatives']:
-            headerToWrite = ''
-            for i in range(len(self.prm['conditions'])):
-                headerToWrite = headerToWrite + 'dprime_subc' + str(i+1) +  self.prm['pref']["general"]["csvSeparator"] + \
-                                'perc_corr_subc' + str(i+1) +  self.prm['pref']["general"]["csvSeparator"] + \
-                                'n_corr_subc'+ str(i+1) + self.prm['pref']["general"]["csvSeparator"] +\
-                                'n_trials_subc'+ str(i+1) + self.prm['pref']["general"]["csvSeparator"]
-                
-            headerToWrite =  headerToWrite + 'tot_dprime' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'tot_perc_corr' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'tot_n_corr' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'tot_n_trials' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'condition' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"] +\
-                            'paradigm' + self.prm['pref']["general"]["csvSeparator"] +\
-                            'nIntervals' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'nAlternatives' + self.prm['pref']["general"]["csvSeparator"]
-
-        elif paradigm in ['PEST']:
-            headerToWrite = 'threshold_' +  self.prm['adaptiveType'].lower() + self.prm['pref']["general"]["csvSeparator"] + \
-                            'condition' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
-        elif paradigm in ['Odd One Out']:
-            headerToWrite = 'nTials' + self.prm['pref']["general"]["csvSeparator"]
-            for i in range(len(self.prm['conditions'])):
-                headerToWrite = headerToWrite + 'cnd'+str(i+1)+'_stim1_count'+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'cnd'+str(i+1) + '_stim1_percent'+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'cnd'+str(i+1) + '_stim2_count'+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'cnd'+str(i+1)+ '_stim2_percent'+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'cnd'+str(i+1) + '_stim2_count'+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'cnd'+str(i+1)+ '_stim3_percent'+ self.prm['pref']["general"]["csvSeparator"] 
-                                
-            headerToWrite = headerToWrite + 'condition' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
-        elif paradigm in ['Maximum Likelihood']:
-            headerToWrite = 'threshold' +  self.prm['pref']["general"]["csvSeparator"] + \
-                            'condition' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
-                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
-                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
+     
         if paradigm in ['PSI', 'UML']:
             headerToWrite = 'adaptive_difference' + self.prm['pref']["general"]["csvSeparator"] + \
                             'response' + self.prm['pref']["general"]["csvSeparator"]
@@ -3960,8 +3811,6 @@ class responseBox(QMainWindow):
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
                             'paradigm' + self.prm['pref']["general"]["csvSeparator"]
 
-
-            
      
                     
         currBlock = 'b'+str(self.prm['currentBlock'])
