@@ -69,7 +69,703 @@ def checkMixedProceduresInTableFile(allLines, separator):
         except:
             return True
     return False
-  
+
+def tryFloat(x):
+    try:
+        float(x)
+        return True
+    except:
+        return False
+    
+
+def readTableFiles(fList, separator=";"):
+    """
+    Read a bunch of table result files. The table result files may be from different parameter check boxes, and each
+    file may also contain mixed procedures.
+    """
+    dats = {} #dictionary with key corresponding to each header
+    for i in range(len(fList)): #loop over file list
+        f = open(fList[i], "r") 
+        thisAllLines = f.readlines()
+        f.close()
+        thisParadigm = thisAllLines[1].split(separator)[thisAllLines[0].split(separator).index("paradigm")]
+        thisHeader = thisAllLines[0] + thisParadigm #get the header of the file
+        if thisHeader not in dats.keys(): #if there isn't a key with this header, create one
+            dats[thisHeader] = {};
+            dats[thisHeader]["header"] = thisHeader.split("\n")[0] + "\n"
+            dats[thisHeader]["paradigm"] = thisHeader.split("\n")[1]
+            dats[thisHeader]["data"] = []
+        for l in range(1, len(thisAllLines)): #loop over lines list
+            isNumeric = tryFloat(thisAllLines[l].split(separator)[0])
+            if isNumeric == True:
+                if thisAllLines[l].split(separator)[thisHeader.split(separator).index("paradigm")] == dats[thisHeader]["paradigm"]:
+                    dats[thisHeader]["data"].append(thisAllLines[l])
+                else:
+                    thisParadigm = thisAllLines[l].split(separator)[thisHeader.split(separator).index("paradigm")]
+                    thisHeader = thisHeader.split("\n")[0] + "\n" + thisParadigm #else change header, subsequent lines will be added to this key
+                    if thisHeader not in dats.keys(): #create new key if necessary
+                        dats[thisHeader] = {};
+                        dats[thisHeader]["header"] = thisHeader.split("\n")[0] + "\n"
+                        dats[thisHeader]["paradigm"] = thisHeader.split("\n")[1]
+                        dats[thisHeader]["data"] = []
+                    dats[thisHeader]["data"].append(thisAllLines[l])
+            else:
+                thisParadigm = thisAllLines[l+1].split(separator)[thisAllLines[l].split(separator).index("paradigm")]
+                thisHeader = thisAllLines[l] + thisParadigm #else change header, subsequent lines will be added to this key
+                if thisHeader not in dats.keys(): #create new key if necessary
+                    dats[thisHeader] = {};
+                    dats[thisHeader]["header"] = thisHeader.split("\n")[0] + "\n"
+                    dats[thisHeader]["paradigm"] = thisHeader.split("\n")[1]
+                    dats[thisHeader]["data"] = []
+        
+    return dats
+
+def getColVals(x, header, numFields, separator):
+    keys = header.split(separator) #.pop removes \n newline character
+    keys.pop()
+    d = {}
+    for i in range(len(keys)):
+        d[keys[i]] = []
+    for i in range(len(x)):
+        xsplit = x[i].split(separator)
+        for k in range(len(keys)):
+            if keys[k] in numFields:
+                d[keys[k]].append(float(xsplit[k]))
+            else:
+                d[keys[k]].append(xsplit[k])
+    return d
+
+def makeAgglomerateCondition(dCols, keysToRemove, keysNotToCheck, nBlocks):
+    #remove ephemeral keys 
+    for j in range(len(keysToRemove)):
+        if keysToRemove[j] in dCols:
+            del dCols[keysToRemove[j]]
+        
+    dCols['conditionAgglomerate'] = ['' for i in range(nBlocks)]
+    for j in range(nBlocks):
+        for key in dCols:
+            if key not in keysNotToCheck:
+                dCols['conditionAgglomerate'][j] = dCols['conditionAgglomerate'][j] + str(dCols[key][j])
+    return dCols
+
+def makeDatsProSkeleton(dCols, keysNotToCheck):
+    datsPro = {}
+    for key in dCols:
+        if key not in keysNotToCheck:
+            datsPro[key] = []
+    return datsPro
+
+def writeResTable(fNameOut, separator, datsPro, resKeys):
+    fout = open(fNameOut, 'w')
+    nRows = len(datsPro['paradigm'])
+    standardKeys = ['condition', 'listener', 'experimentLabel', 'experiment']
+    keys = list(datsPro.keys())
+    for key in resKeys:
+        fout.write(key+separator)
+    for key in standardKeys:
+        fout.write(key+separator)
+    for key in keys:
+        if key not in resKeys and key not in standardKeys:
+            fout.write(key+separator)
+    fout.write('\n')
+    
+    for j in range(nRows):
+        for key in resKeys:
+            fout.write(str(datsPro[key][j])+separator)
+        for key in standardKeys:
+            fout.write(str(datsPro[key][j])+separator)
+        for key in keys:
+            if key not in resKeys and key not in standardKeys:
+                fout.write(str(datsPro[key][j])+separator)
+        
+        fout.write('\n')
+    fout.close()
+    return
+
+def procResTableAdaptive(fName, fout=None, separator=';', last=None, block_range=None):
+
+    fldict = readTableFiles(fName, separator)
+
+    if fout == None:
+        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+    else:
+        fNameOut = fout
+    
+    if len(fldict) > 1:
+        fout = open(fNameOut, 'w')
+        fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
+        fout.close()
+        return
+
+    data = fldict[list(fldict.keys())[0]]
+    
+    nBlocks = len(data['data'])
+    keysToRemove = ['session', 'date', 'time', 'duration', 'block', '']
+    keysNotToCheck = ['conditionAgglomerate', 'procedure']
+
+    if data['header'].split(separator)[0] == "threshold_geometric":
+        procedure = "geometric"
+    elif data['header'].split(separator)[0] == "threshold_arithmetic":
+        procedure = "arithmetic"
+
+    numFields = "threshold_" + procedure
+    dCols = getColVals(data["data"], data["header"], numFields, separator)
+
+    keysToRemove.extend(['SD'])
+    keysNotToCheck.extend(['threshold_' + procedure])
+    dCols = makeAgglomerateCondition(dCols, keysToRemove, keysNotToCheck, nBlocks)
+    datsPro = makeDatsProSkeleton(dCols, keysNotToCheck)
+
+    #sort on the basis of condition-agglomerate
+    cnds = list(set(dCols['conditionAgglomerate']))
+    datsPro['threshold'] = zeros(len(cnds))
+    datsPro['SE'] = zeros(len(cnds))
+
+    thresh = [[] for j in range(len(cnds))]
+
+    for j in range(nBlocks):
+        cndIdx = cnds.index(dCols['conditionAgglomerate'][j])
+        thresh[cndIdx].append(dCols['threshold_'+procedure][j])
+
+    for j in range(len(cnds)):
+        start, stop = getBlockRangeToProcess(last, block_range, thresh[j])
+
+        if procedure == 'arithmetic':
+            datsPro['threshold'][j] =  mean(thresh[j][start:stop])
+            datsPro['SE'][j] =  se(thresh[j][start:stop])
+        elif procedure == 'geometric':
+            datsPro['threshold'][j] =  geoMean(thresh[j][start:stop])
+            datsPro['SE'][j] =  geoSe(thresh[j][start:stop])
+
+        cndIdx = dCols['conditionAgglomerate'].index(cnds[j])
+        for key in dCols:
+            if key not in keysNotToCheck:
+                    datsPro[key].append(dCols[key][cndIdx])
+    resKeys = ['threshold', 'SE']
+    writeResTable(fNameOut, separator, datsPro, resKeys)
+
+    return
+
+def procResTableAdaptiveInterleaved(fName, fout=None, separator=';', last=None, block_range=None):    
+    fldict = readTableFiles(fName, separator)
+
+    if fout == None:
+        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+    else:
+        fNameOut = fout
+    
+    if len(fldict) > 1:
+        fout = open(fNameOut, 'w')
+        fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
+        fout.close()
+        return
+
+    data = fldict[list(fldict.keys())[0]]
+    
+    nBlocks = len(data['data'])
+    keysToRemove = ['session', 'date', 'time', 'duration', 'block', '']
+    keysNotToCheck = ['conditionAgglomerate', 'procedure']
+    
+    keys = data['header'].split(separator) #.pop removes \n newline character
+    keys.pop()
+    if data['header'].split(separator)[0] == "threshold_geometric_track1":
+        procedure = "geometric"
+    elif data['header'].split(separator)[0] == "threshold_arithmetic_track1":
+        procedure = "arithmetic"
+
+    nTracks = 0
+    for key in keys:
+        if key[0:9] == 'threshold':
+            nTracks = nTracks +1
+
+    numFields = ["threshold_" + procedure + "_track" + str(i+1) for i in range(nTracks)]
+    dCols = getColVals(data["data"], data["header"], numFields, separator)
+
+    keysToRemove.extend(['SD' + "_track" + str(i+1) for i in range(nTracks)])
+    keysNotToCheck.extend(["threshold_" + procedure + "_track" + str(i+1) for i in range(nTracks)])
+    dCols = makeAgglomerateCondition(dCols, keysToRemove, keysNotToCheck, nBlocks)
+    datsPro = makeDatsProSkeleton(dCols, keysNotToCheck)
+
+    #sort on the basis of condition-agglomerate
+    cnds = list(set(dCols['conditionAgglomerate']))
+    for i in range(nTracks):
+        datsPro['threshold'+ '_track' + str(i+1)] = zeros(len(cnds))
+        datsPro['SE'+ '_track' + str(i+1)] = zeros(len(cnds))
+
+
+    thresh = [[[] for t in range(nTracks)] for j in range(len(cnds))]
+
+    for j in range(nBlocks):
+        cndIdx = cnds.index(dCols['conditionAgglomerate'][j])
+        for t in range(nTracks):
+            thresh[cndIdx][t].append(dCols['threshold_'+ procedure + '_track' + str(t+1)][j])
+
+    for j in range(len(cnds)):
+        for t in range(nTracks):
+            start, stop = getBlockRangeToProcess(last, block_range, thresh[j][t])
+
+            if procedure == 'arithmetic':
+                datsPro['threshold'+'_track' + str(t+1)][j] =  mean(thresh[j][t][start:stop])
+                datsPro['SE'+'_track' + str(t+1)][j] =  se(thresh[j][t][start:stop])
+            elif procedure == 'geometric':
+                datsPro['threshold'+'_track' + str(t+1)][j] =  geoMean(thresh[j][t][start:stop])
+                datsPro['SE'+'_track' + str(t+1)][j] =  geoSe(thresh[j][t][start:stop])
+
+        cndIdx = dCols['conditionAgglomerate'].index(cnds[j])
+        for key in dCols:
+            if key not in keysNotToCheck:
+                datsPro[key].append(dCols[key][cndIdx])
+
+    resKeys = []
+    for t in range(nTracks):
+        nt = str(t+1)
+        resKeys.extend(['threshold_track'+nt, 'SE_track'+nt])
+    writeResTable(fNameOut, separator, datsPro, resKeys)
+
+    return
+
+def procResTableConstantMIntNAlt(fName, fout=None, separator=';', last=None, block_range=None):
+    fldict = readTableFiles(fName, separator)
+
+    if fout == None:
+        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+    else:
+        fNameOut = fout
+    
+    if len(fldict) > 1:
+        fout = open(fNameOut, 'w')
+        fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
+        fout.close()
+        return
+
+    data = fldict[list(fldict.keys())[0]]
+    
+    nBlocks = len(data['data'])
+    keysToRemove = ['session', 'date', 'time', 'duration', 'block', '']
+    keysNotToCheck = ['conditionAgglomerate', 'procedure']
+    
+    numFields = ['n_corr', 'n_trials', 'nAlternatives', 'nIntervals']
+    dCols = getColVals(data["data"], data["header"], numFields, separator)
+
+    keysToRemove.extend(['dprime', 'perc_corr'])
+    keysNotToCheck.extend(['n_corr', 'n_trials'])
+    dCols = makeAgglomerateCondition(dCols, keysToRemove, keysNotToCheck, nBlocks)
+    datsPro = makeDatsProSkeleton(dCols, keysNotToCheck)
+
+    #sort on the basis of condition-agglomerate
+    cnds = list(set(dCols['conditionAgglomerate']))
+
+    datsPro['dprime'] = zeros(len(cnds))
+    datsPro['perc_corr'] = zeros(len(cnds))
+    datsPro['n_corr'] = zeros(len(cnds))
+    datsPro['n_trials'] = zeros(len(cnds))
+
+    nCorr = [[] for j in range(len(cnds))]
+    nTrials = [[] for j in range(len(cnds))]
+    nAlt = [[] for j in range(len(cnds))]
+    for j in range(nBlocks):
+        cndIdx = cnds.index(dCols['conditionAgglomerate'][j])
+        nCorr[cndIdx].append(dCols['n_corr'][j])
+        nTrials[cndIdx].append(dCols['n_trials'][j])
+        nAlt[cndIdx].append(int(dCols['nAlternatives'][j]))
+
+    for j in range(len(cnds)):
+        start, stop = getBlockRangeToProcess(last, block_range, nCorr[j])
+
+        datsPro['n_corr'][j] =  sum(nCorr[j][start:stop])
+        datsPro['n_trials'][j] =  sum(nTrials[j][start:stop])
+        datsPro['perc_corr'][j] =  datsPro['n_corr'][j] / datsPro['n_trials'][j] * 100
+
+        datsPro['dprime'][j] = dprime_mAFC(datsPro['n_corr'][j] / datsPro['n_trials'][j], nAlt[j][0])
+
+        cndIdx = dCols['conditionAgglomerate'].index(cnds[j])
+        for key in dCols:
+            if key not in keysNotToCheck:
+                datsPro[key].append(dCols[key][cndIdx])
+
+    resKeys = ['dprime', 'perc_corr', 'n_corr', 'n_trials']
+    writeResTable(fNameOut, separator, datsPro, resKeys)
+    return
+
+def procResTableMultipleConstantsMIntNAlt(fName, fout=None, separator=';', last=None, block_range=None):
+    fldict = readTableFiles(fName, separator)
+
+    if fout == None:
+        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+    else:
+        fNameOut = fout
+    
+    if len(fldict) > 1:
+        fout = open(fNameOut, 'w')
+        fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
+        fout.close()
+        return
+
+    data = fldict[list(fldict.keys())[0]]
+    
+    nBlocks = len(data['data'])
+    keysToRemove = ['session', 'date', 'time', 'duration', 'block', '']
+    keysNotToCheck = ['conditionAgglomerate', 'procedure']
+    
+    keys = data['header'].split(separator) #.pop removes \n newline character
+    keys.pop()
+
+    nSubCond = 0
+    for key in keys:
+        if key[0:8] == 'dprime_s':
+            nSubCond = nSubCond +1
+
+    numFields = ['nAlternatives', 'nIntervals']
+    for i in range(nSubCond):
+        numFields.extend(['n_corr_subc' + str(i+1), 'n_trials_subc' + str(i+1)])
+    numFields.extend(['tot_n_corr', 'tot_n_trials'])
+    dCols = getColVals(data["data"], data["header"], numFields, separator)
+
+    for i in range(nSubCond):
+        keysToRemove.extend(['dprime_subc'+str(i+1), 'perc_corr_subc'+str(i+1)])
+        keysNotToCheck.extend(['n_corr_subc'+str(i+1), 'n_trials_subc'+str(i+1)])
+    keysNotToCheck.extend(['tot_n_corr', 'tot_n_trials'])
+    keysToRemove.extend(['tot_dprime', 'tot_perc_corr'])
+    dCols = makeAgglomerateCondition(dCols, keysToRemove, keysNotToCheck, nBlocks)
+    datsPro = makeDatsProSkeleton(dCols, keysNotToCheck)
+
+    #sort on the basis of condition-agglomerate
+    cnds = list(set(dCols['conditionAgglomerate']))
+
+    datsPro['dprime_ALL'] = zeros(len(cnds))
+    datsPro['perc_corr_ALL'] = zeros(len(cnds))
+    datsPro['n_corr_ALL'] = zeros(len(cnds))
+    datsPro['n_trials_ALL'] = zeros(len(cnds))
+    for i in range(nSubCond):
+        cn = str(i+1)
+        datsPro['dprime_subc'+cn] = zeros(len(cnds))
+        datsPro['perc_corr_subc'+cn] = zeros(len(cnds))
+        datsPro['n_corr_subc'+cn] = zeros(len(cnds))
+        datsPro['n_trials_subc'+cn] = zeros(len(cnds))
+
+    nCorr_ALL = [[] for j in range(len(cnds))]
+    nTrials_ALL = [[] for j in range(len(cnds))]
+
+    nCorr = [[[] for c in range(nSubCond)] for j in range(len(cnds))]
+    nTrials = [[[] for c in range(nSubCond)] for j in range(len(cnds))]
+    nAlt = [[] for j in range(len(cnds))]
+    for j in range(nBlocks):
+        cndIdx = cnds.index(dCols['conditionAgglomerate'][j])
+        nCorr_ALL[cndIdx].append(dCols['tot_n_corr'][j])
+        nTrials_ALL[cndIdx].append(dCols['tot_n_trials'][j])
+        for c in range(nSubCond):
+            nCorr[cndIdx][c].append(dCols['n_corr_subc'+str(c+1)][j])
+            nTrials[cndIdx][c].append(dCols['n_trials_subc'+str(c+1)][j])
+        nAlt[cndIdx].append(int(dCols['nAlternatives'][j]))
+
+    for j in range(len(cnds)):
+        start, stop = getBlockRangeToProcess(last, block_range, nCorr_ALL[j])
+        datsPro['n_corr_ALL'][j] =  sum(nCorr_ALL[j][start:stop])
+        datsPro['n_trials_ALL'][j] =  sum(nTrials_ALL[j][start:stop])
+        datsPro['perc_corr_ALL'][j] =  datsPro['n_corr_ALL'][j] / datsPro['n_trials_ALL'][j] * 100
+        datsPro['dprime_ALL'][j] = dprime_mAFC(datsPro['n_corr_ALL'][j] / datsPro['n_trials_ALL'][j], nAlt[j][0])
+        for c in range(nSubCond):
+            cn = str(c+1)
+            start, stop = getBlockRangeToProcess(last, block_range, nCorr[j][c])
+            datsPro['n_corr_subc'+cn][j] =  sum(nCorr[j][c][start:stop])
+            datsPro['n_trials_subc'+cn][j] =  sum(nTrials[j][c][start:stop])
+            datsPro['perc_corr_subc'+cn][j] =  datsPro['n_corr_subc'+cn][j] / datsPro['n_trials_subc'+cn][j] * 100
+            datsPro['dprime_subc'+cn][j] = dprime_mAFC(datsPro['n_corr_subc'+cn][j] / datsPro['n_trials_subc'+cn][j], nAlt[j][0])
+
+        cndIdx = dCols['conditionAgglomerate'].index(cnds[j])
+        for key in dCols:
+            if key not in keysNotToCheck:
+                    datsPro[key].append(dCols[key][cndIdx])
+    
+    resKeys = ['dprime_ALL', 'perc_corr_ALL', 'n_corr_ALL', 'n_trials_ALL']
+    for c in range(nSubCond):
+        cn = str(c+1)
+        resKeys.extend(['dprime_subc'+cn, 'perc_corr_subc'+cn, 'n_corr_subc'+cn, 'n_trials_subc'+cn])
+    writeResTable(fNameOut, separator, datsPro, resKeys)
+    return
+
+def procResTableConstant1Int2Alt(fName, fout=None, separator=';', last=None, block_range=None, dprimeCorrection=True):
+    fldict = readTableFiles(fName, separator)
+
+    if fout == None:
+        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+    else:
+        fNameOut = fout
+    
+    if len(fldict) > 1:
+        fout = open(fNameOut, 'w')
+        fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
+        fout.close()
+        return
+
+    data = fldict[list(fldict.keys())[0]]
+    
+    nBlocks = len(data['data'])
+    keysToRemove = ['session', 'date', 'time', 'duration', 'block', '']
+    keysNotToCheck = ['conditionAgglomerate', 'procedure']
+    
+
+    numFields = ['nCorrectA', 'nCorrectB', 'nTotalA', 'nTotalB', 'nCorrect', 'nTotal']
+    dCols = getColVals(data["data"], data["header"], numFields, separator)
+
+    keysToRemove.extend(['dprime'])
+    keysNotToCheck.extend(['nCorrectA', 'nTotalA', 'nCorrectB', 'nTotalB', 'nCorrect', 'nTotal'])
+    dCols = makeAgglomerateCondition(dCols, keysToRemove, keysNotToCheck, nBlocks)
+    datsPro = makeDatsProSkeleton(dCols, keysNotToCheck)
+
+    #sort on the basis of condition-agglomerate
+    cnds = list(set(dCols['conditionAgglomerate']))
+
+    datsPro['dprime'] = zeros(len(cnds))
+    datsPro['nCorrectA'] = zeros(len(cnds))
+    datsPro['nCorrectB'] = zeros(len(cnds))
+    datsPro['nTotalA'] = zeros(len(cnds))
+    datsPro['nTotalB'] = zeros(len(cnds))
+    datsPro['nTotal'] = zeros(len(cnds))
+
+    nCorrectA = [[] for j in range(len(cnds))]
+    nTotalA = [[] for j in range(len(cnds))]
+    nCorrectB = [[] for j in range(len(cnds))]
+    nTotalB = [[] for j in range(len(cnds))]
+    nTotal = [[] for j in range(len(cnds))]
+
+    for j in range(nBlocks):
+        cndIdx = cnds.index(dCols['conditionAgglomerate'][j])
+        nCorrectA[cndIdx].append(dCols['nCorrectA'][j])
+        nTotalA[cndIdx].append(dCols['nTotalA'][j])
+        nCorrectB[cndIdx].append(dCols['nCorrectB'][j])
+        nTotalB[cndIdx].append(dCols['nTotalB'][j])
+        nTotal[cndIdx].append(dCols['nTotal'][j])
+
+    for j in range(len(cnds)):
+        start, stop = getBlockRangeToProcess(last, block_range, nCorrectA[j])
+
+        datsPro['nCorrectA'][j] =  sum(nCorrectA[j][start:stop])
+        datsPro['nTotalA'][j] =  sum(nTotalA[j][start:stop])
+        datsPro['nCorrectB'][j] =  sum(nCorrectB[j][start:stop])
+        datsPro['nTotalB'][j] =  sum(nTotalB[j][start:stop])
+        datsPro['nTotal'][j] =  sum(nTotal[j][start:stop])
+
+
+
+        datsPro['dprime'][j] = dprime_yes_no_from_counts(nCA=datsPro['nCorrectA'][j], nTA=datsPro['nTotalA'][j], nCB=datsPro['nCorrectB'][j], nTB=datsPro['nTotalB'][j], corr=dprimeCorrection)
+
+        cndIdx = dCols['conditionAgglomerate'].index(cnds[j])
+        for key in dCols:
+            if key not in keysNotToCheck:
+                    datsPro[key].append(dCols[key][cndIdx])
+
+    resKeys = ['dprime', 'nTotal', 'nCorrectA', 'nTotalA', 'nCorrectB', 'nTotalB']
+    writeResTable(fNameOut, separator, datsPro, resKeys)
+    return
+
+def procResTableMultipleConstants1Int2Alt(fName, fout=None, separator=';', last=None, block_range=None, dprimeCorrection=True):
+    fldict = readTableFiles(fName, separator)
+
+    if fout == None:
+        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+    else:
+        fNameOut = fout
+    
+    if len(fldict) > 1:
+        fout = open(fNameOut, 'w')
+        fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
+        fout.close()
+        return
+
+    data = fldict[list(fldict.keys())[0]]
+
+    nBlocks = len(data['data'])
+    keysToRemove = ['session', 'date', 'time', 'duration', 'block', '']
+    keysNotToCheck = ['conditionAgglomerate', 'procedure']
+    
+    keys = data['header'].split(separator) #.pop removes \n newline character
+    keys.pop()
+
+    nSubCond = 0
+    for key in keys:
+        if key[0:8] == 'dprime_s':
+            nSubCond = nSubCond +1
+    numFields = ['nTotal_ALL', 'nCorrectA_ALL', 'nCorrectB_ALL', 'nTotalA_ALL', 'nTotalB_ALL']
+    for c in range(nSubCond):
+        cn = str(c+1)
+        numFields.extend(['nCorrectA_subc'+cn, 'nCorrectB_subc'+cn, 'nTotalA_subc'+cn, 'nTotalB_subc'+cn, 'nTotal_subc'+cn])
+    dCols = getColVals(data["data"], data["header"], numFields, separator)
+
+    keysToRemove.extend(['dprime_ALL'])
+    for c in range(nSubCond):
+        cn = str(c+1)
+        keysToRemove.extend(['dprime_subc'+cn])
+    keysNotToCheck.extend(['nTotal_ALL', 'nCorrectA_ALL', 'nCorrectB_ALL', 'nTotalA_ALL', 'nTotalB_ALL'])
+    for c in range(nSubCond):
+        cn = str(c+1)
+        keysNotToCheck.extend(['nCorrectA_subc'+cn, 'nTotalA_subc'+cn, 'nCorrectB_subc'+cn, 'nTotalB_subc'+cn, 'nTotal_subc'+cn])
+    dCols = makeAgglomerateCondition(dCols, keysToRemove, keysNotToCheck, nBlocks)
+    datsPro = makeDatsProSkeleton(dCols, keysNotToCheck)
+
+    #sort on the basis of condition-agglomerate
+    cnds = list(set(dCols['conditionAgglomerate']))
+    datsPro['dprime_ALL'] = zeros(len(cnds))
+    datsPro['nCorrectA_ALL'] = zeros(len(cnds))
+    datsPro['nCorrectB_ALL'] = zeros(len(cnds))
+    datsPro['nTotalA_ALL'] = zeros(len(cnds))
+    datsPro['nTotalB_ALL'] = zeros(len(cnds))
+    datsPro['nTotal_ALL'] = zeros(len(cnds))
+    for c in range(nSubCond):
+        cn = str(c+1)
+        datsPro['dprime_subc'+cn] = zeros(len(cnds))
+        datsPro['nCorrectA_subc'+cn] = zeros(len(cnds))
+        datsPro['nCorrectB_subc'+cn] = zeros(len(cnds))
+        datsPro['nTotalA_subc'+cn] = zeros(len(cnds))
+        datsPro['nTotalB_subc'+cn] = zeros(len(cnds))
+        datsPro['nTotal_subc'+cn] = zeros(len(cnds))
+
+    nCorrectA = [[[] for i in range(nSubCond)] for j in range(len(cnds))]
+    nTotalA = [[[] for i in range(nSubCond)] for j in range(len(cnds))]
+    nCorrectB = [[[] for i in range(nSubCond)] for j in range(len(cnds))]
+    nTotalB = [[[] for i in range(nSubCond)] for j in range(len(cnds))]
+    nTotal = [[[] for i in range(nSubCond)] for j in range(len(cnds))]
+
+    nCorrectA_ALL = [[] for j in range(len(cnds))]
+    nTotalA_ALL = [[] for j in range(len(cnds))]
+    nCorrectB_ALL = [[] for j in range(len(cnds))]
+    nTotalB_ALL = [[] for j in range(len(cnds))]
+    nTotal_ALL = [[] for j in range(len(cnds))]
+
+    for j in range(nBlocks):
+        cndIdx = cnds.index(dCols['conditionAgglomerate'][j])
+        nCorrectA_ALL[cndIdx].append(dCols['nCorrectA_ALL'][j])
+        nTotalA_ALL[cndIdx].append(dCols['nTotalA_ALL'][j])
+        nCorrectB_ALL[cndIdx].append(dCols['nCorrectB_ALL'][j])
+        nTotalB_ALL[cndIdx].append(dCols['nTotalB_ALL'][j])
+        nTotal_ALL[cndIdx].append(dCols['nTotal_ALL'][j])
+        for c in range(nSubCond):
+            cn = str(c+1)
+            nCorrectA[cndIdx][c].append(dCols['nCorrectA_subc'+cn][j])
+            nTotalA[cndIdx][c].append(dCols['nTotalA_subc'+cn][j])
+            nCorrectB[cndIdx][c].append(dCols['nCorrectB_subc'+cn][j])
+            nTotalB[cndIdx][c].append(dCols['nTotalB_subc'+cn][j])
+            nTotal[cndIdx][c].append(dCols['nTotal_subc'+cn][j])
+
+    for j in range(len(cnds)):
+        start, stop = getBlockRangeToProcess(last, block_range, nCorrectA_ALL[j])
+
+        datsPro['nCorrectA_ALL'][j] =  sum(nCorrectA_ALL[j][start:stop])
+        datsPro['nTotalA_ALL'][j] =  sum(nTotalA_ALL[j][start:stop])
+        datsPro['nCorrectB_ALL'][j] =  sum(nCorrectB_ALL[j][start:stop])
+        datsPro['nTotalB_ALL'][j] =  sum(nTotalB_ALL[j][start:stop])
+        datsPro['nTotal_ALL'][j] =  sum(nTotal_ALL[j][start:stop])
+
+
+        datsPro['dprime_ALL'][j] = dprime_yes_no_from_counts(nCA=datsPro['nCorrectA_ALL'][j],
+                                                                  nTA=datsPro['nTotalA_ALL'][j],
+                                                                  nCB=datsPro['nCorrectB_ALL'][j],
+                                                                  nTB=datsPro['nTotalB_ALL'][j],
+                                                                  corr=dprimeCorrection)
+        for c in range(nSubCond):
+            cn = str(c+1)
+            datsPro['nCorrectA_subc'+cn][j] =  sum(nCorrectA[j][c][start:stop])
+            datsPro['nTotalA_subc'+cn][j] =  sum(nTotalA[j][c][start:stop])
+            datsPro['nCorrectB_subc'+cn][j] =  sum(nCorrectB[j][c][start:stop])
+            datsPro['nTotalB_subc'+cn][j] =  sum(nTotalB[j][c][start:stop])
+            datsPro['nTotal_subc'+cn][j] =  sum(nTotal[j][c][start:stop])
+
+
+            datsPro['dprime_subc'+cn][j] = dprime_yes_no_from_counts(nCA=datsPro['nCorrectA_subc'+cn][j],
+                                                                    nTA=datsPro['nTotalA_subc'+cn][j],
+                                                                    nCB=datsPro['nCorrectB_subc'+cn][j],
+                                                                    nTB=datsPro['nTotalB_subc'+cn][j],
+                                                                    corr=dprimeCorrection)
+
+        cndIdx = dCols['conditionAgglomerate'].index(cnds[j])
+        for key in dCols:
+            if key not in keysNotToCheck:
+                    datsPro[key].append(dCols[key][cndIdx])
+
+    resKeys = ['dprime_ALL', 'nTotal_ALL', 'nCorrectA_ALL', 'nTotalA_ALL', 'nCorrectB_ALL', 'nTotalB_ALL']
+    for c in range(nSubCond):
+        cn = str(c+1)
+        resKeys.extend(['dprime_subc'+cn, 'nTotal_subc'+cn, 'nCorrectA_subc'+cn, 'nTotalA_subc'+cn, 'nCorrectB_subc'+cn, 'nTotalB_subc'+cn])
+    writeResTable(fNameOut, separator, datsPro, resKeys)
+    return
+
+def procResTableConstant1PairSameDifferent(fName, fout=None, separator=';', last=None, block_range=None, dprimeCorrection=True):
+    fldict = readTableFiles(fName, separator)
+
+    if fout == None:
+        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+    else:
+        fNameOut = fout
+    
+    if len(fldict) > 1:
+        fout = open(fNameOut, 'w')
+        fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
+        fout.close()
+        return
+
+    data = fldict[list(fldict.keys())[0]]
+
+    nBlocks = len(data['data'])
+    keysToRemove = ['session', 'date', 'time', 'duration', 'block', '']
+    keysNotToCheck = ['conditionAgglomerate', 'procedure']
+
+    numFields = ['nCorrect_same', 'nCorrect_different', 'nTotal_same', 'nTotal_different', 'nCorrect', 'nTotal']
+    dCols = getColVals(data["data"], data["header"], numFields, separator)
+
+    keysToRemove.extend(['dprime_IO', 'dprime_diff'])
+    keysNotToCheck.extend(['nCorrect_same', 'nTotal_same', 'nCorrect_different', 'nTotal_different', 'nCorrect', 'nTotal'])
+    dCols = makeAgglomerateCondition(dCols, keysToRemove, keysNotToCheck, nBlocks)
+    datsPro = makeDatsProSkeleton(dCols, keysNotToCheck)
+
+    #sort on the basis of condition-agglomerate
+    cnds = list(set(dCols['conditionAgglomerate']))
+
+    datsPro['dprime_IO'] = zeros(len(cnds))
+    datsPro['dprime_diff'] = zeros(len(cnds))
+    datsPro['nCorrect_same'] = zeros(len(cnds))
+    datsPro['nCorrect_different'] = zeros(len(cnds))
+    datsPro['nTotal_same'] = zeros(len(cnds))
+    datsPro['nTotal_different'] = zeros(len(cnds))
+    datsPro['nTotal'] = zeros(len(cnds))
+
+    nCorrect_same = [[] for j in range(len(cnds))]
+    nTotal_same = [[] for j in range(len(cnds))]
+    nCorrect_different = [[] for j in range(len(cnds))]
+    nTotal_different = [[] for j in range(len(cnds))]
+    nTotal = [[] for j in range(len(cnds))]
+
+    for j in range(nBlocks):
+        cndIdx = cnds.index(dCols['conditionAgglomerate'][j])
+        nCorrect_same[cndIdx].append(dCols['nCorrect_same'][j])
+        nTotal_same[cndIdx].append(dCols['nTotal_same'][j])
+        nCorrect_different[cndIdx].append(dCols['nCorrect_different'][j])
+        nTotal_different[cndIdx].append(dCols['nTotal_different'][j])
+        nTotal[cndIdx].append(dCols['nTotal'][j])
+
+    for j in range(len(cnds)):
+        start, stop = getBlockRangeToProcess(last, block_range, nCorrect_same[j])
+
+        datsPro['nCorrect_same'][j] =  sum(nCorrect_same[j][start:stop])
+        datsPro['nTotal_same'][j] =  sum(nTotal_same[j][start:stop])
+        datsPro['nCorrect_different'][j] =  sum(nCorrect_different[j][start:stop])
+        datsPro['nTotal_different'][j] =  sum(nTotal_different[j][start:stop])
+        datsPro['nTotal'][j] =  sum(nTotal[j][start:stop])
+
+
+
+        datsPro['dprime_IO'][j] = dprime_SD_from_counts(nCA=datsPro['nCorrect_same'][j], nTA=datsPro['nTotal_same'][j], nCB=datsPro['nCorrect_different'][j], nTB=datsPro['nTotal_different'][j], meth='IO', corr=dprimeCorrection)
+        datsPro['dprime_diff'][j] = dprime_SD_from_counts(nCA=datsPro['nCorrect_same'][j], nTA=datsPro['nTotal_same'][j], nCB=datsPro['nCorrect_different'][j], nTB=datsPro['nTotal_different'][j], meth='diff', corr=dprimeCorrection)
+
+        cndIdx = dCols['conditionAgglomerate'].index(cnds[j])
+        for key in dCols:
+            if key not in keysNotToCheck:
+                datsPro[key].append(dCols[key][cndIdx])
+
+    resKeys = ['dprime_IO', 'dprime_diff', 'nTotal', 'nCorrect_same', 'nTotal_same', 'nCorrect_different', 'nTotal_different']
+    writeResTable(fNameOut, separator, datsPro, resKeys)
+    return
+
+
     
 def processResultsAdaptive(fName, fout=None, last=None, block_range=None):
     if fout == None:
@@ -1651,7 +2347,7 @@ def processResultsTableConstant1Int2Alt(fName, fout=None, separator=';', last=No
             dats['datspro'+str(i+1)]['nCorrectB'][j] =  sum(nCorrectB[j][start:stop])
             dats['datspro'+str(i+1)]['nTotalB'][j] =  sum(nTotalB[j][start:stop])
             dats['datspro'+str(i+1)]['nTotal'][j] =  sum(nTotal[j][start:stop])
-            dats['datspro'+str(i+1)]['dprime'][j] = dp = dprime_yes_no_from_counts(nCA=dats['datspro'+str(i+1)]['nCorrectA'][j], nTA=dats['datspro'+str(i+1)]['nTotalA'][j], nCB=dats['datspro'+str(i+1)]['nCorrectB'][j], nTB=dats['datspro'+str(i+1)]['nTotalB'][j], corr=dprimeCorrection)
+            dats['datspro'+str(i+1)]['dprime'][j] = dprime_yes_no_from_counts(nCA=dats['datspro'+str(i+1)]['nCorrectA'][j], nTA=dats['datspro'+str(i+1)]['nTotalA'][j], nCB=dats['datspro'+str(i+1)]['nCorrectB'][j], nTB=dats['datspro'+str(i+1)]['nTotalB'][j], corr=dprimeCorrection)
             
             
             cndIdx = dats['dats'+str(i+1)]['conditionAgglomerate'].index(cnds[j])
@@ -1932,7 +2628,7 @@ def processResultsTableConstant1PairSameDifferent(fName, fout=None, separator=';
 
         if nHeaders > 0 and allLines[i].split(separator)[0].strip() != firstHeaderWord:
             for j in range(len(headerList)):
-                if headerList[j] in ['nCorrectA', 'nCorrectB', 'nTotalA', 'nTotalB', 'nCorrect', 'nTotal']:
+                if headerList[j] in ['nCorrect_same', 'nCorrect_different', 'nTotal_same', 'nTotal_different', 'nCorrect', 'nTotal']:
                     dats['dats'+str(nHeaders)][headerList[j]].append(int(allLines[i].split(separator)[j].strip()))
                 else:
                     dats['dats'+str(nHeaders)][headerList[j]].append(allLines[i].split(separator)[j].strip())
@@ -1950,7 +2646,7 @@ def processResultsTableConstant1PairSameDifferent(fName, fout=None, separator=';
                 del dats['dats'+str(i+1)][keysToRemove[j]]
     
          
-        keysNotToCheck = ['nCorrectA', 'nTotalA', 'nCorrectB', 'nTotalB', 'nCorrect', 'nTotal', 'conditionAgglomerate']
+        keysNotToCheck = ['nCorrect_same', 'nTotal_same', 'nCorrect_different', 'nTotal_different', 'nCorrect', 'nTotal', 'conditionAgglomerate']
         standardKeys = ['condition', 'listener', 'experimentLabel', 'experiment']
         dats['dats'+str(i+1)]['conditionAgglomerate'] = ['' for i in range(len(dats['dats'+str(i+1)]['condition']))]
         for j in range(len(dats['dats'+str(i+1)]['condition'])):
@@ -1964,32 +2660,32 @@ def processResultsTableConstant1PairSameDifferent(fName, fout=None, separator=';
         fout.write('dprime_IO' + separator +\
                    'dprime_diff' + separator +\
                    'nTotal' + separator +\
-                   'nCorrectA' + separator +\
-                   'nTotalA' + separator +\
-                   'nCorrectB' + separator +\
-                   'nTotalB' + separator )
+                   'nCorrect_same' + separator +\
+                   'nTotal_same' + separator +\
+                   'nCorrect_different' + separator +\
+                   'nTotal_different' + separator )
                        
                        
         #sort on the basis of condition-agglomerate
         cnds = list(set(dats['dats'+str(i+1)]['conditionAgglomerate']))
         dats['datspro'+str(i+1)]['dprime_IO'] = zeros(len(cnds))
         dats['datspro'+str(i+1)]['dprime_diff'] = zeros(len(cnds))
-        dats['datspro'+str(i+1)]['nCorrectA'] = zeros(len(cnds))
-        dats['datspro'+str(i+1)]['nCorrectB'] = zeros(len(cnds))
-        dats['datspro'+str(i+1)]['nTotalA'] = zeros(len(cnds))
-        dats['datspro'+str(i+1)]['nTotalB'] = zeros(len(cnds))
+        dats['datspro'+str(i+1)]['nCorrect_same'] = zeros(len(cnds))
+        dats['datspro'+str(i+1)]['nCorrect_different'] = zeros(len(cnds))
+        dats['datspro'+str(i+1)]['nTotal_same'] = zeros(len(cnds))
+        dats['datspro'+str(i+1)]['nTotal_different'] = zeros(len(cnds))
         dats['datspro'+str(i+1)]['nTotal'] = zeros(len(cnds))
-        nCorrectA = [[] for j in range(len(cnds))]
-        nTotalA = [[] for j in range(len(cnds))]
-        nCorrectB = [[] for j in range(len(cnds))]
-        nTotalB = [[] for j in range(len(cnds))]
+        nCorrect_same = [[] for j in range(len(cnds))]
+        nTotal_same = [[] for j in range(len(cnds))]
+        nCorrect_different = [[] for j in range(len(cnds))]
+        nTotal_different = [[] for j in range(len(cnds))]
         nTotal = [[] for j in range(len(cnds))]
         for j in range(datsLength):
             cndIdx = cnds.index(dats['dats'+str(i+1)]['conditionAgglomerate'][j])
-            nCorrectA[cndIdx].append(dats['dats'+str(i+1)]['nCorrectA'][j])
-            nTotalA[cndIdx].append(dats['dats'+str(i+1)]['nTotalA'][j])
-            nCorrectB[cndIdx].append(dats['dats'+str(i+1)]['nCorrectB'][j])
-            nTotalB[cndIdx].append(dats['dats'+str(i+1)]['nTotalB'][j])
+            nCorrect_same[cndIdx].append(dats['dats'+str(i+1)]['nCorrect_same'][j])
+            nTotal_same[cndIdx].append(dats['dats'+str(i+1)]['nTotal_same'][j])
+            nCorrect_different[cndIdx].append(dats['dats'+str(i+1)]['nCorrect_different'][j])
+            nTotal_different[cndIdx].append(dats['dats'+str(i+1)]['nTotal_different'][j])
             nTotal[cndIdx].append(dats['dats'+str(i+1)]['nTotal'][j])
 
 
@@ -2001,15 +2697,15 @@ def processResultsTableConstant1PairSameDifferent(fName, fout=None, separator=';
         fout.write('\n')
         
         for j in range(len(cnds)):
-            start, stop = getBlockRangeToProcess(last, block_range, nCorrectA[j])
+            start, stop = getBlockRangeToProcess(last, block_range, nCorrect_same[j])
             
-            dats['datspro'+str(i+1)]['nCorrectA'][j] = sum(nCorrectA[j][start:stop])
-            dats['datspro'+str(i+1)]['nTotalA'][j] =  sum(nTotalA[j][start:stop])
-            dats['datspro'+str(i+1)]['nCorrectB'][j] =  sum(nCorrectB[j][start:stop])
-            dats['datspro'+str(i+1)]['nTotalB'][j] =  sum(nTotalB[j][start:stop])
+            dats['datspro'+str(i+1)]['nCorrect_same'][j] = sum(nCorrect_same[j][start:stop])
+            dats['datspro'+str(i+1)]['nTotal_same'][j] =  sum(nTotal_same[j][start:stop])
+            dats['datspro'+str(i+1)]['nCorrect_different'][j] =  sum(nCorrect_different[j][start:stop])
+            dats['datspro'+str(i+1)]['nTotal_different'][j] =  sum(nTotal_different[j][start:stop])
             dats['datspro'+str(i+1)]['nTotal'][j] =  sum(nTotal[j][start:stop])
-            dats['datspro'+str(i+1)]['dprime_IO'][j] = dprime_SD_from_counts(nCA=dats['datspro'+str(i+1)]['nCorrectA'][j], nTA=dats['datspro'+str(i+1)]['nTotalA'][j], nCB=dats['datspro'+str(i+1)]['nCorrectB'][j], nTB=dats['datspro'+str(i+1)]['nTotalB'][j], meth='IO', corr=dprimeCorrection)
-            dats['datspro'+str(i+1)]['dprime_diff'][j] = dprime_SD_from_counts(nCA=dats['datspro'+str(i+1)]['nCorrectA'][j], nTA=dats['datspro'+str(i+1)]['nTotalA'][j], nCB=dats['datspro'+str(i+1)]['nCorrectB'][j], nTB=dats['datspro'+str(i+1)]['nTotalB'][j], meth='diff', corr=dprimeCorrection)
+            dats['datspro'+str(i+1)]['dprime_IO'][j] = dprime_SD_from_counts(nCA=dats['datspro'+str(i+1)]['nCorrect_same'][j], nTA=dats['datspro'+str(i+1)]['nTotal_same'][j], nCB=dats['datspro'+str(i+1)]['nCorrect_different'][j], nTB=dats['datspro'+str(i+1)]['nTotal_different'][j], meth='IO', corr=dprimeCorrection)
+            dats['datspro'+str(i+1)]['dprime_diff'][j] = dprime_SD_from_counts(nCA=dats['datspro'+str(i+1)]['nCorrect_same'][j], nTA=dats['datspro'+str(i+1)]['nTotal_same'][j], nCB=dats['datspro'+str(i+1)]['nCorrect_different'][j], nTB=dats['datspro'+str(i+1)]['nTotal_different'][j], meth='diff', corr=dprimeCorrection)
             
             cndIdx = dats['dats'+str(i+1)]['conditionAgglomerate'].index(cnds[j])
             for key in dats['dats'+str(i+1)]:
@@ -2020,10 +2716,10 @@ def processResultsTableConstant1PairSameDifferent(fName, fout=None, separator=';
             fout.write(str(dats['datspro'+str(i+1)]['dprime_IO'][j]) + separator +\
                        str(dats['datspro'+str(i+1)]['dprime_diff'][j]) + separator +\
                        str(dats['datspro'+str(i+1)]['nTotal'][j]) + separator +\
-                       str(dats['datspro'+str(i+1)]['nCorrectA'][j]) + separator +\
-                       str(dats['datspro'+str(i+1)]['nTotalA'][j]) + separator +\
-                       str(dats['datspro'+str(i+1)]['nCorrectB'][j]) + separator +\
-                       str(dats['datspro'+str(i+1)]['nTotalB'][j]) + separator)
+                       str(dats['datspro'+str(i+1)]['nCorrect_same'][j]) + separator +\
+                       str(dats['datspro'+str(i+1)]['nTotal_same'][j]) + separator +\
+                       str(dats['datspro'+str(i+1)]['nCorrect_different'][j]) + separator +\
+                       str(dats['datspro'+str(i+1)]['nTotal_different'][j]) + separator)
             for item in standardKeys:
                 fout.write(dats['datspro'+str(i+1)][item][j] + separator)
             for key in dats['dats'+str(i+1)]:

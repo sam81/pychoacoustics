@@ -1635,6 +1635,7 @@ class responseBox(QMainWindow):
             
             propCorr = self.correctCount/self.trialCount
             dp = dprime_mAFC(propCorr, self.prm['nAlternatives'])
+
             for ftyp in [self.resFile, self.resFileLog]:
                 ftyp.write('No. Correct = %d\n' %(self.correctCount))
                 ftyp.write('No. Total = %d\n' %(self.trialCount))
@@ -1758,7 +1759,7 @@ class responseBox(QMainWindow):
             dprimeList = []
             for i in range(len(self.prm['conditions'])):
                 thisPropCorr = (self.correctCountCnds[self.prm['conditions'][i]])/self.trialCountCnds[self.prm['conditions'][i]]
-                thisdprime = dprime_mAFC(thisPropCorr, self.prm['nAlternatives'])
+                thisdprime = dprime_mAFC(thisPropCorr, self.prm['nAlternatives']) 
                 dprimeList.append(thisdprime)
                 for ftyp in [self.resFile, self.resFileLog]:
                     ftyp.write('CONDITION, ' + str(i+1) + '; ' + self.prm['conditions'][i] + '\n')
@@ -3990,19 +3991,19 @@ class responseBox(QMainWindow):
         separator = self.parent().prm['pref']["general"]["csvSeparator"]
         resFilePath = self.pychovariablesSubstitute[self.pychovariables.index("[resTable]")]
         if self.prm['paradigm'] in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"), self.tr("Transformed Up-Down Limited"), self.tr("Weighted Up-Down Limited"), self.tr("PEST")]:
-            processResultsTableAdaptive([resFilePath], fout=None, separator=separator)
+            procResTableAdaptive([resFilePath], fout=None, separator=separator)
         elif self.prm['paradigm'] in [self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved")]:
-            processResultsTableAdaptiveInterleaved([resFilePath], fout=None, separator=separator)
+            procResTableAdaptiveInterleaved([resFilePath], fout=None, separator=separator)
         elif self.prm['paradigm'] in [self.tr("Constant 1-Interval 2-Alternatives")]:
-            processResultsTableConstant1Int2Alt([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
+            procResTableConstant1Int2Alt([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
         elif self.prm['paradigm'] in [self.tr("Multiple Constants 1-Interval 2-Alternatives")]:
-            processResultsTableMultipleConstants1Int2Alt([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
+            procResTableMultipleConstants1Int2Alt([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
         elif self.prm['paradigm'] in [self.tr("Constant m-Intervals n-Alternatives")]:
-            processResultsTableConstantMIntNAlt([resFilePath], fout=None, separator=separator)
+            procResTableConstantMIntNAlt([resFilePath], fout=None, separator=separator)
         elif self.prm['paradigm'] in [self.tr("Multiple Constants m-Intervals n-Alternatives")]:
-            processResultsTableMultipleConstantsMIntNAlt([resFilePath], fout=None, separator=separator)
+            procResTableMultipleConstantsMIntNAlt([resFilePath], fout=None, separator=separator)
         elif self.prm['paradigm'] in [self.tr("Constant 1-Pair Same/Different")]:
-            processResultsTableConstant1PairSameDifferent([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
+            procResTableConstant1PairSameDifferent([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
 
 
     def plotDataEnd(self, winPlot, pdfPlot):

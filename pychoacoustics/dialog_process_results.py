@@ -68,7 +68,8 @@ class processResultsDialog(QDialog):
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         self.prm = self.parent().prm
 
-        if paradigm in [self.tr("Transformed Up-Down"), self.tr("Transformed Up-Down Limited"), self.tr("Weighted Up-Down"), self.tr("PEST"), self.tr("Weighted Up-Down Limited")]:
+        if paradigm in [self.tr("Transformed Up-Down"), self.tr("Transformed Up-Down Limited"),
+                        self.tr("Weighted Up-Down"), self.tr("PEST"), self.tr("Weighted Up-Down Limited")]:
             self.paradigm = "adaptive"
         elif paradigm in [self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved")]:
             self.paradigm = "adaptive_interleaved"
@@ -277,19 +278,19 @@ class processResultsDialog(QDialog):
         elif self.resformat == 'table':
             self.separator = self.csvSeparatorTF.text()
             if self.paradigm == "adaptive":
-                processResultsTableAdaptive(fList, self.foutName, self.separator, last=last, block_range=block_range)
+                procResTableAdaptive(fList, self.foutName, self.separator, last=last, block_range=block_range)
             elif self.paradigm == "adaptive_interleaved":
-                processResultsTableAdaptiveInterleaved(fList, self.foutName, self.separator, last=last, block_range=block_range)
+                procResTableAdaptiveInterleaved(fList, self.foutName, self.separator, last=last, block_range=block_range)
             elif self.paradigm == "constantMIntervalsNAlternatives":
-                processResultsTableConstantMIntNAlt(fList, self.foutName, self.separator, last=last, block_range=block_range)
+                procResTableConstantMIntNAlt(fList, self.foutName, self.separator, last=last, block_range=block_range)
             elif self.paradigm == "multipleConstantsMIntervalsNAlternatives":
-                processResultsTableMultipleConstantsMIntNAlt(fList, self.foutName, self.separator, last=last, block_range=block_range)
+                procResTableMultipleConstantsMIntNAlt(fList, self.foutName, self.separator, last=last, block_range=block_range)
             elif self.paradigm == "constant1Interval2Alternatives":
-                processResultsTableConstant1Int2Alt(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
+                procResTableConstant1Int2Alt(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
             elif self.paradigm == "multipleConstants1Interval2Alternatives":
-                processResultsTableMultipleConstants1Int2Alt(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
+                procResTableMultipleConstants1Int2Alt(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
             elif self.paradigm == "constant1PairSD":
-                processResultsTableConstant1PairSameDifferent(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
+                procResTableConstant1PairSameDifferent(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
 
             if self.parent().prm['appData']['plotting_available'] == True and (self.plotCheckBox.isChecked() == True or self.pdfPlotCheckBox.isChecked() == True):
                 self.plotResults(self.plotCheckBox.isChecked(), self.pdfPlotCheckBox.isChecked())
