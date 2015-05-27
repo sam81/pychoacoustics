@@ -4004,6 +4004,8 @@ class responseBox(QMainWindow):
             procResTableMultipleConstantsMIntNAlt([resFilePath], fout=None, separator=separator)
         elif self.prm['paradigm'] in [self.tr("Constant 1-Pair Same/Different")]:
             procResTableConstant1PairSameDifferent([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
+        elif self.prm['paradigm'] in [self.tr("Multiple Constants 1-Pair Same/Different")]:
+            procResTableMultipleConstants1PairSameDifferent([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
 
 
     def plotDataEnd(self, winPlot, pdfPlot):

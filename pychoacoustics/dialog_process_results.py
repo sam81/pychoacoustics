@@ -83,6 +83,8 @@ class processResultsDialog(QDialog):
             self.paradigm = "multipleConstantsMIntervalsNAlternatives"
         elif paradigm == self.tr("Constant 1-Pair Same/Different"):
             self.paradigm = "constant1PairSD"
+        elif paradigm == self.tr("Multiple Constants 1-Pair Same/Different"):
+            self.paradigm = "multipleConstants1PairSD"
         else:
             QMessageBox.warning(self, self.tr("Error"), self.tr("File type or paradigm not supported."))
             return
@@ -174,7 +176,8 @@ class processResultsDialog(QDialog):
         self.processLastNBlocksCheckBox.clicked.connect(self.onCheckProcessLastNBlocks)
         self.processBlocksInRangeCheckBox.clicked.connect(self.onCheckProcessBlocksInRange)
 
-        if self.paradigm in ["constant1Interval2Alternatives", "multipleConstants1Interval2Alternatives", "constant1PairSD"]:
+        if self.paradigm in ["constant1Interval2Alternatives", "multipleConstants1Interval2Alternatives",
+                             "constant1PairSD", "multipleConstants1PairSD"]:
             self.dpCorrCheckBox = QCheckBox(self.tr('d-prime correction'))
             self.dpCorrCheckBox.setChecked(self.prm['pref']['general']['dprimeCorrection'])
             self.hBox7a.addWidget(self.dpCorrCheckBox)
@@ -291,6 +294,8 @@ class processResultsDialog(QDialog):
                 procResTableMultipleConstants1Int2Alt(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
             elif self.paradigm == "constant1PairSD":
                 procResTableConstant1PairSameDifferent(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
+            elif self.paradigm == "multipleConstants1PairSD":
+                procResTableMultipleConstants1PairSameDifferent(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
 
             if self.parent().prm['appData']['plotting_available'] == True and (self.plotCheckBox.isChecked() == True or self.pdfPlotCheckBox.isChecked() == True):
                 self.plotResults(self.plotCheckBox.isChecked(), self.pdfPlotCheckBox.isChecked())

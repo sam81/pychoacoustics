@@ -708,7 +708,7 @@ def procResTableConstant1PairSameDifferent(fName, fout=None, separator=';', last
     nBlocks = len(data['data'])
     keysToRemove = ['session', 'date', 'time', 'duration', 'block', '']
     keysNotToCheck = ['conditionAgglomerate', 'procedure']
-
+    
     numFields = ['nCorrect_same', 'nCorrect_different', 'nTotal_same', 'nTotal_different', 'nCorrect', 'nTotal']
     dCols = getColVals(data["data"], data["header"], numFields, separator)
 
@@ -762,6 +762,101 @@ def procResTableConstant1PairSameDifferent(fName, fout=None, separator=';', last
                 datsPro[key].append(dCols[key][cndIdx])
 
     resKeys = ['dprime_IO', 'dprime_diff', 'nTotal', 'nCorrect_same', 'nTotal_same', 'nCorrect_different', 'nTotal_different']
+    writeResTable(fNameOut, separator, datsPro, resKeys)
+    return
+
+def procResTableMultipleConstants1PairSameDifferent(fName, fout=None, separator=';', last=None, block_range=None, dprimeCorrection=True):
+    fldict = readTableFiles(fName, separator)
+
+    if fout == None:
+        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+    else:
+        fNameOut = fout
+    
+    if len(fldict) > 1:
+        fout = open(fNameOut, 'w')
+        fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
+        fout.close()
+        return
+
+    data = fldict[list(fldict.keys())[0]]
+
+    nBlocks = len(data['data'])
+    keysToRemove = ['session', 'date', 'time', 'duration', 'block', '']
+    keysNotToCheck = ['conditionAgglomerate', 'procedure']
+
+    keys = data['header'].split(separator) #.pop removes \n newline character
+    keys.pop()
+    nSubCond = 0
+    for key in keys:
+        if key[0:14] == 'dprime_IO_pair':
+            nSubCond = nSubCond +1
+
+    numFields = []
+    for c in range(nSubCond):
+        cn = str(c+1)
+        numFields.extend(['nCorrect_same_pair'+cn, 'nCorrect_different_pair'+cn, 'nTotal_same_pair'+cn, 'nTotal_different_pair'+cn, 'nCorrect_pair'+cn, 'nTotal_pair'+cn])
+    dCols = getColVals(data["data"], data["header"], numFields, separator)
+    for c in range(nSubCond):
+        cn = str(c+1)
+        keysToRemove.extend(['dprime_IO_pair'+cn, 'dprime_diff_pair'+cn])
+        keysNotToCheck.extend(['nCorrect_same_pair'+cn, 'nTotal_same_pair'+cn, 'nCorrect_different_pair'+cn, 'nTotal_different_pair'+cn, 'nTotal_pair'+cn])
+    dCols = makeAgglomerateCondition(dCols, keysToRemove, keysNotToCheck, nBlocks)
+    datsPro = makeDatsProSkeleton(dCols, keysNotToCheck)
+
+    #sort on the basis of condition-agglomerate
+    cnds = list(set(dCols['conditionAgglomerate']))
+
+    for c in range(nSubCond):
+        cn = str(c+1)
+        datsPro['dprime_IO_pair'+cn] = zeros(len(cnds))
+        datsPro['dprime_diff_pair'+cn] = zeros(len(cnds))
+        datsPro['nCorrect_same_pair'+cn] = zeros(len(cnds))
+        datsPro['nCorrect_different_pair'+cn] = zeros(len(cnds))
+        datsPro['nTotal_same_pair'+cn] = zeros(len(cnds))
+        datsPro['nTotal_different_pair'+cn] = zeros(len(cnds))
+        datsPro['nTotal_pair'+cn] = zeros(len(cnds))
+
+    nCorrect_same = [[[] for c in range(nSubCond)] for j in range(len(cnds))]
+    nTotal_same = [[[] for c in range(nSubCond)] for j in range(len(cnds))]
+    nCorrect_different = [[[] for c in range(nSubCond)] for j in range(len(cnds))]
+    nTotal_different = [[[] for c in range(nSubCond)] for j in range(len(cnds))]
+    nTotal = [[[] for c in range(nSubCond)] for j in range(len(cnds))]
+
+    for j in range(nBlocks):
+        cndIdx = cnds.index(dCols['conditionAgglomerate'][j])
+        for c in range(nSubCond):
+            cn = str(c+1)
+            nCorrect_same[cndIdx][c].append(dCols['nCorrect_same_pair'+cn][j])
+            nTotal_same[cndIdx][c].append(dCols['nTotal_same_pair'+cn][j])
+            nCorrect_different[cndIdx][c].append(dCols['nCorrect_different_pair'+cn][j])
+            nTotal_different[cndIdx][c].append(dCols['nTotal_different_pair'+cn][j])
+            nTotal[cndIdx][c].append(dCols['nTotal_pair'+cn][j])
+
+    for j in range(len(cnds)):
+        for c in range(nSubCond):
+            cn = str(c+1)
+            start, stop = getBlockRangeToProcess(last, block_range, nCorrect_same[j][c])
+
+            datsPro['nCorrect_same_pair'+cn][j] =  sum(nCorrect_same[j][c][start:stop])
+            datsPro['nTotal_same_pair'+cn][j] =  sum(nTotal_same[j][c][start:stop])
+            datsPro['nCorrect_different_pair'+cn][j] =  sum(nCorrect_different[j][c][start:stop])
+            datsPro['nTotal_different_pair'+cn][j] =  sum(nTotal_different[j][c][start:stop])
+            datsPro['nTotal_pair'+cn][j] =  sum(nTotal[j][c][start:stop])
+
+
+
+            datsPro['dprime_IO_pair'+cn][j] = dprime_SD_from_counts(nCA=datsPro['nCorrect_same_pair'+cn][j], nTA=datsPro['nTotal_same_pair'+cn][j], nCB=datsPro['nCorrect_different_pair'+cn][j], nTB=datsPro['nTotal_different_pair'+cn][j], meth='IO', corr=dprimeCorrection)
+            datsPro['dprime_diff_pair'+cn][j] = dprime_SD_from_counts(nCA=datsPro['nCorrect_same_pair'+cn][j], nTA=datsPro['nTotal_same_pair'+cn][j], nCB=datsPro['nCorrect_different_pair'+cn][j], nTB=datsPro['nTotal_different_pair'+cn][j], meth='diff', corr=dprimeCorrection)
+
+        cndIdx = dCols['conditionAgglomerate'].index(cnds[j])
+        for key in dCols:
+            if key not in keysNotToCheck:
+                datsPro[key].append(dCols[key][cndIdx])
+    resKeys = []
+    for c in range(nSubCond):
+        cn = str(c+1)
+        resKeys.extend(['dprime_IO_pair'+cn, 'dprime_diff_pair'+cn, 'nTotal_pair'+cn, 'nCorrect_same_pair'+cn, 'nTotal_same_pair'+cn, 'nCorrect_different_pair'+cn, 'nTotal_different_pair'+cn])
     writeResTable(fNameOut, separator, datsPro, resKeys)
     return
 
