@@ -170,6 +170,91 @@ def AMTone(frequency, AMFreq, AMDepth, phase, AMPhase, level, duration, ramp, ch
     return snd
 
 
+def AMToneIPD(frequency, AMFreq, AMDepth, phase, AMPhase, phaseIPD, AMPhaseIPD, level, duration, ramp, channel, fs, maxLevel):
+    """
+    Generate an amplitude modulated tone with an interaural
+    phase difference (IPD) in the carrier and/or modulation phase.
+
+    Parameters
+    ----------
+    frequency : float
+        Carrier frequency in hertz.
+    AMFreq : float
+        Amplitude modulation frequency in Hz.
+    AMDepth : float
+        Amplitude modulation depth (a value of 1
+        corresponds to 100% modulation). 
+    phase : float
+        Starting phase in radians.
+    AMPhase : float
+        Starting AM phase in radians.
+    phaseIPD : float
+        IPD to apply to the carrier phase.
+    AMPhaseIPD : float
+        IPD to apply to the modulation phase.
+    level : float
+        Tone level in dB SPL. 
+    duration : float
+        Tone duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    channel : string ('Right', 'Left')
+        Channel in which the phase will be shifted.
+    fs : int
+        Samplig frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+       
+    Examples
+    --------
+    >>> snd = AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=1.5*pi, level=65, 
+    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
+    
+    """
+
+    amp = 10**((level - maxLevel) / 20)
+    duration = duration / 1000 #convert from ms to sec
+    ramp = ramp / 1000
+
+    nSamples = int(round(duration * fs))
+    nRamp = int(round(ramp * fs))
+    nTot = nSamples + (nRamp * 2)
+
+    timeAll = arange(0, nTot) / fs
+    timeRamp = arange(0, nRamp) 
+
+    snd = zeros((nTot, 2))
+
+    shiftedPhase = phase+phaseIPD
+    shiftedAMPhase = AMPhase+AMPhaseIPD
+    #print(shiftedPhase-phase, shiftedAMPhase-AMPhase)
+
+    if channel == "Right":
+        snd[0:nRamp, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+shiftedAMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + shiftedPhase)
+        snd[nRamp:nRamp+nSamples, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+shiftedAMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + shiftedPhase)
+        snd[nRamp+nSamples:nTot, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+shiftedAMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + shiftedPhase)
+
+        snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+AMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
+        snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+AMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
+        snd[nRamp+nSamples:nTot, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+AMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + phase)
+    elif channel == "Left":
+        snd[0:nRamp, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+AMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
+        snd[nRamp:nRamp+nSamples, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+AMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
+        snd[nRamp+nSamples:nTot, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+AMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + phase)
+
+        snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+shiftedAMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + shiftedPhase)
+        snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+shiftedAMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + shiftedPhase)
+        snd[nRamp+nSamples:nTot, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+shiftedAMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + shiftedPhase)
+  
+       
+    return snd
+
+
 def binauralPureTone(frequency, phase, level, duration, ramp, channel, itd, itdRef, ild, ildRef, fs, maxLevel):
     """
     Generate a pure tone with an optional interaural time or level difference.
