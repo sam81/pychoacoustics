@@ -19,6 +19,7 @@
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import numpy
 
+
 def get_list_indices(li, value):
     """ Get the indices of the elements of a list matching a certain value.
     The indices are returned as a list.
@@ -84,3 +85,5 @@ def stimSpacingGrid(lo, hi, step, scale='linear'):
             seq = numpy.concatenate((seq, [seq[cnt]*step]), 1)
             cnt = cnt+1
     return seq
+
+
