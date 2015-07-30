@@ -393,7 +393,7 @@ def broadbandNoise(spectrumLevel, duration, ramp, channel, fs, maxLevel):
     ramp : float
         Duration of the onset and offset ramps in milliseconds.
         The total duration of the sound will be duration+ramp*2.
-    channel : string ('Right', 'Left' or 'Both')
+    channel : string ("Right", "Left", "Both", or "Dichotic")
         Channel in which the noise will be generated.
     fs : int
         Samplig frequency in Hz.
@@ -408,7 +408,7 @@ def broadbandNoise(spectrumLevel, duration, ramp, channel, fs, maxLevel):
     Examples
     --------
     >>> noise = broadbandNoise(spectrumLevel=40, duration=180, ramp=10,
-    ...     channel='Both', fs=48000, maxLevel=100)
+    ...     channel="Both", fs=48000, maxLevel=100)
     
     """
     """ Comments:.
@@ -435,6 +435,7 @@ def broadbandNoise(spectrumLevel, duration, ramp, channel, fs, maxLevel):
     timeRamp = arange(0, nRamp) 
 
     snd = zeros((nTot, 2))
+    snd_mono = zeros(nTot)
     #random is a numpy module
     noise = (numpy.random.random(nTot) + numpy.random.random(nTot)) - (numpy.random.random(nTot) + numpy.random.random(nTot))
     RMS = sqrt(mean(noise*noise))
@@ -442,22 +443,33 @@ def broadbandNoise(spectrumLevel, duration, ramp, channel, fs, maxLevel):
     #since A = RMS*sqrt(2)
     scaled_noise = noise / (RMS * sqrt(2))
 
+    snd_mono[0:nRamp] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
+    snd_mono[nRamp:nRamp+nSamples] = amp * scaled_noise[nRamp:nRamp+nSamples]
+    snd_mono[nRamp+nSamples:len(timeAll)] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
 
+    if channel == "Dichotic":
+        snd_mono2 = zeros(nTot)
+        noise2 = (numpy.random.random(nTot) + numpy.random.random(nTot)) - (numpy.random.random(nTot) + numpy.random.random(nTot))
+        RMS = sqrt(mean(noise2*noise2))
+        #scale the noise so that the maxAmplitude goes from -1 to 1
+        #since A = RMS*sqrt(2)
+        scaled_noise2 = noise2 / (RMS * sqrt(2))
+
+        snd_mono2[0:nRamp] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise2[0:nRamp]
+        snd_mono2[nRamp:nRamp+nSamples] = amp * scaled_noise2[nRamp:nRamp+nSamples]
+        snd_mono2[nRamp+nSamples:len(timeAll)] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise2[nRamp+nSamples:len(timeAll)]
+        
     if channel == "Right":
-        snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
-        snd[nRamp:nRamp+nSamples, 1] = amp * scaled_noise[nRamp:nRamp+nSamples]
-        snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
+        snd[:,1] = snd_mono
     elif channel == "Left":
-        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
-        snd[nRamp:nRamp+nSamples, 0] = amp * scaled_noise[nRamp:nRamp+nSamples]
-        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
+        snd[:,0] = snd_mono
     elif channel == "Both":
-        snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
-        snd[nRamp:nRamp+nSamples, 1] = amp * scaled_noise[nRamp:nRamp+nSamples]
-        snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
-        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
-        snd[nRamp:nRamp+nSamples, 0] = amp * scaled_noise[nRamp:nRamp+nSamples]
-        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
+        snd[:,1] = snd_mono
+        snd[:,0] = snd_mono
+    elif channel == "Dichotic":
+        snd[:,1] = snd_mono
+        snd[:,0] = snd_mono2
+        
     return snd
 
 
