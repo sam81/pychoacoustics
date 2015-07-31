@@ -21,7 +21,7 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
-    from PyQt4.QtGui import QAction, QApplication, QComboBox, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
+    from PyQt4.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
     QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
     QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
     QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
@@ -33,7 +33,7 @@ if pyqtversion == 4:
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
-    from PySide.QtGui import QAction, QApplication, QComboBox, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
+    from PySide.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
     try:
         import matplotlib
         matplotlib_available = True
@@ -42,7 +42,7 @@ elif pyqtversion == -4:
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
-    from PyQt5.QtWidgets import QAction, QApplication, QComboBox, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
+    from PyQt5.QtWidgets import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
     from PyQt5.QtGui import QPainter
     matplotlib_available = False
     
@@ -235,121 +235,144 @@ class responseBox(QMainWindow):
             nAlternatives = self.currLocale.toInt(self.parent().nAlternativesChooser.currentText())[0]
         else:
             nAlternatives = nIntervals
-        
-        if self.parent().currParadigm in ["Transformed Up-Down", "Transformed Up-Down Limited", "Weighted Up-Down", "Weighted Up-Down Limited", "Constant m-Intervals n-Alternatives",
-                                          "Transformed Up-Down Interleaved", "Weighted Up-Down Interleaved", "Multiple Constants m-Intervals n-Alternatives", "PEST", "Maximum Likelihood", "PSI",
-                                          "UML"]:
 
-            if self.prm["preTrialInterval"] == True:
-                self.intervalLight.append(intervalLight(self))
-                self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
-                n = n+1
-            
-            for i in range(nIntervals):
-                if self.prm["precursorInterval"] == True:
+        screen = QDesktopWidget().screenGeometry()
+        if self.parent().currExp == "Coordinate Response Matrix":
+            self.statusButton.setMaximumSize(screen.width(), screen.height()/15)
+            self.responseLight.setMaximumSize(screen.width(), screen.height()/10)
+            self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+            self.responseLight.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+
+            cols = ["cornflowerblue", "red", "white", "green"]
+            cnt = 0
+            for cl in range(len(cols)):
+                for rw in range(4):
+                    self.responseButton.append(QPushButton(str(rw+1), self))
+                    self.responseButtonSizer.addWidget(self.responseButton[cnt], rw, cl)
+                    sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+                    self.responseButton[cnt].setSizePolicy(sizePolicy)
+                    self.responseButton[cnt].setProperty("responseBoxButton", True)
+                    self.responseButton[cnt].clicked.connect(self.sortResponseButton)
+                    self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
+                    self.responseButton[cnt].setStyleSheet("background-color: " + cols[cl])
+                    cnt = cnt+1
+        else:
+            self.statusButton.setMaximumSize(screen.width(), screen.height())
+            self.responseLight.setMaximumSize(screen.width(), screen.height())
+            if self.parent().currParadigm in ["Transformed Up-Down", "Transformed Up-Down Limited", "Weighted Up-Down", "Weighted Up-Down Limited", "Constant m-Intervals n-Alternatives",
+                                              "Transformed Up-Down Interleaved", "Weighted Up-Down Interleaved", "Multiple Constants m-Intervals n-Alternatives", "PEST", "Maximum Likelihood", "PSI",
+                                              "UML"]:
+
+                if self.prm["preTrialInterval"] == True:
                     self.intervalLight.append(intervalLight(self))
                     self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
                     n = n+1
-                 
-                self.intervalLight.append(intervalLight(self))
-                self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
-                n = n+1
-            
-                if self.prm["postcursorInterval"] == True:
-                    self.intervalLight.append(intervalLight(self))
-                    self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
-                    n = n+1
 
-            r = 0
-            if self.prm["warningInterval"] == True:
-                self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
-                r = r+1
-            if self.prm["preTrialInterval"] == True:
-                self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
-                r = r+1
-            if nAlternatives == nIntervals:
-                for i in range(nAlternatives):
+                for i in range(nIntervals):
                     if self.prm["precursorInterval"] == True:
-                        self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                        self.intervalLight.append(intervalLight(self))
+                        self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
+                        n = n+1
+
+                    self.intervalLight.append(intervalLight(self))
+                    self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
+                    n = n+1
+
+                    if self.prm["postcursorInterval"] == True:
+                        self.intervalLight.append(intervalLight(self))
+                        self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
+                        n = n+1
+
+                r = 0
+                if self.prm["warningInterval"] == True:
+                    self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                    r = r+1
+                if self.prm["preTrialInterval"] == True:
+                    self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                    r = r+1
+                if nAlternatives == nIntervals:
+                    for i in range(nAlternatives):
+                        if self.prm["precursorInterval"] == True:
+                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                            r = r+1
+                        self.responseButton.append(QPushButton(str(i+1), self))
+                        self.responseButtonSizer.addWidget(self.responseButton[i], 1, r)
+                        self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+                        self.responseButton[i].setProperty("responseBoxButton", True)
                         r = r+1
-                    self.responseButton.append(QPushButton(str(i+1), self))
-                    self.responseButtonSizer.addWidget(self.responseButton[i], 1, r)
+                        if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
+                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                            r = r+1
+                        self.responseButton[i].clicked.connect(self.sortResponseButton)
+                        self.responseButton[i].setFocusPolicy(Qt.NoFocus)
+
+                elif nAlternatives == nIntervals-1:
+                    for i in range(nAlternatives):
+                        if self.prm[self.parent().currExp]["hasPrecursorInterval"] == True:
+                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                            r = r+1
+                        if i == 0:
+                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                            r = r+1
+
+                        self.responseButton.append(QPushButton(str(i+1), self))
+                        self.responseButtonSizer.addWidget(self.responseButton[i], 1, r)
+                        self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+                        self.responseButton[i].setProperty("responseBoxButton", True)
+                        r = r+1
+                        self.responseButton[i].clicked.connect(self.sortResponseButton)
+                        self.responseButton[i].setFocusPolicy(Qt.NoFocus)
+                        if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
+                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                            r = r+1
+
+            elif self.parent().currParadigm in ["Constant 1-Interval 2-Alternatives", "Multiple Constants 1-Interval 2-Alternatives",
+                                                "Constant 1-Pair Same/Different", "Multiple Constants 1-Pair Same/Different"]:
+                for i in range(nIntervals):
+                    self.intervalLight.append(intervalLight(self))
+                    self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
+                    n = n+1
+
+                for i in range(self.prm['nAlternatives']):
+                    self.responseButton.append(QPushButton(self.prm[self.tr(self.parent().experimentChooser.currentText())]['buttonLabels'][i], self))
+
+                    self.responseButtonSizer.addWidget(self.responseButton[i], 1, i)
                     self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
                     self.responseButton[i].setProperty("responseBoxButton", True)
+                    self.responseButton[i].clicked.connect(self.sortResponseButton)
+                    self.responseButton[i].setFocusPolicy(Qt.NoFocus)
+            elif self.parent().currParadigm in ["ABX"]:
+                for i in range(3):
+                    self.intervalLight.append(intervalLight(self))
+                    self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
+                    n = n+1
+
+                for i in range(2):
+                    self.responseButton.append(QPushButton(self.prm[self.tr(self.parent().experimentChooser.currentText())]['buttonLabels'][i], self))
+
+                    self.responseButtonSizer.addWidget(self.responseButton[i], 1, i)
+                    self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+                    self.responseButton[i].setProperty("responseBoxButton", True)
+                    self.responseButton[i].clicked.connect(self.sortResponseButton)
+                    self.responseButton[i].setFocusPolicy(Qt.NoFocus)
+            elif self.parent().currParadigm in ["Odd One Out"]:
+                for i in range(nIntervals):
+                    self.intervalLight.append(intervalLight(self))
+                    self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
+                    n = n+1
+
+                r = 0
+                if self.prm["warningInterval"] == True:
+                    self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
                     r = r+1
-                    if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
-                        self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
-                        r = r+1
+                for i in range(self.prm['nAlternatives']):
+                    self.responseButton.append(QPushButton(str(i+1), self))
+                    self.responseButtonSizer.addWidget(self.responseButton[i], 1, i+r)
+                    self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+                    self.responseButton[i].setProperty("responseBoxButton", True)
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
                     self.responseButton[i].setFocusPolicy(Qt.NoFocus)
 
-            elif nAlternatives == nIntervals-1:
-                for i in range(nAlternatives):
-                    if self.prm[self.parent().currExp]["hasPrecursorInterval"] == True:
-                        self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
-                        r = r+1
-                    if i == 0:
-                        self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
-                        r = r+1
-                  
-                    self.responseButton.append(QPushButton(str(i+1), self))
-                    self.responseButtonSizer.addWidget(self.responseButton[i], 1, r)
-                    self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-                    self.responseButton[i].setProperty("responseBoxButton", True)
-                    r = r+1
-                    self.responseButton[i].clicked.connect(self.sortResponseButton)
-                    self.responseButton[i].setFocusPolicy(Qt.NoFocus)
-                    if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
-                        self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
-                        r = r+1
-                  
-        elif self.parent().currParadigm in ["Constant 1-Interval 2-Alternatives", "Multiple Constants 1-Interval 2-Alternatives",
-                                            "Constant 1-Pair Same/Different", "Multiple Constants 1-Pair Same/Different"]:
-            for i in range(nIntervals):
-                self.intervalLight.append(intervalLight(self))
-                self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
-                n = n+1
-                
-            for i in range(self.prm['nAlternatives']):
-                self.responseButton.append(QPushButton(self.prm[self.tr(self.parent().experimentChooser.currentText())]['buttonLabels'][i], self))
-            
-                self.responseButtonSizer.addWidget(self.responseButton[i], 1, i)
-                self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-                self.responseButton[i].setProperty("responseBoxButton", True)
-                self.responseButton[i].clicked.connect(self.sortResponseButton)
-                self.responseButton[i].setFocusPolicy(Qt.NoFocus)
-        elif self.parent().currParadigm in ["ABX"]:
-            for i in range(3):
-                self.intervalLight.append(intervalLight(self))
-                self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
-                n = n+1
-                
-            for i in range(2):
-                self.responseButton.append(QPushButton(self.prm[self.tr(self.parent().experimentChooser.currentText())]['buttonLabels'][i], self))
-            
-                self.responseButtonSizer.addWidget(self.responseButton[i], 1, i)
-                self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-                self.responseButton[i].setProperty("responseBoxButton", True)
-                self.responseButton[i].clicked.connect(self.sortResponseButton)
-                self.responseButton[i].setFocusPolicy(Qt.NoFocus)
-        elif self.parent().currParadigm in ["Odd One Out"]:
-            for i in range(nIntervals):
-                self.intervalLight.append(intervalLight(self))
-                self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
-                n = n+1
-
-            r = 0
-            if self.prm["warningInterval"] == True:
-                self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
-                r = r+1
-            for i in range(self.prm['nAlternatives']):
-                self.responseButton.append(QPushButton(str(i+1), self))
-                self.responseButtonSizer.addWidget(self.responseButton[i], 1, i+r)
-                self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-                self.responseButton[i].setProperty("responseBoxButton", True)
-                self.responseButton[i].clicked.connect(self.sortResponseButton)
-                self.responseButton[i].setFocusPolicy(Qt.NoFocus)
-        
 
         self.showHideIntervalLights(self.prm['intervalLights'])
 
@@ -535,6 +558,31 @@ class responseBox(QMainWindow):
                 self.audioManager.playSound(sndList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'soundSequence.wav')
             self.intervalLight[nLight].setStatus('off')
             nLight = nLight+1
+
+            if i < (len(sndList) - 1):
+                time.sleep(ISIList[i]/1000)
+
+    def playSequentialIntervalsNoLights(self, sndList, ISIList=[], trigNum=None):
+        currBlock = 'b'+ str(self.prm['currentBlock'])
+        #cmd = self.prm['pref']['sound']['playCommand']
+        for i in range(len(sndList)):
+            if self.prm['pref']['sound']['writeSndSeqSegments'] == True:
+                self.audioManager.scipy_wavwrite("sndSeq%i.wav"%(i+1), self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], sndList[i])
+        # nLight = 0
+        # if self.prm["warningInterval"] == True:
+        #     self.intervalLight[nLight].setStatus('on')
+        #     time.sleep(self.prm[currBlock]['warningIntervalDur']/1000)
+        #     self.intervalLight[nLight].setStatus('off')
+        #     nLight = nLight+1
+        #     time.sleep(self.prm[currBlock]['warningIntervalISI']/1000)
+        for i in range(len(sndList)):
+            #self.intervalLight[nLight].setStatus('on')
+            if trigNum != None:
+                self.audioManager.playSoundWithTrigger(sndList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'soundSequence.wav', trigNum)
+            else:
+                self.audioManager.playSound(sndList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'soundSequence.wav')
+            #self.intervalLight[nLight].setStatus('off')
+            #nLight = nLight+1
 
             if i < (len(sndList) - 1):
                 time.sleep(ISIList[i]/1000)
