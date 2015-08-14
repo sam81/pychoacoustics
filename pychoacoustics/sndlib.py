@@ -530,7 +530,7 @@ def chirp(freqStart, ftype, rate, level, duration, phase, ramp, channel, fs, max
         frequency = freqStart*( ( ( (k**timeAll) - 1) /log(k) + phase) )
     elif ftype == "linear":
         frequency = freqStart*timeAll + (rate/2)*timeAll**2 + phase
-        
+
 
     snd = zeros((nTot, 2))
 
@@ -1176,8 +1176,6 @@ def expAMNoise(fc, fm, deltaCents, fmPhase, AMDepth, spectrumLevel, duration, ra
         snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(ang[0:nRamp])) * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(ang[nRamp:nRamp+nSamples])) * scaled_noise[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 0] = amp * (1 + AMDepth*sin(ang[nRamp+nSamples:len(timeAll)])) * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
-    return snd
-
 
     return snd
 
@@ -1446,9 +1444,11 @@ def camSinFMTone(fc, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, 
     return snd
 
 
-def fm_complex1(midF0, harmPhase, lowHarm, highHarm, level, duration, ramp, fmFreq, fmDepth, fmStartPhase, fmStartTime, fmDuration, levelAdj, channel, fs, maxLevel):
+def fm_complex1(midF0, harmPhase, lowHarm, highHarm, level, duration, ramp,
+                fmFreq, fmDepth, fmStartPhase, fmStartTime, fmDuration,
+                levelAdj, channel, fs, maxLevel):
     """
-    Synthetise a Complex Tone with an embedded FM starting and stopping
+    Synthetise a complex tone with an embedded FM starting and stopping
     at a chosen time after the tone onset.
 
     Parameters
@@ -1712,9 +1712,11 @@ def fm_complex1(midF0, harmPhase, lowHarm, highHarm, level, duration, ramp, fmFr
 
     return snd
 
-def fm_complex2(midF0, harmPhase, lowHarm, highHarm, level, duration, ramp, fmFreq, fmDepth, fmStartPhase, fmStartTime, fmDuration, levelAdj, channel, fs, maxLevel):
+def fm_complex2(midF0, harmPhase, lowHarm, highHarm, level, duration, ramp,
+                fmFreq, fmDepth, fmStartPhase, fmStartTime, fmDuration,
+                levelAdj, channel, fs, maxLevel):
     """
-    Synthetise a Complex Tone with an embedded FM starting and stopping
+    Synthetise a complex tone with an embedded FM starting and stopping
     at a chosen time after the tone onset.
 
     Parameters
@@ -2085,14 +2087,14 @@ def freqFromERBInterval(f1, deltaERB):
     Parameters
     ----------
     f1 : float
-        frequency in Hz
+        frequency at one end of the interval in Hz
     deltaERB : float
-        distance
+        distance in ERBs
 
     Returns
     -------
-    deltaERB : float
-        distance in ERBs
+    f2 : float
+        frequency at the other end of the interval in Hz
 
     References
     ----------
@@ -2198,7 +2200,7 @@ def glide(freqStart, ftype, excursion, level, duration, phase, ramp, channel, fs
         If ftype is 'linear', excursion is the total frequency change in Hz.
         The final frequency will be freqStart + excursion.
         If ftype is 'exponential', excursion is the total frequency change in cents.
-        The final frequency in Hz will be freqStart*2**(excusrion/1200).
+        The final frequency in Hz will be freqStart*2**(excursion/1200).
     level : float
         Level of the tone in dB SPL.
     duration : float
@@ -2654,6 +2656,7 @@ def makeAsynchChord(freqs, levels, phases, tonesDuration, tonesRamps, tonesChann
 
 def makeHuggins(F0, lowHarm, highHarm, spectrumLevel, bandwidth, phaseRelationship, noiseType, duration, ramp, fs, maxLevel):
     """
+    ########superseded by makeHugginsPitch, if no other function is using this it can be cancelled
     Synthetise a complex Huggings Pitch.
 
     Parameters
