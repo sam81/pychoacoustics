@@ -98,7 +98,7 @@ def addSounds(snd1, snd2, delay, fs):
     return snd
 
 
-def AMTone(frequency, AMFreq, AMDepth, phase, AMPhase, level, duration, ramp, channel, fs, maxLevel):
+def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Generate an amplitude modulated tone.
 
@@ -170,7 +170,7 @@ def AMTone(frequency, AMFreq, AMDepth, phase, AMPhase, level, duration, ramp, ch
     return snd
 
 
-def AMToneIPD(frequency, AMFreq, AMDepth, phase, AMPhase, phaseIPD, AMPhaseIPD, level, duration, ramp, channel, fs, maxLevel):
+def AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, phaseIPD=0, AMPhaseIPD=0, level=60, duration=980, ramp=10, channel="Right", fs=48000, maxLevel=101):
     """
     Generate an amplitude modulated tone with an interaural
     phase difference (IPD) in the carrier and/or modulation phase.
@@ -250,12 +250,14 @@ def AMToneIPD(frequency, AMFreq, AMDepth, phase, AMPhase, phaseIPD, AMPhaseIPD, 
         snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+shiftedAMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + shiftedPhase)
         snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+shiftedAMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + shiftedPhase)
         snd[nRamp+nSamples:nTot, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+shiftedAMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + shiftedPhase)
+    else:
+        raise TypeError("Invalid channel argument. Channel must be either 'Right' or 'Left'")
   
        
     return snd
 
 
-def binauralPureTone(frequency, phase, level, duration, ramp, channel, itd, itdRef, ild, ildRef, fs, maxLevel):
+def binauralPureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, channel="Both", itd=0, itdRef="Right", ild=10, ildRef="Right", fs=48000, maxLevel=101):
     """
     Generate a pure tone with an optional interaural time or level difference.
 
@@ -380,7 +382,7 @@ def binauralPureTone(frequency, phase, level, duration, ramp, channel, itd, itdR
     return snd
 
 
-def broadbandNoise(spectrumLevel, duration, ramp, channel, fs, maxLevel):
+def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Synthetise a broadband noise.
 
@@ -472,8 +474,137 @@ def broadbandNoise(spectrumLevel, duration, ramp, channel, fs, maxLevel):
         
     return snd
 
+def camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, deltaCams=4, fmPhase=0, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
+    """
+    Generate a tone frequency modulated with an exponential sinusoid.
 
-def chirp(freqStart, ftype, rate, level, duration, phase, ramp, channel, fs, maxLevel):
+    Parameters
+    ----------
+    fc : float
+        Carrier frequency in hertz. 
+    fm : float
+        Modulation frequency in Hz.
+    deltaCams : float
+        Frequency excursion in cam units (ERBn number scale). 
+    fmPhase : float
+        Starting fmPhase in radians.
+    level : float
+        Tone level in dB SPL. 
+    duration : float
+        Tone duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    channel : 'Right', 'Left' or 'Both'
+        Channel in which the tone will be generated.
+    fs : int
+        Samplig frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of
+        amplitude 1.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+       
+    Examples
+    --------
+    >>> snd = camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, deltaCams=4, fmPhase=0, level=55, 
+    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
+    
+    """
+    for i in range(int(lowHarm), int(highHarm)+1):
+        if harmPhase == "Sine":
+            startPhase = 0
+        elif harmPhase == "Cosine":
+            startPhase = pi/2
+        elif harmPhase == "Alternating":
+            if i%2 > 0: #odd harmonic
+                startPhase = 0
+            else:
+                startPhase = pi/2
+        if i == lowHarm:
+            snd = camSinFMTone(F0*i, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel)
+        else:
+            snd = snd + camSinFMTone(F0*i, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel)
+        
+    return snd
+
+
+def camSinFMTone(fc, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel):
+    """
+    Generate a tone frequency modulated with an exponential sinusoid.
+
+    Parameters
+    ----------
+    fc : float
+        Carrier frequency in hertz. 
+    fm : float
+        Modulation frequency in Hz.
+    deltaCams : float
+        Frequency excursion in cam units (ERBn number scale). 
+    fmPhase : float
+        Starting fmPhase in radians.
+    level : float
+        Tone level in dB SPL. 
+    duration : float
+        Tone duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    channel : 'Right', 'Left' or 'Both'
+        Channel in which the tone will be generated.
+    fs : int
+        Samplig frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of
+        amplitude 1.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+       
+    Examples
+    --------
+    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, fmPhase=0, level=55, 
+    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
+    
+    """
+  
+    amp = 10**((level - maxLevel) / 20)
+    duration = duration / 1000 #convert from ms to sec
+    ramp = ramp / 1000
+
+    nSamples = int(round(duration * fs))
+    nRamp = int(round(ramp * fs))
+    nTot = nSamples + (nRamp * 2)
+
+    timeAll = arange(0, nTot) / fs
+    timeRamp = arange(0, nRamp)
+    #fArr = 2*pi*fc*2**((deltaCents/1200)*cos(2*pi*fm*timeAll+fmPhase))
+    fArr = 2*pi*freqFromERBInterval(fc, deltaCams*cos(2*pi*fm*timeAll+fmPhase)) 
+    ang = (cumsum(fArr)/fs) + startPhase
+
+    snd = zeros((nTot, 2))
+
+    if channel == "Right":
+        snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
+        snd[nRamp:nRamp+nSamples, 1] = amp* sin(ang[nRamp:nRamp+nSamples])
+        snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
+    elif channel == "Left":
+        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
+        snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
+        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
+    elif channel == "Both":
+        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
+        snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
+        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
+        snd[:, 1] = snd[:, 0]
+       
+
+    return snd
+
+def chirp(freqStart=440, ftype="linear", rate=500, level=60, duration=980, phase=0, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Synthetize a chirp, that is a tone with frequency changing linearly or
     exponentially over time with a give rate.
@@ -551,7 +682,7 @@ def chirp(freqStart, ftype, rate, level, duration, phase, ramp, channel, fs, max
     return snd
 
 
-def complexTone(F0, harmPhase, lowHarm, highHarm, stretch, level, duration, ramp, channel, fs, maxLevel):
+def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, level=0, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Synthetise a complex tone.
 
@@ -701,7 +832,7 @@ def complexTone(F0, harmPhase, lowHarm, highHarm, stretch, level, duration, ramp
     return snd
 
 
-def complexToneParallel(F0, harmPhase, lowHarm, highHarm, stretch, level, duration, ramp, channel, fs, maxLevel):
+def complexToneParallel(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, level=0, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Synthetise a complex tone.
 
@@ -750,7 +881,7 @@ def complexToneParallel(F0, harmPhase, lowHarm, highHarm, stretch, level, durati
 
     Examples
     --------
-    >>> ct = complexTone(F0=440, harmPhase='Sine', lowHarm=3, highHarm=10,
+    >>> ct = complexToneParallel(F0=440, harmPhase='Sine', lowHarm=3, highHarm=10,
     ...     stretch=0, level=55, duration=180, ramp=10, channel='Both',
     ...     fs=48000, maxLevel=100)
     
@@ -873,10 +1004,10 @@ def delayAdd(sig, delay, gain, iterations, configuration, fs):
 
     return snd
 
-def dichoticNoiseFromSin(F0, lowHarm, highHarm, compLevel, narrowBandCompLevel,
-                         lowFreq, highFreq, compSpacing, sigBandwidth, distanceUnit,
-                         phaseRelationship, dichoticDifference,
-                         dichoticDifferenceValue, duration, ramp, fs, maxLevel):
+def dichoticNoiseFromSin(F0=300, lowHarm=1, highHarm=3, compLevel=30, narrowBandCompLevel=30,
+                         lowFreq=40, highFreq=2000, compSpacing=10, sigBandwidth=100, distanceUnit="Cent",
+                         phaseRelationship="NoSpi", dichoticDifference="IPD Stepped",
+                         dichoticDifferenceValue=pi, duration=380, ramp=10, fs=48000, maxLevel=101):
     """
     Generate Huggins pitch or narrow-band noise from random-phase sinusoids.
 
@@ -1089,7 +1220,7 @@ def ERBDistance(f1, f2):
     return deltaERB
 
 
-def expAMNoise(fc, fm, deltaCents, fmPhase, AMDepth, spectrumLevel, duration, ramp, channel, fs, maxLevel):
+def expAMNoise(fc=150, fm=2.4, deltaCents=1200, fmPhase=pi, AMDepth=1, spectrumLevel=24, duration=380, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Generate a sinusoidally amplitude-modulated noise with an exponentially
     modulated AM frequency.
@@ -1180,7 +1311,7 @@ def expAMNoise(fc, fm, deltaCents, fmPhase, AMDepth, spectrumLevel, duration, ra
     return snd
 
 
-def expSinFMComplex(F0, lowHarm, highHarm, harmPhase, fm, deltaCents, fmPhase, level, duration, ramp, channel, fs, maxLevel):
+def expSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, deltaCents=1200, fmPhase=0, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Generate a frequency-modulated complex tone with an exponential sinusoid.
 
@@ -1216,8 +1347,8 @@ def expSinFMComplex(F0, lowHarm, highHarm, harmPhase, fm, deltaCents, fmPhase, l
        
     Examples
     --------
-    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, fmPhase=0, level=55, 
-    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
+    >>> snd = expSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, deltaCents=1200, fmPhase=0, level=55, 
+    ...     duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101)
     
     """
 
@@ -1239,7 +1370,7 @@ def expSinFMComplex(F0, lowHarm, highHarm, harmPhase, fm, deltaCents, fmPhase, l
     return snd
 
 
-def expSinFMTone(fc, fm, deltaCents, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel):
+def expSinFMTone(fc=1000, fm=40, deltaCents=1200, fmPhase=0, startPhase=0, level=60, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Generate a frequency-modulated tone with an exponential sinusoid.
 
@@ -1313,140 +1444,7 @@ def expSinFMTone(fc, fm, deltaCents, fmPhase, startPhase, level, duration, ramp,
     return snd
 
 
-def camSinFMComplex(F0, lowHarm, highHarm, harmPhase, fm, deltaCams, fmPhase, level, duration, ramp, channel, fs, maxLevel):
-    """
-    Generate a tone frequency modulated with an exponential sinusoid.
-
-    Parameters
-    ----------
-    fc : float
-        Carrier frequency in hertz. 
-    fm : float
-        Modulation frequency in Hz.
-    deltaCams : float
-        Frequency excursion in cam units (ERBn number scale). 
-    fmPhase : float
-        Starting fmPhase in radians.
-    level : float
-        Tone level in dB SPL. 
-    duration : float
-        Tone duration (excluding ramps) in milliseconds.
-    ramp : float
-        Duration of the onset and offset ramps in milliseconds.
-        The total duration of the sound will be duration+ramp*2.
-    channel : 'Right', 'Left' or 'Both'
-        Channel in which the tone will be generated.
-    fs : int
-        Samplig frequency in Hz.
-    maxLevel : float
-        Level in dB SPL output by the soundcard for a sinusoid of
-        amplitude 1.
-
-    Returns
-    -------
-    snd : 2-dimensional array of floats
-       
-    Examples
-    --------
-    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, fmPhase=0, level=55, 
-    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
-    
-    """
-    for i in range(int(lowHarm), int(highHarm)+1):
-        if harmPhase == "Sine":
-            startPhase = 0
-        elif harmPhase == "Cosine":
-            startPhase = pi/2
-        elif harmPhase == "Alternating":
-            if i%2 > 0: #odd harmonic
-                startPhase = 0
-            else:
-                startPhase = pi/2
-        if i == lowHarm:
-            snd = camSinFMTone(F0*i, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel)
-        else:
-            snd = snd + camSinFMTone(F0*i, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel)
-        
-    return snd
-
-
-def camSinFMTone(fc, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel):
-    """
-    Generate a tone frequency modulated with an exponential sinusoid.
-
-    Parameters
-    ----------
-    fc : float
-        Carrier frequency in hertz. 
-    fm : float
-        Modulation frequency in Hz.
-    deltaCams : float
-        Frequency excursion in cam units (ERBn number scale). 
-    fmPhase : float
-        Starting fmPhase in radians.
-    level : float
-        Tone level in dB SPL. 
-    duration : float
-        Tone duration (excluding ramps) in milliseconds.
-    ramp : float
-        Duration of the onset and offset ramps in milliseconds.
-        The total duration of the sound will be duration+ramp*2.
-    channel : 'Right', 'Left' or 'Both'
-        Channel in which the tone will be generated.
-    fs : int
-        Samplig frequency in Hz.
-    maxLevel : float
-        Level in dB SPL output by the soundcard for a sinusoid of
-        amplitude 1.
-
-    Returns
-    -------
-    snd : 2-dimensional array of floats
-       
-    Examples
-    --------
-    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, fmPhase=0, level=55, 
-    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
-    
-    """
-  
-    amp = 10**((level - maxLevel) / 20)
-    duration = duration / 1000 #convert from ms to sec
-    ramp = ramp / 1000
-
-    nSamples = int(round(duration * fs))
-    nRamp = int(round(ramp * fs))
-    nTot = nSamples + (nRamp * 2)
-
-    timeAll = arange(0, nTot) / fs
-    timeRamp = arange(0, nRamp)
-    #fArr = 2*pi*fc*2**((deltaCents/1200)*cos(2*pi*fm*timeAll+fmPhase))
-    fArr = 2*pi*freqFromERBInterval(fc, deltaCams*cos(2*pi*fm*timeAll+fmPhase)) 
-    ang = (cumsum(fArr)/fs) + startPhase
-
-    snd = zeros((nTot, 2))
-
-    if channel == "Right":
-        snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
-        snd[nRamp:nRamp+nSamples, 1] = amp* sin(ang[nRamp:nRamp+nSamples])
-        snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
-    elif channel == "Left":
-        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
-        snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
-        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
-    elif channel == "Both":
-        snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
-        snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
-        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
-        snd[:, 1] = snd[:, 0]
-       
-
-    return snd
-
-
-def fm_complex1(midF0, harmPhase, lowHarm, highHarm, level, duration, ramp,
-                fmFreq, fmDepth, fmStartPhase, fmStartTime, fmDuration,
-                levelAdj, channel, fs, maxLevel):
+def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, duration=430, ramp=10, fmFreq=1.25, fmDepth=40, fmStartPhase=1.5*pi, fmStartTime=25, fmDuration=400, levelAdj=True, channel="Both", fs=48000, maxLevel=101):
     """
     Synthetise a complex tone with an embedded FM starting and stopping
     at a chosen time after the tone onset.
@@ -1491,7 +1489,11 @@ def fm_complex1(midF0, harmPhase, lowHarm, highHarm, level, duration, ramp,
         Samplig frequency in Hz.
     maxLevel : float
         Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
-    
+
+    Examples
+    --------
+    >>> tone_up = fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, duration=430, ramp=10, fmFreq=1.25, fmDepth=40, fmStartPhase=1.5*pi, fmStartTime=25, fmDuration=400, levelAdj=True, channel="Both", fs=48000, maxLevel=101)
+
     """
     
     amp = 10**((level - maxLevel) / 20)
@@ -1712,9 +1714,8 @@ def fm_complex1(midF0, harmPhase, lowHarm, highHarm, level, duration, ramp,
 
     return snd
 
-def fm_complex2(midF0, harmPhase, lowHarm, highHarm, level, duration, ramp,
-                fmFreq, fmDepth, fmStartPhase, fmStartTime, fmDuration,
-                levelAdj, channel, fs, maxLevel):
+def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, duration=430, ramp=10, fmFreq=1.25, fmDepth=40, fmStartPhase=1.5*pi, fmStartTime=25, fmDuration=400, levelAdj=True, channel="Both", fs=48000, maxLevel=101):
+
     """
     Synthetise a complex tone with an embedded FM starting and stopping
     at a chosen time after the tone onset.
@@ -1759,6 +1760,10 @@ def fm_complex2(midF0, harmPhase, lowHarm, highHarm, level, duration, ramp,
         Samplig frequency in Hz.
     maxLevel : float
         Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
+
+    Examples
+    --------
+    >>> tone_up = fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, duration=430, ramp=10, fmFreq=1.25, fmDepth=40, fmStartPhase=1.5*pi, fmStartTime=25, fmDuration=400, levelAdj=True, channel="Both", fs=48000, maxLevel=101)
     
     """
     
@@ -1924,7 +1929,7 @@ def fm_complex2(midF0, harmPhase, lowHarm, highHarm, level, duration, ramp,
     return snd
 
 
-def FMTone(fc, fm, mi, phase, level, duration, ramp, channel, fs, maxLevel):
+def FMTone(fc=1000, fm=40, mi=1, phase=0, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Generate a frequency modulated tone.
 
@@ -2045,7 +2050,7 @@ def fir2Filt(f1, f2, f3, f4, snd, fs):
     ...     channel='Both', fs=48000, maxLevel=100)
     >>> lpNoise = fir2Filt(f1=0, f2=0, f3=1000, f4=1200, 
     ...     snd=noise, fs=48000) #lowpass filter
-    >>> hpNoise = fir2Filt(f1=0, f2=0, f3=24000, f4=26000, 
+    >>> hpNoise = fir2Filt(f1=5000, f2=6000, f3=24000, f4=26000, 
     ...     snd=noise, fs=48000) #highpass filter
     >>> bpNoise = fir2Filt(f1=400, f2=600, f3=4000, f4=4400, 
     ...     snd=noise, fs=48000) #bandpass filter
@@ -2070,7 +2075,7 @@ def fir2Filt(f1, f2, f3, f4, snd, fs):
         f = [0, f1, f2, 0.999999, 1] #scipy wants that gain at the Nyquist is 0
         m = [0, 0.00003, 1, 1, 0]
         
-        
+    print(f)
     b = firwin2 (n,f,m);
     x = copy.copy(snd)
     x[:, 0] = convolve(snd[:,0], b, 1)
@@ -2116,32 +2121,6 @@ def freqFromERBInterval(f1, deltaERB):
 
     return f2
 
-    
-def getRms(sig):
-    """
-    Compute the root mean square (RMS) value of the signal.
-
-    Parameters
-    ----------
-    sig : array of floats
-        The signal for which the RMS needs to be computed.
-
-    Returns
-    -------
-    rms : float
-       The RMS of 'sig'.
-
-    Examples
-    --------
-    >>> pt = pureTone(frequency=440, phase=0, level=65, duration=180,
-    ...     ramp=10, channel='Right', fs=48000, maxLevel=100)
-    >>> getRms(pt)
-
-    """
-
-    rms = sqrt(mean(sig*sig))
-    return rms
-
 
 def gate(ramps, sig, fs):
     """
@@ -2182,8 +2161,50 @@ def gate(ramps, sig, fs):
 
     return sig
 
+def getRMS(sig, channel="each"):
+    """
+    Compute the root mean square (RMS) value of the signal.
 
-def glide(freqStart, ftype, excursion, level, duration, phase, ramp, channel, fs, maxLevel):
+    Parameters
+    ----------
+    sig : array of floats
+        The signal for which the RMS needs to be computed.
+    channel : string or int 
+        Either an integer indicating the channel number,
+        'each' for a list of the RMS values in each channel, or 'all'
+        for the RMS across all channels.
+
+    Returns
+    -------
+    rms : float
+       The RMS of 'sig'.
+
+    Examples
+    --------
+    >>> pt = pureTone(frequency=440, phase=0, level=65, duration=180,
+    ...     ramp=10, channel="Right", fs=48000, maxLevel=100)
+    >>> getRMS(pt, channel="each")
+
+    """
+
+    if type(channel) not in [str, int]:
+        raise TypeError("Channel must be either a string or an integer")
+    if type(channel) == str:
+        if channel == "each":
+            nChans = sig.shape[1]
+            rms = list()
+            for i in range(nChans):
+                rms.append(sqrt(mean(sig[:,i]*sig[:,i])))
+        elif channel == "all":
+            rms = sqrt(mean(sig*sig))
+        else:
+            raise TypeError("If 'channel' is a string it must be either 'each' or 'all'")
+    elif type(channel) == int:
+        rms = sqrt(mean(sig[:,channel]*sig[:,channel]))
+    return rms
+
+
+def glide(freqStart=440, ftype="exponential", excursion=500, level=60, duration=180, phase=0, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Synthetize a rising or falling tone glide with frequency changing
     linearly or exponentially. 
@@ -2222,7 +2243,7 @@ def glide(freqStart, ftype, excursion, level, duration, phase, ramp, channel, fs
        
     Examples
     --------
-    >>> gl = glide(freqStart=440, type='exponential', excursion=500,
+    >>> gl = glide(freqStart=440, ftype='exponential', excursion=500,
             level=55, duration=180, phase=0, ramp=10, channel='Both',
             fs=48000, maxLevel=100)
 
@@ -2235,7 +2256,7 @@ def glide(freqStart, ftype, excursion, level, duration, phase, ramp, channel, fs
     return snd
 
 
-def harmComplFromNarrowbandNoise(F0, lowHarm, highHarm, level, bandwidth, bandwidthUnit, stretch, duration, ramp, channel, fs, maxLevel):
+def harmComplFromNarrowbandNoise(F0=440, lowHarm=1, highHarm=8, level=40, bandwidth=80, bandwidthUnit="Hz", stretch=0, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Generate an harmonic complex tone from narrow noise bands.
 
@@ -2280,7 +2301,7 @@ def harmComplFromNarrowbandNoise(F0, lowHarm, highHarm, level, bandwidth, bandwi
     Examples
     --------
     >>> c1 = harmComplFromNarrowbandNoise(F0=440, lowHarm=3, highHarm=8,
-         level=40, bandwidth=80, duration=180, ramp=10, channel='Both',
+         level=40, bandwidth=80, bandwidthUnit="Hz", stretch=0, duration=180, ramp=10, channel='Both',
          fs=48000, maxLevel=100)
     
     """
@@ -2654,87 +2675,10 @@ def makeAsynchChord(freqs, levels, phases, tonesDuration, tonesRamps, tonesChann
     return snd
 
 
-def makeHuggins(F0, lowHarm, highHarm, spectrumLevel, bandwidth, phaseRelationship, noiseType, duration, ramp, fs, maxLevel):
-    """
-    ########superseded by makeHugginsPitch, if no other function is using this it can be cancelled
-    Synthetise a complex Huggings Pitch.
-
-    Parameters
-    ----------
-    F0 : float
-        The centre frequency of the F0 of the complex in hertz.
-    lowHarm : int
-        Lowest harmonic component number.
-    highHarm : int
-        Highest harmonic component number.
-    spectrumLevel : float
-        The spectrum level of the noise from which
-        the complex is derived in dB SPL.
-    bandwidth : float
-        Bandwidth of the frequency regions in which the
-        phase transitions occurr.
-    phaseRelationship : string ('NoSpi' or 'NpiSo')
-        If NoSpi, the phase of the regions within each frequency band will
-        be shifted. If NpiSo, the phase of the regions between each
-        frequency band will be shifted.
-    noiseType : string ('White' or 'Pink')
-        The type of noise used to derive the Huggins Pitch.
-    duration : float
-        Complex duration (excluding ramps) in milliseconds.
-    ramp : float
-        Duration of the onset and offset ramps in milliseconds.
-        The total duration of the sound will be duration+ramp*2.
-    fs : int
-        Samplig frequency in Hz.
-    maxLevel : float
-        Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
-
-    Returns
-    -------
-    snd : 2-dimensional array of floats
-        The array has dimensions (nSamples, 2).
-
-    Examples
-    --------
-    >>> hp = makeHuggins(F0=200, lowHarm=1, highHarm=5, spectrumLevel=40,
-            bandwidth=65, phaseRelationship='NoSpi', noiseType='White',
-            duration=280, ramp=10, fs=48000, maxLevel=100)
-    
-    """
-   
-    sDuration = duration / 1000 #convert from ms to sec
-    sRamp = ramp / 1000
-    totDur = sDuration + (2 * sRamp)
-    nSamples = int(round(sDuration * fs))
-    nRamp = int(round(sRamp * fs))
-    nTot = nSamples + (nRamp * 2)
-    snd = zeros((nTot, 2))
-
-    tone = broadbandNoise(spectrumLevel, duration+(ramp*2), 0, "Both", fs, maxLevel)
-    if noiseType == "Pink":
-        makePink(tone, fs)
-    for i in range(lowHarm, highHarm+1):
-        if phaseRelationship == "NoSpi":
-            tone = phaseShift(tone, ((i*F0) - (bandwidth/2)), ((i*F0) + (bandwidth/2)), pi, "Left", fs)
-        elif phaseRelationship == "NpiSo":
-            if i == lowHarm:
-                tone = phaseShift(tone, 10, (i*F0) - (bandwidth/2), pi, "Left", fs)
-            elif i == highHarm:
-                tone = phaseShift(tone, ((i-1)*F0) + (bandwidth/2), (i*F0) - (bandwidth/2), pi, "Left", fs)
-                tone = phaseShift(tone, (i*F0) + (bandwidth/2), fs/2, pi, "Left", fs)
-            else:
-                tone = phaseShift(tone, ((i-1)*F0) + (bandwidth/2), (i*F0) - (bandwidth/2), pi, "Left", fs)
-    
-    tone = gate(ramp, tone, fs)    
-    snd = tone
-
-    return snd
-
-
-def makeHugginsPitch(F0, lowHarm, highHarm, spectrumLevel, bandwidth,
-                     bandwidthUnit, dichoticDifference,
-                     dichoticDifferenceValue, phaseRelationship, stretch,
-                     noiseType, duration, ramp, fs, maxLevel):
+def makeHugginsPitch(F0=300, lowHarm=1, highHarm=3, spectrumLevel=45, bandwidth=100,
+                     bandwidthUnit="Hz", dichoticDifference="IPD Stepped",
+                     dichoticDifferenceValue=pi, phaseRelationship="NoSpi", stretch=0,
+                     noiseType="White", duration=480, ramp=10, fs=48000, maxLevel=101):
     """
     Synthetise a complex Huggings Pitch.
 
@@ -2866,7 +2810,7 @@ def makeHugginsPitch(F0, lowHarm, highHarm, spectrumLevel, bandwidth,
     return snd
 
 
-def makeIRN(delay, gain, iterations, configuration, spectrumLevel, duration, ramp, channel, fs, maxLevel):
+def makeIRN(delay=1/440, gain=1, iterations=6, configuration="Add Same", spectrumLevel=25, duration=280, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Synthetise a iterated rippled noise
 
@@ -3005,7 +2949,7 @@ def makePinkRef(sig, fs, refHz):
     --------
      >>> noise = broadbandNoise(spectrumLevel=40, duration=180, ramp=10,
      ...     channel='Both', fs=48000, maxLevel=100)
-     >>> noise = makePink(sig=noise, fs=48000, refHz=1000)
+     >>> noise = makePinkRef(sig=noise, fs=48000, refHz=1000)
     
     """
     
@@ -3039,7 +2983,7 @@ def makePinkRef(sig, fs, refHz):
     return sig
 
 
-def makeSilence(duration, fs):
+def makeSilence(duration=1000, fs=48000):
     """
     Generate a silence.
 
@@ -3140,7 +3084,7 @@ def phaseShift(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
     >>> noise = broadbandNoise(spectrumLevel=40, duration=180, ramp=10,
     ...     channel='Both', fs=48000, maxLevel=100)
     >>> hp = phaseShift(sig=noise, f1=500, f2=600, phaseShift=3.14,
-            channel='Left', fs=48000) #this generates a Dichotic Pitch
+            phaseShiftType='Linear', channel='Left', fs=48000) #this generates a Dichotic Pitch
     
     """
 
@@ -3223,7 +3167,7 @@ def phaseShift(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
     return snd
 
 
-def pinkNoiseFromSin(compLevel, lowCmp, highCmp, spacing, duration, ramp, channel, fs, maxLevel):
+def pinkNoiseFromSin(compLevel=23, lowCmp=100, highCmp=1000, spacing=20, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Generate a pink noise by adding sinusoids spaced by a fixed
     interval in cents.
@@ -3298,7 +3242,7 @@ def pinkNoiseFromSin(compLevel, lowCmp, highCmp, spacing, duration, ramp, channe
     return snd
 
 
-def pinkNoiseFromSin2(compLevel, lowCmp, highCmp, spacing, duration, ramp, channel, fs, maxLevel):
+def pinkNoiseFromSin2(compLevel=23, lowCmp=100, highCmp=1000, spacing=20, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Generate a pink noise by adding sinusoids spaced by a fixed
     interval in cents.
@@ -3381,7 +3325,7 @@ def pinkNoiseFromSin2(compLevel, lowCmp, highCmp, spacing, duration, ramp, chann
     return snd
 
 
-def pureTone(frequency, phase, level, duration, ramp, channel, fs, maxLevel):
+def pureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Synthetise a pure tone.
 
@@ -3482,7 +3426,7 @@ def scale(level, sig):
     return sig
 
 
-def steepNoise(frequency1, frequency2, level, duration, ramp, channel, fs, maxLevel):
+def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Synthetise band-limited noise from the addition of random-phase
     sinusoids.
@@ -3514,7 +3458,7 @@ def steepNoise(frequency1, frequency2, level, duration, ramp, channel, fs, maxLe
        
     Examples
     --------
-    >>> nbNoise = steepNoise(frequency=440, frequency2=660, level=65,
+    >>> nbNoise = steepNoise(frequency1=440, frequency2=660, level=65,
     ...     duration=180, ramp=10, channel='Right', fs=48000, maxLevel=100)
     
     """
