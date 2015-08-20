@@ -98,7 +98,8 @@ def addSounds(snd1, snd2, delay, fs):
     return snd
 
 
-def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
+           duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Generate an amplitude modulated tone.
 
@@ -135,8 +136,9 @@ def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60, d
        
     Examples
     --------
-    >>> snd = AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=1.5*pi, level=65, 
-    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
+    >>> snd = AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, 
+    ...     AMPhase=1.5*pi, level=65, duration=180, ramp=10, channel='Both', 
+    ...     fs=48000, maxLevel=100)
     
     """
 
@@ -170,7 +172,9 @@ def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60, d
     return snd
 
 
-def AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, phaseIPD=0, AMPhaseIPD=0, level=60, duration=980, ramp=10, channel="Right", fs=48000, maxLevel=101):
+def AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0,
+              phaseIPD=0, AMPhaseIPD=0, level=60, duration=980, ramp=10,
+              channel="Right", fs=48000, maxLevel=101):
     """
     Generate an amplitude modulated tone with an interaural
     phase difference (IPD) in the carrier and/or modulation phase.
@@ -474,7 +478,7 @@ def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel="Both", fs=4
         
     return snd
 
-def camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, deltaCams=4, fmPhase=0, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=5, deltaCams=1, fmPhase=pi, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Generate a tone frequency modulated with an exponential sinusoid.
 
@@ -509,8 +513,10 @@ def camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, del
        
     Examples
     --------
-    >>> snd = camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, deltaCams=4, fmPhase=0, level=55, 
-    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
+    >>> snd_peak = camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=5, deltaCams=1, fmPhase=pi, level=60, 
+    ...     duration=180, ramp=10, channel="Both", fs=48000, maxLevel=100)
+    >>> snd_trough = camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=5, deltaCams=1, fmPhase=0, level=60, 
+    ...     duration=180, ramp=10, channel="Both", fs=48000, maxLevel=100)
     
     """
     for i in range(int(lowHarm), int(highHarm)+1):
@@ -531,7 +537,7 @@ def camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, del
     return snd
 
 
-def camSinFMTone(fc, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel):
+def camSinFMTone(fc=450, fm=5, deltaCams=1, fmPhase=pi, startPhase=0, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=100):
     """
     Generate a tone frequency modulated with an exponential sinusoid.
 
@@ -566,8 +572,10 @@ def camSinFMTone(fc, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, 
        
     Examples
     --------
-    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, fmPhase=0, level=55, 
-    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
+    >>> tone_peak = camSinFMTone(fc=450, fm=5, deltaCams=1, fmPhase=pi, startPhase=0, level=60, 
+    ...     duration=180, ramp=10, channel="Both", fs=48000, maxLevel=100)
+    >>> tone_trough = camSinFMTone(fc=450, fm=5, deltaCams=1, fmPhase=0, startPhase=0, level=60, 
+    ...     duration=180, ramp=10, channel="Both", fs=48000, maxLevel=100)
     
     """
   
@@ -1220,7 +1228,9 @@ def ERBDistance(f1, f2):
     return deltaERB
 
 
-def expAMNoise(fc=150, fm=2.4, deltaCents=1200, fmPhase=pi, AMDepth=1, spectrumLevel=24, duration=380, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def expAMNoise(fc=150, fm=2.5, deltaCents=1200, fmPhase=pi, AMDepth=1,
+               spectrumLevel=24, duration=480, ramp=10, channel="Both",
+               fs=48000, maxLevel=101):
     """
     Generate a sinusoidally amplitude-modulated noise with an exponentially
     modulated AM frequency.
@@ -1232,8 +1242,8 @@ def expAMNoise(fc=150, fm=2.4, deltaCents=1200, fmPhase=pi, AMDepth=1, spectrumL
     fm : float
         Modulation of the AM frequency in Hz.
     deltaCents : float
-        AM frequency excursion in cents. The instataneous AM frequency of the noise
-         will vary from fc**(-deltaCents/1200) to fc**(+deltaCents/1200).
+        AM frequency excursion in cents. The instataneous AM frequency of the 
+        noise will vary from fc**(-deltaCents/1200) to fc**(deltaCents/1200).
     fmPhase : float
         Starting phase of the AM modulation in radians.
     AMDepth : float
@@ -1259,8 +1269,9 @@ def expAMNoise(fc=150, fm=2.4, deltaCents=1200, fmPhase=pi, AMDepth=1, spectrumL
        
     Examples
     --------
-    >>> snd = expAMNoise(fc=150, fm=2.4, deltaCents=1200, fmPhase=3.14, AMDepth = 1,
-    ...     spectrumLevel=24, duration=380, ramp=10, channel='Both', fs=48000, maxLevel=100)
+    >>> snd = expAMNoise(fc=150, fm=2.5, deltaCents=1200, fmPhase=3.14, 
+        AMDepth = 1, spectrumLevel=24, duration=480, ramp=10, channel='Both', 
+        fs=48000, maxLevel=100)
     
     """
     
@@ -1347,7 +1358,9 @@ def expSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, del
        
     Examples
     --------
-    >>> snd = expSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, deltaCents=1200, fmPhase=0, level=55, 
+    >>> tone_peak = expSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=5, deltaCents=300, fmPhase=pi, level=60, 
+    ...     duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101)
+    >>> tone_trough = expSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=5, deltaCents=300, fmPhase=0, level=60, 
     ...     duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101)
     
     """
@@ -1370,7 +1383,7 @@ def expSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, del
     return snd
 
 
-def expSinFMTone(fc=1000, fm=40, deltaCents=1200, fmPhase=0, startPhase=0, level=60, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def expSinFMTone(fc=450, fm=5, deltaCents=300, fmPhase=pi, startPhase=0, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Generate a frequency-modulated tone with an exponential sinusoid.
 
@@ -1406,8 +1419,10 @@ def expSinFMTone(fc=1000, fm=40, deltaCents=1200, fmPhase=0, startPhase=0, level
        
     Examples
     --------
-    >>> snd = expSinFMTone(fc=1000, fm=40, deltaCents=1200, fmPhase=0, level=55, 
-    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
+    >>> tone_peak = expSinFMTone(fc=450, fm=5, deltaCents=300, fmPhase=pi, level=60, 
+    ...     duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101)
+    >>> tone_trough = expSinFMTone(fc=450, fm=5, deltaCents=300, fmPhase=0, level=60, 
+    ...     duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101)
     
     """
   
@@ -1493,6 +1508,7 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
     Examples
     --------
     >>> tone_up = fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, duration=430, ramp=10, fmFreq=1.25, fmDepth=40, fmStartPhase=1.5*pi, fmStartTime=25, fmDuration=400, levelAdj=True, channel="Both", fs=48000, maxLevel=101)
+    >>> tone_down = fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, duration=430, ramp=10, fmFreq=1.25, fmDepth=40, fmStartPhase=0.5*pi, fmStartTime=25, fmDuration=400, levelAdj=True, channel="Both", fs=48000, maxLevel=101)
 
     """
     
@@ -1764,6 +1780,7 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
     Examples
     --------
     >>> tone_up = fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, duration=430, ramp=10, fmFreq=1.25, fmDepth=40, fmStartPhase=1.5*pi, fmStartTime=25, fmDuration=400, levelAdj=True, channel="Both", fs=48000, maxLevel=101)
+    >>> tone_down = fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, duration=430, ramp=10, fmFreq=1.25, fmDepth=40, fmStartPhase=0.5*pi, fmStartTime=25, fmDuration=400, levelAdj=True, channel="Both", fs=48000, maxLevel=101)
     
     """
     
