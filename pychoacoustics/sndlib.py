@@ -140,7 +140,7 @@ def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
     ...     AMPhase=1.5*pi, level=65, duration=180, ramp=10, channel='Both', 
     ...     fs=48000, maxLevel=100)
     
-    """
+    """        
 
     amp = 10**((level - maxLevel) / 20)
     duration = duration / 1000 #convert from ms to sec
@@ -167,7 +167,9 @@ def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
         snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+AMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
         snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+AMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
         snd[nRamp+nSamples:nTot, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+AMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + phase)
-        snd[:, 1] = snd[:, 0] 
+        snd[:, 1] = snd[:, 0]
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'")
        
     return snd
 
@@ -216,8 +218,9 @@ def AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0,
        
     Examples
     --------
-    >>> snd = AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=1.5*pi, level=65, 
-    ...     duration=180, ramp=10, channel='Both', fs=48000, maxLevel=100)
+    >>> snd = AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=1.5*pi,
+    ...     phaseIPD=0, AMPhaseIPD=pi, level=65, 
+    ...     duration=180, ramp=10, channel='Right', fs=48000, maxLevel=100)
     
     """
 
@@ -255,7 +258,7 @@ def AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0,
         snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+shiftedAMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + shiftedPhase)
         snd[nRamp+nSamples:nTot, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+shiftedAMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + shiftedPhase)
     else:
-        raise TypeError("Invalid channel argument. Channel must be either 'Right' or 'Left'")
+        raise ValueError("Invalid channel argument. Channel must be either 'Right' or 'Left'")
   
        
     return snd
@@ -314,13 +317,11 @@ def binauralPureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, c
     ...     fs=48000, maxLevel=100)
     
     """
-
-    if channel not in ["Right", "Left", "Both"]:
-        raise TypeError("Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'")
+        
     if itdRef not in ["Right", "Left", None]:
-        raise TypeError("Invalid 'itdRef' argument. 'itdRef' must be one of 'Right', 'Left' or None")
+        raise ValueError("Invalid 'itdRef' argument. 'itdRef' must be one of 'Right', 'Left' or None")
     if ildRef not in ["Right", "Left", None]:
-        raise TypeError("Invalid 'ildRef' argument. 'ildRef' must be one of 'Right', 'Left' or None")
+        raise ValueError("Invalid 'ildRef' argument. 'ildRef' must be one of 'Right', 'Left' or None")
     
     if itd != 0 and itdRef == None:
         warnings.warn("'itd' is different than zero but no 'itdRef' was given. No 'itd' will be applied.")
@@ -381,6 +382,8 @@ def binauralPureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, c
         snd[0:nRamp, 1] = ampRight * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phaseRight)
         snd[nRamp:nRamp+nSamples, 1] = ampRight* sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phaseRight)
         snd[nRamp+nSamples:len(timeAll), 1] = ampRight * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:len(timeAll)] + phaseRight)
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'")
 
 
     return snd
@@ -400,7 +403,9 @@ def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel="Both", fs=4
         Duration of the onset and offset ramps in milliseconds.
         The total duration of the sound will be duration+ramp*2.
     channel : string ("Right", "Left", "Both", or "Dichotic")
-        Channel in which the noise will be generated.
+        Channel in which the noise will be generated. If 'Both' the
+        same noise will be generated in both channels. If 'Dichotic'
+        the noise will be independent at the two ears.
     fs : int
         Samplig frequency in Hz.
     maxLevel : float
@@ -475,17 +480,25 @@ def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel="Both", fs=4
     elif channel == "Dichotic":
         snd[:,1] = snd_mono
         snd[:,0] = snd_mono2
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left', 'Both', or 'Dichotic'")
         
     return snd
 
 def camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=5, deltaCams=1, fmPhase=pi, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
-    Generate a tone frequency modulated with an exponential sinusoid.
+    Generate a complex tone frequency modulated with an exponential sinusoid.
 
     Parameters
     ----------
-    fc : float
-        Carrier frequency in hertz. 
+    F0 : float
+        Fundamental aarrier frequency in hertz.
+    lowHarm: int
+        Lowest harmonic number.
+    highHarm: int
+        Highest harmonic number.
+    harmPhase: string
+        Harmonic phase relationship. One of 'Sine', 'Cosine', or 'Alternating'.
     fm : float
         Modulation frequency in Hz.
     deltaCams : float
@@ -529,6 +542,9 @@ def camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=5, delt
                 startPhase = 0
             else:
                 startPhase = pi/2
+        else:
+            raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one of 'Sine', 'Cosine', or 'Alternating'")
+        
         if i == lowHarm:
             snd = camSinFMTone(F0*i, fm, deltaCams, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel)
         else:
@@ -608,6 +624,8 @@ def camSinFMTone(fc=450, fm=5, deltaCams=1, fmPhase=pi, startPhase=0, level=60, 
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
         snd[:, 1] = snd[:, 0]
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left', or 'Both'")
        
 
     return snd
@@ -669,6 +687,8 @@ def chirp(freqStart=440, ftype="linear", rate=500, level=60, duration=980, phase
         frequency = freqStart*( ( ( (k**timeAll) - 1) /log(k) + phase) )
     elif ftype == "linear":
         frequency = freqStart*timeAll + (rate/2)*timeAll**2 + phase
+    else:
+        raise ValueError("Invalid ftype argument. 'ftype' must be either 'linear', or 'exponential'")
 
 
     snd = zeros((nTot, 2))
@@ -685,7 +705,9 @@ def chirp(freqStart=440, ftype="linear", rate=500, level=60, duration=980, phase
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency[0:nRamp] )
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(2*pi*frequency[nRamp:nRamp+nSamples])
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency[nRamp+nSamples:len(timeAll)])
-        snd[:, 1] = snd[:, 0] 
+        snd[:, 1] = snd[:, 0]
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left', or 'Both'")
 
     return snd
 
@@ -806,6 +828,8 @@ def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, lev
                     toneOdd = toneOdd + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
                 else:
                     toneEven = toneEven + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
+    else:
+        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
 
 
     if channel == "Right":
@@ -835,6 +859,8 @@ def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, lev
         snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * toneEven[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0]        = amp * toneEven[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneEven[nRamp+nSamples:len(timeAll)]
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left', 'Both', 'Odd Left', or 'Odd Right'")
         
 
     return snd
@@ -921,6 +947,8 @@ def complexToneParallel(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretc
                     thisChan = "Right"
                 elif channel == "Odd Right":
                     thisChan = "Left"
+        else:
+            raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left', 'Both', 'Odd Right', or 'Odd Left'")
         #Select phase
         if harmPhase == "Sine":
             thisPhase = 0
@@ -935,6 +963,8 @@ def complexToneParallel(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretc
             thisPhase = -pi * i * (i - 1) / highHarm
         elif harmPhase == "Random":
             thisPhase =  numpy.random.random() * 2 * pi
+        else:
+            raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
                 
         pool.apply_async(pureTone, (F0*i+stretchHz, thisPhase, level, duration, ramp, thisChan, fs, maxLevel), callback=tn.append)
 
@@ -1115,6 +1145,9 @@ def dichoticNoiseFromSin(F0=300, lowHarm=1, highHarm=3, compLevel=30, narrowBand
         noiseBandwidth = 1200*log2(highFreq/lowFreq) #in cents
     elif distanceUnit == 'ERB':
         noiseBandwidth = ERBDistance(lowFreq, highFreq)
+    else:
+        raise ValueError("Invalid 'distanceUnit' argument. 'distanceUnit' must be one 'Hz', 'Cent', or 'ERB'")
+    
     nComponents = int(floor(noiseBandwidth/compSpacing))
     
     amp = 10**((compLevel - maxLevel) / 20)
@@ -1162,6 +1195,8 @@ def dichoticNoiseFromSin(F0=300, lowHarm=1, highHarm=3, compLevel=30, narrowBand
                 foo = where(freqs>hi)
                 thisFreqsToShift = numpy.append(thisFreqsToShift, foo)
             freqsToShift = numpy.append(freqsToShift, thisFreqsToShift)
+        else:
+            raise ValueError("Invalid 'phaseRelationship' argument. 'phaseRelationship must be either 'NoSpi', or 'NpiSo'")
 
     amps = numpy.repeat(amp, nComponents)
     amps[freqsToShift] = amp2
@@ -1173,7 +1208,7 @@ def dichoticNoiseFromSin(F0=300, lowHarm=1, highHarm=3, compLevel=30, narrowBand
     if dichoticDifference == "IPD Stepped":
         for i in range(0,len(freqsToShift)):
             sinArrayLeft[freqsToShift[i],] =  amp2* sin(2*pi*freqs[freqsToShift[i]] * timeAll + (phasesR[freqsToShift[i]]+dichoticDifferenceValue))
-    if dichoticDifference == "IPD Random":
+    elif dichoticDifference == "IPD Random":
         phasesL = copy.copy(phasesR)
         phasesL[freqsToShift] = phasesL[freqsToShift] + numpy.random.uniform(0, dichoticDifferenceValue, len(phasesL[freqsToShift]))
         for i in range(0,len(freqsToShift)):
@@ -1190,6 +1225,8 @@ def dichoticNoiseFromSin(F0=300, lowHarm=1, highHarm=3, compLevel=30, narrowBand
         elif dichoticDifference == "ILD Right":
             for i in range(0,len(freqsToShift)):
                 sinArrayRight[freqsToShift[i],]  = amp3* sin(2*pi*freqs[freqsToShift[i]] * timeAll + phasesR[freqsToShift[i]])
+    else:
+        raise ValueError("Invalid 'dichoticDifference' argument. 'dichoticDifference' must be one of 'IPD Stepped', 'IPD Random', 'ITD', 'IDL Right', or 'IDL Left'")
 
     snd[:,0] = sum(sinArrayRight,0)
     snd[:,1] = sum(sinArrayLeft,0)
@@ -1318,6 +1355,8 @@ def expAMNoise(fc=150, fm=2.5, deltaCents=1200, fmPhase=pi, AMDepth=1,
         snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(ang[0:nRamp])) * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(ang[nRamp:nRamp+nSamples])) * scaled_noise[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 0] = amp * (1 + AMDepth*sin(ang[nRamp+nSamples:len(timeAll)])) * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left', or 'Both'")
 
     return snd
 
@@ -1375,6 +1414,8 @@ def expSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, del
                 startPhase = 0
             else:
                 startPhase = pi/2
+        else:
+            raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one of 'Sine', 'Cosine', or 'Alternating'")
         if i == lowHarm:
             snd = expSinFMTone(F0*i, fm, deltaCents, fmPhase, startPhase, level, duration, ramp, channel, fs, maxLevel)
         else:
@@ -1454,6 +1495,8 @@ def expSinFMTone(fc=450, fm=5, deltaCents=300, fmPhase=pi, startPhase=0, level=6
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
         snd[:, 1] = snd[:, 0]
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left', or 'Both'")
        
 
     return snd
@@ -1679,6 +1722,8 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
                     toneEven[fmStartPnt:fmStartPnt+nFMSamples] = toneEven[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)) + phase)
                     phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                     toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2 + phase)
+    else:
+        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
             
 
     #numpy.savetxt('ptone.txt', tone)
@@ -1726,6 +1771,8 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
         snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * toneEven[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0]        = amp * toneEven[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneEven[nRamp+nSamples:nTot]
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left', or 'Both', 'Odd Right', or Odd Left'")
         
 
     return snd
@@ -1895,6 +1942,8 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
                         toneOdd = toneOdd + sin(ang)
                     else:
                         toneEven = toneEven + sin(ang)
+            else:
+                raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
 
 
     #level correction --------------
@@ -1941,6 +1990,8 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
         snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * toneEven[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0]        = amp * toneEven[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneEven[nRamp+nSamples:nTot]
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left', 'Both', 'Odd Right', or 'Odd Left'")
         
 
     return snd
@@ -2013,6 +2064,8 @@ def FMTone(fc=1000, fm=40, mi=1, phase=0, level=60, duration=180, ramp=10, chann
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(2*pi*fc * timeAll[nRamp:nRamp+nSamples] +mi*sin(2*pi*fm * timeAll[nRamp:nRamp+nSamples] + phase))
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fc * timeAll[nRamp+nSamples:len(timeAll)]+mi*sin(2*pi*fm * timeAll[nRamp+nSamples:len(timeAll)] + phase))
         snd[:, 1] = snd[:, 0]
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left', or 'Both'")
        
 
     return snd
@@ -2205,7 +2258,7 @@ def getRMS(sig, channel="each"):
     """
 
     if type(channel) not in [str, int]:
-        raise TypeError("Channel must be either a string or an integer")
+        raise ValueError("Channel must be either a string or an integer")
     if type(channel) == str:
         if channel == "each":
             nChans = sig.shape[1]
@@ -2215,7 +2268,7 @@ def getRMS(sig, channel="each"):
         elif channel == "all":
             rms = sqrt(mean(sig*sig))
         else:
-            raise TypeError("If 'channel' is a string it must be either 'each' or 'all'")
+            raise ValueError("If 'channel' is a string it must be either 'each' or 'all'")
     elif type(channel) == int:
         rms = sqrt(mean(sig[:,channel]*sig[:,channel]))
     return rms
@@ -2336,6 +2389,9 @@ def harmComplFromNarrowbandNoise(F0=440, lowHarm=1, highHarm=8, level=40, bandwi
     elif channel == "Odd Left" or channel == "Odd Right":
         toneOdd = zeros((nTot, 2))
         toneEven = zeros((nTot, 2))
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left', 'Both', 'Odd Right', or 'Odd Left'")
+    
 
     cfs = arange(lowHarm, highHarm+1)*F0 #center frequencies
     cfs = cfs + stretchHz
@@ -2348,6 +2404,8 @@ def harmComplFromNarrowbandNoise(F0=440, lowHarm=1, highHarm=8, level=40, bandwi
     elif bandwidthUnit == "ERB":
         fLo = freqFromERBInterval(cfs, -bandwidth/2)
         fHi = freqFromERBInterval(cfs, bandwidth/2)
+    else:
+        raise ValueError("Invalid 'bandwidthUnit' argument. 'bandwidthUnit' must be one of 'Hz', 'Cent', or 'ERB'")
 
     for i in range(len(fLo)):
         if channel == "Right" or channel == "Left" or channel == "Both":
@@ -2368,7 +2426,7 @@ def harmComplFromNarrowbandNoise(F0=440, lowHarm=1, highHarm=8, level=40, bandwi
     elif channel == "Odd Right":
      snd[:,1] = toneOdd[:,0]
      snd[:,0] = toneEven[:,0]
-    
+  
     return snd
 
 
@@ -2540,6 +2598,8 @@ def ITDShift(sig, f1, f2, ITD, channel, fs):
         x = fft(sig[:,0], fftPoints)
     elif channel == "Right":
         x = fft(sig[:,1], fftPoints)
+    else:
+        raise ValueError("Invalid channel argument. Channel must either 'Right', or 'Left'")
     
     x1 = x[p1Start:p1End] #first half of the FFT
     x2 = x[p2Start:p2End] #second half of the FFT
@@ -2769,6 +2829,9 @@ def makeHugginsPitch(F0=300, lowHarm=1, highHarm=3, spectrumLevel=45, bandwidth=
     
     """
 
+    if bandwidthUnit not in ["Hz", "Cent", "ERB"]:
+        raise ValueError("Invalid 'bandwidthUnit' argument. 'bandwidthUnit' must be one of 'Hz', 'Cent', 'ERB'")
+    
     stretchHz = (F0*stretch)/100
     sDuration = duration / 1000 #convert from ms to sec
     sRamp = ramp / 1000
@@ -2794,7 +2857,7 @@ def makeHugginsPitch(F0=300, lowHarm=1, highHarm=3, spectrumLevel=45, bandwidth=
         elif bandwidthUnit == "ERB":
             shiftLo = freqFromERBInterval(cfs, -bandwidth/2)
             shiftHi = freqFromERBInterval(cfs, bandwidth/2)
-    if phaseRelationship == "NpiSo":
+    elif phaseRelationship == "NpiSo":
         nHarms = len(cfs)
         shiftLo = zeros(nHarms+1)
         shiftHi = zeros(nHarms+1)
@@ -2810,6 +2873,8 @@ def makeHugginsPitch(F0=300, lowHarm=1, highHarm=3, spectrumLevel=45, bandwidth=
         elif bandwidthUnit == "ERB":
             shiftLo[1:len(shiftLo)] = freqFromERBInterval(cfs, bandwidth/2)
             shiftHi[0:len(shiftHi)-1] = freqFromERBInterval(cfs, -bandwidth/2)
+    else:
+        raise ValueError("Invalid 'phaseRelationship' argument. 'phaseRelationship' must be either 'NoSpi', or 'NpiSo'")
 
     for i in range(len(shiftLo)):
         if dichoticDifference == "IPD Linear":
@@ -2820,6 +2885,8 @@ def makeHugginsPitch(F0=300, lowHarm=1, highHarm=3, spectrumLevel=45, bandwidth=
             tone = phaseShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, 'Random', "Left", fs)
         elif dichoticDifference == "ITD":
             tone = ITDShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, "Left", fs)
+        else:
+            raise ValueError("Invalid 'dichoticDifference' argument. 'dichoticDifference' must be one of 'IPD Linear, 'IPD Stepped', 'IPD Random', or 'ITD'")
     
     tone = gate(ramp, tone, fs)    
     snd = tone
@@ -2849,7 +2916,7 @@ def makeIRN(delay=1/440, gain=1, iterations=6, configuration="Add Same", spectru
     ramp : float
         Duration of the onset and offset ramps in milliseconds.
         The total duration of the sound will be duration+ramp*2.
-    channel : string ('Right', 'Left' or 'Both')
+    channel : string ('Right', 'Left', 'Both', or 'Dichotic')
         Channel in which the noise will be generated.
     fs : int
         Sampling frequency in Hz.
@@ -2874,6 +2941,8 @@ def makeIRN(delay=1/440, gain=1, iterations=6, configuration="Add Same", spectru
         snd = delayAdd(snd, delay, gain, iterations, configuration, fs)
     elif configuration == "Add Original":
         snd =  delayAdd(snd, delay, gain, iterations, configuration, fs)
+    else:
+        raise ValueError("Invalid 'configuration' argument. 'configuration' must be one of 'Add Same', or 'Add Original'")
 
     snd = gate(ramp, snd, fs)
         
@@ -3080,7 +3149,7 @@ def phaseShift(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
         phase-shifted in hertz.
     phaseShift : float
         The amount of phase shift in radians. 
-    phaseShiftType : string ('Linear', 'Step')
+    phaseShiftType : string ('Linear', 'Step', 'Random')
         If 'Linear' the phase changes progressively
         on a linear Hz scale from X to X+'phaseShift' from f1 to f2.
         If 'Stepped' 'phaseShift' is added as a constant to the
@@ -3125,6 +3194,8 @@ def phaseShift(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
     elif phaseShiftType == "Random":
         phaseShiftArray1 = numpy.random.uniform(0, phaseShift, len(sh1))
         phaseShiftArray2 = -phaseShiftArray1[::-1]
+    else:
+        raise ValueError("Invalid 'phaseShiftType' argument. 'phaseShiftType' must be one of 'Linear', 'Step', or 'Random'")
 
     if channel == "Left":
         x = fft(sig[:,0], fftPoints)
@@ -3180,6 +3251,8 @@ def phaseShift(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
         x = concatenate((x1, x2))
         x = real(ifft(x))
         snd[:,1] = x[0:nSamples]
+    else:
+        raise ValueError("Invalid channel argument. Channel must one of 'Right', 'Left', or 'Both'")
 
     return snd
 
@@ -3255,6 +3328,9 @@ def pinkNoiseFromSin(compLevel=23, lowCmp=100, highCmp=1000, spacing=20, duratio
     elif channel == "Both":
         snd[:,1] = sum(sinArray,0)
         snd[:,0] = snd[:,1]
+    else:
+        raise ValueError("Invalid channel argument. Channel must one of 'Right', 'Left', or 'Both'")
+
     snd = gate(ramp, snd, fs)    
     return snd
 
@@ -3338,6 +3414,9 @@ def pinkNoiseFromSin2(compLevel=23, lowCmp=100, highCmp=1000, spacing=20, durati
     elif channel == "Both":
         snd[:,1] = sum(sinMatrix,0)
         snd[:,0] = snd[:,1]
+    else:
+        raise ValueError("Invalid channel argument. Channel must one of 'Right', 'Left', or 'Both'")
+
     snd = gate(ramp, snd, fs)    
     return snd
 
@@ -3380,9 +3459,6 @@ def pureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, channel="
     (9600, 2)
     
     """
-
-    if channel not in ["Right", "Left", "Both"]:
-        raise TypeError("Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'")
     
     amp = 10**((level - maxLevel) / 20.)
     duration = duration / 1000 #convert from ms to sec
@@ -3409,6 +3485,9 @@ def pureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, channel="
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:len(timeAll)] + phase)
         snd[:, 1] = snd[:, 0]
+    else:
+        raise ValueError("Invalid channel argument. Channel must one of 'Right', 'Left', or 'Both'")
+
        
 
     return snd
@@ -3480,6 +3559,9 @@ def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, 
     
     """
 
+    if channel not in ["Right", "Left", "Both"]:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'")
+
     duration = duration/1000 #convert from ms to sec
     ramp = ramp/1000
 
@@ -3522,6 +3604,8 @@ def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, 
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * noise[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0] = amp * noise[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * noise[nRamp+nSamples:len(timeAll)]
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'")
 
     return snd
 
