@@ -2811,12 +2811,12 @@ class pychControlWin(QMainWindow):
         for f in range(self.prm['nDirChoosers']):
             self.dirChooser[f] = QLineEdit()
             self.dirChooser[f].setText(str(self.prm['dirChooser'][f]))
-            self.pw_prm_sizer_0.addWidget(self.dirChooser[f], self.prm['nFields']+f, 2)
+            self.pw_prm_sizer_0.addWidget(self.dirChooser[f], self.prm['nFields']+self.prm['nFileChoosers']+f, 2)
             self.dirChooserButton[f] =  QPushButton(self.tr(self.prm['dirChooserButton'][f]), self)
             self.dirChooserButton[f].clicked.connect(self.dirChooserButtonClicked)
-            self.pw_prm_sizer_0.addWidget(self.dirChooserButton[f], self.prm['nFields']+f, 1)
+            self.pw_prm_sizer_0.addWidget(self.dirChooserButton[f], self.prm['nFields']+self.prm['nFileChoosers']+f, 1)
             self.dirChooserCheckBox[f] = QCheckBox()
-            self.pw_prm_sizer_0.addWidget(self.dirChooserCheckBox[f], self.prm['nFields']+f, 0)
+            self.pw_prm_sizer_0.addWidget(self.dirChooserCheckBox[f], self.prm['nFields']+self.prm['nFileChoosers']+f, 0)
         
         self.prevParadigm = self.currParadigm
         self.currParadigm = paradigm 

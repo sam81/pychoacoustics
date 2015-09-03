@@ -6,5 +6,5 @@ cd ../pychoacoustics/doc
 cd ../../prep-release
 
 python3 do_pyside.py
-./mkupdate.sh
+./mkupdate_pyqt5.sh
 ./distbuild.sh 
