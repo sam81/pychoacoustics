@@ -2750,6 +2750,15 @@ class pychControlWin(QMainWindow):
             self.prm['fileChooser'] = []
             self.prm['fileChooserButton'] = []
         self.prm['nFileChoosers'] = len(self.prm['fileChooser'])
+
+        if 'dirChooser' in tmp:
+            self.prm['dirChooser'] = tmp['dirChooser']
+            self.prm['dirChooserButton'] = tmp['dirChooserButton']
+        else:
+            self.prm['dirChooser'] = []
+            self.prm['dirChooserButton'] = []
+        self.prm['nDirChoosers'] = len(self.prm['dirChooser'])
+        
         # SET UP TEXT FIELDS
         self.field = list(range(self.prm['nFields']))
         self.fieldLabel = list(range(self.prm['nFields']))
@@ -2794,6 +2803,20 @@ class pychControlWin(QMainWindow):
             self.pw_prm_sizer_0.addWidget(self.fileChooserButton[f], self.prm['nFields']+f, 1)
             self.fileChooserCheckBox[f] = QCheckBox()
             self.pw_prm_sizer_0.addWidget(self.fileChooserCheckBox[f], self.prm['nFields']+f, 0)
+
+        #SET UP DIR CHOOSERS
+        self.dirChooser = list(range(self.prm['nDirChoosers']))
+        self.dirChooserButton = list(range(self.prm['nDirChoosers']))
+        self.dirChooserCheckBox = list(range(self.prm['nDirChoosers']))
+        for f in range(self.prm['nDirChoosers']):
+            self.dirChooser[f] = QLineEdit()
+            self.dirChooser[f].setText(str(self.prm['dirChooser'][f]))
+            self.pw_prm_sizer_0.addWidget(self.dirChooser[f], self.prm['nFields']+f, 2)
+            self.dirChooserButton[f] =  QPushButton(self.tr(self.prm['dirChooserButton'][f]), self)
+            self.dirChooserButton[f].clicked.connect(self.dirChooserButtonClicked)
+            self.pw_prm_sizer_0.addWidget(self.dirChooserButton[f], self.prm['nFields']+f, 1)
+            self.dirChooserCheckBox[f] = QCheckBox()
+            self.pw_prm_sizer_0.addWidget(self.dirChooserCheckBox[f], self.prm['nFields']+f, 0)
         
         self.prevParadigm = self.currParadigm
         self.currParadigm = paradigm 
@@ -2839,6 +2862,13 @@ class pychControlWin(QMainWindow):
                 self.fileChooserButton[f].setParent(None)
                 self.pw_prm_sizer_0.removeWidget(self.fileChooserCheckBox[f])
                 self.fileChooserCheckBox[f].setParent(None)
+            for f in range(len(self.dirChooser)):
+                self.pw_prm_sizer_0.removeWidget(self.dirChooser[f])
+                self.dirChooser[f].setParent(None)
+                self.pw_prm_sizer_0.removeWidget(self.dirChooserButton[f])
+                self.dirChooserButton[f].setParent(None)
+                self.pw_prm_sizer_0.removeWidget(self.dirChooserCheckBox[f])
+                self.dirChooserCheckBox[f].setParent(None)
                 
     def updateParametersWin(self):
         #if the next block is already stored show it, otherwise copy the values from the previous block
@@ -2880,6 +2910,9 @@ class pychControlWin(QMainWindow):
         for f in range(len(self.fileChooser)):
             self.fileChooser[f].setText(self.prm[block]['fileChooser'][f])
             self.fileChooserCheckBox[f].setChecked(self.prm[block]['fileChooserCheckBox'][f])
+        for f in range(len(self.dirChooser)):
+            self.dirChooser[f].setText(self.prm[block]['dirChooser'][f])
+            self.dirChooserCheckBox[f].setChecked(self.prm[block]['dirChooserCheckBox'][f])
 
         for f in range(len(self.paradigmFieldList)):
             self.paradigmFieldList[f].setText(self.currLocale.toString(self.prm[block]['paradigmField'][f], precision=self.prm["pref"]["general"]["precision"]))
@@ -3016,6 +3049,9 @@ class pychControlWin(QMainWindow):
         self.prm[currBlock]['fileChooser'] = list(range(self.prm['nFileChoosers']))
         self.prm[currBlock]['fileChooserButton'] = list(range(self.prm['nFileChoosers']))
         self.prm[currBlock]['fileChooserCheckBox'] = list(range(self.prm['nFileChoosers']))
+        self.prm[currBlock]['dirChooser'] = list(range(self.prm['nDirChoosers']))
+        self.prm[currBlock]['dirChooserButton'] = list(range(self.prm['nDirChoosers']))
+        self.prm[currBlock]['dirChooserCheckBox'] = list(range(self.prm['nDirChoosers']))
         self.prm[currBlock]['paradigmChooser'] = []
         self.prm[currBlock]['paradigmChooserCheckBox'] = []
         self.prm[currBlock]['paradigmField'] = []
@@ -3086,6 +3122,11 @@ class pychControlWin(QMainWindow):
             self.prm[currBlock]['fileChooser'][f] = self.fileChooser[f].text()
             self.prm[currBlock]['fileChooserButton'][f] =  self.fileChooserButton[f].text()
             self.prm[currBlock]['fileChooserCheckBox'][f] =  self.fileChooserCheckBox[f].isChecked()
+
+        for f in range(self.prm['nDirChoosers']):
+            self.prm[currBlock]['dirChooser'][f] = self.dirChooser[f].text()
+            self.prm[currBlock]['dirChooserButton'][f] =  self.dirChooserButton[f].text()
+            self.prm[currBlock]['dirChooserCheckBox'][f] =  self.dirChooserCheckBox[f].isChecked()
 
         for i in range(len(self.paradigmFieldList)):
             self.prm[currBlock]['paradigmField'].append(self.currLocale.toDouble(self.paradigmFieldList[i].text())[0])
@@ -3216,6 +3257,8 @@ class pychControlWin(QMainWindow):
             tmpPrm[currBlock]['chooserCheckBox'] = list(range(tmpPrm['nChoosers']))
             tmpPrm[currBlock]['fileChooser'] = list(range(tmpPrm['nFileChoosers']))
             tmpPrm[currBlock]['fileChooserCheckBox'] = list(range(tmpPrm['nFileChoosers']))
+            tmpPrm[currBlock]['dirChooser'] = list(range(tmpPrm['nDirChoosers']))
+            tmpPrm[currBlock]['dirChooserCheckBox'] = list(range(tmpPrm['nDirChoosers']))
             tmpPrm[currBlock]['paradigmChooser'] = []
             tmpPrm[currBlock]['paradigmField'] = []
             tmpPrm[currBlock]['paradigmChooserCheckBox'] = []
@@ -3290,6 +3333,10 @@ class pychControlWin(QMainWindow):
             for f in range(tmpPrm['nFileChoosers']):
                 tmpPrm[currBlock]['fileChooser'][f] = self.fileChooser[f].text()
                 tmpPrm[currBlock]['fileChooserCheckBox'][f] = self.fileChooserCheckBox[f].isChecked()
+
+            for f in range(tmpPrm['nDirChoosers']):
+                tmpPrm[currBlock]['dirChooser'][f] = self.dirChooser[f].text()
+                tmpPrm[currBlock]['dirChooserCheckBox'][f] = self.dirChooserCheckBox[f].isChecked()
             
             for i in range(len(self.paradigmFieldList)):
                 tmpPrm[currBlock]['paradigmField'].append(self.currLocale.toDouble(self.paradigmFieldList[i].text())[0])
@@ -3307,11 +3354,15 @@ class pychControlWin(QMainWindow):
                 prmChanged = True
             if tmpPrm['b'+str(i+1)]['fileChooser'] != self.prm['b'+str(i+1)]['fileChooser']:
                 prmChanged = True
+            if tmpPrm['b'+str(i+1)]['dirChooser'] != self.prm['b'+str(i+1)]['dirChooser']:
+                prmChanged = True
             if tmpPrm['b'+str(i+1)]['fieldCheckBox'] != self.prm['b'+str(i+1)]['fieldCheckBox']:
                 prmChanged = True
             if tmpPrm['b'+str(i+1)]['chooserCheckBox'] != self.prm['b'+str(i+1)]['chooserCheckBox']:
                 prmChanged = True
             if tmpPrm['b'+str(i+1)]['fileChooserCheckBox'] != self.prm['b'+str(i+1)]['fileChooserCheckBox']:
+                prmChanged = True
+            if tmpPrm['b'+str(i+1)]['dirChooserCheckBox'] != self.prm['b'+str(i+1)]['dirChooserCheckBox']:
                 prmChanged = True
             if tmpPrm['b'+str(i+1)]['paradigmField'] != self.prm['b'+str(i+1)]['paradigmField']:
                 prmChanged = True
@@ -3603,6 +3654,8 @@ class pychControlWin(QMainWindow):
             if allLines[i].strip() == '....':
                 foo['b'+str(blockNumber)]['startFileChooser'] = i+1
             if allLines[i].strip() == '.....':
+                foo['b'+str(blockNumber)]['startDirChooser'] = i+1
+            if allLines[i].strip() == '......':
                 foo['b'+str(blockNumber)]['startField'] = i+1
             if allLines[i] == ('+++++++++++++++++++++++++++++++++++++++++++++++++++++++\n'):
                 foo['b'+str(blockNumber)]['endField'] = i
@@ -3625,6 +3678,9 @@ class pychControlWin(QMainWindow):
             tmp['b'+str(blockNumber)]['fileChooser'] = []
             tmp['b'+str(blockNumber)]['fileChooserCheckBox'] = []
             tmp['b'+str(blockNumber)]['fileChooserButton'] = []
+            tmp['b'+str(blockNumber)]['dirChooser'] = []
+            tmp['b'+str(blockNumber)]['dirChooserCheckBox'] = []
+            tmp['b'+str(blockNumber)]['dirChooserButton'] = []
             for i in range(foo['b'+str(blockNumber)]['startParadigmField'] - foo['b'+str(blockNumber)]['startParadigmChooser'] -1):
                 tmp['b'+str(blockNumber)]['paradigmChooser'].append(allLines[foo['b'+str(blockNumber)]['startParadigmChooser']+i].split(':')[1].strip())
                 tmp['b'+str(blockNumber)]['paradigmChooserLabel'].append(allLines[foo['b'+str(blockNumber)]['startParadigmChooser']+i].split(':')[0].strip()+':')
@@ -3640,10 +3696,15 @@ class pychControlWin(QMainWindow):
                 tmp['b'+str(blockNumber)]['chooserLabel'].append(allLines[foo['b'+str(blockNumber)]['startChooser']+i].split(':')[0].strip()+':')
                 tmp['b'+str(blockNumber)]['chooserCheckBox'].append(strToBoolean(allLines[foo['b'+str(blockNumber)]['startChooser']+i].split(':')[2].strip()))
 
-            for i in range(foo['b'+str(blockNumber)]['startField'] - foo['b'+str(blockNumber)]['startFileChooser'] -1):
+            for i in range(foo['b'+str(blockNumber)]['startDirChooser'] - foo['b'+str(blockNumber)]['startFileChooser'] -1):
                 tmp['b'+str(blockNumber)]['fileChooser'].append(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(':')[1].strip())
                 tmp['b'+str(blockNumber)]['fileChooserButton'].append(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(':')[0].strip())#+':')
                 tmp['b'+str(blockNumber)]['fileChooserCheckBox'].append(strToBoolean(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(':')[2].strip()))
+
+            for i in range(foo['b'+str(blockNumber)]['startField'] - foo['b'+str(blockNumber)]['startDirChooser'] -1):
+                tmp['b'+str(blockNumber)]['dirChooser'].append(allLines[foo['b'+str(blockNumber)]['startDirChooser']+i].split(':')[1].strip())
+                tmp['b'+str(blockNumber)]['dirChooserButton'].append(allLines[foo['b'+str(blockNumber)]['startDirChooser']+i].split(':')[0].strip())#+':')
+                tmp['b'+str(blockNumber)]['dirChooserCheckBox'].append(strToBoolean(allLines[foo['b'+str(blockNumber)]['startDirChooser']+i].split(':')[2].strip()))
 
             for i in range(foo['b'+str(blockNumber)]['endField'] - foo['b'+str(blockNumber)]['startField'] ):
                 tmp['b'+str(blockNumber)]['field'].append(self.currLocale.toDouble(allLines[foo['b'+str(blockNumber)]['startField']+i].split(':')[1].strip())[0])
@@ -3780,6 +3841,9 @@ class pychControlWin(QMainWindow):
             for k in range(len(self.prm[currBlock]['fileChooser'])):
                 fName.write(self.prm[currBlock]['fileChooserButton'][k] +': ' + self.prm[currBlock]['fileChooser'][k] + ' :' + str(self.prm[currBlock]['fileChooserCheckBox'][k]) + '\n')
             fName.write('.....\n')
+            for k in range(len(self.prm[currBlock]['dirChooser'])):
+                fName.write(self.prm[currBlock]['dirChooserButton'][k] +': ' + self.prm[currBlock]['dirChooser'][k] + ' :' + str(self.prm[currBlock]['dirChooserCheckBox'][k]) + '\n')
+            fName.write('......\n')
             for k in range(len(self.prm[currBlock]['field'])):
                 fName.write(self.prm[currBlock]['fieldLabel'][k] + ': ' + self.currLocale.toString(self.prm[currBlock]['field'][k], precision=self.prm["pref"]["general"]["precision"]) + ' :' + str(self.prm[currBlock]['fieldCheckBox'][k]) + '\n')
             fName.write('+++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n')
@@ -4020,6 +4084,7 @@ class pychControlWin(QMainWindow):
         self.fieldsToHide = []; self.fieldsToShow = []
         self.choosersToHide = []; self.choosersToShow = [];
         self.fileChoosersToHide = []; self.fileChoosersToShow = [];
+        self.dirChoosersToHide = []; self.dirChoosersToShow = [];
 
         execString = self.prm[self.currExp]['execString']
 
@@ -4060,6 +4125,14 @@ class pychControlWin(QMainWindow):
                 self.fileChooser[self.fileChoosersToHide[i]].show()
                 self.fileChooserButton[self.fileChoosersToHide[i]].show()
                 self.fileChooserCheckBox[self.fileChoosersToHide[i]].show()
+            for i in range(len(self.dirChoosersToHide)):
+                self.dirChooser[self.dirChoosersToHide[i]].hide()
+                self.dirChooserButton[self.dirChoosersToHide[i]].hide()
+                self.dirChooserCheckBox[self.dirChoosersToHide[i]].hide()
+            for i in range(len(self.dirChoosersToShow)):
+                self.dirChooser[self.dirChoosersToHide[i]].show()
+                self.dirChooserButton[self.dirChoosersToHide[i]].show()
+                self.dirChooserCheckBox[self.dirChoosersToHide[i]].show()
 
     def fileChooserButtonClicked(self):
         sender = self.sender()
@@ -4071,6 +4144,15 @@ class pychControlWin(QMainWindow):
                 lbls.append(self.fileChooserButton[i].text())
             self.fileChooser[lbls.index(sender.text())].setText(fName)
         #print(sender.text())
+    def dirChooserButtonClicked(self):
+        sender = self.sender()
+        fName = QFileDialog.getExistingDirectory()#QFileDialog.getOpenFileName(self, self.tr("Choose directory"), '')[0]
+        lbls = []
+ 
+        if len(fName) > 0: #if the user didn't press cancel
+            for i in range(self.prm['nDirChoosers']):
+                lbls.append(self.dirChooserButton[i].text())
+            self.dirChooser[lbls.index(sender.text())].setText(fName)
         
     def onEditPref(self):
         dialog = preferencesDialog(self)

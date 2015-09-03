@@ -21,7 +21,7 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
-    from PyQt4.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
+    from PyQt4.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QIntValidator, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
     QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
     QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
     QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
@@ -33,7 +33,7 @@ if pyqtversion == 4:
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
-    from PySide.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
+    from PySide.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QIntValidator, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
     try:
         import matplotlib
         matplotlib_available = True
@@ -43,7 +43,7 @@ elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
     from PyQt5.QtWidgets import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
-    from PyQt5.QtGui import QPainter
+    from PyQt5.QtGui import QIntValidator, QPainter
     matplotlib_available = False
     
 from numpy.fft import rfft, irfft, fft, ifft
@@ -66,7 +66,6 @@ from .utils_general import*
 from .utils_process_results import*
 from .PSI_method import*
 from .UML_method import*
-
 
 
 try:
@@ -256,6 +255,60 @@ class responseBox(QMainWindow):
                     self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
                     self.responseButton[cnt].setStyleSheet("background-color: " + cols[cl])
                     cnt = cnt+1
+        elif self.parent().currExp == "Digit Triplets Test":
+            self.statusButton.setMaximumSize(screen.width(), screen.height()/15)
+            self.responseLight.setMaximumSize(screen.width(), screen.height()/10)
+            self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+            self.responseLight.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+            cnt = 0
+
+            self.responseButton.append(QPushButton("0", self))
+            self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 1)
+            sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            self.responseButton[cnt].setSizePolicy(sizePolicy)
+            self.responseButton[cnt].setProperty("responseBoxButton", True)
+            self.responseButton[cnt].clicked.connect(self.dialerButtonPressed)
+            self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
+            cnt = cnt+1
+            
+            for rw in range(3):
+                for cl in range(3):
+                    self.responseButton.append(QPushButton(str(cnt), self))
+                    self.responseButtonSizer.addWidget(self.responseButton[cnt], rw, cl)
+                    sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+                    self.responseButton[cnt].setSizePolicy(sizePolicy)
+                    self.responseButton[cnt].setProperty("responseBoxButton", True)
+                    self.responseButton[cnt].clicked.connect(self.dialerButtonPressed)
+                    self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
+                    cnt = cnt+1
+
+            self.responseButton.append(QPushButton("Backspace", self))
+            self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 0)
+            sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            self.responseButton[cnt].setSizePolicy(sizePolicy)
+            self.responseButton[cnt].setProperty("responseBoxButton", True)
+            self.responseButton[cnt].clicked.connect(self.backspaceButtonPressed)
+            self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
+            cnt = cnt+1
+
+
+            
+            self.responseButton.append(QPushButton("Enter", self))
+            self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 2)
+            sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            self.responseButton[cnt].setSizePolicy(sizePolicy)
+            self.responseButton[cnt].setProperty("responseBoxButton", True)
+            self.responseButton[cnt].clicked.connect(self.enterButtonPressed)
+            self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
+
+            self.DTTResponseField = QLineEdit("")
+            self.DTTResponseField.setValidator(QIntValidator(0,999,self))
+            self.responseButtonSizer.addWidget(self.DTTResponseField, 4, 0, 1, 3)
+            self.DTTResponseField.returnPressed.connect(self.enterButtonPressed)
+            self.DTTResponseField.setSizePolicy(sizePolicy)
+            self.DTTResponseField.setStyleSheet("font-size: 40px")
+           
+
         else:
             self.statusButton.setMaximumSize(screen.width(), screen.height())
             self.responseLight.setMaximumSize(screen.width(), screen.height())
@@ -935,7 +988,37 @@ class responseBox(QMainWindow):
             else:
                 self.sortResponse(random.choice(numpy.delete(numpy.arange(self.prm['nAlternatives'])+1, self.correctButton-1)))
        #==================================================================
-       
+
+    def dialerButtonPressed(self):
+        buttonClicked = self.responseButton.index(self.sender())#+1
+        currText = self.DTTResponseField.text()
+        newText = currText + str(buttonClicked)
+        nDigits = len(newText)
+        if nDigits > 3:
+            newText = newText[0:3]
+        self.DTTResponseField.setText(newText)
+
+    def backspaceButtonPressed(self):
+        self.DTTResponseField.backspace()
+
+    def enterButtonPressed(self):
+        currText = self.DTTResponseField.text()
+        if len(currText) < 3:
+            return
+        else:
+            if currText[0] == currText[1] or currText[0] == currText[2] or currText[1] == currText[2]:
+                ret = QMessageBox.warning(self, self.tr("Warning"),
+                                          self.tr("Repeated digits are not allowed. Please, edit your response."),
+                                          QMessageBox.Ok)
+                return
+                
+            self.DTTResponseField.setText("")
+            
+        self.sortResponse(int(currText))
+
+
+        
+
     def sortResponseButton(self):
         buttonClicked = self.responseButton.index(self.sender())+1
         self.sortResponse(buttonClicked)
@@ -968,12 +1051,17 @@ class responseBox(QMainWindow):
         return 
        
     def sortResponse(self, buttonClicked):
-        
         currBlock = 'b'+ str(self.prm['currentBlock'])
         if buttonClicked == 0: #0 is not a response option
             return
-        if buttonClicked > self.prm['nAlternatives'] or self.statusButton.text() != self.prm['rbTrans'].translate("rb", "Running"): #self.tr("Running"): #1) do not accept responses outside the possible alternatives and 2) if the block is not running (like wait or finished)
-            return
+        if self.parent().currExp == "Digit Triplets Test":
+            if buttonClicked < 10:
+                return
+            if self.statusButton.text() != self.prm['rbTrans'].translate("rb", "Running"):
+                return
+        else:
+            if buttonClicked > self.prm['nAlternatives'] or self.statusButton.text() != self.prm['rbTrans'].translate("rb", "Running"): #self.tr("Running"): #1) do not accept responses outside the possible alternatives and 2) if the block is not running (like wait or finished)
+                return
         if buttonClicked < (self.prm['nAlternatives']+1) and self.prm['trialRunning'] == True: #1) can't remember why I put the first condition 2) do not accept responses while the trial is running
             return
         if self.prm['sortingResponse'] == True: #Do not accept other responses while processing the current one
@@ -3492,6 +3580,9 @@ class responseBox(QMainWindow):
             for j in range(len(self.prm[currBlock]['fileChooser'])):
                 if j not in self.parent().fileChoosersToHide:
                     thisFile.write(self.parent().fileChooserButton[j].text() + ' ' + self.prm[currBlock]['fileChooser'][j] + '\n')
+            for j in range(len(self.prm[currBlock]['dirChooser'])):
+                if j not in self.parent().dirChoosersToHide:
+                    thisFile.write(self.parent().dirChooserButton[j].text() + ' ' + self.prm[currBlock]['dirChooser'][j] + '\n')
             for j in range(len(self.prm[currBlock]['field'])):
                 if j not in self.parent().fieldsToHide and self.parent().fieldLabel[j].text()!= "Random Seed":
                     thisFile.write(self.parent().fieldLabel[j].text() + ':  ' + self.currLocale.toString(self.prm[currBlock]['field'][j]) + '\n')
@@ -3739,6 +3830,9 @@ class responseBox(QMainWindow):
         for i in range(len(self.prm[currBlock]['fileChooserCheckBox'])):
             if self.prm[currBlock]['fileChooserCheckBox'][i] == True:
                 headerToWrite = headerToWrite + self.prm[currBlock]['fileChooserButton'][i] + self.prm['pref']["general"]["csvSeparator"]
+        for i in range(len(self.prm[currBlock]['dirChooserCheckBox'])):
+            if self.prm[currBlock]['dirChooserCheckBox'][i] == True:
+                headerToWrite = headerToWrite + self.prm[currBlock]['dirChooserButton'][i] + self.prm['pref']["general"]["csvSeparator"]
         for i in range(len(self.prm[currBlock]['paradigmFieldCheckBox'])):
             if self.prm[currBlock]['paradigmFieldCheckBox'][i] == True:
                 headerToWrite = headerToWrite + self.prm[currBlock]['paradigmFieldLabel'][i] + self.prm['pref']["general"]["csvSeparator"]
@@ -3872,6 +3966,9 @@ class responseBox(QMainWindow):
         for i in range(len(self.prm[currBlock]['fileChooserCheckBox'])):
             if self.prm[currBlock]['fileChooserCheckBox'][i] == True:
                 headerToWrite = headerToWrite + self.prm[currBlock]['fileChooserButton'][i] + self.prm['pref']["general"]["csvSeparator"]
+        for i in range(len(self.prm[currBlock]['dirChooserCheckBox'])):
+            if self.prm[currBlock]['dirChooserCheckBox'][i] == True:
+                headerToWrite = headerToWrite + self.prm[currBlock]['dirChooserButton'][i] + self.prm['pref']["general"]["csvSeparator"]
         for i in range(len(self.prm[currBlock]['paradigmFieldCheckBox'])):
             if self.prm[currBlock]['paradigmFieldCheckBox'][i] == True:
                 headerToWrite = headerToWrite + self.prm[currBlock]['paradigmFieldLabel'][i] + self.prm['pref']["general"]["csvSeparator"]
@@ -3950,6 +4047,10 @@ class responseBox(QMainWindow):
         for i in range(len(self.prm[currBlock]['fileChooserCheckBox'])):
             if self.prm[currBlock]['fileChooserCheckBox'][i] == True:
                 resLineToWrite = resLineToWrite + self.prm[currBlock]['fileChooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
+
+        for i in range(len(self.prm[currBlock]['dirChooserCheckBox'])):
+            if self.prm[currBlock]['dirChooserCheckBox'][i] == True:
+                resLineToWrite = resLineToWrite + self.prm[currBlock]['dirChooser'][i].split(':')[0] + self.prm['pref']["general"]["csvSeparator"]
 
         for i in range(len(self.prm[currBlock]['paradigmFieldCheckBox'])):
             if self.prm[currBlock]['paradigmFieldCheckBox'][i] == True:
