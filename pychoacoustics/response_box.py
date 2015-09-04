@@ -267,7 +267,7 @@ class responseBox(QMainWindow):
             sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             self.responseButton[cnt].setSizePolicy(sizePolicy)
             self.responseButton[cnt].setProperty("responseBoxButton", True)
-            self.responseButton[cnt].clicked.connect(self.dialerButtonPressed)
+            self.responseButton[cnt].clicked.connect(self.dialerButtonClicked)
             self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
             cnt = cnt+1
             
@@ -278,7 +278,7 @@ class responseBox(QMainWindow):
                     sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
                     self.responseButton[cnt].setSizePolicy(sizePolicy)
                     self.responseButton[cnt].setProperty("responseBoxButton", True)
-                    self.responseButton[cnt].clicked.connect(self.dialerButtonPressed)
+                    self.responseButton[cnt].clicked.connect(self.dialerButtonClicked)
                     self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
                     cnt = cnt+1
 
@@ -989,7 +989,7 @@ class responseBox(QMainWindow):
                 self.sortResponse(random.choice(numpy.delete(numpy.arange(self.prm['nAlternatives'])+1, self.correctButton-1)))
        #==================================================================
 
-    def dialerButtonPressed(self):
+    def dialerButtonClicked(self):
         buttonClicked = self.responseButton.index(self.sender())#+1
         currText = self.DTTResponseField.text()
         newText = currText + str(buttonClicked)
@@ -997,6 +997,14 @@ class responseBox(QMainWindow):
         if nDigits > 3:
             newText = newText[0:3]
         self.DTTResponseField.setText(newText)
+
+    # def dialerButtonPressed(self, buttonClicked):
+    #     currText = self.DTTResponseField.text()
+    #     newText = currText + str(buttonClicked)
+    #     nDigits = len(newText)
+    #     if nDigits > 3:
+    #         newText = newText[0:3]
+    #     self.DTTResponseField.setText(newText)
 
     def backspaceButtonPressed(self):
         self.DTTResponseField.backspace()
