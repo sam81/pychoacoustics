@@ -78,6 +78,123 @@ def dprime_mAFC(Pc, m):
     return dprime
 
 
+
+def dprime_ABX(H, FA, meth):
+    """
+    Compute d' for ABX task from 'hit' and 'false alarm' rates.
+
+    Parameters
+    ----------
+    H : float
+        Hit rate.
+    FA : float
+        False alarms rate.
+    meth : string
+        'diff' for differencing strategy or 'IO' for independent observations strategy.
+
+    Returns
+    -------
+    dprime : float
+        d' value
+
+    Examples
+    --------
+    >>> dp = dprime_ABX(0.7, 0.2, 'IO')
+    >>> dp = dprime_ABX(0.7, 0.2, 'diff')
+
+    """
+
+    if H < 0 or H > 1:
+        raise ValueError("H must be between 0 and 1")
+    if FA < 0 or FA > 1:
+        raise ValueError("FA must be between 0 and 1")
+
+    zdiff = norm.ppf(H) - norm.ppf(FA)
+    pcUnb = norm.cdf(zdiff/2)
+    if pcUnb < 0.5:
+        #raise ValueError("H must be greater than FA")
+        dpsign = -1
+        zdiff = norm.ppf(FA) - norm.ppf(H)
+        pcUnb = norm.cdf(zdiff/2)
+    else:
+        dpsign = 1
+
+        
+    root2 = sqrt(2)
+    if meth == "diff":
+        root6 = sqrt(6)
+        def est_dp2(dp):
+            return pcUnb - norm.cdf(dp/root2) * norm.cdf(dp/root6) - norm.cdf(-dp/root2) * norm.cdf(-dp/root6)
+        try:
+            dprime =  scipy.optimize.brentq(est_dp2, 0, 10)
+        except:
+            dprime = numpy.nan
+    elif meth == "IO":
+        def est_dp2(dp):
+            return pcUnb - norm.cdf(dp/root2) * norm.cdf(dp/2) - norm.cdf(-dp/root2) * norm.cdf(-dp/2)
+        try:
+            dprime =  scipy.optimize.brentq(est_dp2, 0, 10)
+        except:
+            dprime = numpy.nan
+    return dprime*dpsign
+
+def dprime_ABX_from_counts(nCA, nTA, nCB, nTB, meth, corr):
+    """
+    Compute d' for ABX task from counts of correct and total responses.
+
+    Parameters
+    ----------
+    nCA : int
+        Number of correct responses in 'same' trials.
+    nTA : int
+        Total number of 'same' trials.
+    nCB : int
+        Number of correct responses in 'different' trials.
+    nTB : int
+        Total number of 'different' trials.
+    meth : string
+        'diff' for differencing strategy or 'IO' for independent observations strategy.
+    corr : logical
+         if True, apply the correction to avoid hit and false alarm rates of 0 or one.
+
+    Returns
+    -------
+    dprime : float
+        d' value
+
+    Examples
+    --------
+    >>> dp = dprime_ABX(0.7, 0.2, 'IO')
+
+    """
+
+    if nCA > nTA:
+        raise ValueError("nCA must be <= than nTA")
+    if nCB > nTB:
+        raise ValueError("nCB must be <= than nTB")
+    
+    if corr == True:
+        if nCA == nTA:
+            tA = 1 - 1/(2*nTA)
+        elif nCA == 0:
+            tA = 1 / (2*nTA)
+        else:
+            tA = nCA/(nTA)
+
+        if nCB == nTB:
+            tB = 1 - 1/(2*nTB)
+        elif nCB == 0:
+            tB = 1 / (2*nTB)
+        else:
+            tB = nCB/(nTB)
+    else:
+        tA = nCA/nTA
+        tB = nCB/nTB
+
+    return dprime_ABX(H=tA, FA=1-tB, meth=meth)
+
+
+
 def dprime_SD(H, FA, meth):
     """
     Compute d' for one interval same/different task from 'hit' and 'false alarm' rates.

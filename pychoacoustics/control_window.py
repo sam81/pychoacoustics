@@ -1597,6 +1597,7 @@ class pychControlWin(QMainWindow):
         if self.currParadigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"),
                                  self.tr("Multiple Constants m-Intervals n-Alternatives"),
                                  self.tr("Multiple Constants 1-Pair Same/Different"),
+                                 self.tr("Multiple Constants ABX"),
                                  self.tr("Odd One Out")]:
             n = 0
             self.nTrialsLabel = QLabel(self.tr("No. Trials"), self)
@@ -2711,7 +2712,8 @@ class pychControlWin(QMainWindow):
 
         if paradigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), 
                         self.tr("Multiple Constants m-Intervals n-Alternatives"), 
-                        self.tr("Multiple Constants 1-Pair Same/Different"), 
+                        self.tr("Multiple Constants 1-Pair Same/Different"),
+                        self.tr("Multiple Constants ABX"), 
                         self.tr("Odd One Out")]:
             if self.prm[self.currExp]['hasNDifferencesChooser'] == False:
                 self.par['nDifferences'] = self.prm[self.currExp]['defaultNDifferences']
@@ -2894,8 +2896,11 @@ class pychControlWin(QMainWindow):
         self.paradigmChooser.addItems(self.prm[currExp]['paradigmChoices'])
         self.paradigmChooser.setCurrentIndex(self.prm[currExp]["paradigmChoices"].index(paradigm))
 
-        if paradigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"), self.tr("Multiple Constants m-Intervals n-Alternatives"), 
-                        self.tr("Multiple Constants 1-Pair Same/Different"), self.tr("Odd One Out")]:
+        if paradigm in [self.tr("Multiple Constants 1-Interval 2-Alternatives"),
+                        self.tr("Multiple Constants m-Intervals n-Alternatives"), 
+                        self.tr("Multiple Constants 1-Pair Same/Different"),
+                        self.tr("Multiple Constants ABX"),
+                        self.tr("Odd One Out")]:
             self.par['nDifferences'] = int(self.prm[block]['paradigmChooser'][self.prm[block]['paradigmChooserLabel'].index(self.tr("No. Differences:"))])
         if paradigm in [self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved")]:
             self.par['nDifferences'] = int(self.prm[block]['paradigmChooser'][self.prm[block]['paradigmChooserLabel'].index(self.tr("No. Tracks:"))])
@@ -4136,7 +4141,7 @@ class pychControlWin(QMainWindow):
 
     def fileChooserButtonClicked(self):
         sender = self.sender()
-        fName = QFileDialog.getOpenFileName(self, self.tr("Choose file"), '', self.tr("file;;All Files (*)"))[0]
+        fName = QFileDialog.getOpenFileName(self, self.tr("Choose file"), '', self.tr("All Files (*);; WAV (*.wav *WAV)"))[0]
         lbls = []
  
         if len(fName) > 0: #if the user didn't press cancel

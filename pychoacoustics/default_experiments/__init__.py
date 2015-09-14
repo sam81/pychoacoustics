@@ -6,4 +6,5 @@ __all__ = ["audiogram",
            "F0DL",
            "level_discrimination",
            "wav_comparison",
-           "wav_sameDifferent"]
+           "wav_sameDifferent",
+           "wav_ABX"]
