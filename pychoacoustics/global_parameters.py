@@ -39,7 +39,13 @@ elif pyqtversion == -4:
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QApplication
-    matplotlib_available = False
+    #matplotlib_available = False
+    try:
+        import matplotlib
+        matplotlib_available = True
+    except:
+        matplotlib_available = False
+
 
 from .utils_redirect_stream_to_file import*
 
@@ -128,8 +134,7 @@ def set_global_parameters(prm):
     if matplotlib_available and pandas_available:
         prm['appData']['plotting_available'] = True
     else:
-        prm['appData']['plotting_available'] = False
-    
+        prm['appData']['plotting_available'] = False    
  
     if platform.system() == 'Windows':
         prm['appData']['available_play_commands'] = ["winsound"]

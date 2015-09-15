@@ -153,6 +153,8 @@ files will be output:
 
 -  ``myres_table.csv`` “table block summary”
 
+-  ``myres_table_full.csv`` “table full file”
+
 two further files can be derived from these:
 
 -  ``myres_res.txt`` “session summary”
@@ -175,7 +177,7 @@ and the labels from the values of interest (e.g., thresholds or *d’*
 values) before the data can be input to a statistical software package.
 For this reason, ``pychoacoustics`` outputs also a “block summary table”
 result file with a “\_table” suffix that is written in a tabular format,
-and contains summaries for each experimental block that was run. This
+and contains summaries for each experimental block that was run. For most paradigms this
 file can be further processed to obtain a “session summary table”
 results file with a “\_table\_processed” suffix. The "session summary table" file contains summaries
 for an entire experimental session. In this file the results are

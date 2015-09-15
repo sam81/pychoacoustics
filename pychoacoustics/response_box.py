@@ -4384,9 +4384,14 @@ class responseBox(QMainWindow):
     def processResultsTableEnd(self):
         separator = self.parent().prm['pref']["general"]["csvSeparator"]
         resFilePath = self.pychovariablesSubstitute[self.pychovariables.index("[resTable]")]
-        if self.prm['paradigm'] in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"), self.tr("Transformed Up-Down Limited"), self.tr("Weighted Up-Down Limited"), self.tr("PEST")]:
+        if self.prm['paradigm'] in [self.tr("Transformed Up-Down"),
+                                    self.tr("Weighted Up-Down"),
+                                    self.tr("Transformed Up-Down Limited"),
+                                    self.tr("Weighted Up-Down Limited"),
+                                    self.tr("PEST")]:
             procResTableAdaptive([resFilePath], fout=None, separator=separator)
-        elif self.prm['paradigm'] in [self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved")]:
+        elif self.prm['paradigm'] in [self.tr("Transformed Up-Down Interleaved"),
+                                      self.tr("Weighted Up-Down Interleaved")]:
             procResTableAdaptiveInterleaved([resFilePath], fout=None, separator=separator)
         elif self.prm['paradigm'] in [self.tr("Constant 1-Interval 2-Alternatives")]:
             procResTableConstant1Int2Alt([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
@@ -4400,6 +4405,8 @@ class responseBox(QMainWindow):
             procResTableConstant1PairSameDifferent([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
         elif self.prm['paradigm'] in [self.tr("Multiple Constants 1-Pair Same/Different")]:
             procResTableMultipleConstants1PairSameDifferent([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
+        elif self.prm['paradigm'] in [self.tr("Multiple Constants ABX")]:
+            procResTableMultipleConstantsABX([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
 
 
     def plotDataEnd(self, winPlot, pdfPlot):
@@ -4422,6 +4429,9 @@ class responseBox(QMainWindow):
                 paradigm = 'multipleConstantsMIntervalsNAlternatives'
             elif self.prm['paradigm'] in [self.tr("Constant 1-Pair Same/Different")]:
                 paradigm = 'constant1PairSD'
+            elif self.prm['paradigm'] in [self.tr("Multiple Constants ABX")]:
+                paradigm = 'multipleConstantsABX'
+
 
             categoricalPlot(self, 'average', summaryResFilePath, winPlot, pdfPlot, paradigm, separator, None, self.prm)
 

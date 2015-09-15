@@ -44,7 +44,11 @@ elif pyqtversion == 5:
     from PyQt5.QtCore import QLocale
     from PyQt5.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout, QWidget
     from PyQt5.QtGui import QDesktopServices, QIcon, QIntValidator
-    matplotlib_available = False
+    matplotlib_available = True
+    try:
+        import matplotlib
+    except:
+        matplotlib_available = False
     
 import os
 from .utils_process_results import*
@@ -85,6 +89,9 @@ class processResultsDialog(QDialog):
             self.paradigm = "constant1PairSD"
         elif paradigm == self.tr("Multiple Constants 1-Pair Same/Different"):
             self.paradigm = "multipleConstants1PairSD"
+        elif paradigm == self.tr("Multiple Constants ABX"):
+            self.paradigm = "multipleConstantsABX"
+
         else:
             QMessageBox.warning(self, self.tr("Error"), self.tr("File type or paradigm not supported."))
             return
@@ -177,7 +184,7 @@ class processResultsDialog(QDialog):
         self.processBlocksInRangeCheckBox.clicked.connect(self.onCheckProcessBlocksInRange)
 
         if self.paradigm in ["constant1Interval2Alternatives", "multipleConstants1Interval2Alternatives",
-                             "constant1PairSD", "multipleConstants1PairSD"]:
+                             "constant1PairSD", "multipleConstants1PairSD", "constantABX", "multipleConstantsABX"]:
             self.dpCorrCheckBox = QCheckBox(self.tr('d-prime correction'))
             self.dpCorrCheckBox.setChecked(self.prm['pref']['general']['dprimeCorrection'])
             self.hBox7a.addWidget(self.dpCorrCheckBox)
@@ -296,6 +303,9 @@ class processResultsDialog(QDialog):
                 procResTableConstant1PairSameDifferent(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
             elif self.paradigm == "multipleConstants1PairSD":
                 procResTableMultipleConstants1PairSameDifferent(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
+            elif self.paradigm == "multipleConstantsABX":
+                procResTableMultipleConstantsABX(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
+
 
             if self.parent().prm['appData']['plotting_available'] == True and (self.plotCheckBox.isChecked() == True or self.pdfPlotCheckBox.isChecked() == True):
                 self.plotResults(self.plotCheckBox.isChecked(), self.pdfPlotCheckBox.isChecked())

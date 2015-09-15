@@ -73,6 +73,12 @@ Multiple Constants 1-Pair Same/Different
 This paradigm implements a constant difference method for
 “same/different” tasks with multiple pairs of stimuli to compare.
 
+Multiple Constants ABX
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This paradigm implements a constant difference method for
+“ABX” tasks with multiple pairs of stimuli to compare.
+
 Odd One Out
 ^^^^^^^^^^^
 

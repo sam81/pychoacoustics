@@ -19,4 +19,6 @@ To do:
 - Qthread for playing audio 
 
 
-
+ABX process results table, and process results text
+check bug with repetitions and automatic mode
+figure out way to add instructions
