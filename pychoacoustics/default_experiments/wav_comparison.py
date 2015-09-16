@@ -22,7 +22,7 @@ def initialize_wav_comparison(prm):
     exp_name = QApplication.translate("","WAV Comparison","")
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
-    prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Odd One Out","")]
+    prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Multiple Constants Odd One Out","")]
     prm[exp_name]["opts"] = ["hasISIBox", "hasFeedback", "hasIntervalLights", "hasNDifferencesChooser"]
     prm[exp_name]['defaultNIntervals'] = 3
     prm[exp_name]['defaultNAlternatives'] = 3

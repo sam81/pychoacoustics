@@ -317,6 +317,32 @@ parameters used for each experimental condition. After this
 section, a summary statistic for each block of the given experimental
 condition is presented, followed by a summary statistic for all the blocks.
 
+A list of the result files processing and plotting facilities available
+for each paradigm is given in Table :ref:`tab-proc_res`
+
+.. _tab-proc_res:
+
+.. table:: Process results and plot facilities for various paradigms
+
+  ==================================================  ========== ================== =======
+  Procedure                                           Proc. Res. Proc. Res. Table   Plot
+  ==================================================  ========== ================== =======
+  Constant 1-Interval 2-Alternatives                  Yes        Yes                Yes
+  Constant 1-Pair Same/Different                      Yes        Yes                Yes
+  Constant m-Intervals n-Alternatives                 Yes        Yes                No
+  Multiple Constants m-Intervals n-Alternatives       Yes        Yes                No
+  Multiple Constants ABX                              Yes        Yes                Yes
+  Multiple Constants 1-Interval 2-Alternatives        Yes        Yes                No
+  Multiple Constants 1-Pair Same/Different            Yes        Yes                Yes
+  Multiple Constants Odd One Out                      No         No                 No
+  Pest                                                Yes        Yes                Yes
+  PSI                                                 No         No                 No
+  Transformed Up/Down                                 Yes        Yes                Yes
+  Transformed Up/Down Interleaved                     Yes        Yes                No
+  UML                                                 No         No                 No
+  Weighted Up/Down                                    Yes        Yes                Yes
+  Weighted Up/Down Interleaved                        Yes        Yes                No
+  ==================================================  ========== ================== =======
 
 .. todo::
    
@@ -449,8 +475,8 @@ Multiple Constants 1-Intervals 2-Alternatives Result Files
 Constant 1-Pair Same/Different Result Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Odd One Out Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^
+Multiple Constants Odd One Out Result Files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. _sec-log_results_files: 
 

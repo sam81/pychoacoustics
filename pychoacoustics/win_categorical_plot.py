@@ -91,6 +91,14 @@ class categoricalPlot(QMainWindow):
         self.prm = prm
         self.paradigm = paradigm
         self.fName = fName
+        self.plotSupportedParadigms = ['adaptive',
+                                'constant1Interval2Alternatives',
+                                'constant1PairSD',
+                                'multipleConstantsABX',
+                                'multipleConstants1PairSD']
+            
+        self.pchs = ["o", "s", "v", "p", "*", ".", "8", "h", "x", "+", "d", ",", "^", "<", ">", "1", "2", "3", "4", "H", "D", "|", "_"]  
+        #[0, 'H', 2, 3, 4, '<', 6, 'h', 'x', '1', '^', 'o', '8', 'v', ',', '.', '3', 'D', '4', '', 5, '|', '*', 1, 7, '2', 'd', 's', '>', '+', ' ', '_', 'p']
 
         mpl.rcParams['xtick.major.size'] = 6
         mpl.rcParams['xtick.minor.size'] = 4
@@ -233,7 +241,7 @@ class categoricalPlot(QMainWindow):
                 self.deleteLater()
             
             return
-        if paradigm not in ['adaptive', 'constant1Interval2Alternatives', 'constant1PairSD', 'multipleConstantsABX']:
+        if paradigm not in self.plotSupportedParadigms:
             self.ax.text(0, 0.5, "Sorry, plotting not yet supported for \n" + paradigm + " paradigm")
             if pdfPlot == True:
                 self.fig.savefig(self.fName.split('.')[0] + '.pdf', format='pdf')
@@ -341,7 +349,7 @@ class categoricalPlot(QMainWindow):
             self.ax.xaxis.set_label_coords(0.5, -0.08)
             self.ax.yaxis.set_label_coords(-0.1, 0.5)
             self.ax.legend([p1[0], p2[0]], ["IO", "Diff."], numpoints=1)
-        elif self.paradigm == 'multipleConstantsABX':
+        elif self.paradigm in ['multipleConstants1PairSD', 'multipleConstantsABX']:
             nSubCond = 0
             keys = self.dats.columns.values
             for key in keys:
@@ -353,14 +361,14 @@ class categoricalPlot(QMainWindow):
             p1s = []; p2s = []
             for subc in range(nSubCond):
                 p1 = self.ax.errorbar(xaxvals, self.dats['dprime_IO_pair'+str(subc+1)], xerr=0, yerr=0, fmt='o',
-                             capthick=0, capsize=0, marker='o', markersize=10, label="pair"+str(subc+1))
+                             capthick=0, capsize=0, marker=self.pchs[subc], markersize=10, label="pair"+str(subc+1))
                 p2 = self.ax2.errorbar(xaxvals, self.dats['dprime_diff_pair'+str(subc+1)], xerr=0, yerr=0, fmt='o',
-                                 capthick=0, capsize=0, marker='o', markersize=10, label="pair"+str(subc+1))
+                                 capthick=0, capsize=0, marker=self.pchs[subc], markersize=10, label="pair"+str(subc+1))
                 self.ax.set_xticks(xaxvals)
                 self.ax.set_xticklabels(self.dats['condition'])
                 self.ax.set_xlim(-0.5, nCnds-0.5)
                 yl = self.ax.get_ylim()
-                self.ax.set_ylim(yl[0], yl[1]+0.2) #ylim upper value increments in the loop
+                self.ax.set_ylim(yl[0], yl[1]+0.7) #ylim upper value increments in the loop
                 self.ax.set_ylabel("d'", fontsize='large', style='italic')
                 self.ax.set_xlabel('Condition', fontsize='large')
                 self.ax.xaxis.set_label_coords(0.5, -0.08)
@@ -372,7 +380,7 @@ class categoricalPlot(QMainWindow):
                 self.ax2.set_xticklabels(self.dats['condition'])
                 self.ax2.set_xlim(-0.5, nCnds-0.5)
                 yl = self.ax2.get_ylim()
-                self.ax2.set_ylim(yl[0], yl[1]+0.2)
+                self.ax2.set_ylim(yl[0], yl[1]+0.7) #ylim upper value increments in the loop
                 self.ax2.set_ylabel("d'", fontsize='large', style='italic')
                 self.ax2.set_xlabel('Condition', fontsize='large')
                 self.ax2.xaxis.set_label_coords(0.5, -0.08)

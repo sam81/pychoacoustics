@@ -28,6 +28,8 @@ if pyqtversion == 4:
     try:
         import matplotlib
         matplotlib_available = True
+        matplotlib.rcParams['backend'] = "Qt4Agg"
+        matplotlib.rcParams['backend.qt4'] = "PyQt4"
     except:
         matplotlib_available = False
 elif pyqtversion == -4:
@@ -37,6 +39,8 @@ elif pyqtversion == -4:
     try:
         import matplotlib
         matplotlib_available = True
+        matplotlib.rcParams['backend'] = "Qt4Agg"
+        matplotlib.rcParams['backend.qt4'] = "PySide"
     except:
         matplotlib_available = False
 elif pyqtversion == 5:
@@ -44,7 +48,18 @@ elif pyqtversion == 5:
     from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
     from PyQt5.QtWidgets import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
     from PyQt5.QtGui import QIntValidator, QPainter
-    matplotlib_available = False
+    try:
+        import matplotlib
+        matplotlib_available = True
+        matplotlib.rcParams['backend'] = "Qt5Agg"
+    except:
+        matplotlib_available = False
+    try:
+        from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+        matplotlib_available = True
+    except:
+        matplotlib_available = False
+
     
 from numpy.fft import rfft, irfft, fft, ifft
 import base64, fnmatch, copy, numpy, os, platform, random, string, smtplib, sys, time     
@@ -412,7 +427,7 @@ class responseBox(QMainWindow):
                     self.responseButton[i].setProperty("responseBoxButton", True)
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
                     self.responseButton[i].setFocusPolicy(Qt.NoFocus)
-            elif self.parent().currParadigm in ["Odd One Out"]:
+            elif self.parent().currParadigm in ["Multiple Constants Odd One Out"]:
                 for i in range(nIntervals):
                     self.intervalLight.append(intervalLight(self))
                     self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
@@ -775,7 +790,7 @@ class responseBox(QMainWindow):
                                           self.tr("Multiple Constants m-Intervals n-Alternatives"),
                                           self.tr("Multiple Constants 1-Pair Same/Different"),
                                           self.tr("Multiple Constants ABX"),
-                                          self.tr("Odd One Out")]:
+                                          self.tr("Multiple Constants Odd One Out")]:
                 self.prm['nTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Trials"))])
                 self.prm['nPracticeTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Practice Trials"))])
                 self.prm['nDifferences'] = int(self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("No. Differences:"))])
@@ -1118,8 +1133,8 @@ class responseBox(QMainWindow):
             self.sortResponsePSI(buttonClicked)
         elif self.prm['paradigm'] == self.tr("UML"):
             self.sortResponseUML(buttonClicked)
-        elif self.prm['paradigm'] == self.tr("Odd One Out"):
-            self.sortResponseOddOneOut(buttonClicked)
+        elif self.prm['paradigm'] == self.tr("Multiple Constants Odd One Out"):
+            self.sortResponseMultipleConstantsOddOneOut(buttonClicked)
         self.prm['sortingResponse'] = False
             
     def sortResponseAdaptive(self, buttonClicked, method):
@@ -3489,7 +3504,7 @@ class responseBox(QMainWindow):
             print(self.UML["phi"])
             self.doTrial()
             
-    def sortResponseOddOneOut(self, buttonClicked):
+    def sortResponseMultipleConstantsOddOneOut(self, buttonClicked):
         if self.prm['startOfBlock'] == True: #Initialize counts and data structures
             self.prm['startOfBlock'] = False
 
@@ -3596,7 +3611,7 @@ class responseBox(QMainWindow):
             resLineToWrite = self.getCommonTabFields(resLineToWrite)
 
             resLineToWrite = resLineToWrite + '\n'
-            self.writeResultsSummaryLine('Odd One Out', resLineToWrite)
+            self.writeResultsSummaryLine('Multiple Constants Odd One Out', resLineToWrite)
 
             self.atBlockEnd()
           
@@ -3996,7 +4011,7 @@ class responseBox(QMainWindow):
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
                             'paradigm' + self.prm['pref']["general"]["csvSeparator"]
-        elif paradigm in ['Odd One Out']:
+        elif paradigm in ['Multiple Constants Odd One Out']:
             headerToWrite = 'nTials' + self.prm['pref']["general"]["csvSeparator"]
             for i in range(len(self.prm['conditions'])):
                 headerToWrite = headerToWrite + 'cnd'+str(i+1)+'_stim1_count'+ self.prm['pref']["general"]["csvSeparator"] + \
@@ -4429,6 +4444,8 @@ class responseBox(QMainWindow):
                 paradigm = 'multipleConstantsMIntervalsNAlternatives'
             elif self.prm['paradigm'] in [self.tr("Constant 1-Pair Same/Different")]:
                 paradigm = 'constant1PairSD'
+            elif self.prm['paradigm'] in [self.tr("Multiple Constants 1-Pair Same/Different")]:
+                paradigm = 'multipleConstants1PairSD'
             elif self.prm['paradigm'] in [self.tr("Multiple Constants ABX")]:
                 paradigm = 'multipleConstantsABX'
 

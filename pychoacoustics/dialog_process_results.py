@@ -49,6 +49,12 @@ elif pyqtversion == 5:
         import matplotlib
     except:
         matplotlib_available = False
+    try:
+        from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+        matplotlib_available = True
+    except:
+        matplotlib_available = False
+
     
 import os
 from .utils_process_results import*

@@ -26,6 +26,8 @@ if pyqtversion == 4:
     try:
         import matplotlib
         matplotlib_available = True
+        matplotlib.rcParams['backend'] = "Qt4Agg"
+        matplotlib.rcParams['backend.qt4'] = "PyQt4"
     except:
         matplotlib_available = False
 elif pyqtversion == -4:
@@ -34,14 +36,21 @@ elif pyqtversion == -4:
     try:
         import matplotlib
         matplotlib_available = True
+        matplotlib.rcParams['backend'] = "Qt4Agg"
+        matplotlib.rcParams['backend.qt4'] = "PySide"
     except:
         matplotlib_available = False
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QApplication
-    #matplotlib_available = False
     try:
         import matplotlib
+        matplotlib_available = True
+        matplotlib.rcParams['backend'] = "Qt5Agg"
+    except:
+        matplotlib_available = False
+    try:
+        from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
         matplotlib_available = True
     except:
         matplotlib_available = False
