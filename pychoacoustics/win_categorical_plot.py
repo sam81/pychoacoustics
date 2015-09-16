@@ -205,9 +205,11 @@ class categoricalPlot(QMainWindow):
         self.vbl = QVBoxLayout(self.mw)
         self.fig = Figure(figsize=(8,8))#facecolor=self.canvasColor, dpi=self.dpi)
         if self.paradigm in ['multipleConstants1PairSD', 'multipleConstantsABX']:
+            self.fig = Figure(figsize=(12,8))#facecolor=self.canvasColor, dpi=self.dpi)
             self.ax = self.fig.add_subplot(121)
             self.ax2 = self.fig.add_subplot(122)
         else:
+            self.fig = Figure(figsize=(8,8))#facecolor=self.canvasColor, dpi=self.dpi)
             self.ax = self.fig.add_subplot(111)
        
         self.canvas = FigureCanvas(self.fig)
@@ -360,15 +362,13 @@ class categoricalPlot(QMainWindow):
             xaxvals = np.arange(nCnds)
             p1s = []; p2s = []
             for subc in range(nSubCond):
-                p1 = self.ax.errorbar(xaxvals, self.dats['dprime_IO_pair'+str(subc+1)], xerr=0, yerr=0, fmt='o',
-                             capthick=0, capsize=0, marker=self.pchs[subc], markersize=10, label="pair"+str(subc+1))
-                p2 = self.ax2.errorbar(xaxvals, self.dats['dprime_diff_pair'+str(subc+1)], xerr=0, yerr=0, fmt='o',
-                                 capthick=0, capsize=0, marker=self.pchs[subc], markersize=10, label="pair"+str(subc+1))
+                p1 = self.ax.plot(xaxvals, self.dats['dprime_IO_pair'+str(subc+1)], marker=self.pchs[subc], lw=0, label="pair"+str(subc+1), markersize=10)
+                p2 = self.ax2.plot(xaxvals, self.dats['dprime_diff_pair'+str(subc+1)], marker=self.pchs[subc], lw=0, label="pair"+str(subc+1), markersize=10)
                 self.ax.set_xticks(xaxvals)
                 self.ax.set_xticklabels(self.dats['condition'])
                 self.ax.set_xlim(-0.5, nCnds-0.5)
-                yl = self.ax.get_ylim()
-                self.ax.set_ylim(yl[0], yl[1]+0.7) #ylim upper value increments in the loop
+                #yl = self.ax.get_ylim()
+                #self.ax.set_ylim(yl[0], yl[1]+0.7) #ylim upper value increments in the loop
                 self.ax.set_ylabel("d'", fontsize='large', style='italic')
                 self.ax.set_xlabel('Condition', fontsize='large')
                 self.ax.xaxis.set_label_coords(0.5, -0.08)
@@ -379,17 +379,22 @@ class categoricalPlot(QMainWindow):
                 self.ax2.set_xticks(xaxvals)
                 self.ax2.set_xticklabels(self.dats['condition'])
                 self.ax2.set_xlim(-0.5, nCnds-0.5)
-                yl = self.ax2.get_ylim()
-                self.ax2.set_ylim(yl[0], yl[1]+0.7) #ylim upper value increments in the loop
+                #yl = self.ax2.get_ylim()
+                #self.ax2.set_ylim(yl[0], yl[1]+0.7) #ylim upper value increments in the loop
                 self.ax2.set_ylabel("d'", fontsize='large', style='italic')
                 self.ax2.set_xlabel('Condition', fontsize='large')
                 self.ax2.xaxis.set_label_coords(0.5, -0.08)
                 self.ax2.yaxis.set_label_coords(-0.1, 0.5)
                 self.ax2.set_title("d' diff")
                 p2s.append(p2)
-            print(p1s)
-            self.ax.legend(handles=p1s, numpoints=1)
-            self.ax2.legend(handles=p2s, numpoints=1)
+            yl = self.ax.get_ylim()
+            self.ax.set_ylim(yl[0], yl[1]+2) #ylim upper value increments in the loop
+            yl = self.ax2.get_ylim()
+            self.ax2.set_ylim(yl[0], yl[1]+2) #ylim upper value increments in the loop
+            handles, labels = self.ax.get_legend_handles_labels()
+            self.ax.legend(handles, labels, numpoints=1, ncol=2)
+            handles2, labels2 = self.ax2.get_legend_handles_labels()
+            self.ax2.legend(handles2, labels2, numpoints=1, ncol=2)
 
 
     def toggleGrid(self, state):

@@ -292,7 +292,7 @@ texinfo_documents = [
 epub_title = 'pychoacoustics'
 epub_author = 'Samuele Carcagno'
 epub_publisher = 'Samuele Carcagno'
-epub_copyright = '2013-2014, Samuele Carcagno'
+epub_copyright = '2013-2015, Samuele Carcagno'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
