@@ -92,12 +92,13 @@ class categoricalPlot(QMainWindow):
         self.paradigm = paradigm
         self.fName = fName
         self.plotSupportedParadigms = ["adaptive",
-                                "constant1Interval2Alternatives",
-                                "constant1PairSD",
-                                "constantMIntervalsNAlternatives",
-                                "multipleConstantsABX",
-                                "multipleConstants1PairSD",
-                                "multipleConstantsMIntervalsNAlternatives"]
+                                       "adaptive_interleaved",
+                                       "constant1Interval2Alternatives",
+                                       "constant1PairSD",
+                                       "constantMIntervalsNAlternatives",
+                                       "multipleConstantsABX",
+                                       "multipleConstants1PairSD",
+                                       "multipleConstantsMIntervalsNAlternatives"]
             
         self.pchs = ["o", "s", "v", "p", "*", ".", "8", "h", "x", "+", "d", ",", "^", "<", ">", "1", "2", "3", "4", "H", "D", "|", "_"]  
         #[0, 'H', 2, 3, 4, '<', 6, 'h', 'x', '1', '^', 'o', '8', 'v', ',', '.', '3', 'D', '4', '', 5, '|', '*', 1, 7, '2', 'd', 's', '>', '+', ' ', '_', 'p']
@@ -318,7 +319,71 @@ class categoricalPlot(QMainWindow):
                 self.ax.set_yticks(minTicks, minor=True)
 
         elif self.paradigm == 'adaptive_interleaved':
-            pass
+            if 'threshold_arithmetic_track1' in self.dats.keys():
+                thresh_key = 'threshold_arithmetic_track'
+                procedure = 'arithmetic'
+            elif 'threshold_geometric_track1' in self.dats.keys():
+                thresh_key = 'threshold_geometric_track'
+                procedure = 'geometric'
+
+            nTracks = 0
+            keys = self.dats.columns.values
+            for key in keys:
+                if procedure == "arithmetic":
+                    if key[0:26] == 'threshold_arithmetic_track':
+                        nTracks = nTracks +1
+                elif procedure == "geometric":
+                    if key[0:25] == 'threshold_geometric_track':
+                        nTracks = nTracks +1
+
+            nCnds = len(self.dats[thresh_key+str(1)])
+            xaxvals = np.arange(nCnds)
+            self.ax.set_xticks(xaxvals)
+            self.ax.set_xticklabels(self.dats['condition'])
+            self.ax.set_xlim(-0.5, nCnds-0.5)
+            self.ax.set_ylabel(r'Threshold $\pm$ s.e.', fontsize='large')
+            self.ax.set_xlabel('Condition', fontsize='large')
+            self.ax.xaxis.set_label_coords(0.5, -0.08)
+            self.ax.yaxis.set_label_coords(-0.1, 0.5)
+            for tr in range(nTracks):
+                if procedure == 'arithmetic':
+                    self.ax.errorbar(xaxvals, self.dats[thresh_key+str(tr+1)], xerr=0, yerr=self.dats['SE_track'+str(tr+1)], fmt='o',
+                                     capthick=1, capsize=5, marker=self.pchs[tr], markersize=10, label="Track"+str(tr+1))
+                elif procedure == 'geometric':
+                    self.ax.plot(xaxvals, log10(self.dats[thresh_key+str(tr+1)]), marker=self.pchs[tr], markersize=10, label="Track"+str(tr+1), lw=0)
+                    capsize = 0.03
+                    for i in range(len(xaxvals)):
+                        lo = log10(self.dats[thresh_key+str(tr+1)][i]) - log10(self.dats['SE_track'+str(tr+1)][i])
+                        hi = log10(self.dats[thresh_key+str(tr+1)][i]) + log10(self.dats['SE_track'+str(tr+1)][i])
+                        l = Line2D([xaxvals[i], xaxvals[i]],[lo, hi])
+                        top = Line2D([xaxvals[i]-capsize, xaxvals[i]+capsize], [hi, hi])
+                        bot = Line2D([xaxvals[i]-capsize, xaxvals[i]+capsize], [lo, lo])
+                        self.ax.add_line(l)
+                        self.ax.add_line(top)
+                        self.ax.add_line(bot)
+                    powd = nextPow10Down(10**(self.ax.get_ylim()[0]))
+                    powup = nextPow10Up(10**(self.ax.get_ylim()[1]))
+                    majTicks = arange(powd, powup+1)
+                    self.ax.set_yticks(majTicks)
+                    yTickLabels = []
+                    for tick in majTicks:
+                        yTickLabels.append(str(10**tick))
+                    self.ax.set_yticklabels(yTickLabels)
+                    minTicks = []
+                    for i in range(len(majTicks)-1):
+                        minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
+                    self.ax.set_yticks(minTicks, minor=True)
+
+            yl = self.ax.get_ylim(); r = (yl[1]-yl[0])*10/100
+            self.ax.set_ylim(yl[0]-r/2, yl[1]+r*4) 
+
+            handles, labels = self.ax.get_legend_handles_labels()
+            if procedure == "arithmetic":
+                handles = [h[0] for h in handles]
+            self.ax.legend(handles, labels, numpoints=1, ncol=2)
+
+
+
         elif self.paradigm == 'constant1Interval2Alternatives':
             nCnds = len(self.dats['dprime'])
             xaxvals = np.arange(nCnds)

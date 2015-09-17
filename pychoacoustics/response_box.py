@@ -718,7 +718,8 @@ class responseBox(QMainWindow):
             self.prm['additional_parameters_to_write'] = {}
             self.prm['additional_parameters_to_write_labels'] = []
 
-            if self.prm['paradigm'] in [self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved")]:
+            if self.prm['paradigm'] in [self.tr("Transformed Up-Down Interleaved"),
+                                        self.tr("Weighted Up-Down Interleaved")]:
                 self.prm['nDifferences'] = int(self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("No. Tracks:"))])
                 if self.prm['nDifferences'] == 1:
                     self.prm['maxConsecutiveTrials'] = self.tr('unlimited')
@@ -906,7 +907,8 @@ class responseBox(QMainWindow):
             elif self.prm['pref']['general']['resFileFormat'] == 'variable':
                 self.prm['resultsFile'] = self.prm['listener'] + '_' + time.strftime("%y-%m-%d_%H-%M-%S", time.localtime())
 
-        if self.prm['paradigm'] in [self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved")]:
+        if self.prm['paradigm'] in [self.tr("Transformed Up-Down Interleaved"),
+                                    self.tr("Weighted Up-Down Interleaved")]:
             if self.prm['maxConsecutiveTrials'] == self.tr('unlimited'):
                 self.prm['currentDifference'] = numpy.random.randint(self.prm['nDifferences'])
             elif  max(self.prm['consecutiveTrialsCounter']) < int(self.prm['maxConsecutiveTrials']):
@@ -967,10 +969,15 @@ class responseBox(QMainWindow):
                 self.sortResponse(random.choice(numpy.delete(numpy.arange(self.prm['nAlternatives'])+1, self.correctButton-1)))
 
         if self.prm['allBlocks']['responseMode'] == self.tr("Psychometric"):
-            if self.prm['paradigm'] not in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"),
-                                         self.tr("Transformed Up-Down Limited"), self.tr("Weighted Up-Down Limited"),
-                                         self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved"),
-                                         self.tr("PEST"), self.tr("Maximum Likelihood"), self.tr("PSI"), self.tr("UML")]:
+            if self.prm['paradigm'] not in [self.tr("Transformed Up-Down"),
+                                            self.tr("Weighted Up-Down"),
+                                            self.tr("Transformed Up-Down Limited"),
+                                            self.tr("Weighted Up-Down Limited"),
+                                            self.tr("Transformed Up-Down Interleaved"),
+                                            self.tr("Weighted Up-Down Interleaved"),
+                                            self.tr("PEST"), self.tr("Maximum Likelihood"),
+                                            self.tr("PSI"),
+                                            self.tr("UML")]:
                 ret = QMessageBox.warning(self, self.tr("Warning"),
                                           self.tr("Sorry, psychometric listener not supported by current paradigm. Please, choose another response mode."),
                                           QMessageBox.Ok)
@@ -4389,9 +4396,14 @@ class responseBox(QMainWindow):
 
     def processResultsEnd(self):
         resFilePath = self.prm['resultsFile']
-        if self.prm['paradigm'] in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"), self.tr("Transformed Up-Down Limited"), self.tr("Weighted Up-Down Limited"), self.tr("PEST")]:
+        if self.prm['paradigm'] in [self.tr("Transformed Up-Down"),
+                                    self.tr("Weighted Up-Down"),
+                                    self.tr("Transformed Up-Down Limited"),
+                                    self.tr("Weighted Up-Down Limited"),
+                                    self.tr("PEST")]:
             processResultsAdaptive([resFilePath])
-        elif self.prm['paradigm'] in [self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved")]:
+        elif self.prm['paradigm'] in [self.tr("Transformed Up-Down Interleaved"),
+                                      self.tr("Weighted Up-Down Interleaved")]:
             processResultsAdaptiveInterleaved([resFilePath])
         elif self.prm['paradigm'] in [self.tr("Constant 1-Interval 2-Alternatives")]:
             processResultsConstant1Interval2Alternatives([resFilePath], dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])

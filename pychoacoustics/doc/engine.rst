@@ -338,10 +338,10 @@ for each paradigm is given in Table :ref:`tab-proc_res`
   PEST                                                Yes        Yes                Yes
   PSI                                                 No         No                 No
   Transformed Up/Down                                 Yes        Yes                Yes
-  Transformed Up/Down Interleaved                     Yes        Yes                No
+  Transformed Up/Down Interleaved                     Yes        Yes                Yes
   UML                                                 No         No                 No
   Weighted Up/Down                                    Yes        Yes                Yes
-  Weighted Up/Down Interleaved                        Yes        Yes                No
+  Weighted Up/Down Interleaved                        Yes        Yes                Yes
   ==================================================  ========== ================== =======
 
 .. todo::

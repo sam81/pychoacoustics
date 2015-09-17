@@ -289,7 +289,7 @@ def procResTableAdaptiveInterleaved(fName, fout=None, separator=';', last=None, 
     #sort on the basis of condition-agglomerate
     cnds = list(set(dCols['conditionAgglomerate']))
     for i in range(nTracks):
-        datsPro['threshold'+ '_track' + str(i+1)] = zeros(len(cnds))
+        datsPro['threshold_'+ procedure + '_track' + str(i+1)] = zeros(len(cnds))
         datsPro['SE'+ '_track' + str(i+1)] = zeros(len(cnds))
 
 
@@ -305,10 +305,10 @@ def procResTableAdaptiveInterleaved(fName, fout=None, separator=';', last=None, 
             start, stop = getBlockRangeToProcess(last, block_range, thresh[j][t])
 
             if procedure == 'arithmetic':
-                datsPro['threshold'+'_track' + str(t+1)][j] =  mean(thresh[j][t][start:stop])
+                datsPro['threshold_'+procedure+'_track' + str(t+1)][j] =  mean(thresh[j][t][start:stop])
                 datsPro['SE'+'_track' + str(t+1)][j] =  se(thresh[j][t][start:stop])
             elif procedure == 'geometric':
-                datsPro['threshold'+'_track' + str(t+1)][j] =  geoMean(thresh[j][t][start:stop])
+                datsPro['threshold_'+procedure+'_track' + str(t+1)][j] =  geoMean(thresh[j][t][start:stop])
                 datsPro['SE'+'_track' + str(t+1)][j] =  geoSe(thresh[j][t][start:stop])
 
         cndIdx = dCols['conditionAgglomerate'].index(cnds[j])
@@ -319,7 +319,7 @@ def procResTableAdaptiveInterleaved(fName, fout=None, separator=';', last=None, 
     resKeys = []
     for t in range(nTracks):
         nt = str(t+1)
-        resKeys.extend(['threshold_track'+nt, 'SE_track'+nt])
+        resKeys.extend(['threshold_'+procedure+'_track'+nt, 'SE_track'+nt])
     writeResTable(fNameOut, separator, datsPro, resKeys)
 
     return
@@ -1127,8 +1127,8 @@ def processResultsAdaptiveInterleaved(fName, fout=None, last=None, block_range=N
         currNTracks = len(conditionMeans[i])
         for t in range(currNTracks):
             if averageType[i] == 'geometric':
-                cndM.append(geoMean(conditionMeans[i][t][start:stop]))
-                cndSe.append(geoSe(conditionMeans[i][t][start:stop]))
+                cndM[i].append(geoMean(conditionMeans[i][t][start:stop]))
+                cndSe[i].append(geoSe(conditionMeans[i][t][start:stop]))
             elif averageType[i] == 'arithmetic':
                 cndM[i].append(mean(conditionMeans[i][t][start:stop]))
                 cndSe[i].append(se(conditionMeans[i][t][start:stop]))
