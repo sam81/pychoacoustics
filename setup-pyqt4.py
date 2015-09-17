@@ -2,7 +2,7 @@
 from distutils.core import setup
 import glob
 setup(
-    name="pychoacoustics-pyside",
+    name="pychoacoustics-pyqt4",
     version="0.3.10",
     url="http://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html",
     author="Samuele Carcagno",
@@ -31,7 +31,7 @@ setup(
         'Topic :: Scientific/Engineering :: Bio-Informatics'
         ],
     license="GPL v3",
-    requires=['PySide (>=1.1.1)', 'numpy (>=1.6.1)', 'scipy (>=0.10.1)'],
+    requires=['PyQt4 (>=4.8.4)', 'numpy (>=1.6.1)', 'scipy (>=0.10.1)'],
     packages=["pychoacoustics", "pychoacoustics.default_experiments"],
     scripts = ["pychoacoustics.pyw"],
     package_dir={"pychoacoustics": "pychoacoustics"},
