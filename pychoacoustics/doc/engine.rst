@@ -331,7 +331,7 @@ for each paradigm is given in Table :ref:`tab-proc_res`
   Constant 1-Pair Same/Different                      Yes        Yes                Yes
   Constant m-Intervals n-Alternatives                 Yes        Yes                Yes
   Multiple Constants ABX                              Yes        Yes                Yes
-  Multiple Constants 1-Interval 2-Alternatives        Yes        Yes                No
+  Multiple Constants 1-Interval 2-Alternatives        Yes        Yes                Yes
   Multiple Constants 1-Pair Same/Different            Yes        Yes                Yes
   Multiple Constants m-Intervals n-Alternatives       Yes        Yes                Yes
   Multiple Constants Odd One Out                      No         No                 No

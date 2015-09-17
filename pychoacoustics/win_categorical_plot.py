@@ -98,6 +98,7 @@ class categoricalPlot(QMainWindow):
                                        "constantMIntervalsNAlternatives",
                                        "multipleConstantsABX",
                                        "multipleConstants1PairSD",
+                                       "multipleConstants1Interval2Alternatives",
                                        "multipleConstantsMIntervalsNAlternatives"]
             
         self.pchs = ["o", "s", "v", "p", "*", ".", "8", "h", "x", "+", "d", ",", "^", "<", ">", "1", "2", "3", "4", "H", "D", "|", "_"]  
@@ -399,7 +400,34 @@ class categoricalPlot(QMainWindow):
 
             
         elif self.paradigm == 'multipleConstants1Interval2Alternatives':
-            pass
+            nSubCond = 0
+            keys = self.dats.columns.values
+            for key in keys:
+                if key[0:11] == 'dprime_subc':
+                    nSubCond = nSubCond +1
+
+            nCnds = len(self.dats['dprime_subc1'])
+            xaxvals = np.arange(nCnds)
+            p1s = []
+            for subc in range(nSubCond):
+                p1 = self.ax.plot(xaxvals, self.dats['dprime_subc'+str(subc+1)], marker=self.pchs[subc], lw=0, label="Subc. "+str(subc+1), markersize=10)
+                self.ax.set_xticks(xaxvals)
+                self.ax.set_xticklabels(self.dats['condition'])
+                self.ax.set_xlim(-0.5, nCnds-0.5)
+                self.ax.set_ylabel("d'", fontsize='large', style='italic')
+                self.ax.set_xlabel('Condition', fontsize='large')
+                self.ax.xaxis.set_label_coords(0.5, -0.08)
+                self.ax.yaxis.set_label_coords(-0.1, 0.5)
+                #self.ax.set_title("d'", style="italic")
+                p1s.append(p1)
+
+            yl = self.ax.get_ylim(); r = (yl[1]-yl[0])*10/100
+            self.ax.set_ylim(yl[0]-r/2, yl[1]+r/2) 
+
+            handles, labels = self.ax.get_legend_handles_labels()
+            self.ax.legend(handles, labels, numpoints=1, ncol=2)
+
+
         elif self.paradigm == 'constantMIntervalsNAlternatives':
             nCnds = len(self.dats['dprime'])
             xaxvals = np.arange(nCnds)
