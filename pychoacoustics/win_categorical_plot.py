@@ -96,7 +96,8 @@ class categoricalPlot(QMainWindow):
                                 "constant1PairSD",
                                 "constantMIntervalsNAlternatives",
                                 "multipleConstantsABX",
-                                "multipleConstants1PairSD"]
+                                "multipleConstants1PairSD",
+                                "multipleConstantsMIntervalsNAlternatives"]
             
         self.pchs = ["o", "s", "v", "p", "*", ".", "8", "h", "x", "+", "d", ",", "^", "<", ">", "1", "2", "3", "4", "H", "D", "|", "_"]  
         #[0, 'H', 2, 3, 4, '<', 6, 'h', 'x', '1', '^', 'o', '8', 'v', ',', '.', '3', 'D', '4', '', 5, '|', '*', 1, 7, '2', 'd', 's', '>', '+', ' ', '_', 'p']
@@ -205,8 +206,10 @@ class categoricalPlot(QMainWindow):
         self.mw = QWidget(self)
         self.vbl = QVBoxLayout(self.mw)
         self.fig = Figure(figsize=(8,8))#facecolor=self.canvasColor, dpi=self.dpi)
-        if self.paradigm in ['multipleConstants1PairSD', 'multipleConstantsABX',
-                             "constantMIntervalsNAlternatives"]:
+        if self.paradigm in ["constantMIntervalsNAlternatives",
+                             "multipleConstants1PairSD",
+                             "multipleConstantsABX",
+                             "multipleConstantsMIntervalsNAlternatives"]:
             self.fig = Figure(figsize=(12,8))#facecolor=self.canvasColor, dpi=self.dpi)
             self.ax = self.fig.add_subplot(121)
             self.ax2 = self.fig.add_subplot(122)
@@ -218,9 +221,7 @@ class categoricalPlot(QMainWindow):
         self.canvas.setParent(self.mw)
        
         self.ntb = NavigationToolbar(self.canvas, self.mw)
-        self.gridOn = QCheckBox(self.tr('Grid'))
-        #self.gridOn.setChecked(True) #= QtGui.QCheckBox(self.tr('Grid'))
-        #self.connect(self.gridOn, QtCore.SIGNAL('stateChanged(int)'), self.toggleGrid)
+        self.gridOn = QCheckBox(self.tr("Grid"))
         self.gridOn.stateChanged[int].connect(self.toggleGrid)
         
        
@@ -364,7 +365,49 @@ class categoricalPlot(QMainWindow):
             self.fig.subplots_adjust(wspace=0.3)    
 
         elif self.paradigm == 'multipleConstantsMIntervalsNAlternatives':
-            pass
+            nSubCond = 0
+            keys = self.dats.columns.values
+            for key in keys:
+                if key[0:11] == 'dprime_subc':
+                    nSubCond = nSubCond +1
+                   
+            nCnds = len(self.dats['dprime_subc1'])
+            xaxvals = np.arange(nCnds)
+            p1s = []; p2s = []
+            for subc in range(nSubCond):
+                p1 = self.ax.plot(xaxvals, self.dats['dprime_subc'+str(subc+1)], marker=self.pchs[subc], lw=0, label="Diff. "+str(subc+1), markersize=10)
+                p2 = self.ax2.plot(xaxvals, self.dats['perc_corr_subc'+str(subc+1)], marker=self.pchs[subc], lw=0, label="Diff. "+str(subc+1), markersize=10)
+            self.ax.set_xticks(xaxvals)
+            self.ax.set_xticklabels(self.dats['condition'])
+            self.ax.set_xlim(-0.5, nCnds-0.5)
+            self.ax.set_ylabel("d'", fontsize='large', style='italic')
+            self.ax.set_xlabel('Condition', fontsize='large')
+            self.ax.xaxis.set_label_coords(0.5, -0.08)
+            self.ax.yaxis.set_label_coords(-0.17, 0.5)
+            self.ax.set_title("d'", style="italic")
+
+            self.ax2.set_xticks(xaxvals)
+            self.ax2.set_xticklabels(self.dats['condition'])
+            self.ax2.set_xlim(-0.5, nCnds-0.5)
+            self.ax2.set_ylabel("Percent Correct", fontsize='large', style='italic')
+            self.ax2.set_xlabel('Condition', fontsize='large')
+            self.ax2.xaxis.set_label_coords(0.5, -0.08)
+            self.ax2.yaxis.set_label_coords(-0.17, 0.5)
+            self.ax2.set_title("Percent Correct")
+
+            yl = self.ax.get_ylim(); r = (yl[1]-yl[0])*10/100
+            self.ax.set_ylim(yl[0]-r/2, yl[1]+r*4) 
+            yl = self.ax2.get_ylim(); r = (yl[1]-yl[0])*10/100
+            self.ax2.set_ylim(yl[0]-r/2, yl[1]+r*4)
+            self.fig.subplots_adjust(wspace=0.3)
+
+            handles, labels = self.ax.get_legend_handles_labels()
+            self.ax.legend(handles, labels, numpoints=1, ncol=2)
+            handles2, labels2 = self.ax2.get_legend_handles_labels()
+            self.ax2.legend(handles2, labels2, numpoints=1, ncol=2)
+
+
+
         elif self.paradigm == 'constant1PairSD':
             nCnds = len(self.dats['dprime_IO'])
             xaxvals = np.arange(nCnds)
@@ -396,8 +439,6 @@ class categoricalPlot(QMainWindow):
                 self.ax.set_xticks(xaxvals)
                 self.ax.set_xticklabels(self.dats['condition'])
                 self.ax.set_xlim(-0.5, nCnds-0.5)
-                #yl = self.ax.get_ylim()
-                #self.ax.set_ylim(yl[0], yl[1]+0.7) #ylim upper value increments in the loop
                 self.ax.set_ylabel("d'", fontsize='large', style='italic')
                 self.ax.set_xlabel('Condition', fontsize='large')
                 self.ax.xaxis.set_label_coords(0.5, -0.08)
@@ -408,8 +449,6 @@ class categoricalPlot(QMainWindow):
                 self.ax2.set_xticks(xaxvals)
                 self.ax2.set_xticklabels(self.dats['condition'])
                 self.ax2.set_xlim(-0.5, nCnds-0.5)
-                #yl = self.ax2.get_ylim()
-                #self.ax2.set_ylim(yl[0], yl[1]+0.7) #ylim upper value increments in the loop
                 self.ax2.set_ylabel("d'", fontsize='large', style='italic')
                 self.ax2.set_xlabel('Condition', fontsize='large')
                 self.ax2.xaxis.set_label_coords(0.5, -0.08)

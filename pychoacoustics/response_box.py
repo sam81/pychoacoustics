@@ -327,8 +327,17 @@ class responseBox(QMainWindow):
         else:
             self.statusButton.setMaximumSize(screen.width(), screen.height())
             self.responseLight.setMaximumSize(screen.width(), screen.height())
-            if self.parent().currParadigm in ["Transformed Up-Down", "Transformed Up-Down Limited", "Weighted Up-Down", "Weighted Up-Down Limited", "Constant m-Intervals n-Alternatives",
-                                              "Transformed Up-Down Interleaved", "Weighted Up-Down Interleaved", "Multiple Constants m-Intervals n-Alternatives", "PEST", "Maximum Likelihood", "PSI",
+            if self.parent().currParadigm in ["Transformed Up-Down",
+                                              "Transformed Up-Down Limited",
+                                              "Weighted Up-Down",
+                                              "Weighted Up-Down Limited",
+                                              "Constant m-Intervals n-Alternatives",
+                                              "Transformed Up-Down Interleaved",
+                                              "Weighted Up-Down Interleaved",
+                                              "Multiple Constants m-Intervals n-Alternatives",
+                                              "PEST",
+                                              "Maximum Likelihood",
+                                              "PSI",
                                               "UML"]:
 
                 if self.prm["preTrialInterval"] == True:
@@ -1907,7 +1916,7 @@ class responseBox(QMainWindow):
         self.fullFileLines.append('\n')
         self.fullFileLog.flush()
       
-        pcDone = self.trialCountAll / (self.prm['nTrials'] + self.prm['nPracticeTrials'])*100
+        pcDone = self.trialCountAll / ((self.prm['nTrials'] + self.prm['nPracticeTrials'])*len(self.prm['conditions']))*100
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
@@ -4430,9 +4439,14 @@ class responseBox(QMainWindow):
             summaryResFilePath = resFilePath.split('.csv')[0] + '_processed.csv'
             separator = self.parent().prm['pref']["general"]["csvSeparator"]
 
-            if self.prm['paradigm'] in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"), self.tr("Transformed Up-Down Limited"), self.tr("Weighted Up-Down Limited"), self.tr("PEST")]:
+            if self.prm['paradigm'] in [self.tr("Transformed Up-Down"),
+                                        self.tr("Weighted Up-Down"),
+                                        self.tr("Transformed Up-Down Limited"),
+                                        self.tr("Weighted Up-Down Limited"),
+                                        self.tr("PEST")]:
                 paradigm = 'adaptive'
-            elif self.prm['paradigm'] in [self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved")]:
+            elif self.prm['paradigm'] in [self.tr("Transformed Up-Down Interleaved"),
+                                          self.tr("Weighted Up-Down Interleaved")]:
                 paradigm = 'adaptive_interleaved'
             elif self.prm['paradigm'] in [self.tr("Constant 1-Interval 2-Alternatives")]:
                 paradigm = 'constant1Interval2Alternatives'
