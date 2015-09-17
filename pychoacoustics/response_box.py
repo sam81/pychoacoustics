@@ -4436,6 +4436,8 @@ class responseBox(QMainWindow):
                 paradigm = 'adaptive_interleaved'
             elif self.prm['paradigm'] in [self.tr("Constant 1-Interval 2-Alternatives")]:
                 paradigm = 'constant1Interval2Alternatives'
+            elif self.prm['paradigm'] in [self.tr("Constant m-Intervals n-Alternatives")]:
+                paradigm = 'constantMIntervalsNAlternatives'
             elif self.prm['paradigm'] in [self.tr("Multiple Constants 1-Interval 2-Alternatives")]:
                 paradigm = 'multipleConstants1Interval2Alternatives'
             elif self.prm['paradigm'] in [self.tr("Constant m-Intervals n-Alternatives")]:

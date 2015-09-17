@@ -329,13 +329,14 @@ for each paradigm is given in Table :ref:`tab-proc_res`
   ==================================================  ========== ================== =======
   Constant 1-Interval 2-Alternatives                  Yes        Yes                Yes
   Constant 1-Pair Same/Different                      Yes        Yes                Yes
-  Constant m-Intervals n-Alternatives                 Yes        Yes                No
+  Constant m-Intervals n-Alternatives                 Yes        Yes                Yes
   Multiple Constants m-Intervals n-Alternatives       Yes        Yes                No
   Multiple Constants ABX                              Yes        Yes                Yes
   Multiple Constants 1-Interval 2-Alternatives        Yes        Yes                No
   Multiple Constants 1-Pair Same/Different            Yes        Yes                Yes
+  Multiple Constants m-Intervals n-Alternatives       Yes        Yes                No
   Multiple Constants Odd One Out                      No         No                 No
-  Pest                                                Yes        Yes                Yes
+  PEST                                                Yes        Yes                Yes
   PSI                                                 No         No                 No
   Transformed Up/Down                                 Yes        Yes                Yes
   Transformed Up/Down Interleaved                     Yes        Yes                No

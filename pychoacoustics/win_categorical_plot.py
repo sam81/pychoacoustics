@@ -91,11 +91,12 @@ class categoricalPlot(QMainWindow):
         self.prm = prm
         self.paradigm = paradigm
         self.fName = fName
-        self.plotSupportedParadigms = ['adaptive',
-                                'constant1Interval2Alternatives',
-                                'constant1PairSD',
-                                'multipleConstantsABX',
-                                'multipleConstants1PairSD']
+        self.plotSupportedParadigms = ["adaptive",
+                                "constant1Interval2Alternatives",
+                                "constant1PairSD",
+                                "constantMIntervalsNAlternatives",
+                                "multipleConstantsABX",
+                                "multipleConstants1PairSD"]
             
         self.pchs = ["o", "s", "v", "p", "*", ".", "8", "h", "x", "+", "d", ",", "^", "<", ">", "1", "2", "3", "4", "H", "D", "|", "_"]  
         #[0, 'H', 2, 3, 4, '<', 6, 'h', 'x', '1', '^', 'o', '8', 'v', ',', '.', '3', 'D', '4', '', 5, '|', '*', 1, 7, '2', 'd', 's', '>', '+', ' ', '_', 'p']
@@ -204,7 +205,8 @@ class categoricalPlot(QMainWindow):
         self.mw = QWidget(self)
         self.vbl = QVBoxLayout(self.mw)
         self.fig = Figure(figsize=(8,8))#facecolor=self.canvasColor, dpi=self.dpi)
-        if self.paradigm in ['multipleConstants1PairSD', 'multipleConstantsABX']:
+        if self.paradigm in ['multipleConstants1PairSD', 'multipleConstantsABX',
+                             "constantMIntervalsNAlternatives"]:
             self.fig = Figure(figsize=(12,8))#facecolor=self.canvasColor, dpi=self.dpi)
             self.ax = self.fig.add_subplot(121)
             self.ax2 = self.fig.add_subplot(122)
@@ -333,7 +335,34 @@ class categoricalPlot(QMainWindow):
         elif self.paradigm == 'multipleConstants1Interval2Alternatives':
             pass
         elif self.paradigm == 'constantMIntervalsNAlternatives':
-            pass
+            nCnds = len(self.dats['dprime'])
+            xaxvals = np.arange(nCnds)
+            p1 = self.ax.plot(xaxvals, self.dats['dprime'], marker="o", lw=0, markersize=10)
+            p2 = self.ax2.plot(xaxvals, self.dats['perc_corr'], marker="o", lw=0, markersize=10)
+            self.ax.set_xticks(xaxvals)
+            self.ax.set_xticklabels(self.dats['condition'])
+            self.ax.set_xlim(-0.5, nCnds-0.5)
+            self.ax.set_ylabel("d'", fontsize='large', style='italic')
+            self.ax.set_xlabel('Condition', fontsize='large')
+            self.ax.xaxis.set_label_coords(0.5, -0.08)
+            self.ax.yaxis.set_label_coords(-0.17, 0.5)
+            self.ax.set_title("d'")
+
+            self.ax2.set_xticks(xaxvals)
+            self.ax2.set_xticklabels(self.dats['condition'])
+            self.ax2.set_xlim(-0.5, nCnds-0.5)
+            self.ax2.set_ylabel("Percent Correct", fontsize='large', style='italic')
+            self.ax2.set_xlabel('Condition', fontsize='large')
+            self.ax2.xaxis.set_label_coords(0.5, -0.08)
+            self.ax2.yaxis.set_label_coords(-0.17, 0.5)
+            self.ax2.set_title("Percent Correct")
+
+            yl = self.ax.get_ylim(); r = (yl[1]-yl[0])*10/100
+            self.ax.set_ylim(yl[0]-r/2, yl[1]+r/2) 
+            yl = self.ax2.get_ylim(); r = (yl[1]-yl[0])*10/100
+            self.ax2.set_ylim(yl[0]-r/2, yl[1]+r/2)
+            self.fig.subplots_adjust(wspace=0.3)    
+
         elif self.paradigm == 'multipleConstantsMIntervalsNAlternatives':
             pass
         elif self.paradigm == 'constant1PairSD':
