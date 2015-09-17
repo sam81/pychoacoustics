@@ -101,7 +101,7 @@ class categoricalPlot(QMainWindow):
                                        "multipleConstants1Interval2Alternatives",
                                        "multipleConstantsMIntervalsNAlternatives"]
             
-        self.pchs = ["o", "s", "v", "p", "*", ".", "8", "h", "x", "+", "d", ",", "^", "<", ">", "1", "2", "3", "4", "H", "D", "|", "_"]  
+        self.pchs = ["o", "s", "v", "p", "h", "8", "*", "x", "+", "d", ",", "^", "<", ">", "1", "2", "3", "4", "H", "D", ".", "|", "_"]  
         #[0, 'H', 2, 3, 4, '<', 6, 'h', 'x', '1', '^', 'o', '8', 'v', ',', '.', '3', 'D', '4', '', 5, '|', '*', 1, 7, '2', 'd', 's', '>', '+', ' ', '_', 'p']
 
         mpl.rcParams['xtick.major.size'] = 6
@@ -117,7 +117,7 @@ class categoricalPlot(QMainWindow):
         mpl.rcParams['font.size'] = 14
         mpl.rcParams['figure.facecolor'] = 'white'
         mpl.rcParams['lines.color'] = 'black'
-        mpl.rcParams['axes.color_cycle'] =  ['k', 'b', 'g', 'r', 'c', 'm', 'y']
+        mpl.rcParams['axes.color_cycle'] = ["#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"]#['k', 'b', 'g', 'r', 'c', 'm', 'y']
 
         
         #dark background
