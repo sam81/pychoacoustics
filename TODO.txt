@@ -11,14 +11,14 @@ To do:
 - block performance feedback at the end of each block? (usually not very good, participants should not know about different conditions)
 - generate html report through intermediate rst file
 - add d' calculation tools
-- vocal responses at beginning end of each block
+- vocal responses at beginning end of each block (?)
 - Add 'Delete All' button?
-- use the logging module to do the logging
-- the full file could optionally record the start of each sound and the time the listener responded
+- use the logging module to do the logging (?)
+- the full file could optionally record the start of each sound and the time the listener responded 
 - replace os.system with subprocess, possibly popen for sending kill signal #partly done
 - Qthread for playing audio 
 
 
-ABX process results table, and process results text
-check bug with repetitions and automatic mode
-figure out way to add instructions
+- ABX process and process results text
+- Check bug with repetitions and automatic mode
+- Figure out way to add instructions at the beginning of a task

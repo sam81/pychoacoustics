@@ -10,7 +10,7 @@ pychoacoustics |version| documentation
 
 pychoacoustics version |version|, last updated |today|
 
-Copyright ©2012–2014 Samuele Carcagno <sam.carcagno@gmail.com>.
+Copyright ©2012–2015 Samuele Carcagno <sam.carcagno@gmail.com>.
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.2 or
 any later version published by the Free Software Foundation; with no
