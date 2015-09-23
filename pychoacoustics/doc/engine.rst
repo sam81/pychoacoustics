@@ -14,7 +14,7 @@ Sound Output on Linux
 ---------------------
 
 On Linux systems ``pychoacoustics`` can either output sound (numpy
-arrays) directly to the soundcard, or write a ``wav`` file for each sound
+arrays) directly to the soundcard, or write a ``WAV`` file for each sound
 and call an external command to play it. Currently, sending
 sounds directly to the soundcard is possible only through the
 `alsaaudio <http://pyalsaaudio.sourceforge.net/>`_,
@@ -23,9 +23,9 @@ Python modules. These modules are optional, and you need to install them
 yourself to be able to use them. Note that I've experienced issues (occasional
 pops and crackles) with ``pyaudio`` on the hardware that I have tested.
 Sound output with ``alsaaudio``, on the other hand, has been working very well.
-Once the modules are installed, they will be detected automatically and you will be
-able to select one of them as the “Play Command” in the sound preferences dialog.
-When you select ``alsaaudio`` as the play command, if you have multiple
+Once the modules are installed, they will be detected automatically and you will
+be able to select one of them as the “Play Command” in the sound preferences 
+dialog. When you select ``alsaaudio`` as the play command, if you have multiple
 soundcards, you can select the device to which the sound will be sent.
 There will be also an option to set the size of the buffer that
 ``alsaaudio`` uses to play sounds. If the buffer is not filled completely by
@@ -61,8 +61,8 @@ only the MME API, which is limited to 16-bit output. ASIO and WASAPI
 on the other hand, can play sounds with full 24-bit resolution.
 In order to have ``pyaudio`` built with ASIO and/or WASAPI support
 you need to either build it from source, enabling these APIs (not for the
-faint of heart), or dowload the unoffical binaries made available by  Christoph Gohlke
-on his `website <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`_.
+faint of heart), or dowload the unoffical binaries made available by  Christoph 
+Gohlke on his `website <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`_.
 
 Other possible play commands on Windows are ``play``, which is provided by
 `sox <http://sox.sourceforge.net/>`_ and ``sndfile-play``, which is
@@ -132,7 +132,7 @@ A fragment from a parameters file is shown below:
 
 each entry here has two or three elements separated by colons. The first
 element represents the variable of interest, the second element its
-value, and the third element is a logical value that determines whether
+value, and the third element is a boolean value that determines whether
 the ``inSummary`` checkbox will be checked or not (see 
 Section :ref:`sec-results_files` for more info on this).
 You can have one or more spaces between each element and the colon
@@ -144,60 +144,81 @@ Results Files
 =============
 
 ``pychoacoustics`` outputs several types of
-results files. If you name your results file “myres”, the following
-files will be output:
+result files, these are listed in Table :ref:`tab-res_files`
 
--  ``myres.txt``, “block summary”
+.. _tab-res_files:
 
--  ``myres_full.txt`` “full file”
+.. table:: List of result files produced by ``pychoacoustics``
 
--  ``myres_table.csv`` “table block summary”
-
--  ``myres_table_full.csv`` “table full file”
-
-two further files can be derived from these:
-
--  ``myres_res.txt`` “session summary”
-
--  ``myres_table_processed.txt`` “table session summary”
-
-The “block summary” results file has no special suffix, and contains
-summaries for each experimental block that was run. The “full” results
-file has a “\_full” suffix and contains information for each single
-trial. The “block summary” results file can be usually processed to
-obtain a “session summary” results file with a “\_res” suffix.
-The "session summary" file contains summaries for an entire 
-experimental session. In this file the results are averaged across 
+  ======================== ============================= ========== ======================
+  Type                     Example                       Formatting Suffix
+  ======================== ============================= ========== ======================
+  Block summary            ``myres.txt``                 Plain      ".txt"
+  Full                     ``myres_full.txt``            Plain      "_full.txt"
+  Session Summary          ``myres_res.txt``	         Plain      "_res.txt"
+  Tabular Block Summary    ``myres_table.csv``           Tabular    "_table.csv"
+  Tabular Full             ``myres_table_full.csv``      Tabular    "table_full.csv"
+  Tabular Session Summary  ``myres_table_processed.csv`` Tabular    "table_processed.csv"
+  ======================== ============================= ========== ======================
+  
+there are both "plain text" and "tabular" versions of result files. The plain text version
+generally stores along with the results each parameter that was used during the experiment. The tabular result files
+on the other hand store a smaller number of parameters, although additional parameters can be stored if the
+experimenter wishes to do so (see :ref:`sec-tabular-results-files`). An important advantage of
+tabular result files is that they are easy to import in other software (e.g. R, Libreoffice) for data analysis.
+   
+The “block summary” and "tabular block summary" result files contain summaries 
+for each experimental block that was run. The “full” and "tabular full" result 
+files instead contain information on each single
+trial. The “block summary” result files (either in plain or tabular format) can be usually processed to
+obtain “session summary” files.
+The "session summary" files contain summaries for an entire 
+experimental session. In these files the results are averaged across 
 different blocks that have exactly the same parameters.
 
-All these files are human and machine-readable, but they are not very
-machine-friendly for data analysis. That is, they can require quite a
-lot of either manual work or programming code to separate the headers
-and the labels from the values of interest (e.g., thresholds or *d’*
-values) before the data can be input to a statistical software package.
-For this reason, ``pychoacoustics`` outputs also a “block summary table”
-result file with a “\_table” suffix that is written in a tabular format,
-and contains summaries for each experimental block that was run. For most paradigms this
-file can be further processed to obtain a “session summary table”
-results file with a “\_table\_processed” suffix. The "session summary table" file contains summaries
-for an entire experimental session. In this file the results are
-averaged across different blocks that have exactly the same parameters
-stored in the “\_table” file.
-
-In order to obtain the “\_res” and “\_table\_processed” session summary
+In order to obtain the session summary
 files you need to use the appropriate functions that can be accessed
 from the “File” menu. Alternatively, you can check the “Proc. Res.” 
 and “Proc. Res. Table” checkboxes in the control window (see :ref:`sec-gui_left_panel`)
 to let ``pychoacoustics`` automatically process these files at the end of an
 experimental session. If processing the result files manually, choose
 “Process Results (Plain Text)” from the “File” menu, to convert a block summary file
-into a “\_res” session summary file. Choose “Process Results Table” to
-convert a block summary table file into a “\_table\_processed” session
+into a session summary file. Choose “Process Results Table” to
+convert a tabular block summary file into a tabular session
 summary file. You can choose to
 process all blocks present in the file (default action), the last
 :math:`n` blocks (of each condition), or a range of blocks (for each
 condition). Once you have selected the file to process and specified the
 blocks to process you can click “Run!” to perform the processing.
+The functions that process the block summary files also allow you to plot the
+results. Please, note that both the ability to process the block summary files
+and plot the results are not available for all paradigms.
+A list of the result files processing and plotting facilities available
+for each paradigm is given in Table :ref:`tab-proc_res`
+
+.. _tab-proc_res:
+
+.. table:: Process results and plot facilities for various paradigms
+
+  ==================================================  ========== ================== =======
+  Procedure                                           Proc. Res. Proc. Res. Table   Plot
+  ==================================================  ========== ================== =======
+  Constant 1-Interval 2-Alternatives                  Yes        Yes                Yes
+  Constant 1-Pair Same/Different                      Yes        Yes                Yes
+  Constant m-Intervals n-Alternatives                 Yes        Yes                Yes
+  Multiple Constants ABX                              Yes        Yes                Yes
+  Multiple Constants 1-Interval 2-Alternatives        Yes        Yes                Yes
+  Multiple Constants 1-Pair Same/Different            Yes        Yes                Yes
+  Multiple Constants m-Intervals n-Alternatives       Yes        Yes                Yes
+  Multiple Constants Odd One Out                      No         No                 No
+  PEST                                                Yes        Yes                Yes
+  PSI                                                 No         No                 No
+  Transformed Up/Down                                 Yes        Yes                Yes
+  Transformed Up/Down Interleaved                     Yes        Yes                Yes
+  UML                                                 No         No                 No
+  Weighted Up/Down                                    Yes        Yes                Yes
+  Weighted Up/Down Interleaved                        Yes        Yes                Yes
+  ==================================================  ========== ================== =======
 
 .. _sec-tabular-results-files:
 
@@ -255,7 +276,7 @@ stored in the “block summary” file, but you will need more work before
 you can process your results with a statistical software package.
 
 
-Structure of Result Files
+Plain Text Result Files
 -------------------------
 
 The "block summary" result files, as well as the "full" result files
@@ -317,32 +338,7 @@ parameters used for each experimental condition. After this
 section, a summary statistic for each block of the given experimental
 condition is presented, followed by a summary statistic for all the blocks.
 
-A list of the result files processing and plotting facilities available
-for each paradigm is given in Table :ref:`tab-proc_res`
 
-.. _tab-proc_res:
-
-.. table:: Process results and plot facilities for various paradigms
-
-  ==================================================  ========== ================== =======
-  Procedure                                           Proc. Res. Proc. Res. Table   Plot
-  ==================================================  ========== ================== =======
-  Constant 1-Interval 2-Alternatives                  Yes        Yes                Yes
-  Constant 1-Pair Same/Different                      Yes        Yes                Yes
-  Constant m-Intervals n-Alternatives                 Yes        Yes                Yes
-  Multiple Constants ABX                              Yes        Yes                Yes
-  Multiple Constants 1-Interval 2-Alternatives        Yes        Yes                Yes
-  Multiple Constants 1-Pair Same/Different            Yes        Yes                Yes
-  Multiple Constants m-Intervals n-Alternatives       Yes        Yes                Yes
-  Multiple Constants Odd One Out                      No         No                 No
-  PEST                                                Yes        Yes                Yes
-  PSI                                                 No         No                 No
-  Transformed Up/Down                                 Yes        Yes                Yes
-  Transformed Up/Down Interleaved                     Yes        Yes                Yes
-  UML                                                 No         No                 No
-  Weighted Up/Down                                    Yes        Yes                Yes
-  Weighted Up/Down Interleaved                        Yes        Yes                Yes
-  ==================================================  ========== ================== =======
 
 .. todo::
    

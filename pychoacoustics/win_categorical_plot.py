@@ -499,8 +499,6 @@ class categoricalPlot(QMainWindow):
             handles2, labels2 = self.ax2.get_legend_handles_labels()
             self.ax2.legend(handles2, labels2, numpoints=1, ncol=2)
 
-
-
         elif self.paradigm == 'constant1PairSD':
             nCnds = len(self.dats['dprime_IO'])
             xaxvals = np.arange(nCnds)
@@ -515,8 +513,11 @@ class categoricalPlot(QMainWindow):
             self.ax.set_xlabel('Condition', fontsize='large')
             self.ax.xaxis.set_label_coords(0.5, -0.08)
             self.ax.yaxis.set_label_coords(-0.1, 0.5)
+            yl = self.ax.get_ylim(); r = (yl[1]-yl[0])*10/100
+            self.ax.set_ylim(yl[0]-r/2, yl[1]+r*4) 
             self.ax.legend([p1[0], p2[0]], ["IO", "Diff."], numpoints=1)
-        elif self.paradigm in ['multipleConstants1PairSD', 'multipleConstantsABX']:
+        elif self.paradigm in ['multipleConstants1PairSD',
+                               'multipleConstantsABX']:
             nSubCond = 0
             keys = self.dats.columns.values
             for key in keys:
@@ -548,10 +549,11 @@ class categoricalPlot(QMainWindow):
                 self.ax2.yaxis.set_label_coords(-0.1, 0.5)
                 self.ax2.set_title("d' diff")
                 p2s.append(p2)
-            yl = self.ax.get_ylim()
-            self.ax.set_ylim(yl[0], yl[1]+2) #ylim upper value increments in the loop
-            yl = self.ax2.get_ylim()
-            self.ax2.set_ylim(yl[0], yl[1]+2) #ylim upper value increments in the loop
+            yl = self.ax.get_ylim(); r = (yl[1]-yl[0])*10/100
+            self.ax.set_ylim(yl[0]-r/2, yl[1]+r*4) 
+            yl = self.ax2.get_ylim(); r = (yl[1]-yl[0])*10/100
+            self.ax2.set_ylim(yl[0]-r/2, yl[1]+r*4) 
+
             handles, labels = self.ax.get_legend_handles_labels()
             self.ax.legend(handles, labels, numpoints=1, ncol=2)
             handles2, labels2 = self.ax2.get_legend_handles_labels()

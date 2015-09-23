@@ -27,7 +27,10 @@ os.chdir('../')
 os.system('python3 setup-pyqt4.py sdist --formats=gztar,zip')
 os.system('python3 setup-pyqt4.py bdist_wininst')
 
-#revert
+#revert to pyqt5
+for i in range(len(pyqtverLines)):
+    if pyqtverLines[i].strip().split('=')[0].strip() == "pyqtversion":
+           pyqtverLines[i] = "pyqtversion = 5\n"
 os.chdir('prep-release')
 f = open('../pychoacoustics/pyqtver.py', 'w')
 f.writelines(pyqtverLines)

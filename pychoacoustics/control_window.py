@@ -4239,8 +4239,18 @@ class pychControlWin(QMainWindow):
                                                 QMessageBox.Ok | QMessageBox.Cancel)
             
     def onAbout(self):
-        if pyqtversion in [4, 5]:
-            QMessageBox.about(self, self.tr("About pychoacoustics"),
+        if pyqtversion in [4,5]:
+            qt_compiled_ver = QtCore.QT_VERSION_STR
+            qt_runtime_ver = QtCore.qVersion()
+            qt_pybackend_ver = QtCore.PYQT_VERSION_STR
+            qt_pybackend = "PyQt"
+        elif pyqtversion == -4:
+            qt_compiled_ver = QtCore.__version__
+            qt_runtime_ver = QtCore.qVersion()
+            qt_pybackend_ver = PySide.__version__
+            qt_pybackend = "PySide"
+
+        QMessageBox.about(self, self.tr("About pychoacoustics"),
                               self.tr("""<b>pychoacoustics - Python app for psychoacoustics</b> <br>
                               - version: {0}; <br>
                               - build date: {1} <br>
@@ -4258,27 +4268,8 @@ class pychControlWin(QMainWindow):
                               <p>
                               You should have received a copy of the GNU General Public License
                               along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>
-                              <p>Python {2} - Qt {3} - PyQt {4} on {5}""").format(__version__, self.prm['builddate'], platform.python_version(), QtCore.QT_VERSION_STR, QtCore.PYQT_VERSION_STR, platform.system()))
-        elif pyqtversion in [-4]:
-            QMessageBox.about(self, self.tr("About pychoacoustics"),
-                              self.tr("""<b>Python app for psychoacoustics</b> <br>
-                              - version: {0}; <br>
-                              - build date: {1} <br>
-                              <p> Copyright &copy; 2010-2014 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 
-                              All rights reserved. <p>
-                              This program is free software: you can redistribute it and/or modify
-                              it under the terms of the GNU General Public License as published by
-                              the Free Software Foundation, either version 3 of the License, or
-                              (at your option) any later version.
-                              <p>
-                              This program is distributed in the hope that it will be useful,
-                              but WITHOUT ANY WARRANTY; without even the implied warranty of
-                              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-                              GNU General Public License for more details.
-                              <p>
-                              You should have received a copy of the GNU General Public License
-                              along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>
-                              <p>Python {2} - Qt {3} - PySide {4} on {5}""").format(__version__, self.prm['builddate'], platform.python_version(), PySide.QtCore.__version__, PySide.__version__, platform.system()))
+                              <p>Python {2} - {3} {4} compiled against Qt {5}, and running with Qt {6} on {7}""").format(__version__, self.prm['builddate'], platform.python_version(), qt_pybackend, qt_pybackend_ver, qt_compiled_ver, qt_runtime_ver, platform.system()))
+        
     def closeEvent(self, event):
         #here we need to check if parameters file and temporary parameters file are the same or not
         self.compareGuiStoredParameters()

@@ -1022,7 +1022,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4263"/>
+        <location filename="../pychoacoustics/control_window.py" line="4253"/>
         <source>About pychoacoustics</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1702,7 +1702,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4361"/>
+        <location filename="../pychoacoustics/control_window.py" line="4352"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1873,29 +1873,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4287"/>
+        <location filename="../pychoacoustics/control_window.py" line="4278"/>
         <source>The parameters have not been saved to a file. 
  Do you want to save them before exiting?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4305"/>
+        <location filename="../pychoacoustics/control_window.py" line="4296"/>
         <source>The parameters in memory differ from the parameters on file. 
  Do you want to save the parameters stored in memory them before exiting?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4339"/>
+        <location filename="../pychoacoustics/control_window.py" line="4330"/>
         <source>There are no stored blocks to swap.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4344"/>
+        <location filename="../pychoacoustics/control_window.py" line="4335"/>
         <source>Block numbers specified out of range.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4361"/>
+        <location filename="../pychoacoustics/control_window.py" line="4352"/>
         <source>Shuffling scheme contains non-allowed characters.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1982,28 +1982,6 @@
     <message>
         <location filename="../pychoacoustics/control_window.py" line="1721"/>
         <source>W</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/control_window.py" line="4263"/>
-        <source>&lt;b&gt;Python app for psychoacoustics&lt;/b&gt; &lt;br&gt;
-                              - version: {0}; &lt;br&gt;
-                              - build date: {1} &lt;br&gt;
-                              &lt;p&gt; Copyright &amp;copy; 2010-2014 Samuele Carcagno. &lt;a href=&quot;mailto:sam.carcagno@gmail.com&quot;&gt;sam.carcagno@gmail.com&lt;/a&gt; 
-                              All rights reserved. &lt;p&gt;
-                              This program is free software: you can redistribute it and/or modify
-                              it under the terms of the GNU General Public License as published by
-                              the Free Software Foundation, either version 3 of the License, or
-                              (at your option) any later version.
-                              &lt;p&gt;
-                              This program is distributed in the hope that it will be useful,
-                              but WITHOUT ANY WARRANTY; without even the implied warranty of
-                              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-                              GNU General Public License for more details.
-                              &lt;p&gt;
-                              You should have received a copy of the GNU General Public License
-                              along with this program.  If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;
-                              &lt;p&gt;Python {2} - Qt {3} - PySide {4} on {5}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2322,7 +2300,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4243"/>
+        <location filename="../pychoacoustics/control_window.py" line="4253"/>
         <source>&lt;b&gt;pychoacoustics - Python app for psychoacoustics&lt;/b&gt; &lt;br&gt;
                               - version: {0}; &lt;br&gt;
                               - build date: {1} &lt;br&gt;
@@ -2340,7 +2318,7 @@
                               &lt;p&gt;
                               You should have received a copy of the GNU General Public License
                               along with this program.  If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;
-                              &lt;p&gt;Python {2} - Qt {3} - PyQt {4} on {5}</source>
+                              &lt;p&gt;Python {2} - {3} {4} compiled against Qt {5}, and running with Qt {6} on {7}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

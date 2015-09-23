@@ -27,13 +27,18 @@ os.chdir('../')
 os.system('python3 setup-pyside.py sdist --formats=gztar,zip')
 os.system('python3 setup-pyside.py bdist_wininst')
 
-#revert
+#revert to pyqt5
+
+for i in range(len(pyqtverLines)):
+    if pyqtverLines[i].strip().split('=')[0].strip() == "pyqtversion":
+           pyqtverLines[i] = "pyqtversion = 5\n"
+
 os.chdir('prep-release')
 f = open('../pychoacoustics/pyqtver.py', 'w')
 f.writelines(pyqtverLines)
 f.close()
 
-os.system('pyrcc4 -py3 -o ../pychoacoustics/qrc_resources.py ../resources.qrc')
-os.system('pylupdate4 -verbose pychoacoustics.pro')
+os.system('pyrcc5 -py3 -o ../pychoacoustics/qrc_resources.py ../resources.qrc')
+os.system('pylupdate5 -verbose pychoacoustics.pro')
 os.system('lrelease -verbose pychoacoustics.pro')
 os.system('mv *.qm ../translations/')

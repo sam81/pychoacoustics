@@ -31,7 +31,7 @@ setup(
         'Topic :: Scientific/Engineering :: Bio-Informatics'
         ],
     license="GPL v3",
-    requires=['PyQt (>=4.8.4)', 'numpy (>=1.6.1)', 'scipy (>=0.10.1)'],
+    requires=['PyQt (>=5.3.2)', 'numpy (>=1.6.1)', 'scipy (>=0.10.1)'],
     packages=["pychoacoustics", "pychoacoustics.default_experiments"],
     scripts = ["pychoacoustics.pyw"],
     package_dir={"pychoacoustics": "pychoacoustics"},
