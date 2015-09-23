@@ -4,19 +4,11 @@
 Installation
 *************
 
-.. todo::
-   
-   Add info on optional python packages (matplotlib and pandas).
-   Add info on using scientific Python bundles, such as Anaconda.
-
 ``pychoacoustics`` has been successfully installed and used on Linux,
 Windows, and Mac platforms. ``pychoacoustics`` depends on the installation of a
 handful of other programs:
 
 -  Python (version 3) `http://www.python.org/ <http://www.python.org/>`_
-
--  pyqt4
-   `http://www.riverbankcomputing.co.uk/software/pyqt/download <http://www.riverbankcomputing.co.uk/software/pyqt/download>`_
 
 -  numpy
    `http://sourceforge.net/projects/numpy/files/ <http://sourceforge.net/projects/numpy/files/>`_
@@ -24,13 +16,38 @@ handful of other programs:
 -  scipy
    `http://sourceforge.net/projects/scipy/files/ <http://sourceforge.net/projects/scipy/files/>`_
 
+additionally it is necessary to install one of the modules providing Python bindings to the Qt widgets toolkit.
+There are three parallel versions of ``pychoacoustics`` that support the major
+modules providing Python bindings to Qt (PyQt5, PyQt4, and PySide). You need to install only one
+of these modules, and use the corresponding version of ``pychoacoustics``
+
+- PyQt5
+  `https://riverbankcomputing.com/software/pyqt/download5 <https://riverbankcomputing.com/software/pyqt/download5>`_
+
+- PyQt4
+  `http://www.riverbankcomputing.co.uk/software/pyqt/download <http://www.riverbankcomputing.co.uk/software/pyqt/download>`_
+
+- PySide
+  `https://pypi.python.org/pypi/PySide/ <https://pypi.python.org/pypi/PySide/>`_
+  
 these programs need to be installed manually. Once these programs are
-installed you can proceed with the installtion of ``pychoacoustics``.
+installed you can proceed with the installtion of ``pychoacoustics``. There
+are two additional optional dependencies
+
+- matplotlib
+  `http://matplotlib.org/ <http://matplotlib.org/>`_
+
+- pandas
+  `http://pandas.pydata.org/ <http://pandas.pydata.org/>`_
+  
+if matplotlib and pandas are installed pychoacoustics can generate graphical summaries
+of the results of an experimental session.  
+    
 
 Installation on Linux
 ---------------------
 
-Binary deb packages for Debian are provided (starting from Wheezy), 
+Binary deb packages for Debian and Ubuntu LTS releases are provided (starting from Wheezy), 
 and can be installed using gdebi which automatically handles dependencies. 
 For other linux systems, once all of
 the dependencies have been installed, ``pychoacoustics`` can be

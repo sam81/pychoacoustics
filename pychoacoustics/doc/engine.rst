@@ -174,7 +174,7 @@ trial. The “block summary” result files (either in plain or tabular format) 
 obtain “session summary” files.
 The "session summary" files contain summaries for an entire 
 experimental session. In these files the results are averaged across 
-different blocks that have exactly the same parameters.
+different blocks that have exactly the same stored parameters.
 
 In order to obtain the session summary
 files you need to use the appropriate functions that can be accessed
@@ -233,7 +233,7 @@ When processing block summary table files, make sure that the csv
 separator in the “Process Results Table” window matches the separator
 used in the file.
 
-The tabular result files contain a number of default columns, that are specific 
+The tabular result files contain a number of default columns that are specific 
 to the paradigm used in the experiment (e.g., threshold, number of trials etc…). 
 These result files also contain a "condition" column, where the "Condition Label"
 is written (see :ref:`sec-gui_left_panel`). It is a good practice to assign 
@@ -254,7 +254,7 @@ in Figure :ref:`fig-inSummaryCheckBoxes`.
 
 In the example shown in Figure :ref:`fig-inSummaryCheckBoxes` the frequency,
 level and ear parameters will be stored, each in a separate column, in
-the block summary table (“\_table”) file, while the parameters
+the tabular block summary file, while the parameters
 corresponding to the unchecked boxes (duration, ramps and type) will be
 not. This is useful if you are running an experiment in which you are
 systematically varying only a few parameters across different blocks,
@@ -264,17 +264,21 @@ with your parameters of interest in ``pychoacoustics``.
 
 Notice that the “Process Results Table” function, as mentioned in the
 previous section, will average the results for blocks with the same
-parameters stored in the block summary table (“\_table”) file. This
+parameters stored in the tabular block summary file. This
 means that if you are varying a certain parameter (e.g., level) across
 blocks, but you don’t check the corresponding ``inSummary`` check box
 (for each block), the value of the parameter will not be stored in the
-block summary table (“\_table”) file, and as a consequence the “Process
+tabular block summary file, and as a consequence the “Process
 Results Table” function will not be able to sort the blocks according to
 the “level” parameter, and will average the results across all blocks.
-Not all is lost, because the “level” parameter will be nonetheless
-stored in the “block summary” file, but you will need more work before
+Not all is lost because the “level” parameter will be nonetheless
+stored in the “block summary” plain text file, but you will need more work before
 you can process your results with a statistical software package.
 
+.. todo::
+
+    Add some info on tabular full files
+    
 
 Plain Text Result Files
 -------------------------
