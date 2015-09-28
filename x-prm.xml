@@ -3,6 +3,7 @@
   <mime-type type="text/x-prm">  
   <comment>pychoacoustics parameters</comment>
   <comment xml:lang="it">parametri pychoacoustics</comment>
+  <comment xml:lang="fr">paramètres pychoacoustics</comment>
   <glob pattern="*.prm"/>
  </mime-type>
 </mime-info>

@@ -90,6 +90,17 @@ def main(argv):
     f.writelines(ln)
     f.close()
 
+    f = open('pychoacoustics.desktop', 'r')
+    ln = f.readlines()
+    f.close()
+    for i in range(len(ln)):
+        if ln[i].strip().split('=')[0].strip() == "Version":
+            ln[i] = 'Version = ' + gittag +'\n'
+
+    f = open('pychoacoustics.desktop', 'w')
+    f.writelines(ln)
+    f.close()
+
  
     subprocess.call('git commit -a -m"' + message+'"', shell=True)
     #tag the commit so that it can be easily retrieved
