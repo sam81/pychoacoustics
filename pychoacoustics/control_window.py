@@ -1872,6 +1872,7 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.stimScalingChooser, n, 5)
             self.stimScalingCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.stimScalingCheckBox, n, 3)
+            self.stimScalingChooser.activated[str].connect(self.onStimScalingChooserChange)
 
             self.nTrialsLabel = QLabel(self.tr("No. Trials"), self)
             self.paradigm_widg_sizer.addWidget(self.nTrialsLabel, n, 7)
@@ -2004,9 +2005,10 @@ class pychControlWin(QMainWindow):
             self.slopeSpacingChooser = QComboBox()
             self.slopeSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooser, n, 2)
-            self.slopeSpacingChooser.activated[str].connect(self.onChangeThreshPrior)
+            self.slopeSpacingChooser.activated[str].connect(self.onSlopeSpacingChooserChange)
             self.slopeSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooserCheckBox, n, 0)
+
             n = n+1
             # slope prior
             self.slopePriorChooserLabel = QLabel(self.tr("Slope Prior:"), self)
@@ -2070,7 +2072,7 @@ class pychControlWin(QMainWindow):
             self.lapseSpacingChooser = QComboBox()
             self.lapseSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooser, n, 2)
-            self.lapseSpacingChooser.activated[str].connect(self.onChangeThreshPrior)
+            self.lapseSpacingChooser.activated[str].connect(self.onLapseSpacingChooserChange)
             self.lapseSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooserCheckBox, n, 0)
             n = n+1
@@ -2298,7 +2300,7 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.stimScalingChooser, n, 8)
             self.stimScalingCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.stimScalingCheckBox, n, 6)
-            
+            self.stimScalingChooser.activated[str].connect(self.onStimScalingChooserChange)
             n = n+1
             #min midpoint
             self.loMidPointLabel = QLabel(self.tr("Mid Point Min"), self)
@@ -2391,7 +2393,7 @@ class pychControlWin(QMainWindow):
             self.slopeSpacingChooser = QComboBox()
             self.slopeSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooser, n, 2)
-            self.slopeSpacingChooser.activated[str].connect(self.onChangeThreshPrior)
+            self.slopeSpacingChooser.activated[str].connect(self.onSlopeSpacingChooserChange)
             self.slopeSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooserCheckBox, n, 0)
             n = n+1
@@ -2457,7 +2459,7 @@ class pychControlWin(QMainWindow):
             self.lapseSpacingChooser = QComboBox()
             self.lapseSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooser, n, 2)
-            self.lapseSpacingChooser.activated[str].connect(self.onChangeThreshPrior)
+            self.lapseSpacingChooser.activated[str].connect(self.onLapseSpacingChooserChange)
             self.lapseSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooserCheckBox, n, 0)
             n = n+1
@@ -4084,6 +4086,33 @@ class pychControlWin(QMainWindow):
             self.lapsePriorSTD.show()
             self.lapsePriorSTDLabel.show()
             self.lapsePriorSTDCheckBox.show()
+    def onStimScalingChooserChange(self):
+        currScaling = self.stimScalingChooser.currentText()
+        if currScaling == "Linear":
+            pass
+        elif currScaling == "Logarithmic":
+            if self.currLocale.toDouble(self.threshGridStep.text())[0] < 1.0001:
+                self.threshGridStep.setText('1.1')
+                try: #stimGridStep is only for PSI not UML
+                    self.stimGridStep.setText('1.1')
+                except:
+                    pass
+
+    def onSlopeSpacingChooserChange(self):
+        currSpacing = self.slopeSpacingChooser.currentText()
+        if currSpacing == "Linear":
+            pass
+        elif currSpacing == "Logarithmic":
+            if self.currLocale.toDouble(self.slopeGridStep.text())[0] < 1.0001:
+                self.slopeGridStep.setText('1.1')
+
+    def onLapseSpacingChooserChange(self):
+        currSpacing = self.lapseSpacingChooser.currentText()
+        if currSpacing == "Linear":
+            pass
+        elif currSpacing == "Logarithmic":
+            if self.currLocale.toDouble(self.lapseGridStep.text())[0] < 1.0001:
+                self.lapseGridStep.setText('1.1')
 
     def onChooserChange(self, selectedOption):
         self.fieldsToHide = []; self.fieldsToShow = []
