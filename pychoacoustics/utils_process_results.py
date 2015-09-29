@@ -218,7 +218,7 @@ def procResTableAdaptive(fName, fout=None, separator=';', last=None, block_range
 
     #sort on the basis of condition-agglomerate
     cnds = list(set(dCols['conditionAgglomerate']))
-    datsPro['threshold'] = zeros(len(cnds))
+    datsPro['threshold_'+procedure] = zeros(len(cnds))
     datsPro['SE'] = zeros(len(cnds))
 
     thresh = [[] for j in range(len(cnds))]
@@ -231,17 +231,17 @@ def procResTableAdaptive(fName, fout=None, separator=';', last=None, block_range
         start, stop = getBlockRangeToProcess(last, block_range, thresh[j])
 
         if procedure == 'arithmetic':
-            datsPro['threshold'][j] =  mean(thresh[j][start:stop])
+            datsPro['threshold_'+procedure][j] =  mean(thresh[j][start:stop])
             datsPro['SE'][j] =  se(thresh[j][start:stop])
         elif procedure == 'geometric':
-            datsPro['threshold'][j] =  geoMean(thresh[j][start:stop])
+            datsPro['threshold_'+procedure][j] =  geoMean(thresh[j][start:stop])
             datsPro['SE'][j] =  geoSe(thresh[j][start:stop])
 
         cndIdx = dCols['conditionAgglomerate'].index(cnds[j])
         for key in dCols:
             if key not in keysNotToCheck:
                     datsPro[key].append(dCols[key][cndIdx])
-    resKeys = ['threshold', 'SE']
+    resKeys = ['threshold_'+procedure, 'SE']
     writeResTable(fNameOut, separator, datsPro, resKeys)
 
     return

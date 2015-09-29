@@ -78,7 +78,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'pychoacoustics'
-copyright = '2013-14, Samuele Carcagno'
+copyright = '2013-15, Samuele Carcagno'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
