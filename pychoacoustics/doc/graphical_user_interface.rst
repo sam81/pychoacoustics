@@ -47,7 +47,7 @@ paradigms.
 .. _sec-gui_left_panel:
 
 General Widgets (left panel)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 -  **Listener** This is simply a label that you can use to identify the
@@ -199,7 +199,7 @@ General Widgets (left panel)
    Section :ref:`sec-response_mode` for more information.
 
 Additional Widgets (left panel)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The following widgets are present only in some experiments:
 
@@ -244,7 +244,7 @@ The following widgets are present only in some experiments:
   
 
 General Widgets (right panel)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 -  **Load Prm** Load in memory experimental parameters stored in a
    ``.prm`` file. See Section :ref:`sec-parameters_files` for more
@@ -295,7 +295,7 @@ General Widgets (right panel)
 
 
 Paradigm Widgets
-~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 Transformed Up-Down Paradigm Widgets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -602,7 +602,7 @@ Odd One Out Paradigm Widgets
 
 
 The Menu Bar
-~~~~~~~~~~~~
+^^^^^^^^^^^^
 
 A screenshot of the menu bar is shown in Figure :ref:`fig-menu_bar`. This bar
 is located in the upper left corner of the “Control Window”. Each menu
@@ -742,7 +742,7 @@ Edit Preferences Dialog
 .. _sec-edit_pref_dia_gen:
 
 General
-~~~~~~~
+^^^^^^^
 
 
 -  **Language (requires restart)** Choose the application language. At
@@ -794,7 +794,7 @@ General
 .. _sec-edit_pref_dia_sound:
 
 Sound
-~~~~~
+^^^^^
 
 
 -  **Play Command** Set an internal or external command to play sounds.
@@ -830,7 +830,7 @@ Sound
 .. _sec-edit_pref_dia_notifications:
 
 Notifications
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 -  **Play End Message** If checked, play a wav file at the end of the
    experiment. This could be short message to let the listeners know
@@ -883,7 +883,7 @@ Notifications
 .. _sec-edit_pref_dia_EEG:
 
 EEG
-~~~
+^^^
 
 
 -  **ON Trigger** The ON trigger value (decimal).
@@ -912,19 +912,69 @@ shown in Figure :ref:`fig-phones_database`.
 
 Most of the fields should be pretty much self-explanatory. Using this
 dialog you can add headphones/earphones models to the phones database.
-The phone with the “Default” flag set to will be selected by default
+The phone with the “Default” flag set will be selected by default
 when ``pychoacoustics`` is started. In the “Max Level” field you should
 enter the level in dB SPL that is output by the phone for a full
-amplitude sinusoid. This value will be used by ``pychoacoustics`` to
-output sounds at specific levels in dB SPL. On the rightmost panel of
+amplitude sinusoid (a sinusoid with a peak amplitude of 1).
+This value will be used by ``pychoacoustics`` to output sounds at specific
+levels in dB SPL. On the rightmost panel of
 the dialog you have facilities to play a sinusoid with a specified
 level. You can use these facilities to check with a SPL meter (or a
 voltmeter depending on how you’re doing it) that the actual output level
 corresponds to the desired output level. Using these facilities you can
 also play a full amplitude sinusoid: you need to set the level of the
-sinuoid to the “Max Level” of the phone (whatever it is). Be careful
-because it can be very loud!
+sinuoid to the “Max Level” of the phone in the dialog (whatever it is).
+Be careful because it can be very loud! More detailed instructions on
+the calibration procedure are provided below.
 
+Calibrating with an SPL meter
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Open the "Edit Phones" dialog. Select the phone for which you want to calibrate and note its
+``MaxLevel`` (by default this is set to 100 dB SPL). Use the rightmost panel to play
+a 1-kHz sinusoid at the ``MaxLevel`` (e.g. 100 dB), and read the measurement on the SPL
+meter. Change the ``MaxLevel`` for the phone to the measurement you just read on the SPL meter.
+
+You don't actually need to play the sinusoid at the ``MaxLevel`` (and it may be better not to do so
+because you may get distortions at very high levels). Instead, you could for example
+play it at a level equal to ``MaxLevel`` - 20. The reading that you would obtain from the SPL meter
+would then be 20 dB below the ``MaxLevel``. You would then simply add 20 to the SPL meter reading
+and set ``MaxLevel`` to this value.
+
+Calibrating with a voltmeter
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Open the "Edit Phones" dialog. Select the phone for which you want to calibrate and note its
+``MaxLevel`` (by default this is set to 100 dB SPL). Use the rightmost panel to play
+a 1-kHz sinusoid at the ``MaxLevel`` (e.g. 100 dB), and note the rms voltage reading from
+a voltmeter connected to a cable receiving input from the soundcard.
+Manufacturers of professional phones usually provide datasheets indicating
+what is the dB SPL level output by the phone when it is driven by a 1-volt :sub:`rms`
+sinusoid at 1 kHz. You can use this figure to calculate what the dB SPL output is for the
+1-kHz sinusoid. Suppose that the dB SPL output for a 1-volt :sub:`rms` sinusoid at 1 kHz
+is :math:`L_r`, and the voltage output for the sinusoid played at ``MaxLevel`` is :math:`V_x`,
+the dB SPL output for the sinusoid (:math:`L_x`) will be:
+
+.. math::
+   
+   L_x = L_r + 20 log10(V_x)
+
+if the reference rms voltage in the datasheet is not 1 but some other value :math:`V_r`,
+:math:`L_x` can be calculated as:   
+
+.. math::
+
+   L_x = L_r + 20 log10(V_x/V_r)
+
+Finally, set the ``MaxLevel`` for the phone you're calibrating to math:`L_x`. As for the SPL meter calibration
+you do not actually need to play the sinusoid at the ``MaxLevel`` (and it may be better not to do so
+because you may get distortions at very high levels). Instead, you could for example
+play it at a level equal to ``MaxLevel`` - 20. You would then add back the 20 dBs in the equation to
+compute :math:`L_x`:
+
+.. math::
+
+   L_x = L_r + 20 log10(V_x) + 20
 
 .. _sec-edit_experimenters_dia:
 

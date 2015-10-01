@@ -1373,7 +1373,7 @@
         <translation type="obsolete">No. di comparazioni:</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2904"/>
+        <location filename="../pychoacoustics/control_window.py" line="2906"/>
         <source>No. Differences:</source>
         <translation type="unfinished">No. di differenze:</translation>
     </message>
@@ -1398,7 +1398,7 @@
         <translation type="obsolete">Procedura:</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2254"/>
+        <location filename="../pychoacoustics/control_window.py" line="2256"/>
         <source>Rule Down</source>
         <translation type="unfinished">Regola giù</translation>
     </message>
@@ -1428,7 +1428,7 @@
         <translation type="unfinished">Misura passo 2</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2263"/>
+        <location filename="../pychoacoustics/control_window.py" line="2265"/>
         <source>No. Trials</source>
         <translation type="unfinished">No. Trial</translation>
     </message>
@@ -1438,7 +1438,7 @@
         <translation type="obsolete">Inizia</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3480"/>
+        <location filename="../pychoacoustics/control_window.py" line="3482"/>
         <source>Choose parameters file to load</source>
         <translation type="unfinished">Scegli il file dei parametri da caricare</translation>
     </message>
@@ -1448,22 +1448,22 @@
         <translation type="unfinished">&amp;Cambia</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4253"/>
+        <location filename="../pychoacoustics/control_window.py" line="4282"/>
         <source>About pychoacoustics</source>
         <translation type="unfinished">Riguardo pychoacoustics</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3480"/>
+        <location filename="../pychoacoustics/control_window.py" line="3482"/>
         <source>prm files (*.prm *PRM *Prm);;All Files (*)</source>
         <translation type="unfinished">file prm (*.prm *PRM *Prm);;Tutti i file (*)</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3766"/>
+        <location filename="../pychoacoustics/control_window.py" line="3768"/>
         <source>Choose file to write prm</source>
         <translation type="unfinished">Scegli il file dei parametri da scrivere</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4203"/>
+        <location filename="../pychoacoustics/control_window.py" line="4232"/>
         <source>All Files (*)</source>
         <translation type="unfinished">Tutti i file (*)</translation>
     </message>
@@ -1488,12 +1488,12 @@
         <translation type="obsolete">Adattivo interleaved</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2691"/>
+        <location filename="../pychoacoustics/control_window.py" line="2693"/>
         <source>Message</source>
         <translation type="unfinished">Messaggio</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3827"/>
+        <location filename="../pychoacoustics/control_window.py" line="3829"/>
         <source>Yes</source>
         <translation type="unfinished">Sì</translation>
     </message>
@@ -1558,7 +1558,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3012"/>
+        <location filename="../pychoacoustics/control_window.py" line="3014"/>
         <source>Saving results to file: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1968,7 +1968,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2906"/>
+        <location filename="../pychoacoustics/control_window.py" line="2908"/>
         <source>No. Tracks:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2048,210 +2048,210 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2899"/>
+        <location filename="../pychoacoustics/control_window.py" line="2901"/>
         <source>Multiple Constants 1-Interval 2-Alternatives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2900"/>
+        <location filename="../pychoacoustics/control_window.py" line="2902"/>
         <source>Multiple Constants m-Intervals n-Alternatives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2657"/>
+        <location filename="../pychoacoustics/control_window.py" line="2659"/>
         <source>Automatic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2691"/>
+        <location filename="../pychoacoustics/control_window.py" line="2693"/>
         <source>Do you want to load the parameters file {0} ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3170"/>
+        <location filename="../pychoacoustics/control_window.py" line="3172"/>
         <source>Choose file to write results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4352"/>
+        <location filename="../pychoacoustics/control_window.py" line="4381"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3397"/>
+        <location filename="../pychoacoustics/control_window.py" line="3399"/>
         <source>Last block has not been stored. Do you want to store it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3404"/>
+        <location filename="../pychoacoustics/control_window.py" line="3406"/>
         <source>Some parameters have been modified but not stored. Do you want to store them?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3418"/>
+        <location filename="../pychoacoustics/control_window.py" line="3420"/>
         <source>You need to store the current block before adding a new one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3500"/>
+        <location filename="../pychoacoustics/control_window.py" line="3502"/>
         <source>Phones stored in prm file {} not found in database
  Leaving phones chooser untouched</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3759"/>
+        <location filename="../pychoacoustics/control_window.py" line="3761"/>
         <source>There are no stored parameters to save.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3797"/>
+        <location filename="../pychoacoustics/control_window.py" line="3799"/>
         <source>Block Position: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3798"/>
+        <location filename="../pychoacoustics/control_window.py" line="3800"/>
         <source>Condition Label: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3799"/>
+        <location filename="../pychoacoustics/control_window.py" line="3801"/>
         <source>Experiment: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3800"/>
+        <location filename="../pychoacoustics/control_window.py" line="3802"/>
         <source>Paradigm: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3802"/>
+        <location filename="../pychoacoustics/control_window.py" line="3804"/>
         <source>Intervals: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3803"/>
+        <location filename="../pychoacoustics/control_window.py" line="3805"/>
         <source>Alternatives: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3804"/>
+        <location filename="../pychoacoustics/control_window.py" line="3806"/>
         <source>Pre-Trial Silence (ms): </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3805"/>
+        <location filename="../pychoacoustics/control_window.py" line="3807"/>
         <source>Warning Interval: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3807"/>
+        <location filename="../pychoacoustics/control_window.py" line="3809"/>
         <source>Warning Interval Duration (ms): </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3808"/>
+        <location filename="../pychoacoustics/control_window.py" line="3810"/>
         <source>Warning Interval ISI (ms): </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3809"/>
+        <location filename="../pychoacoustics/control_window.py" line="3811"/>
         <source>Interval Lights: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3816"/>
+        <location filename="../pychoacoustics/control_window.py" line="3818"/>
         <source>ISI (ms): </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3818"/>
+        <location filename="../pychoacoustics/control_window.py" line="3820"/>
         <source>Pre-Trial Interval: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3820"/>
+        <location filename="../pychoacoustics/control_window.py" line="3822"/>
         <source>Pre-Trial Interval ISI (ms): </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3822"/>
+        <location filename="../pychoacoustics/control_window.py" line="3824"/>
         <source>Precursor Interval: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3824"/>
+        <location filename="../pychoacoustics/control_window.py" line="3826"/>
         <source>Precursor Interval ISI (ms): </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3826"/>
+        <location filename="../pychoacoustics/control_window.py" line="3828"/>
         <source>Postcursor Interval: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3828"/>
+        <location filename="../pychoacoustics/control_window.py" line="3830"/>
         <source>Postcursor Interval ISI (ms): </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3834"/>
+        <location filename="../pychoacoustics/control_window.py" line="3836"/>
         <source>Response Light: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3835"/>
+        <location filename="../pychoacoustics/control_window.py" line="3837"/>
         <source>Response Light Duration (ms): </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3956"/>
+        <location filename="../pychoacoustics/control_window.py" line="3958"/>
         <source>Shuffling failed :-( Something may be wrong with your shuffling scheme.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3961"/>
+        <location filename="../pychoacoustics/control_window.py" line="3963"/>
         <source>Shuffling failed :-( The length of the shuffling sequence seems to be different than the number of stored blocks. Maybe you recently added of deleted a block.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3992"/>
+        <location filename="../pychoacoustics/control_window.py" line="3994"/>
         <source>You&apos;re trying to swap the position of a block that has not been stored yet. Please, store the block first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4237"/>
+        <location filename="../pychoacoustics/control_window.py" line="4266"/>
         <source>message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4237"/>
+        <location filename="../pychoacoustics/control_window.py" line="4266"/>
         <source>No results file has been selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4278"/>
+        <location filename="../pychoacoustics/control_window.py" line="4307"/>
         <source>The parameters have not been saved to a file. 
  Do you want to save them before exiting?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4296"/>
+        <location filename="../pychoacoustics/control_window.py" line="4325"/>
         <source>The parameters in memory differ from the parameters on file. 
  Do you want to save the parameters stored in memory them before exiting?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4330"/>
+        <location filename="../pychoacoustics/control_window.py" line="4359"/>
         <source>There are no stored blocks to swap.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4335"/>
+        <location filename="../pychoacoustics/control_window.py" line="4364"/>
         <source>Block numbers specified out of range.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4352"/>
+        <location filename="../pychoacoustics/control_window.py" line="4381"/>
         <source>Shuffling scheme contains non-allowed characters.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2281,42 +2281,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4203"/>
+        <location filename="../pychoacoustics/control_window.py" line="4232"/>
         <source>Choose results file to load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4223"/>
+        <location filename="../pychoacoustics/control_window.py" line="4252"/>
         <source>Input Dialog</source>
         <translation type="unfinished">Dialogo di inserimento</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4144"/>
+        <location filename="../pychoacoustics/control_window.py" line="4173"/>
         <source>Choose file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2829"/>
+        <location filename="../pychoacoustics/control_window.py" line="2831"/>
         <source>Transformed Up-Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2829"/>
+        <location filename="../pychoacoustics/control_window.py" line="2831"/>
         <source>Weighted Up-Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2905"/>
+        <location filename="../pychoacoustics/control_window.py" line="2907"/>
         <source>Transformed Up-Down Interleaved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2905"/>
+        <location filename="../pychoacoustics/control_window.py" line="2907"/>
         <source>Weighted Up-Down Interleaved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2832"/>
+        <location filename="../pychoacoustics/control_window.py" line="2834"/>
         <source>PEST</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2351,12 +2351,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3830"/>
+        <location filename="../pychoacoustics/control_window.py" line="3832"/>
         <source>Alternated (AB) Reps.: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3831"/>
+        <location filename="../pychoacoustics/control_window.py" line="3833"/>
         <source>Alternated (AB) Reps. ISI (ms): </source>
         <translation type="unfinished"></translation>
     </message>
@@ -2371,12 +2371,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2830"/>
+        <location filename="../pychoacoustics/control_window.py" line="2832"/>
         <source>Transformed Up-Down Limited</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2830"/>
+        <location filename="../pychoacoustics/control_window.py" line="2832"/>
         <source>Weighted Up-Down Limited</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2386,7 +2386,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2236"/>
+        <location filename="../pychoacoustics/control_window.py" line="2238"/>
         <source>Psychometric Function:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2401,7 +2401,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2323"/>
+        <location filename="../pychoacoustics/control_window.py" line="2325"/>
         <source>Mid Point Step</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2426,42 +2426,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2304"/>
+        <location filename="../pychoacoustics/control_window.py" line="2306"/>
         <source>Mid Point Min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2314"/>
+        <location filename="../pychoacoustics/control_window.py" line="2316"/>
         <source>Mid Point Max</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2362"/>
+        <location filename="../pychoacoustics/control_window.py" line="2364"/>
         <source>Slope Min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2371"/>
+        <location filename="../pychoacoustics/control_window.py" line="2373"/>
         <source>Slope Max</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2380"/>
+        <location filename="../pychoacoustics/control_window.py" line="2382"/>
         <source>Slope Step</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2428"/>
+        <location filename="../pychoacoustics/control_window.py" line="2430"/>
         <source>Lapse Min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2437"/>
+        <location filename="../pychoacoustics/control_window.py" line="2439"/>
         <source>Lapse Max</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2446"/>
+        <location filename="../pychoacoustics/control_window.py" line="2448"/>
         <source>Lapse Step</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2496,167 +2496,167 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2294"/>
+        <location filename="../pychoacoustics/control_window.py" line="2296"/>
         <source>Stim. Scaling:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2275"/>
+        <location filename="../pychoacoustics/control_window.py" line="2277"/>
         <source>Stim. Min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2285"/>
+        <location filename="../pychoacoustics/control_window.py" line="2287"/>
         <source>Stim. Max</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="1907"/>
+        <location filename="../pychoacoustics/control_window.py" line="1908"/>
         <source>Stim. Step</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2333"/>
+        <location filename="../pychoacoustics/control_window.py" line="2335"/>
         <source>Mid Point Prior:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2342"/>
+        <location filename="../pychoacoustics/control_window.py" line="2344"/>
         <source>Mid Point mu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2351"/>
+        <location filename="../pychoacoustics/control_window.py" line="2353"/>
         <source>Mid Point STD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2389"/>
+        <location filename="../pychoacoustics/control_window.py" line="2391"/>
         <source>Slope Spacing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2399"/>
+        <location filename="../pychoacoustics/control_window.py" line="2401"/>
         <source>Slope Prior:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2408"/>
+        <location filename="../pychoacoustics/control_window.py" line="2410"/>
         <source>Slope mu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2417"/>
+        <location filename="../pychoacoustics/control_window.py" line="2419"/>
         <source>Slope STD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2455"/>
+        <location filename="../pychoacoustics/control_window.py" line="2457"/>
         <source>Lapse Spacing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2465"/>
+        <location filename="../pychoacoustics/control_window.py" line="2467"/>
         <source>Lapse Prior:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2474"/>
+        <location filename="../pychoacoustics/control_window.py" line="2476"/>
         <source>Lapse mu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2483"/>
+        <location filename="../pychoacoustics/control_window.py" line="2485"/>
         <source>Lapse STD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2107"/>
+        <location filename="../pychoacoustics/control_window.py" line="2109"/>
         <source>Marginalize Lapse:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2115"/>
+        <location filename="../pychoacoustics/control_window.py" line="2117"/>
         <source>Start Level:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2126"/>
+        <location filename="../pychoacoustics/control_window.py" line="2128"/>
         <source>Marginalize Slope:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2134"/>
+        <location filename="../pychoacoustics/control_window.py" line="2136"/>
         <source>Marginalize Mid Point:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2231"/>
+        <location filename="../pychoacoustics/control_window.py" line="2233"/>
         <source>UML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2244"/>
+        <location filename="../pychoacoustics/control_window.py" line="2246"/>
         <source>Posterior Summary:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2663"/>
+        <location filename="../pychoacoustics/control_window.py" line="2665"/>
         <source>Psychometric</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3214"/>
+        <location filename="../pychoacoustics/control_window.py" line="3216"/>
         <source>Saved psychometric listener data to: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3810"/>
+        <location filename="../pychoacoustics/control_window.py" line="3812"/>
         <source>Psychometric Listener Function: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3811"/>
+        <location filename="../pychoacoustics/control_window.py" line="3813"/>
         <source>Psychometric Listener Function Fit: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3812"/>
+        <location filename="../pychoacoustics/control_window.py" line="3814"/>
         <source>Psychometric Listener Midpoint: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3813"/>
+        <location filename="../pychoacoustics/control_window.py" line="3815"/>
         <source>Psychometric Listener Slope: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3814"/>
+        <location filename="../pychoacoustics/control_window.py" line="3816"/>
         <source>Psychometric Listener Lapse: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2901"/>
+        <location filename="../pychoacoustics/control_window.py" line="2903"/>
         <source>Multiple Constants 1-Pair Same/Different</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2902"/>
+        <location filename="../pychoacoustics/control_window.py" line="2904"/>
         <source>Multiple Constants ABX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="2903"/>
+        <location filename="../pychoacoustics/control_window.py" line="2905"/>
         <source>Multiple Constants Odd One Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4144"/>
+        <location filename="../pychoacoustics/control_window.py" line="4173"/>
         <source>All Files (*);; WAV (*.wav *WAV)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="4253"/>
+        <location filename="../pychoacoustics/control_window.py" line="4282"/>
         <source>&lt;b&gt;pychoacoustics - Python app for psychoacoustics&lt;/b&gt; &lt;br&gt;
                               - version: {0}; &lt;br&gt;
                               - build date: {1} &lt;br&gt;
@@ -2681,7 +2681,7 @@
 <context>
     <name>rb</name>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3973"/>
+        <location filename="../pychoacoustics/control_window.py" line="3975"/>
         <source>Start</source>
         <translation>Inizia</translation>
     </message>
@@ -2771,12 +2771,12 @@
         <translation type="obsolete">Blocco</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3985"/>
+        <location filename="../pychoacoustics/control_window.py" line="3987"/>
         <source>Completed</source>
         <translation>Completati</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="3985"/>
+        <location filename="../pychoacoustics/control_window.py" line="3987"/>
         <source>Blocks</source>
         <translation>blocchi</translation>
     </message>

@@ -5,81 +5,113 @@ Installation
 *************
 
 ``pychoacoustics`` has been successfully installed and used on Linux,
-Windows, and Mac platforms. ``pychoacoustics`` depends on the installation of a
-handful of other programs:
-
--  Python (version 3) `http://www.python.org/ <http://www.python.org/>`_
-
--  numpy
-   `http://sourceforge.net/projects/numpy/files/ <http://sourceforge.net/projects/numpy/files/>`_
-
--  scipy
-   `http://sourceforge.net/projects/scipy/files/ <http://sourceforge.net/projects/scipy/files/>`_
-
-additionally it is necessary to install one of the modules providing Python bindings to the Qt widgets toolkit.
-There are three parallel versions of ``pychoacoustics`` that support the major
-modules providing Python bindings to Qt (PyQt5, PyQt4, and PySide). You need to install only one
-of these modules, and use the corresponding version of ``pychoacoustics``
-
-- PyQt5
-  `https://riverbankcomputing.com/software/pyqt/download5 <https://riverbankcomputing.com/software/pyqt/download5>`_
-
-- PyQt4
-  `http://www.riverbankcomputing.co.uk/software/pyqt/download <http://www.riverbankcomputing.co.uk/software/pyqt/download>`_
-
-- PySide
-  `https://pypi.python.org/pypi/PySide/ <https://pypi.python.org/pypi/PySide/>`_
-  
-these programs need to be installed manually. Once these programs are
-installed you can proceed with the installtion of ``pychoacoustics``. There
-are two additional optional dependencies
-
-- matplotlib
-  `http://matplotlib.org/ <http://matplotlib.org/>`_
-
-- pandas
-  `http://pandas.pydata.org/ <http://pandas.pydata.org/>`_
-  
-if matplotlib and pandas are installed pychoacoustics can generate graphical summaries
-of the results of an experimental session.  
+Windows, and Mac platforms. Installation instructions for each operating system are
+provided below.
     
 
 Installation on Linux
 ---------------------
 
-Binary deb packages for Debian and Ubuntu LTS releases are provided (starting from Wheezy), 
-and can be installed using gdebi which automatically handles dependencies. 
-For other linux systems, once all of
-the dependencies have been installed, ``pychoacoustics`` can be
-installed as a standard python package using
+For Debian and Ubuntu LTS releases there are apt repositories that can be used
+to install and update ``pychoacoustics``. For other Linux distributions
+``pychoacoustics`` has to be installed from source (see Section :ref:`sec-install_from_source`).
+
+Installation on Debian
+^^^^^^^^^^^^^^^^^^^^^^
+
+Binary packages for the Debian amd64 architecture are hosted on
+`bintray <https://bintray.com/sam81/hearinglab>`_.
+To install ``pychoacoustics`` first install the ``apt-transport-https`` package if it is not already installed:
+
+::
+   
+   sudo apt-get install apt-transport-https 
+
+then add one of the following lines to ``/etc/apt/sources.list`` depending on your Debian version:
+For Jessie (stable):
 
 ::
 
-    sudo python3 setup.py install
+   deb https://dl.bintray.com/sam81/hearinglab jessie main
 
-you can then invoke ``pychoacoustics`` from a terminal by typing the
-command
+
+For Stretch (testing):
 
 ::
 
-    pychoacoustics.pyw
+   deb https://dl.bintray.com/sam81/hearinglab stretch main
+
+Download the key with which the repository is signed and add it to the apt keyring:
+
+::
+
+   wget -qO - https://bintray.com/user/downloadSubjectPublicKey?username=bintray | sudo apt-key add -
+
+Refresh the package database and install the package:
+
+::
+   
+   sudo apt-get update
+   sudo apt-get install pychoacoustics
+
+Installation on Ubuntu LTS Releases
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Binary packages for Ubuntu Long Term Support (LTS) releases are hosted on
+`Launchpad <https://launchpad.net/~samuele-carcagno/+archive/ubuntu/hearinglab>`_.
+To install pychoacoustics run the following commands:
+
+::
+
+   sudo add-apt-repository ppa:samuele-carcagno/hearinglab
+   sudo apt-get update
+   sudo apt-get install pychoacoustics
+
 
 Installation on Windows
 -----------------------
 
-Currently there is no binary installer for `pychoacoustics`
-on Windows. To use `pychoacoustics` on Windows you need to either
-install Python and all the modules on which `pychoacoustics` depends
-(PyQt4, numpy, scipy), or use a Python distribution such as Pyzo, which
-includes python and the dependencies. Using Pyzo is currently the easiest
-way to get `pychoacoustics` running quickly on Windows.
+A Windows installer is provided on the downloads page:
 
-Install with Pyzo
-~~~~~~~~~~~~~~~~~~~~~~~
+`http://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html <http://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html#downloads>`_
+
+Installation on the Mac
+------------------------
+
+The easiest way to install ``pychoacoustics`` on the Mac is 
+to use Pyzo as a Python distribution.
+The steps are the same as for the installation with Pyzo on 
+Windows (see below). Please, note that if you install with Pyzo you
+will need to use the PySide version of ``pychoacoustics``.
+
+
+.. _sec-install_from_source:
+
+Installation from source
+-------------------------
+
+``pychoacoustics`` depends on Python and a handful of Python modules.
+There are two ways to obtain these dependencies. One is to install Python
+and all the dependencies "manually" (that is one by one). The other (and easier)
+way is to install a Python distribution that comes with a bundle of pre-installed
+modules. These include:
+
+- Pyzo: `http://www.pyzo.org/ <http://www.pyzo.org/>`_
+
+- Anaconda: `https://www.continuum.io/downloads https://www.continuum.io/downloads>`_
+    
+- WinPython (Windows only): `http://winpython.github.io/ http://winpython.github.io/>`_
+
+Step by step instructions to install ``pychoacoustics`` on Windows with Pyzo are provided below.
+Although these instructions are specific to Windows the installation steps are similar on Mac OS X
+and Linux systems. If you get stuck at some point don't hesitate to get in touch <sam.carcagno@gmail.com>.
+
+Install with Pyzo on Windows
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Download the latest version on Pyzo and unpack it to a folder of your choice.
 Download the Windows source package (PySide) of `pychoacoustics`. Open the DOS
-command prompt and change directory to the folder where you unpacked PyZo, which 
+command prompt and change directory to the folder where you unpacked ``Pyzo``, which 
 should contain the `python.exe` executable. For example:
 
 ::
@@ -120,21 +152,65 @@ You can place the ``.bat``
 launcher wherever you want, for example on your ``Desktop`` folder. 
 Simply double click on it, and ``pychoacoustics`` should start.
 
-Installation on the Mac
-------------------------
+"Manual" Installation from Source
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The easiest way to install ``pychoacoustics`` on the Mac is 
-to use Pyzo as a Python distribution.
-The steps are the same as for the installation with Pyzo on 
-Windows (see above). Please, note that if you install with Pyzo you
-will need to use the PySide version of ``pychoacoustics``.
+``pychoacoustics`` depends on the installation of a
+handful of other Python modules:
+
+-  Python (version 3) `http://www.python.org/ <http://www.python.org/>`_
+
+-  numpy
+   `http://sourceforge.net/projects/numpy/files/ <http://sourceforge.net/projects/numpy/files/>`_
+
+-  scipy
+   `http://sourceforge.net/projects/scipy/files/ <http://sourceforge.net/projects/scipy/files/>`_
+
+additionally it is necessary to install one of the modules providing Python bindings to the Qt widgets toolkit.
+There are three parallel versions of ``pychoacoustics`` that support the major
+modules providing Python bindings to Qt (PyQt5, PyQt4, and PySide). You need to install only one
+of these modules, and use the corresponding version of ``pychoacoustics``
+
+- PyQt5
+  `https://riverbankcomputing.com/software/pyqt/download5 <https://riverbankcomputing.com/software/pyqt/download5>`_
+
+- PyQt4
+  `http://www.riverbankcomputing.co.uk/software/pyqt/download <http://www.riverbankcomputing.co.uk/software/pyqt/download>`_
+
+- PySide
+  `https://pypi.python.org/pypi/PySide/ <https://pypi.python.org/pypi/PySide/>`_
+  
+these programs need to be installed manually. Once these programs are
+installed you can proceed with the installtion of ``pychoacoustics``:
+
+::
+
+    python3 setup.py install
+
+you can then invoke ``pychoacoustics`` from a terminal by typing the
+command
+
+::
+
+   pychoacoustics.pyw
+
+There are two additional optional dependencies:
+
+- matplotlib
+  `http://matplotlib.org/ <http://matplotlib.org/>`_
+
+- pandas
+  `http://pandas.pydata.org/ <http://pandas.pydata.org/>`_
+  
+if matplotlib and pandas are installed pychoacoustics can generate graphical summaries
+of the results of an experimental session.  
 
 
-Install Python and the Dependencies manually
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Install Python and the Dependencies manually on Windows
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Please, note that you will need Python version 3 or above to run `pychoacoustics`.
-
 
 To install the dependencies, download them from their respective websites. 
 Make sure that you pick versions compatible with your architecture (64 or 32 bits), 
@@ -183,8 +259,6 @@ executable. The second statement is the path to the main file of the
 to reflect the Python installation on your system. You can place the ``.bat`` 
 launcher wherever you want, for example on your ``Desktop`` folder. 
 Simply double click on it, and ``pychoacoustics`` should start.
-
-
 
 
 

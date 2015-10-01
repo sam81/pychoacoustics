@@ -29,10 +29,16 @@ class redirectStreamToFile():
         self.log.write(timeStamp)
  
     def write(self, text):
-        self.stdout.write(text)
-        self.log.write(text)
-        self.log.flush()
+        try: #stdout is None with pythonw causing an error
+            self.stdout.write(text)
+            self.log.write(text)
+            self.log.flush()
+        except:
+            pass
  
     def close(self):
-        self.stdout.close()
-        self.log.close()
+        try:
+            self.stdout.close()
+            self.log.close()
+        except:
+            pass

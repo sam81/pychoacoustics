@@ -1,350 +1,518 @@
-pychoacoustics (0.3.14) unstable; urgency=low
+pychoacoustics (0.3.14-ppa0~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 29 Sep 2015 13:49:58 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 29 Sep 2015 12:21:54 +0100
 
-pychoacoustics (0.3.14) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 29 Sep 2015 13:49:30 +0100
-
-pychoacoustics (0.3.14) unstable; urgency=low
+pychoacoustics (0.3.12-ppa0~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 29 Sep 2015 13:48:39 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 24 Sep 2015 12:45:30 +0100
 
-pychoacoustics (0.3.14) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 29 Sep 2015 13:33:37 +0100
-
-pychoacoustics (0.3.14) unstable; urgency=low
+pychoacoustics (0.3.11-ppa4~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 29 Sep 2015 11:22:00 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 20 Sep 2015 20:50:26 +0100
 
-pychoacoustics (0.3.12) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 24 Sep 2015 10:51:53 +0100
-
-pychoacoustics (0.3.12) unstable; urgency=low
+pychoacoustics (0.3.11-ppa3~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 23 Sep 2015 22:42:18 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 20 Sep 2015 20:48:12 +0100
 
-pychoacoustics (0.3.8) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Fri, 04 Sep 2015 23:04:05 +0100
-
-pychoacoustics (0.3.8) unstable; urgency=low
+pychoacoustics (0.3.11-ppa2~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Fri, 04 Sep 2015 16:52:51 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 20 Sep 2015 20:40:09 +0100
 
-pychoacoustics (0.3.7) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 03 Sep 2015 19:38:29 +0100
-
-pychoacoustics (0.3.6) unstable; urgency=low
+pychoacoustics (0.3.11-ppa0~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 03 Sep 2015 19:17:37 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 17 Sep 2015 23:45:07 +0100
 
-pychoacoustics (0.3.5) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 20 Aug 2015 14:52:46 +0100
-
-pychoacoustics (0.3.4) unstable; urgency=low
+pychoacoustics (0.3.10-ppa1~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 30 Jul 2015 18:11:26 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 17 Sep 2015 23:32:35 +0100
 
-pychoacoustics (0.3.3) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 29 Jul 2015 23:05:57 +0100
-
-pychoacoustics (0.3.2) unstable; urgency=low
+pychoacoustics (0.3.10-ppa0~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 19 May 2015 21:57:53 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 17 Sep 2015 23:31:12 +0100
 
-pychoacoustics (0.3.1) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 19 May 2015 18:09:14 +0100
-
-pychoacoustics (0.3.1) unstable; urgency=low
+pychoacoustics (0.3.10-ppa0~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 19 May 2015 17:53:05 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 17 Sep 2015 23:30:11 +0100
 
-pychoacoustics (0.3.0) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 19 May 2015 13:22:39 +0100
-
-pychoacoustics (0.2.92) unstable; urgency=low
+pychoacoustics (0.3.8-ppa0~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 18 May 2015 19:50:07 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Fri, 04 Sep 2015 16:53:13 +0100
 
-pychoacoustics (0.2.91) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 18 May 2015 18:19:53 +0100
-
-pychoacoustics (0.2.91) unstable; urgency=low
+pychoacoustics (0.3.7-ppa0~vivid) vivid; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 18 May 2015 18:19:06 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 03 Sep 2015 23:28:59 +0100
 
-pychoacoustics (0.2.91) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 18 May 2015 18:17:32 +0100
-
-pychoacoustics (0.2.91) unstable; urgency=low
+pychoacoustics (0.3.7-ppa0~vivid) vivid; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 18 May 2015 17:35:25 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 03 Sep 2015 23:28:19 +0100
 
-pychoacoustics (0.2.91) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 18 May 2015 15:13:08 +0100
-
-pychoacoustics (0.2.90) unstable; urgency=low
+pychoacoustics (0.3.7-ppa0~vivid) vivid; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 13 May 2015 15:54:15 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 03 Sep 2015 23:25:27 +0100
 
-pychoacoustics (0.2.90) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 13 May 2015 15:53:09 +0100
-
-pychoacoustics (0.2.90) unstable; urgency=low
+pychoacoustics (0.3.7-ppa0~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 13 May 2015 15:52:38 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 03 Sep 2015 22:28:08 +0100
 
-pychoacoustics (0.2.90) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 13 May 2015 15:52:25 +0100
-
-pychoacoustics (0.2.89) unstable; urgency=low
+pychoacoustics (0.3.2-ppa4~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 27 Apr 2015 13:44:56 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 19 May 2015 22:38:31 +0100
 
-pychoacoustics (0.2.89) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 27 Apr 2015 13:43:57 +0100
-
-pychoacoustics (0.2.89) unstable; urgency=low
+pychoacoustics (0.3.2-ppa1~'trusty') 'trusty'; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 15 Dec 2014 18:05:06 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 19 May 2015 22:35:30 +0100
 
-pychoacoustics (0.2.89) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Fri, 21 Nov 2014 17:03:13 +0100
-
-pychoacoustics (0.2.89) unstable; urgency=low
+pychoacoustics (0.3.2-ppa0~'trusty') 'trusty'; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Fri, 21 Nov 2014 16:50:07 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 19 May 2015 22:34:43 +0100
 
-pychoacoustics (0.2.88) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Fri, 14 Nov 2014 17:46:11 +0100
-
-pychoacoustics (0.2.88) unstable; urgency=low
+pychoacoustics (0.3.2-ppa0~'trusty') 'trusty'; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Fri, 14 Nov 2014 17:43:05 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 19 May 2015 22:33:20 +0100
 
-pychoacoustics (0.2.87) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 13 Nov 2014 01:32:22 +0100
-
-pychoacoustics (0.2.86) unstable; urgency=low
+pychoacoustics (0.3.1-ppa0~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 22 Oct 2014 20:55:39 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 19 May 2015 17:53:53 +0100
 
-pychoacoustics (0.2.86) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 22 Oct 2014 19:10:47 +0100
-
-pychoacoustics (0.2.86) unstable; urgency=low
+pychoacoustics (0.3.0-ppa0~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 22 Oct 2014 19:06:28 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 19 May 2015 13:28:10 +0100
 
-pychoacoustics (0.2.86) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 22 Oct 2014 19:06:23 +0100
-
-pychoacoustics (0.2.85) unstable; urgency=low
+pychoacoustics (0.2.89-ppa6~precise) precise; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 22 Oct 2014 18:34:04 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 17 Feb 2015 10:36:44 +0100
 
-pychoacoustics (0.2.85) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 22 Oct 2014 17:07:34 +0100
-
-pychoacoustics (0.2.85) unstable; urgency=low
+pychoacoustics (0.2.89-ppa6~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 22 Oct 2014 17:00:11 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 17 Feb 2015 10:36:21 +0100
 
-pychoacoustics (0.2.84) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 20 Oct 2014 12:55:15 +0100
-
-pychoacoustics (0.2.84) unstable; urgency=low
+pychoacoustics (0.2.89-ppa5~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 15 Oct 2014 14:04:34 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 17 Feb 2015 01:38:50 +0100
 
-pychoacoustics (0.2.83) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 13 Oct 2014 15:11:15 +0100
-
-pychoacoustics (0.2.82) unstable; urgency=low
+pychoacoustics (0.2.89-ppa4~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 25 Jun 2014 17:41:17 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 17 Feb 2015 01:30:24 +0100
 
-pychoacoustics (0.2.81) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 23 Jun 2014 15:28:14 +0100
-
-pychoacoustics (0.2.80) unstable; urgency=low
+pychoacoustics (0.2.89-ppa3~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 23 Jun 2014 15:19:25 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 17 Feb 2015 01:24:21 +0100
 
-pychoacoustics (0.2.79) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Fri, 09 May 2014 16:00:54 +0100
-
-pychoacoustics (0.2.79) unstable; urgency=low
+pychoacoustics (0.2.89-ppa3~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 03 May 2014 18:04:55 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 17 Feb 2015 01:23:55 +0100
 
-pychoacoustics (0.2.79) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 03 May 2014 17:34:26 +0100
-
-pychoacoustics (0.2.79) unstable; urgency=low
+pychoacoustics (0.2.89-ppa2~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 17 Mar 2014 20:46:45 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 17 Feb 2015 01:16:34 +0100
 
-pychoacoustics (0.2.78) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 12 Mar 2014 00:05:40 +0100
-
-pychoacoustics (0.2.77) unstable; urgency=low
+pychoacoustics (0.2.89-ppa1~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 12 Mar 2014 00:01:32 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 17 Feb 2015 01:11:00 +0100
 
-pychoacoustics (0.2.77) unstable; urgency=low
-
-  * New upstream release
-
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 12 Mar 2014 00:01:09 +0100
-
-pychoacoustics (0.2.75) unstable; urgency=low
+pychoacoustics (0.2.89-ppa0~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 11 Mar 2014 21:41:47 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 17 Feb 2015 01:07:10 +0100
 
-pychoacoustics (0.2.75) unstable; urgency=low
+pychoacoustics (0.2.89-ppa0~trusty) trusty; urgency=low
 
   * New upstream release
 
- -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 11 Mar 2014 18:48:17 +0100
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 16 Feb 2015 16:10:21 +0100
+
+pychoacoustics (0.2.89-ppa0~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 16 Feb 2015 15:56:29 +0100
+
+pychoacoustics (0.2.89-ppa0~Trusty) Trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 16 Feb 2015 15:55:38 +0100
+
+pychoacoustics (0.2.79-ppa8~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 22:01:35 +0100
+
+pychoacoustics (0.2.79-ppa7~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 21:55:12 +0100
+
+pychoacoustics (0.2.79-ppa6~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 21:54:38 +0100
+
+pychoacoustics (0.2.79-ppa5~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 21:49:18 +0100
+
+pychoacoustics (0.2.79-ppa4~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 21:42:49 +0100
+
+pychoacoustics (0.2.79-ppa3~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 21:35:20 +0100
+
+pychoacoustics (0.2.79-ppa2~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 21:21:32 +0100
+
+pychoacoustics (0.2.79-ppa2~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 21:13:54 +0100
+
+pychoacoustics (0.2.79-ppa2~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 21:13:31 +0100
+
+pychoacoustics (0.2.79-ppa2~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 21:13:06 +0100
+
+pychoacoustics (0.2.79-ppa2~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 21:12:40 +0100
+
+pychoacoustics (0.2.79-ppa2~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 21:12:20 +0100
+
+pychoacoustics (0.2.79-ppa2~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 21:10:35 +0100
+
+pychoacoustics (0.2.79-ppa1~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 00:07:15 +0100
+
+pychoacoustics (0.2.79~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 04 May 2014 00:04:40 +0100
+
+pychoacoustics (0.2.79~precise) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 03 May 2014 22:51:55 +0100
+
+pychoacoustics (0.2.79~lucid) lucid; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 03 May 2014 22:51:14 +0100
+
+pychoacoustics (0.2.79~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 03 May 2014 22:43:27 +0100
+
+pychoacoustics (0.2.79~Trusty) Trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 03 May 2014 22:41:42 +0100
+
+pychoacoustics (0.2.74~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 09 Mar 2014 14:27:47 +0100
+
+pychoacoustics (0.2.74~trusty)trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 09 Mar 2014 14:26:33 +0100
+
+pychoacoustics (0.2.74) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 09 Mar 2014 14:17:55 +0100
+
+pychoacoustics (0.2.74-ppa1) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 23:02:49 +0100
+
+pychoacoustics (0.2.74-ppa1) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 19:54:24 +0100
+
+python3-pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 19:31:19 +0100
+
+python3-pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 19:30:13 +0100
+
+python3-pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 19:29:33 +0100
+
+pychoacoustics (0.2.74-ppa1) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 12:08:17 +0100
+
+pychoacoustics (0.2.74-ppa1) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 12:01:55 +0100
+
+pychoacoustics (0.2.74-ppa1) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:57:08 +0100
+
+pychoacoustics (0.2.74-ppa1) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:43:14 +0100
+
+pychoacoustics (0.2.74-ppa1) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:43:00 +0100
+
+pychoacoustics (0.2.74-ppa1) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:42:19 +0100
+
+pychoacoustics (0.2.74-ppa1) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:19:19 +0100
+
+pychoacoustics (0.2.74-ppa1) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:14:05 +0100
+
+pychoacoustics (0.2.74-ppa1) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:12:48 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:10:16 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:08:41 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:07:03 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:05:05 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:04:29 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:04:04 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:02:39 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 11:01:46 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 10:53:08 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 10:49:48 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 10:33:59 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 10:14:36 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 10:13:47 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 10:08:18 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 10:06:56 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 10:06:03 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 09:29:54 +0100
+
+pychoacoustics (0.2.74) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sat, 08 Mar 2014 09:26:48 +0100
 
 pychoacoustics (0.2.74) unstable; urgency=low
 
