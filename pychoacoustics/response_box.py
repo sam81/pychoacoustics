@@ -4451,6 +4451,8 @@ class responseBox(QMainWindow):
             summaryResFilePath = resFilePath.split('.csv')[0] + '_processed.csv'
             separator = self.parent().prm['pref']["general"]["csvSeparator"]
 
+            resProcTableAvailable = True
+
             if self.prm['paradigm'] in [self.tr("Transformed Up-Down"),
                                         self.tr("Weighted Up-Down"),
                                         self.tr("Transformed Up-Down Limited"),
@@ -4476,9 +4478,12 @@ class responseBox(QMainWindow):
                 paradigm = 'multipleConstants1PairSD'
             elif self.prm['paradigm'] in [self.tr("Multiple Constants ABX")]:
                 paradigm = 'multipleConstantsABX'
+           
+            if self.prm['paradigm'] in ["UML", "PSI"]:
+                resProcTableAvailable = False
 
-
-            categoricalPlot(self, 'average', summaryResFilePath, winPlot, pdfPlot, paradigm, separator, None, self.prm)
+            if resProcTableAvailable == True:
+                categoricalPlot(self, 'average', summaryResFilePath, winPlot, pdfPlot, paradigm, separator, None, self.prm)
 
                 
     def parseCustomCommandArguments(self, cmd):

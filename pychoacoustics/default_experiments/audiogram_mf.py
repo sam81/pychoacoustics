@@ -8,7 +8,7 @@ can be tested within the same block of trials.
 The available fields are:
 
 - Frequency (Hz) :
-    Aignal center frequency in Hz
+    Signal center frequency in Hz
 - Bandwidth (Hz) :
     The bandwidth of the signal in Hz (only applicable
     if signal type is Narrowband Noise)

@@ -78,7 +78,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'pychoacoustics'
-copyright = '2013-15, Samuele Carcagno'
+copyright = '2008-15, Samuele Carcagno'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -292,7 +292,7 @@ texinfo_documents = [
 epub_title = 'pychoacoustics'
 epub_author = 'Samuele Carcagno'
 epub_publisher = 'Samuele Carcagno'
-epub_copyright = '2013-2015, Samuele Carcagno'
+epub_copyright = '2008-2015, Samuele Carcagno'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
