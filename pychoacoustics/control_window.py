@@ -49,6 +49,7 @@ from .dialog_process_results import*
 from .dialog_show_fortune import*
 from .dialog_swap_blocks import*
 from .pysdt import*
+from .win_psychometric_listener_plot import*
 
 
 #from redirect_out import*
@@ -453,6 +454,14 @@ class pychControlWin(QMainWindow):
         self.psyListSaveButton.setToolTip(self.tr("Choose file to save results"))
         self.def_widg_sizer2.addWidget(self.psyListSaveButton, 2, 2)
         self.psyListSaveButton.hide()
+
+        self.psyListPlotButton = QPushButton(self.tr("Plot psychometric listener function"), self)
+        self.psyListPlotButton.clicked.connect(self.onClickPsyListPlotButton)
+        self.psyListPlotButton.setIcon(QIcon.fromTheme("office-chart-line-stacked", QIcon(":/office-chart-line_stacked")))
+        self.psyListPlotButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
+        self.psyListPlotButton.setToolTip(self.tr("Plot psychometric listener function"))
+        self.def_widg_sizer2.addWidget(self.psyListPlotButton, 2, 3)
+        self.psyListPlotButton.hide()
 
         #For psychometric listener
         n = 2+1
@@ -2763,6 +2772,7 @@ class pychControlWin(QMainWindow):
             self.psyListLapse.hide()
             self.psyListLapseLabel.hide()
             self.psyListSaveButton.hide()
+            self.psyListPlotButton.hide()
         else:
             self.psyListFunChooser.show()
             self.psyListFunChooserLabel.show()
@@ -2775,6 +2785,7 @@ class pychControlWin(QMainWindow):
             self.psyListLapse.show()
             self.psyListLapseLabel.show()
             self.psyListSaveButton.show()
+            self.psyListPlotButton.show()
             
     def onDropPrmFile(self, l):
         lastFileDropped = l #l[len(l)-1]
@@ -3256,6 +3267,9 @@ class pychControlWin(QMainWindow):
     def onClickStoreandaddParametersButton(self):
         self.onClickStoreParametersButton()
         self.onClickNewBlockButton()
+
+    def onClickPsyListPlotButton(self):
+        psychListenerPlot(self)
 
     def onClickPsyListSaveButton(self):
         ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "psy_list.txt", self.tr('All Files (*)'), "")[0]

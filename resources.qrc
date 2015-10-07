@@ -21,7 +21,7 @@
 <file alias="go-previous">icons/go-previous.svgz</file>
 <file alias="help-about">icons/help-about.svgz</file>
 <file alias="help-contextual">icons/help-contextual.svgz</file>
-<file alias="media-flash-memory-stick">icons/flash-memory-stick.svgz</file>
+<file alias="media-flash-memory-stick">icons/media-flash-memory-stick.svgz</file>
 <file alias="media-playback-start">icons/media-playback-start.svgz</file>
 <file alias="media-playlist-shuffle">icons/media-playlist-shuffle.svgz</file>
 <file alias="preferences-other">icons/media-preferences-other.svgz</file>
@@ -30,5 +30,6 @@
 <file alias="system-users">icons/system-users.svgz</file>
 <file alias="system-run">icons/system-run.svgz</file>
 <file alias="user-group-properties">icons/user-group-properties.svgz</file>
+<file alias="office-chart-line-stacked">icons/office-chart-line-stacked.svgz</file>
 </qresource>
 </RCC>
