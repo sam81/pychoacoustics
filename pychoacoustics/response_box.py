@@ -328,6 +328,7 @@ class responseBox(QMainWindow):
             self.statusButton.setMaximumSize(screen.width(), screen.height())
             self.responseLight.setMaximumSize(screen.width(), screen.height())
             if self.parent().currParadigm in ["Transformed Up-Down",
+                                              "Transformed Up-Down (Fixed No. Trials)",
                                               "Transformed Up-Down Limited",
                                               "Weighted Up-Down",
                                               "Weighted Up-Down Limited",
@@ -736,6 +737,15 @@ class responseBox(QMainWindow):
                 self.prm['adaptiveStepSize2'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Step Size 2"))]
                 self.prm['adaptiveType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Procedure:"))]
                 self.prm['trackDir'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Initial Track Direction:"))]
+            elif self.prm['paradigm'] in [self.tr("Transformed Up-Down (Fixed No. Trials)")]:
+                self.prm['numberCorrectNeeded'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Rule Down"))])
+                self.prm['numberIncorrectNeeded'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Rule Up"))])
+                self.prm['initialTurnpoints'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Initial Turnpoints"))])
+                self.prm['nTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Trials"))])
+                self.prm['adaptiveStepSize1'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Step Size 1"))]
+                self.prm['adaptiveStepSize2'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Step Size 2"))]
+                self.prm['adaptiveType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Procedure:"))]
+                self.prm['trackDir'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Initial Track Direction:"))]
             elif self.prm['paradigm'] == self.tr("Transformed Up-Down Interleaved"):
                 self.prm['adaptiveType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Procedure:"))]
                 self.prm['turnpointsToAverage'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Turnpoints to average:"))]
@@ -970,6 +980,7 @@ class responseBox(QMainWindow):
 
         if self.prm['allBlocks']['responseMode'] == self.tr("Psychometric"):
             if self.prm['paradigm'] not in [self.tr("Transformed Up-Down"),
+                                            self.tr("Transformed Up-Down (Fixed No. Trials)"),
                                             self.tr("Weighted Up-Down"),
                                             self.tr("Transformed Up-Down Limited"),
                                             self.tr("Weighted Up-Down Limited"),
@@ -990,6 +1001,11 @@ class responseBox(QMainWindow):
                                            self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                            self.prm[currBlock]['psyListLapse'])
                 elif self.prm[currBlock]['psyListFunFit'] == "Logarithmic":
+                    print(self.prm['adaptiveDifference'])
+                    print(self.prm[currBlock]['psyListMidpoint'])
+                    print(self.prm[currBlock]['psyListSlope'])
+                    print(1/self.prm[currBlock]['nAlternatives'])
+                    print(self.prm[currBlock]['psyListLapse'])
                     probCorr = logisticPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
                                            self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                            self.prm[currBlock]['psyListLapse'])
@@ -1117,6 +1133,8 @@ class responseBox(QMainWindow):
 
         if self.prm['paradigm'] == self.tr("Transformed Up-Down"):
             self.sortResponseAdaptive(buttonClicked, 'transformedUpDown')
+        elif self.prm['paradigm'] == self.tr("Transformed Up-Down (Fixed No. Trials)"):
+            self.sortResponseAdaptiveFixedNTrials(buttonClicked, 'transformedUpDown')
         elif self.prm['paradigm'] == self.tr("Transformed Up-Down Interleaved"):
             self.sortResponseAdaptiveInterleaved(buttonClicked, 'transformedUpDown')
         elif self.prm['paradigm'] == self.tr("Transformed Up-Down Limited"):
@@ -1295,6 +1313,222 @@ class responseBox(QMainWindow):
                 self.resFileLog.write('turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
             elif self.prm['adaptiveType'] == self.tr("Geometric"):
                 finalTurnpoints = abs(array(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : self.prm['totalTurnpoints']], dtype=float64))
+                turnpointMean = geoMean(finalTurnpoints)
+                turnpointSd = geoSd(finalTurnpoints)
+                self.resFile.write('\n\n')
+                self.resFile.write('geometric turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
+                self.resFileLog.write('\n\n')
+                self.resFileLog.write('geometric turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
+
+            for i in range(self.prm['nAlternatives']):
+                self.resFile.write("B{0} = {1}".format(i+1, self.prm['buttonCounter'][i]))
+                self.resFileLog.write("B{0} = {1}".format(i+1, self.prm['buttonCounter'][i]))
+                if i != self.prm['nAlternatives']-1:
+                    self.resFile.write(', ')
+                    self.resFileLog.write(', ')
+            self.resFile.write('\n\n')
+            self.resFile.flush()
+            self.resFileLog.write('\n\n')
+            self.resFileLog.flush()
+            self.getEndTime()
+
+            currBlock = 'b' + str(self.prm['currentBlock'])
+            durString = '{0:5.3f}'.format(self.prm['blockEndTime'] - self.prm['blockStartTime'])
+            resLineToWrite = '{0:5.3f}'.format(turnpointMean) + self.prm['pref']["general"]["csvSeparator"] + \
+                             '{0:5.3f}'.format(turnpointSd) + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             durString + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
+            resLineToWrite = resLineToWrite + '\n'
+            
+            if method == 'transformedUpDown':
+                self.writeResultsSummaryLine('Transformed Up-Down', resLineToWrite)
+            elif method == 'weightedUpDown':
+                self.writeResultsSummaryLine('Weighted Up-Down', resLineToWrite)
+
+            resLineToWriteSummFull = ""
+            for i in range(len(self.fullFileSummLines)):
+              resLineToWriteSummFull = resLineToWriteSummFull + " ".join(self.fullFileSummLines[i]) + \
+                             self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             durString + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+             
+              resLineToWriteSummFull = self.getCommonTabFields(resLineToWriteSummFull)
+              resLineToWriteSummFull = resLineToWriteSummFull + '\n'
+            
+            
+            if method == 'transformedUpDown':
+                self.writeResultsSummaryFullLine('Transformed Up-Down', resLineToWriteSummFull)
+            elif method == 'weightedUpDown':
+                self.writeResultsSummaryFullLine('Weighted Up-Down', resLineToWriteSummFull)
+
+            self.atBlockEnd()
+            
+        else:
+            self.doTrial()
+
+
+    def sortResponseAdaptiveFixedNTrials(self, buttonClicked, method):
+        if self.prm['startOfBlock'] == True:
+            self.prm['correctCount'] = 0
+            self.prm['incorrectCount'] = 0
+            self.prm['nTurnpoints'] = 0
+            self.prm['startOfBlock'] = False
+            self.prm['turnpointVal'] = []
+            self.fullFileLines = []
+            self.fullFileSummLines = []
+            self.prm['buttonCounter'] = [0 for i in range(self.prm['nAlternatives'])]
+            self.trialCount = 0
+
+            
+        self.prm['buttonCounter'][buttonClicked-1] = self.prm['buttonCounter'][buttonClicked-1] + 1
+        self.trialCount = self.trialCount+1
+
+        if method == 'transformedUpDown':
+            if self.prm['nTurnpoints'] < self.prm['initialTurnpoints']:
+                stepSizeDown = self.prm['adaptiveStepSize1']
+                stepSizeUp   = self.prm['adaptiveStepSize1']
+            else:
+                stepSizeDown = self.prm['adaptiveStepSize2']
+                stepSizeUp   = self.prm['adaptiveStepSize2']
+        elif method == 'weightedUpDown':
+            if self.prm['nTurnpoints'] < self.prm['initialTurnpoints']:
+                stepSizeDown = self.prm['adaptiveStepSize1']
+                if self.prm['adaptiveType'] == self.tr("Arithmetic"):
+                    stepSizeUp = self.prm['adaptiveStepSize1'] * (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
+                elif self.prm['adaptiveType'] == self.tr("Geometric"):
+                    stepSizeUp = self.prm['adaptiveStepSize1'] ** (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
+            else:
+                stepSizeDown = self.prm['adaptiveStepSize2']
+                if self.prm['adaptiveType'] == self.tr("Arithmetic"):
+                    stepSizeUp = self.prm['adaptiveStepSize2'] * (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
+                elif self.prm['adaptiveType'] == self.tr("Geometric"):
+                    stepSizeUp = self.prm['adaptiveStepSize2'] ** (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
+            
+        if buttonClicked == self.correctButton:
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback("correct")
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback("neutral")
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback("off")
+            
+            self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"]])
+            self.fullFileLog.write('1; ')
+            self.fullFileLines.append('1; ')
+            self.fullFileSummLines[len(self.fullFileSummLines)-1].append('1' + self.prm['pref']["general"]["csvSeparator"])
+            if 'additional_parameters_to_write' in self.prm:
+                for p in range(len(self.prm['additional_parameters_to_write'])):
+                    self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLog.write(' ;')
+                    self.fullFileLines.append(' ;')
+                    self.fullFileSummLines[len(self.fullFileSummLines)-1].append(self.prm['pref']["general"]["csvSeparator"])
+            self.fullFileLog.write('\n')
+            self.fullFileLines.append('\n')
+            self.prm['correctCount'] = self.prm['correctCount'] + 1
+            self.prm['incorrectCount'] = 0
+
+            if self.prm['correctCount'] == self.prm['numberCorrectNeeded']:
+                self.prm['correctCount'] = 0
+                if self.prm['trackDir'] == self.tr('Up'):
+                    self.prm['turnpointVal'].append(self.prm['adaptiveDifference'])
+                    self.prm['nTurnpoints'] = self.prm['nTurnpoints'] +1
+                    self.prm['trackDir'] = self.tr('Down')
+                        
+                if self.prm['adaptiveType'] == self.tr("Arithmetic"):
+                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] - stepSizeDown
+                elif self.prm['adaptiveType'] == self.tr("Geometric"):
+                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] / stepSizeDown
+                
+        elif buttonClicked != self.correctButton:
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback("incorrect")
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback("neutral")
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback("off")
+                
+            self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"]])
+            self.fullFileLog.write('0; ')
+            self.fullFileLines.append('0; ')
+            self.fullFileSummLines[len(self.fullFileSummLines)-1].append('0' + self.prm['pref']["general"]["csvSeparator"])
+            if 'additional_parameters_to_write' in self.prm:
+                for p in range(len(self.prm['additional_parameters_to_write'])):
+                    self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLog.write('; ')
+                    self.fullFileLines.append('; ')
+                    self.fullFileSummLines[len(self.fullFileSummLines)-1].append(self.prm['pref']["general"]["csvSeparator"])
+            self.fullFileLog.write('\n')
+            self.fullFileLines.append('\n')
+            
+            self.prm['incorrectCount'] = self.prm['incorrectCount'] + 1
+            self.prm['correctCount'] = 0
+
+            if self.prm['incorrectCount'] == self.prm['numberIncorrectNeeded']:
+                self.prm['incorrectCount'] = 0
+                if self.prm['trackDir'] == self.tr('Down'):
+                    self.prm['turnpointVal'].append(self.prm['adaptiveDifference'])
+                    self.prm['nTurnpoints'] = self.prm['nTurnpoints'] +1
+                    self.prm['trackDir'] = self.tr('Up')
+                    
+                if self.prm['adaptiveType'] == self.tr("Arithmetic"):
+                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + stepSizeUp
+                elif self.prm['adaptiveType'] == self.tr("Geometric"):
+                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * stepSizeUp
+
+        self.fullFileLog.flush()
+        pcDone = (self.trialCount / self.prm['nTrials']) * 100
+        bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
+        pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
+        pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
+        self.gauge.setValue(pcTot)
+        if self.trialCount == self.prm['nTrials']:
+            self.writeResultsHeader('standard')
+            #process results
+            self.fullFileLog.write('\n')
+            self.fullFileLines.append('\n')
+            for i in range(len(self.fullFileLines)):
+                self.fullFile.write(self.fullFileLines[i])
+            for i in range(len(self.prm['turnpointVal'])):
+                if i == self.prm['initialTurnpoints']:
+                    self.resFile.write('| ')
+                self.resFile.write('%5.2f ' %self.prm['turnpointVal'][i])
+                self.resFileLog.write('%5.2f ' %self.prm['turnpointVal'][i])
+                #if i == self.prm['totalTurnpoints']-1:
+                #    self.resFile.write('| ')
+            if self.prm['adaptiveType'] == self.tr("Arithmetic"):
+                finalTurnpoints = array(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : len(self.prm['turnpointVal'])], dtype=float64)
+                turnpointMean = mean(finalTurnpoints)
+                turnpointSd = std(finalTurnpoints, ddof=1)
+                self.resFile.write('\n\n')
+                self.resFile.write('turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
+                self.resFileLog.write('\n\n')
+                self.resFileLog.write('turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
+            elif self.prm['adaptiveType'] == self.tr("Geometric"):
+                finalTurnpoints = abs(array(self.prm['turnpointVal'][self.prm['initialTurnpoints'] : len(self.prm['turnpointVal'])], dtype=float64))
                 turnpointMean = geoMean(finalTurnpoints)
                 turnpointSd = geoSd(finalTurnpoints)
                 self.resFile.write('\n\n')
@@ -3682,7 +3916,7 @@ class responseBox(QMainWindow):
                 self.parent().onClickShuffleBlocksButton()
                 self.prm["shuffled"] = True
 
-            if self.prm['allBlocks']['responseMode'] == self.tr("Automatic") or self.prm['allBlocks']['responseMode'] == self.tr("Simulated Listener"):
+            if self.prm['allBlocks']['responseMode'] in [self.tr("Automatic"), self.tr("Simulated Listener"), self.tr("Psychometric")]:
                 self.onClickStatusButton()
                 
     def atBlockEnd(self):

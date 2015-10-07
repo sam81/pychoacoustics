@@ -121,6 +121,7 @@ def setP0(UML):
     UML["alpha"] = setParSpace(UML["par"]["alpha"])
     UML["beta"] = setParSpace(UML["par"]["beta"])
     UML["lambda"] = setParSpace(UML["par"]["lambda"])
+    #print(UML["alpha"])
 
     (UML["a"], UML["b"], UML["l"]) = meshgrid(UML["alpha"], UML["beta"], UML["lambda"], indexing='ij')
 
@@ -137,7 +138,7 @@ def setParSpace(s):
         space = np.arange(s["limits"][0], s["limits"][1]+s["step"], s["step"])
     elif s["spacing"] == "Logarithmic":
         space = 10**(arange(log10(s["limits"][0]), log10(s["limits"][1]), log10(s["step"])))
-
+    
     return space
 
 def setPrior(phi, s):

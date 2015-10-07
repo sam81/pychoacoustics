@@ -1,24 +1,43 @@
  
 To do:
 
-- automatically build pyqt4, pyside, and pyqt5 versions
+High priority:
+
+- plot psychometric listener function
+- plot UML/PSI parameters - grid with priors on top, and also save parameters for inspection
+- write tests, for example the output of sound generating functions could be compared to stored numpy arrays, the output of procedures could be fixed with set seed and compared with result files
+- Check bug with repetitions and automatic mode
+- Add tools to fit psychometric functions (pystan or pymc)
+
+Medium priority:
+
 - add beta or other tags to the builds
+- add plots for all paradigms
+- Add 'Delete All' button?
+- ABX process and process results text
+- Figure out way to add instructions at the beginning of a task
+
+Low priority:
+
 - zip files before sending by e-mail
 - edited fields and choosers change color (use on editing finished)
-- add plots for all paradigms
-- write tests, for example the output of sound generating functions could be compared to stored numpy arrays, the output of procedures could be fixed with set seed and compared with result files
-
 - block performance feedback at the end of each block? (usually not very good, participants should not know about different conditions)
 - generate html report through intermediate rst file
 - add d' calculation tools
 - vocal responses at beginning end of each block (?)
-- Add 'Delete All' button?
 - use the logging module to do the logging (?)
 - the full file could optionally record the start of each sound and the time the listener responded 
 - replace os.system with subprocess, possibly popen for sending kill signal #partly done
-- Qthread for playing audio 
+- Qthread for playing audio
+- plot track from adaptive procedure
 
 
-- ABX process and process results text
-- Check bug with repetitions and automatic mode
-- Figure out way to add instructions at the beginning of a task
+
+
+
+
+
+
+
+
+
