@@ -20,7 +20,7 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtCore, QtGui
     from PyQt4.QtCore import Qt, QEvent
-    from PyQt4.QtGui import QAction, QCheckBox, QComboBox, QDesktopServices, QDesktopWidget, QDoubleValidator, QFrame, QFileDialog, QGridLayout, QHBoxLayout, QIcon, QIntValidator, QLabel, QLayout, QLineEdit, QMainWindow, QMessageBox, QScrollArea, QSizePolicy, QSpacerItem, QSplitter, QPushButton, QVBoxLayout, QWhatsThis, QWidget
+    from PyQt4.QtGui import QAction, QCheckBox, QComboBox, QDesktopServices, QDesktopWidget, QDoubleValidator, QFrame, QFileDialog, QGridLayout, QHBoxLayout, QIcon, QIntValidator, QLabel, QLayout, QLineEdit, QMainWindow, QMessageBox, QScrollArea, QSizePolicy, QSpacerItem, QSplitter, QPushButton, QTextEdit, QVBoxLayout, QWhatsThis, QWidget
     QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
     QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
     QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
@@ -30,11 +30,11 @@ elif pyqtversion == -4:
     import PySide
     from PySide import QtCore, QtGui
     from PySide.QtCore import Qt, QEvent
-    from PySide.QtGui import QAction, QCheckBox, QComboBox, QDesktopServices, QDesktopWidget, QDoubleValidator, QFrame, QFileDialog, QGridLayout, QHBoxLayout, QIcon, QIntValidator, QLabel, QLayout, QLineEdit, QMainWindow, QMessageBox, QScrollArea, QSizePolicy, QSpacerItem, QSplitter, QPushButton, QVBoxLayout, QWhatsThis, QWidget
+    from PySide.QtGui import QAction, QCheckBox, QComboBox, QDesktopServices, QDesktopWidget, QDoubleValidator, QFrame, QFileDialog, QGridLayout, QHBoxLayout, QIcon, QIntValidator, QLabel, QLayout, QLineEdit, QMainWindow, QMessageBox, QScrollArea, QSizePolicy, QSpacerItem, QSplitter, QPushButton, QTextEdit, QVBoxLayout, QWhatsThis, QWidget
 elif pyqtversion == 5:
     from PyQt5 import QtCore, QtGui
     from PyQt5.QtCore import Qt, QEvent
-    from PyQt5.QtWidgets import QAction, QCheckBox, QComboBox, QDesktopWidget, QFrame, QFileDialog, QGridLayout, QHBoxLayout, QLabel, QLayout, QLineEdit, QMainWindow, QMessageBox, QScrollArea, QSizePolicy, QSpacerItem, QSplitter, QPushButton, QVBoxLayout, QWhatsThis, QWidget
+    from PyQt5.QtWidgets import QAction, QCheckBox, QComboBox, QDesktopWidget, QFrame, QFileDialog, QGridLayout, QHBoxLayout, QLabel, QLayout, QLineEdit, QMainWindow, QMessageBox, QScrollArea, QSizePolicy, QSpacerItem, QSplitter, QPushButton, QTextEdit, QVBoxLayout, QWhatsThis, QWidget
     from PyQt5.QtGui import QDesktopServices, QDoubleValidator, QIcon, QIntValidator
     QtCore.Signal = QtCore.pyqtSignal
     QtCore.Slot = QtCore.pyqtSlot
@@ -243,7 +243,28 @@ class pychControlWin(QMainWindow):
         self.def_widg_sizer.addWidget(self.conditionLabelLabel, n, 0)
         self.conditionLabelTF = QLineEdit("")
         self.conditionLabelTF.setWhatsThis(self.tr("Set a label for the current experimental condition. This label applies only to the current experimental block."))
-        self.def_widg_sizer.addWidget(self.conditionLabelTF, n, 1, 1, 3)
+        self.def_widg_sizer.addWidget(self.conditionLabelTF, n, 1, 1, 1)
+        #TASK LABEL
+        self.taskLabelLabel = QLabel(self.tr('Task Label:'), self)
+        self.def_widg_sizer.addWidget(self.taskLabelLabel, n, 2)
+        self.taskLabelTF = QLineEdit("")
+        self.taskLabelTF.setWhatsThis(self.tr("This label will be shown in the response box to tell the listener which task s/he's doing."))
+        self.def_widg_sizer.addWidget(self.taskLabelTF, n, 3, 1, 1)
+        #INSTRUCTIONS
+        n = n+1
+        self.instructionsLabel = QLabel(self.tr('Instructions:'), self)
+        self.def_widg_sizer.addWidget(self.instructionsLabel, n, 0)
+        self.instructionsTF = QTextEdit()
+        self.instructionsTF.setMaximumHeight(60)
+        self.def_widg_sizer.addWidget(self.instructionsTF, n, 1, 1, 3)
+        #SHOW INSTRUCTIONS AT
+        n = n+1
+        self.instructionsAtLabel = QLabel(self.tr('Show Instructions At BP:'), self)
+        self.def_widg_sizer.addWidget(self.instructionsAtLabel, n, 0)
+        self.instructionsAtTF = QLineEdit()
+        self.instructionsAtTF.setWhatsThis(self.tr("Indicate at which block positions the task instructions will be shown, e.g. '1,5,10'."))
+        self.instructionsAtTF.editingFinished.connect(self.validateInstructionsAtTF)
+        self.def_widg_sizer.addWidget(self.instructionsAtTF, n, 1, 1, 3)
         #END COMMAND
         n = n+1
         self.endExpCommandLabel = QLabel(self.tr('End Command:'), self)
@@ -290,6 +311,7 @@ class pychControlWin(QMainWindow):
         self.experimenterChooser.setCurrentIndex(self.prm['experimenter']['defaultExperimenter'].index("\u2713"))
         self.experimenterChooser.setWhatsThis(self.tr("Allows choosing the experimenter identifier. This must have been previously stored in the experimenters database. On the toolbar click on the Edit > Experimenters to modify the experimenters database"))
         self.def_widg_sizer.addWidget(self.experimenterChooser, n, 1)
+
         #EXPERIMENT
         n = n+1
         self.experimentLabel =  QLabel(self.tr("Experiment:"), self)
@@ -2786,6 +2808,28 @@ class pychControlWin(QMainWindow):
             self.psyListLapseLabel.show()
             self.psyListSaveButton.show()
             self.psyListPlotButton.show()
+
+    def validateInstructionsAtTF(self):
+        text = self.instructionsAtTF.text()
+        if len(text) > 1:
+            try:
+                [int(x) for x in text.split(",")]
+            except:
+                chars = text.split(",")
+                nChars = len(chars)
+                newChars = []
+                flag = 0
+                for i in range(nChars):
+                    try:
+                        int(chars[i])
+                        newChars.append(chars[i])
+                    except:
+                        flag = 1
+                self.instructionsAtTF.setText(', '.join(map(str, newChars)))#tmp[2:len(tmp)-2])
+                if flag == 1:
+                    ret = QMessageBox.warning(self, self.tr("Warning"),
+                                              self.tr("Invalid character removed from 'Show Instructions At' text field."),
+                                              QMessageBox.Ok)
             
     def onDropPrmFile(self, l):
         lastFileDropped = l #l[len(l)-1]
@@ -2989,6 +3033,8 @@ class pychControlWin(QMainWindow):
     def setNewBlock(self, block):
         self.removePrmWidgets()
         self.conditionLabelTF.setText(self.prm[block]['conditionLabel'])
+        self.taskLabelTF.setText(self.prm[block]['taskLabel'])
+        self.instructionsTF.setText(self.prm[block]['instructions'])
 
         currExp = self.tr(self.prm[block]['experiment'])
         paradigm = self.tr(self.prm[block]['paradigm'])
@@ -3123,6 +3169,7 @@ class pychControlWin(QMainWindow):
         self.prm['allBlocks'] = {}
         self.prm['allBlocks']['experimentLabel'] = self.experimentLabelTF.text()
         self.prm['allBlocks']['endExpCommand'] = self.endExpCommandTF.text()
+        self.prm['allBlocks']['instructionsAt'] = [int(x) for x in self.instructionsAtTF.text().split(",")]
         self.prm['allBlocks']['currentExperimenter'] = self.experimenterChooser.currentText()
         self.prm['allBlocks']['currentPhones'] = self.phonesChooser.currentText()
         self.prm['allBlocks']['maxLevel'] = float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()])
@@ -3144,6 +3191,8 @@ class pychControlWin(QMainWindow):
         #BLOCK SPECIFIC
         self.prm[currBlock] = {}
         self.prm[currBlock]['conditionLabel'] = self.conditionLabelTF.text()
+        self.prm[currBlock]['taskLabel'] = self.taskLabelTF.text()
+        self.prm[currBlock]['instructions'] = self.instructionsTF.toPlainText()
         self.prm[currBlock]['experiment'] = currExp
         self.prm[currBlock]['paradigm'] = currParadigm
         self.prm[currBlock]['field'] = list(range(self.prm['nFields']))
@@ -3257,6 +3306,7 @@ class pychControlWin(QMainWindow):
         self.jumpToBlockChooser.setCurrentIndex(self.prm["currentBlock"]-1)
         self.jumpToPositionChooser.setCurrentIndex(int(self.prm[currBlock]['blockPosition'])-1)
         self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
+        self.responseBox.RBTaskLabel.setText(self.taskLabelTF.text())
         self.saveParametersToFile(self.prm["tmpParametersFile"])
         self.autoSetGaugeValue()
         
@@ -3338,6 +3388,7 @@ class pychControlWin(QMainWindow):
             tmpPrm['allBlocks'] = {}
             tmpPrm['allBlocks']['experimentLabel'] = self.experimentLabelTF.text()
             tmpPrm['allBlocks']['endExpCommand'] = self.endExpCommandTF.text()
+            tmpPrm['allBlocks']['instructionsAt'] = [int(x) for x in self.instructionsAtTF.text().split(",")]
             tmpPrm['allBlocks']['currentExperimenter'] = self.experimenterChooser.currentText()
             tmpPrm['allBlocks']['currentPhones'] = self.phonesChooser.currentText()
             tmpPrm['allBlocks']['maxLevel'] = float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()])
@@ -3359,6 +3410,8 @@ class pychControlWin(QMainWindow):
             currBlock = 'b' + str(tmpPrm["currentBlock"])
             tmpPrm[currBlock] = {}
             tmpPrm[currBlock]['conditionLabel'] = self.conditionLabelTF.text()
+            tmpPrm[currBlock]['taskLabel'] = self.taskLabelTF.text()
+            tmpPrm[currBlock]['instructions'] = self.instructionsTF.toPlainText()
             tmpPrm[currBlock]['experiment'] = currExp
             tmpPrm[currBlock]['paradigm'] = currParadigm
             tmpPrm[currBlock]['field'] = list(range(tmpPrm['nFields']))
@@ -3376,7 +3429,7 @@ class pychControlWin(QMainWindow):
          
 
             otherKeysToCompare = ['preTrialSilence', 'intervalLights', 'responseLight', 'responseLightDuration',
-                                  'conditionLabel', 'warningInterval', 'warningIntervalDur', 'warningIntervalISI',
+                                  'conditionLabel', 'taskLabel', 'instructions', 'warningInterval', 'warningIntervalDur', 'warningIntervalISI',
                                   'psyListFun', 'psyListFunFit', 'psyListMidpoint', 'psyListSlope', 'psyListLapse']
         
             tmpPrm[currBlock]['preTrialSilence'] = self.currLocale.toInt(self.preTrialSilenceTF.text())[0]
@@ -3487,7 +3540,7 @@ class pychControlWin(QMainWindow):
                 thisKey = otherKeysToCompare[j]
                 if tmpPrm['b'+str(i+1)][otherKeysToCompare[j]] != self.prm['b'+str(i+1)][thisKey]:
                     prmChanged = True
-                if thisKey not in ['conditionLabel', 'preTrialSilence', 'warningInterval', #these ones don't have check boxes
+                if thisKey not in ['conditionLabel', 'taskLabel', 'instructions', 'preTrialSilence', 'warningInterval', #these ones don't have check boxes
                                    'warningIntervalDur', 'warningIntervalISI', 'intervalLights', 'psyListFun',
                                    'psyListFunFit', 'psyListMidpoint', 'psyListSlope', 'psyListLapse']:
                     if tmpPrm['b'+str(i+1)][otherKeysToCompare[j]+'CheckBox'] != self.prm['b'+str(i+1)][thisKey+'CheckBox']:
@@ -3575,6 +3628,7 @@ class pychControlWin(QMainWindow):
             self.prm['currentRepetition'] = 1
             self.autoSetGaugeValue()
             self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
+            self.responseBox.RBTaskLabel.setText(self.taskLabelTF.text())
     def onClickUndoUnsavedButton(self):
         if self.prm["currentBlock"] > self.prm["storedBlocks"]:
             self.onExperimentChange(self.experimentChooser.currentText())
@@ -3629,6 +3683,9 @@ class pychControlWin(QMainWindow):
             elif allLines[i].split(':')[0] == 'End Command':
                 endExpCommandToSet = allLines[i].split(':')[1].strip()
                 self.endExpCommandTF.setText(endExpCommandToSet)
+            elif allLines[i].split(':')[0] == 'Instructions At BP':
+                instructionsAtToSet = allLines[i].split(':')[1].strip()
+                self.instructionsAtTF.setText(instructionsAtToSet)
             elif allLines[i].split(':')[0] == 'Shuffling Scheme':
                 shufflingSchemeToSet = allLines[i].split(':')[1].strip()
                 self.shufflingSchemeTF.setText(shufflingSchemeToSet)
@@ -3687,6 +3744,10 @@ class pychControlWin(QMainWindow):
                 tmp['b'+str(blockNumber)]['blockPosition'] = allLines[i].split(':')[1].strip()
             if allLines[i].split(':')[0] == 'Condition Label':
                 tmp['b'+str(blockNumber)]['conditionLabel'] = allLines[i].split(':')[1].strip()
+            if allLines[i].split(':')[0] == 'Task Label':
+                tmp['b'+str(blockNumber)]['taskLabel'] = allLines[i].split(':')[1].strip()
+            if allLines[i].split(':')[0] == 'Instructions':
+                tmp['b'+str(blockNumber)]['instructions'] = allLines[i].split(':')[1].strip().replace("nwln", "\n")
             if allLines[i].split(':')[0] == 'Experiment':
                 tmp['b'+str(blockNumber)]['experiment'] = allLines[i].split(':')[1].strip()
             if allLines[i].split(':')[0] == 'Paradigm':
@@ -3833,6 +3894,7 @@ class pychControlWin(QMainWindow):
         self.prm['allBlocks'] = {}
         self.prm['allBlocks']['experimentLabel'] = self.experimentLabelTF.text()
         self.prm['allBlocks']['endExpCommand'] = self.endExpCommandTF.text()
+        self.prm['allBlocks']['instructionsAt'] = [int(x) for x in self.instructionsAtTF.text().split(",")]
         self.prm['allBlocks']['currentExperimenter'] = self.experimenterChooser.currentText()
         self.prm['allBlocks']['currentPhones'] = self.phonesChooser.currentText()
         self.prm['allBlocks']['maxLevel'] = float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()])
@@ -3856,6 +3918,7 @@ class pychControlWin(QMainWindow):
         self.onResponseModeChange(responseMode)
         self.autoSetGaugeValue()
         self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
+        self.responseBox.RBTaskLabel.setText(self.taskLabelTF.text())
         self.saveParametersToFile(self.prm["tmpParametersFile"])
         self.audioManager.initializeAudio()
       
@@ -3888,6 +3951,7 @@ class pychControlWin(QMainWindow):
         fName.write('Trigger On/Off: ' + str(self.triggerCheckBox.isChecked()) + '\n')
         fName.write('Experiment Label: ' + self.experimentLabelTF.text() + '\n')
         fName.write('End Command: ' + self.endExpCommandTF.text() + '\n')
+        fName.write('Instructions At BP: ' + self.instructionsAtTF.text() + '\n')
         fName.write('Shuffling Scheme: ' + self.shufflingSchemeTF.text() + '\n')
         fName.write('No. Repetitions: ' + self.repetitionsTF.text() + '\n')
         fName.write('Proc. Res.: ' + str(self.procResCheckBox.isChecked()) + '\n')
@@ -3901,6 +3965,8 @@ class pychControlWin(QMainWindow):
             fName.write('*******************************************************\n')
             fName.write(self.tr('Block Position: ') + self.prm[currBlock]['blockPosition']+ '\n')
             fName.write(self.tr('Condition Label: ') + self.prm[currBlock]['conditionLabel']+ '\n')
+            fName.write(self.tr('Task Label: ') + self.prm[currBlock]['taskLabel']+ '\n')
+            fName.write(self.tr('Instructions: ') + self.prm[currBlock]['instructions'].replace("\n", "nwln") + '\n')
             fName.write(self.tr('Experiment: ') + self.prm[currBlock]['experiment']+ '\n')
             fName.write(self.tr('Paradigm: ') + self.prm[currBlock]['paradigm']+ '\n')
             if self.prm[currExp]["hasAlternativesChooser"] == True:
@@ -3975,6 +4041,7 @@ class pychControlWin(QMainWindow):
             if self.prm["storedBlocks"] > 0:
                 self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
             self.updateParametersWin()
+            self.responseBox.RBTaskLabel.setText(self.taskLabelTF.text())
             self.autoSetGaugeValue()
             
     def onClickNextBlockButton(self):
@@ -3992,6 +4059,7 @@ class pychControlWin(QMainWindow):
             if self.prm["storedBlocks"] > 0:
                 self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
             self.updateParametersWin()
+            self.responseBox.RBTaskLabel.setText(self.taskLabelTF.text())
             self.autoSetGaugeValue()
             
     def onJumpToBlockChange(self):
@@ -4003,6 +4071,7 @@ class pychControlWin(QMainWindow):
         if self.prm["storedBlocks"] > 0:
             self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
             self.updateParametersWin()
+            self.responseBox.RBTaskLabel.setText(self.taskLabelTF.text())
             self.autoSetGaugeValue()
             
     def onJumpToPositionChange(self):
@@ -4043,6 +4112,7 @@ class pychControlWin(QMainWindow):
         self.setNewBlock('b'+str(self.prm["currentBlock"]))
         if self.prm["storedBlocks"] > 0:
             self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
+            self.responseBox.RBTaskLabel.setText(self.taskLabelTF.text())
             self.autoSetGaugeValue()
             
     def onClickShuffleBlocksButton(self):
@@ -4076,6 +4146,7 @@ class pychControlWin(QMainWindow):
             self.saveParametersToFile(self.prm["tmpParametersFile"])
             self.updateParametersWin()
             self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
+            self.responseBox.RBTaskLabel.setText(self.taskLabelTF.text())
             self.autoSetGaugeValue()
             
     def autoSetGaugeValue(self):

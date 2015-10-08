@@ -75,6 +75,7 @@ from email.mime.multipart import MIMEMultipart
 from email import encoders
 
 from .audio_manager import*
+from .dialog_show_instructions import*
 from .stats_utils import*
 from .sndlib import*
 from .utils_general import*
@@ -149,12 +150,22 @@ class responseBox(QMainWindow):
         self.fileMenu.addAction(self.toggleControlWin)
         self.fileMenu.addAction(self.toggleGauge)
         self.fileMenu.addAction(self.toggleBlockGauge)
+
+        #HELP MENU
+        self.helpMenu = self.menubar.addMenu(self.tr('&Help'))
+
+        self.showInstructions = QAction(self.tr('Show Task Instructions'), self)
+        self.showInstructions.triggered.connect(self.onClickShowInstructions)
+        self.helpMenu.addAction(self.showInstructions)
         
         self.rb = QFrame()
         self.rb.setFrameStyle(QFrame.StyledPanel|QFrame.Sunken)
         self.rb_sizer = QVBoxLayout()
         self.intervalSizer = QGridLayout()
         self.responseButtonSizer = QGridLayout()
+
+        self.RBTaskLabel = QLabel(self.parent().taskLabelTF.text())
+        self.RBTaskLabel.setAlignment(Qt.AlignCenter)
        
         self.statusButton = QPushButton(self.prm['rbTrans'].translate('rb', "Wait"), self)
         self.statusButton.clicked.connect(self.onClickStatusButton)
@@ -168,7 +179,8 @@ class responseBox(QMainWindow):
         self.gauge = QProgressBar(self)
         self.gauge.setRange(0, 100)
         self.blockGauge = QProgressBar(self)
-        
+
+        self.rb_sizer.addWidget(self.RBTaskLabel)
         self.rb_sizer.addWidget(self.statusButton)
         self.rb_sizer.addSpacing(20)
         self.rb_sizer.addWidget(self.responseLight)
@@ -487,6 +499,9 @@ class responseBox(QMainWindow):
                 if 'resultsFile' not in self.prm:
                     self.onAskSaveResultsButton()
 
+    def onClickShowInstructions(self):
+        dialog = showInstructionsDialog(self)
+
     def onAskSaveResultsButton(self):
         ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), "", QFileDialog.DontConfirmOverwrite)[0]
         if os.path.exists(ftow) == False and len(ftow) > 0:
@@ -512,10 +527,10 @@ class responseBox(QMainWindow):
             self.blockGauge.hide()
 
     def onClickStatusButton(self):
-        self.parent().compareGuiStoredParameters()
         if self.prm['storedBlocks'] == 0 or self.statusButton.text() == self.prm['rbTrans'].translate("rb", "Running") or self.statusButton.text() == self.prm['rbTrans'].translate("rb", "Finished"):
             return
-
+        self.parent().compareGuiStoredParameters()
+        
         if self.prm['currentBlock'] > self.prm['storedBlocks']: #the user did not choose to store the unsaved block, move to first block
             self.parent().moveToBlockPosition(1)    
        
@@ -546,7 +561,16 @@ class responseBox(QMainWindow):
          
             self.parent().onClickShuffleBlocksButton()
             self.prm["shuffled"] = True
-
+        #self.prm[currBlock]['blockPosition']
+        if int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition']) in self.prm["allBlocks"]["instructionsAt"]:
+            instrClosed = False
+            while instrClosed == False:
+                dialog = showInstructionsDialog(self)
+                if dialog.exec_():
+                    instrClosed = True
+                else:
+                    instrClosed = True
+                time.sleep(1.5)
         self.prm['startOfBlock'] = True
         self.statusButton.setText(self.prm['rbTrans'].translate("rb", "Running"))
         self.prm['trialRunning'] = True

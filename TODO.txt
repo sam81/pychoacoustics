@@ -3,7 +3,8 @@ To do:
 
 High priority:
 
-- plot psychometric listener function
+- Add task label in response box
+- Add task instructions
 - plot UML/PSI parameters - grid with priors on top, and also save parameters for inspection
 - write tests, for example the output of sound generating functions could be compared to stored numpy arrays, the output of procedures could be fixed with set seed and compared with result files
 - Check bug with repetitions and automatic mode

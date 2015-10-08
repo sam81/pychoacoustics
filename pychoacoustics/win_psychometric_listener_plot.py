@@ -215,12 +215,3 @@ class psychListenerPlot(QMainWindow):
 
         self.canvas.draw()
 
-    def checkMultipleHeaders(self, fName):
-        f = open(fName, 'r')
-        l = f.readlines()
-        if l[0] == "The table files appear to contain multiple headers.\n":
-            return True
-        else:
-            return False
-
-
