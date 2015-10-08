@@ -3180,7 +3180,10 @@ class pychControlWin(QMainWindow):
         self.prm['allBlocks'] = {}
         self.prm['allBlocks']['experimentLabel'] = self.experimentLabelTF.text()
         self.prm['allBlocks']['endExpCommand'] = self.endExpCommandTF.text()
-        self.prm['allBlocks']['instructionsAt'] = [int(x) for x in self.instructionsAtTF.text().split(",")]
+        if len(self.instructionsAtTF.text())>0:
+            self.prm['allBlocks']['instructionsAt'] = [int(x) for x in self.instructionsAtTF.text().split(",")]
+        else:
+            self.prm['allBlocks']['instructionsAt'] = []
         self.prm['allBlocks']['currentExperimenter'] = self.experimenterChooser.currentText()
         self.prm['allBlocks']['currentPhones'] = self.phonesChooser.currentText()
         self.prm['allBlocks']['maxLevel'] = float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()])
@@ -3402,7 +3405,11 @@ class pychControlWin(QMainWindow):
             tmpPrm['allBlocks'] = {}
             tmpPrm['allBlocks']['experimentLabel'] = self.experimentLabelTF.text()
             tmpPrm['allBlocks']['endExpCommand'] = self.endExpCommandTF.text()
-            tmpPrm['allBlocks']['instructionsAt'] = [int(x) for x in self.instructionsAtTF.text().split(",")]
+            if len(self.instructionsAtTF.text())>0:
+                tmpPrm['allBlocks']['instructionsAt'] = [int(x) for x in self.instructionsAtTF.text().split(",")]
+            else:
+                tmpPrm['allBlocks']['instructionsAt'] = []
+            #tmpPrm['allBlocks']['instructionsAt'] = [int(x) for x in self.instructionsAtTF.text().split(",")]
             tmpPrm['allBlocks']['currentExperimenter'] = self.experimenterChooser.currentText()
             tmpPrm['allBlocks']['currentPhones'] = self.phonesChooser.currentText()
             tmpPrm['allBlocks']['maxLevel'] = float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()])
@@ -3753,6 +3760,9 @@ class pychControlWin(QMainWindow):
                 tmp['b'+str(blockNumber)]['precursorIntervalISICheckBox'] = False
                 tmp['b'+str(blockNumber)]['postcursorIntervalISI'] = 500
                 tmp['b'+str(blockNumber)]['postcursorIntervalISICheckBox'] = False
+                tmp['b'+str(blockNumber)]['taskLabel'] = ""
+                tmp['b'+str(blockNumber)]['instructions'] = ""
+                tmp['b'+str(blockNumber)]['instructionsAt'] = ""
                 
             if allLines[i].split(':')[0] == 'Block Position':
                 tmp['b'+str(blockNumber)]['blockPosition'] = allLines[i].split(':')[1].strip()
@@ -3908,7 +3918,11 @@ class pychControlWin(QMainWindow):
         self.prm['allBlocks'] = {}
         self.prm['allBlocks']['experimentLabel'] = self.experimentLabelTF.text()
         self.prm['allBlocks']['endExpCommand'] = self.endExpCommandTF.text()
-        self.prm['allBlocks']['instructionsAt'] = [int(x) for x in self.instructionsAtTF.text().split(",")]
+        if len(self.instructionsAtTF.text())>0:
+            self.prm['allBlocks']['instructionsAt'] = [int(x) for x in self.instructionsAtTF.text().split(",")]
+        else:
+            self.prm['allBlocks']['instructionsAt'] = []
+        #self.prm['allBlocks']['instructionsAt'] = [int(x) for x in self.instructionsAtTF.text().split(",")]
         self.prm['allBlocks']['currentExperimenter'] = self.experimenterChooser.currentText()
         self.prm['allBlocks']['currentPhones'] = self.phonesChooser.currentText()
         self.prm['allBlocks']['maxLevel'] = float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()])
