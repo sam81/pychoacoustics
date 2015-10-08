@@ -183,7 +183,7 @@ def PSI_update_posterior(PSI, r):
     if PSI["n"] == 1:
         PSI["phi"] = np.array([alpha_est, beta_est, PSI["gamma"], lambda_est], ndmin=2)
     else:
-        PSI["phi"] =  np.concatenate((PSI["phi"],np.array([alpha_est, beta_est, PSI["gamma"], lambda_est], ndmin=2)), axis=0)
+        PSI["phi"] =  np.concatenate((PSI["phi"], np.array([alpha_est, beta_est, PSI["gamma"], lambda_est], ndmin=2)), axis=0)
     if PSI["par"]["stimScale"] == "Logarithmic":
         PSI["est_midpoint"] = exp(alpha_est)
     else:

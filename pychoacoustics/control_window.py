@@ -51,6 +51,7 @@ from .dialog_swap_blocks import*
 from .pysdt import*
 from .win_psychometric_listener_plot import*
 from .win_UML_parspace_plot import*
+from .win_PSI_parspace_plot import*
 
 
 #from redirect_out import*
@@ -1046,7 +1047,7 @@ class pychControlWin(QMainWindow):
                 self.paradigmFieldLabelList[i].setParent(None)
                 self.paradigm_widg_sizer.removeWidget(self.paradigmFieldCheckBoxList[i])
                 self.paradigmFieldCheckBoxList[i].setParent(None)
-            if prevParadigm in ["UML"]:
+            if prevParadigm in ["UML", "PSI"]:
                 for i in range(len(self.paradigmButtonList)):
                     self.paradigm_widg_sizer.removeWidget(self.paradigmButtonList[i])
                     self.paradigmButtonList[i].setParent(None)
@@ -2249,6 +2250,14 @@ class pychControlWin(QMainWindow):
             self.startLevelChooserLabel.hide()
             self.startLevelChooser.hide()
             self.startLevelChooserCheckBox.hide()
+
+            self.PSIParSpacePlotButton = QPushButton(self.tr("Plot PSI Par. Space"))
+            self.PSIParSpacePlotButton.clicked.connect(self.onClickPSIParSpacePlotButton)
+            self.PSIParSpacePlotButton.setIcon(QIcon.fromTheme("office-chart-line-stacked", QIcon(":/office-chart-line_stacked")))
+            #self.PSIParSpacePlotButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
+            self.PSIParSpacePlotButton.setToolTip(self.tr("Plot PSI parameter space"))
+            self.paradigm_widg_sizer.addWidget(self.PSIParSpacePlotButton, n, 8)
+            
             n = n+1
             self.margSlopeChooserLabel = QLabel(self.tr("Marginalize Slope:"), self)
             self.paradigm_widg_sizer.addWidget(self.margSlopeChooserLabel, n, 1)
@@ -2341,6 +2350,8 @@ class pychControlWin(QMainWindow):
                                               self.slopePriorMuCheckBox, self.slopePriorSTDCheckBox,
                                               self.lapsePriorMuCheckBox, self.lapsePriorSTDCheckBox,
                                               self.nTrialsCheckBox]
+            self.paradigmButtonList = [self.PSIParSpacePlotButton]
+            
             self.onChangeThreshPrior()
             self.onChangeSlopePrior()
             self.onChangeLapsePrior()
@@ -3384,6 +3395,9 @@ class pychControlWin(QMainWindow):
 
     def onClickUMLParSpacePlotButton(self):
         UMLParSpacePlot(self)
+
+    def onClickPSIParSpacePlotButton(self):
+        PSIParSpacePlot(self)
         
     def compareGuiStoredParameters(self):
         tmpPrm = copy.copy(self.prm)
