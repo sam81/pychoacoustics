@@ -22,7 +22,7 @@
 import copy, scipy
 import numpy as np
 from numpy import arange, exp, linspace, logspace, log, log10, meshgrid, pi, ravel
-from scipy.stats import norm
+from scipy.stats import lognorm, norm
 from scipy.special import erf
 from .pysdt import*
 
@@ -151,7 +151,8 @@ def setPrior(phi, s):
             #this is the MATLAB equivalent of
             #p0 =  lognpdf(phi, s["mu"], s["std"])
             m = s["mu"]; st=s["std"]
-            p0 = lognorm.pdf(x, scale=log(m/sqrt(1+st**2/m**2)), s=sqrt(log(1+st**2/m**2)))
+            #p0 = lognorm.pdf(phi, scale=log(m/sqrt(1+st**2/m**2)), s=sqrt(log(1+st**2/m**2)))
+            p0  = exp(norm.pdf(log(phi), loc=log(s["mu"]), scale=s["std"]))
     elif s["dist"] == "Uniform":
         p0 = np.ones(phi.shape)
 

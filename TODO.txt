@@ -3,12 +3,11 @@ To do:
 
 High priority:
 
-- Add task label in response box
-- Add task instructions
 - plot UML/PSI parameters - grid with priors on top, and also save parameters for inspection
 - write tests, for example the output of sound generating functions could be compared to stored numpy arrays, the output of procedures could be fixed with set seed and compared with result files
 - Check bug with repetitions and automatic mode
 - Add tools to fit psychometric functions (pystan or pymc)
+- Psychometric listener plot and UML parspace plots require matplotlib. Decide whether to make matplotlib a dependency, or make the plots optional.
 
 Medium priority:
 

@@ -31,5 +31,6 @@
 <file alias="system-run">icons/system-run.svgz</file>
 <file alias="user-group-properties">icons/user-group-properties.svgz</file>
 <file alias="office-chart-line-stacked">icons/office-chart-line-stacked.svgz</file>
+<file alias="view-refresh">icons/view-refresh.svgz</file>
 </qresource>
 </RCC>

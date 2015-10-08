@@ -50,6 +50,7 @@ from .dialog_show_fortune import*
 from .dialog_swap_blocks import*
 from .pysdt import*
 from .win_psychometric_listener_plot import*
+from .win_UML_parspace_plot import*
 
 
 #from redirect_out import*
@@ -1045,6 +1046,10 @@ class pychControlWin(QMainWindow):
                 self.paradigmFieldLabelList[i].setParent(None)
                 self.paradigm_widg_sizer.removeWidget(self.paradigmFieldCheckBoxList[i])
                 self.paradigmFieldCheckBoxList[i].setParent(None)
+            if prevParadigm in ["UML"]:
+                for i in range(len(self.paradigmButtonList)):
+                    self.paradigm_widg_sizer.removeWidget(self.paradigmButtonList[i])
+                    self.paradigmButtonList[i].setParent(None)
 
          
         #------------------------------------
@@ -2371,6 +2376,13 @@ class pychControlWin(QMainWindow):
             self.psyFunPostSummCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.psyFunPostSummCheckBox, n, 3)
 
+            self.UMLParSpacePlotButton = QPushButton(self.tr("Plot UML Par. Space"))
+            self.UMLParSpacePlotButton.clicked.connect(self.onClickUMLParSpacePlotButton)
+            self.UMLParSpacePlotButton.setIcon(QIcon.fromTheme("office-chart-line-stacked", QIcon(":/office-chart-line_stacked")))
+            #self.UMLParSpacePlotButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
+            self.UMLParSpacePlotButton.setToolTip(self.tr("Plot UML parameter space"))
+            self.paradigm_widg_sizer.addWidget(self.UMLParSpacePlotButton, n, 8)
+
             n = n+1
 
             self.ruleDownLabel = QLabel(self.tr("Rule Down"), self)
@@ -2669,11 +2681,10 @@ class pychControlWin(QMainWindow):
                                               self.slopePriorMuCheckBox, self.slopePriorSTDCheckBox,
                                               self.lapsePriorMuCheckBox, self.lapsePriorSTDCheckBox,
                                               self.nTrialsCheckBox]
+            self.paradigmButtonList = [self.UMLParSpacePlotButton]
             self.onChangeThreshPrior()
             self.onChangeSlopePrior()
             self.onChangeLapsePrior()
-
-
 
     def onExperimentChange(self, experimentSelected):
         for i in range(self.paradigmChooser.count()):
@@ -3368,6 +3379,9 @@ class pychControlWin(QMainWindow):
 
             self.statusBar().showMessage(self.tr('Saved psychometric listener data to: ') + ftow)
 
+    def onClickUMLParSpacePlotButton(self):
+        UMLParSpacePlot(self)
+        
     def compareGuiStoredParameters(self):
         tmpPrm = copy.copy(self.prm)
         nStoredDifferent = False
