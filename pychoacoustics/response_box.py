@@ -179,7 +179,7 @@ class responseBox(QMainWindow):
         self.gauge = QProgressBar(self)
         self.gauge.setRange(0, 100)
         self.blockGauge = QProgressBar(self)
-
+ 
         self.rb_sizer.addWidget(self.RBTaskLabel)
         self.rb_sizer.addWidget(self.statusButton)
         self.rb_sizer.addSpacing(20)
@@ -527,6 +527,8 @@ class responseBox(QMainWindow):
             self.blockGauge.hide()
 
     def onClickStatusButton(self):
+        print(self.statusButton.text())
+        print(self.prm['rbTrans'].translate("rb", "Start"))
         if self.prm['storedBlocks'] == 0 or self.statusButton.text() == self.prm['rbTrans'].translate("rb", "Running") or self.statusButton.text() == self.prm['rbTrans'].translate("rb", "Finished"):
             return
         self.parent().compareGuiStoredParameters()
@@ -4789,11 +4791,22 @@ class responseLight(QWidget):
         elif status == 'off':
             self.lightColor = Qt.black
     def paintEvent(self, event=None):
+        #ftype = "text"
+        #if ftype not in ["text"]:
         painter = QPainter(self)
         painter.setViewport(0,0,self.width(),self.height())
         painter.setPen(self.borderColor)
         painter.setBrush(self.lightColor)
         painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+        # else:
+        #     painter = QPainter(self)
+        #     painter.setViewport(0,0,self.width(),self.height())
+        #     painter.setPen(Qt.black)
+        #     painter.setBrush(Qt.white)
+        #     painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+        #     r = QtCore.QRectF(0,0,self.width(),self.height())
+        #     #painter.drawText(self.width()/2,40,"CORRECT")
+        #     painter.drawText(r, Qt.AlignCenter,"CORRECT")
 
 
 class intervalLight(QFrame):

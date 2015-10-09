@@ -21,7 +21,7 @@ import matplotlib
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QCheckBox, QHBoxLayout, QMainWindow, QVBoxLayout, QWidget
+    from PyQt4.QtGui import QCheckBox, QHBoxLayout, QIcon, QMainWindow, QPushButton, QVBoxLayout, QWidget
     # import the Qt4Agg FigureCanvas object, that binds Figure to
     # Qt4Agg backend. It also inherits from QWidget
     from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
@@ -31,7 +31,7 @@ if pyqtversion == 4:
     matplotlib.rcParams['backend.qt4'] = "PyQt4"
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
-    from PySide.QtGui import QCheckBox, QHBoxLayout, QMainWindow, QVBoxLayout, QWidget
+    from PySide.QtGui import QCheckBox, QHBoxLayout, QIcon, QMainWindow, QPushButton, QVBoxLayout, QWidget
     # import the Qt4Agg FigureCanvas object, that binds Figure to
     # Qt4Agg backend. It also inherits from QWidget
     from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
@@ -41,7 +41,8 @@ elif pyqtversion == -4:
     matplotlib.rcParams['backend.qt4'] = "PySide"
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
-    from PyQt5.QtWidgets import QCheckBox, QHBoxLayout, QMainWindow, QVBoxLayout, QWidget
+    from PyQt5.QtWidgets import QCheckBox, QHBoxLayout, QMainWindow, QPushButton, QVBoxLayout, QWidget
+    from PyQt5.QtGui import QIcon
     # import the Qt4Agg FigureCanvas object, that binds Figure to
     # Qt4Agg backend. It also inherits from QWidget
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -121,9 +122,13 @@ class psychListenerPlot(QMainWindow):
         self.ntb = NavigationToolbar(self.canvas, self.mw)
         self.gridOn = QCheckBox(self.tr("Grid"))
         self.gridOn.stateChanged[int].connect(self.toggleGrid)
+        self.updateButton = QPushButton(self.tr("Update"), self)
+        self.updateButton.setIcon(QIcon.fromTheme("view-refresh", QIcon(":/view-refresh")))
+        self.updateButton.clicked.connect(self.onClickUpdateButton)
         self.ntbBox = QHBoxLayout()
         self.ntbBox.addWidget(self.ntb)
         self.ntbBox.addWidget(self.gridOn)
+        self.ntbBox.addWidget(self.updateButton)
         self.vbl.addWidget(self.canvas)
         self.vbl.addLayout(self.ntbBox)
         self.mw.setFocus()
@@ -131,14 +136,8 @@ class psychListenerPlot(QMainWindow):
 
         self.getPsyFun()
         self.plotData()
-
-        # if pdfPlot == True:
-        #      self.fig.savefig(self.fName.split('.')[0] + '.pdf', format='pdf')
-        # if winPlot == True:
         self.show()
         self.canvas.draw()
-        #else:
-        #    self.deleteLater()
 
     def getPsyFun(self):
         psyFun = self.parent().psyListFunChooser.currentText()
@@ -177,6 +176,7 @@ class psychListenerPlot(QMainWindow):
     
         
     def plotData(self):
+        self.ax.clear()
         if self.psyFunFit == "Linear":
             self.ax.plot(self.stim, self.pcCorr)
         elif self.psyFunFit == "Logarithmic":
@@ -193,7 +193,8 @@ class psychListenerPlot(QMainWindow):
             for i in range(len(majTicks)-1):
                 minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
             self.ax.set_xticks(minTicks, minor=True)
-
+        self.ax.set_xlabel("Stimulus Strength")
+        self.ax.set_ylabel("Probability of correct response")
     def toggleGrid(self, state):
         self.ax.grid(True)
         if self.gridOn.isChecked():
@@ -215,3 +216,7 @@ class psychListenerPlot(QMainWindow):
 
         self.canvas.draw()
 
+    def onClickUpdateButton(self):
+        self.getPsyFun()
+        self.plotData()
+        self.canvas.draw()

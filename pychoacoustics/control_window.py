@@ -26,11 +26,25 @@ if pyqtversion == 4:
     QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
     QtCore.Signal = QtCore.pyqtSignal
     QtCore.Slot = QtCore.pyqtSlot
+    try:
+        import matplotlib
+        matplotlib_available = True
+        matplotlib.rcParams['backend'] = "Qt4Agg"
+        matplotlib.rcParams['backend.qt4'] = "PyQt4"
+    except:
+        matplotlib_available = False
 elif pyqtversion == -4:
     import PySide
     from PySide import QtCore, QtGui
     from PySide.QtCore import Qt, QEvent
     from PySide.QtGui import QAction, QCheckBox, QComboBox, QDesktopServices, QDesktopWidget, QDoubleValidator, QFrame, QFileDialog, QGridLayout, QHBoxLayout, QIcon, QIntValidator, QLabel, QLayout, QLineEdit, QMainWindow, QMessageBox, QScrollArea, QSizePolicy, QSpacerItem, QSplitter, QPushButton, QTextEdit, QVBoxLayout, QWhatsThis, QWidget
+    try:
+        import matplotlib
+        matplotlib_available = True
+        matplotlib.rcParams['backend'] = "Qt4Agg"
+        matplotlib.rcParams['backend.qt4'] = "PySide"
+    except:
+        matplotlib_available = False
 elif pyqtversion == 5:
     from PyQt5 import QtCore, QtGui
     from PyQt5.QtCore import Qt, QEvent
@@ -38,6 +52,17 @@ elif pyqtversion == 5:
     from PyQt5.QtGui import QDesktopServices, QDoubleValidator, QIcon, QIntValidator
     QtCore.Signal = QtCore.pyqtSignal
     QtCore.Slot = QtCore.pyqtSlot
+    try:
+        import matplotlib
+        matplotlib_available = True
+        matplotlib.rcParams['backend'] = "Qt5Agg"
+    except:
+        matplotlib_available = False
+    try:
+        from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+        matplotlib_available = True
+    except:
+        matplotlib_available = False
     
 from .audio_manager import*
 from .global_parameters import*
@@ -49,9 +74,11 @@ from .dialog_process_results import*
 from .dialog_show_fortune import*
 from .dialog_swap_blocks import*
 from .pysdt import*
-from .win_psychometric_listener_plot import*
-from .win_UML_parspace_plot import*
-from .win_PSI_parspace_plot import*
+
+if matplotlib_available == True:
+    from .win_psychometric_listener_plot import*
+    from .win_UML_parspace_plot import*
+    from .win_PSI_parspace_plot import*
 
 
 #from redirect_out import*
@@ -519,7 +546,7 @@ class pychControlWin(QMainWindow):
         self.psyListSlopeLabel = QLabel(self.tr("Psychometric Listener Slope:"), self)
         self.def_widg_sizer2.addWidget(self.psyListSlopeLabel, n, 2)
         self.psyListSlope = QLineEdit()
-        self.psyListSlope.setText('0')
+        self.psyListSlope.setText('1')
         self.psyListSlope.setValidator(QDoubleValidator(self))
         self.def_widg_sizer2.addWidget(self.psyListSlope, n, 3)
         self.psyListSlopeLabel.hide()
@@ -647,7 +674,7 @@ class pychControlWin(QMainWindow):
         self.shuffleBlocksButton.setToolTip(self.tr("Shuffle blocks"))
         self.shuffleBlocksButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.pw_buttons_sizer.addWidget(self.shuffleBlocksButton, n, 2)
-        
+
         self.resetParametersButton = QPushButton(self.tr("Reset"), self)
         self.resetParametersButton.clicked.connect(self.onClickResetParametersButton)
         self.resetParametersButton.setIcon(QIcon.fromTheme("go-home", QIcon(":/go-home")))
@@ -2257,6 +2284,8 @@ class pychControlWin(QMainWindow):
             #self.PSIParSpacePlotButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
             self.PSIParSpacePlotButton.setToolTip(self.tr("Plot PSI parameter space"))
             self.paradigm_widg_sizer.addWidget(self.PSIParSpacePlotButton, n, 8)
+            if matplotlib_available == False:
+                self.PSIParSpacePlotButton.hide()
             
             n = n+1
             self.margSlopeChooserLabel = QLabel(self.tr("Marginalize Slope:"), self)
@@ -2393,6 +2422,8 @@ class pychControlWin(QMainWindow):
             #self.UMLParSpacePlotButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
             self.UMLParSpacePlotButton.setToolTip(self.tr("Plot UML parameter space"))
             self.paradigm_widg_sizer.addWidget(self.UMLParSpacePlotButton, n, 8)
+            if matplotlib_available == False:
+                self.UMLParSpacePlotButton.hide()
 
             n = n+1
 
@@ -2829,7 +2860,8 @@ class pychControlWin(QMainWindow):
             self.psyListLapse.show()
             self.psyListLapseLabel.show()
             self.psyListSaveButton.show()
-            self.psyListPlotButton.show()
+            if matplotlib_available:
+                self.psyListPlotButton.show()
 
     def validateInstructionsAtTF(self):
         text = self.instructionsAtTF.text()
@@ -3783,7 +3815,7 @@ class pychControlWin(QMainWindow):
             if allLines[i].split(':')[0] == 'Condition Label':
                 tmp['b'+str(blockNumber)]['conditionLabel'] = allLines[i].split(':')[1].strip()
             if allLines[i].split(':')[0] == 'Task Label':
-                tmp['b'+str(blockNumber)]['taskLabel'] = allLines[i].split(':')[1].strip()
+                tmp['b'+str(blockNumber)]['taskLabel'] = ':'.join(allLines[i].split(':')[1:len(allLines[i].split(':'))]).strip()
             if allLines[i].split(':')[0] == 'Instructions':
                 tmp['b'+str(blockNumber)]['instructions'] = allLines[i].split(':')[1].strip().replace("nwln", "\n")
             if allLines[i].split(':')[0] == 'Experiment':

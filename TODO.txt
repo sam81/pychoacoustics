@@ -3,11 +3,9 @@ To do:
 
 High priority:
 
-- plot UML/PSI parameters - grid with priors on top, and also save parameters for inspection
 - write tests, for example the output of sound generating functions could be compared to stored numpy arrays, the output of procedures could be fixed with set seed and compared with result files
 - Check bug with repetitions and automatic mode
 - Add tools to fit psychometric functions (pystan or pymc)
-- Psychometric listener plot and UML parspace plots require matplotlib. Decide whether to make matplotlib a dependency, or make the plots optional.
 
 Medium priority:
 
@@ -16,6 +14,7 @@ Medium priority:
 - Add 'Delete All' button?
 - ABX process and process results text
 - Figure out way to add instructions at the beginning of a task
+- Correct/Incorrect and smiley feedback options. Also, add the ability to change color of feedback lights.
 
 Low priority:
 
