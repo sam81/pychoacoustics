@@ -15,6 +15,7 @@ Medium priority:
 - ABX process and process results text
 - Figure out way to add instructions at the beginning of a task
 - Correct/Incorrect and smiley feedback options. Also, add the ability to change color of feedback lights.
+- Write 'what's this' and tooltips for all widgets.
 
 Low priority:
 

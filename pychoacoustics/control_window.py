@@ -3745,10 +3745,10 @@ class pychControlWin(QMainWindow):
                 bitsToSet = allLines[i].split(':')[1].strip()
                 self.nBitsChooser.setCurrentIndex(self.prm["nBitsChoices"].index(bitsToSet))
             elif allLines[i].split(':')[0] == 'Experiment Label':
-                experimentLabelToSet = allLines[i].split(':')[1].strip()
+                experimentLabelToSet = allLines[i].split(':', 1)[1].strip()
                 self.experimentLabelTF.setText(experimentLabelToSet)
             elif allLines[i].split(':')[0] == 'End Command':
-                endExpCommandToSet = allLines[i].split(':')[1].strip()
+                endExpCommandToSet = allLines[i].split(':', 1)[1].strip()
                 self.endExpCommandTF.setText(endExpCommandToSet)
             elif allLines[i].split(':')[0] == 'Instructions At BP':
                 instructionsAtToSet = allLines[i].split(':')[1].strip()
@@ -3813,11 +3813,11 @@ class pychControlWin(QMainWindow):
             if allLines[i].split(':')[0] == 'Block Position':
                 tmp['b'+str(blockNumber)]['blockPosition'] = allLines[i].split(':')[1].strip()
             if allLines[i].split(':')[0] == 'Condition Label':
-                tmp['b'+str(blockNumber)]['conditionLabel'] = allLines[i].split(':')[1].strip()
+                tmp['b'+str(blockNumber)]['conditionLabel'] = allLines[i].split(':', 1)[1].strip()
             if allLines[i].split(':')[0] == 'Task Label':
-                tmp['b'+str(blockNumber)]['taskLabel'] = ':'.join(allLines[i].split(':')[1:len(allLines[i].split(':'))]).strip()
+                tmp['b'+str(blockNumber)]['taskLabel'] = allLines[i].split(':', 1)[1].strip()#':'.join(allLines[i].split(':')[1:len(allLines[i].split(':'))]).strip()
             if allLines[i].split(':')[0] == 'Instructions':
-                tmp['b'+str(blockNumber)]['instructions'] = allLines[i].split(':')[1].strip().replace("nwln", "\n")
+                tmp['b'+str(blockNumber)]['instructions'] = allLines[i].split(':', 1)[1].strip().replace("nwln", "\n")
             if allLines[i].split(':')[0] == 'Experiment':
                 tmp['b'+str(blockNumber)]['experiment'] = allLines[i].split(':')[1].strip()
             if allLines[i].split(':')[0] == 'Paradigm':
