@@ -527,9 +527,7 @@ class responseBox(QMainWindow):
             self.blockGauge.hide()
 
     def onClickStatusButton(self):
-        print(self.statusButton.text())
-        print(self.prm['rbTrans'].translate("rb", "Start"))
-        if self.prm['storedBlocks'] == 0 or self.statusButton.text() == self.prm['rbTrans'].translate("rb", "Running") or self.statusButton.text() == self.prm['rbTrans'].translate("rb", "Finished"):
+        if self.prm['storedBlocks'] == 0 or self.statusButton.text() in [self.prm['rbTrans'].translate("rb", "Running"), "&"+self.prm['rbTrans'].translate("rb", "Running")] or self.statusButton.text() in [self.prm['rbTrans'].translate("rb", "Finished"), "&" + self.prm['rbTrans'].translate("rb", "Finished")]:
             return
         self.parent().compareGuiStoredParameters()
         
@@ -1063,7 +1061,6 @@ class responseBox(QMainWindow):
                                           self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                           self.prm[currBlock]['psyListLapse'])
             resp = np.random.binomial(1, probCorr, 1)[0]
-            #print(self.prm['adaptiveDifference'])
             if resp == 1:
                 self.sortResponse(self.correctButton)
             else:
@@ -1146,10 +1143,10 @@ class responseBox(QMainWindow):
         if self.parent().currExp == "Digit Triplets Test":
             if buttonClicked < 10:
                 return
-            if self.statusButton.text() != self.prm['rbTrans'].translate("rb", "Running"):
+            if self.statusButton.text() not in [self.prm['rbTrans'].translate("rb", "Running"), "&"+self.prm['rbTrans'].translate("rb", "Running")]:
                 return
         else:
-            if buttonClicked > self.prm['nAlternatives'] or self.statusButton.text() != self.prm['rbTrans'].translate("rb", "Running"): #self.tr("Running"): #1) do not accept responses outside the possible alternatives and 2) if the block is not running (like wait or finished)
+            if buttonClicked > self.prm['nAlternatives'] or self.statusButton.text() not in [self.prm['rbTrans'].translate("rb", "Running"), "&"+ self.prm['rbTrans'].translate("rb", "Running")]: #self.tr("Running"): #1) do not accept responses outside the possible alternatives and 2) if the block is not running (like wait or finished)
                 return
         if buttonClicked < (self.prm['nAlternatives']+1) and self.prm['trialRunning'] == True: #1) can't remember why I put the first condition 2) do not accept responses while the trial is running
             return

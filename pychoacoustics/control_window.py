@@ -3363,6 +3363,8 @@ class pychControlWin(QMainWindow):
         self.jumpToBlockChooser.setCurrentIndex(self.prm["currentBlock"]-1)
         self.jumpToPositionChooser.setCurrentIndex(int(self.prm[currBlock]['blockPosition'])-1)
         self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
+        print(self.prm['rbTrans'].translate("rb", "Start"))
+        print(self.responseBox.statusButton.text())
         self.responseBox.RBTaskLabel.setText(self.taskLabelTF.text())
         self.saveParametersToFile(self.prm["tmpParametersFile"])
         self.autoSetGaugeValue()
