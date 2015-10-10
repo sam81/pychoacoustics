@@ -1,7 +1,14 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, platform, time
+import os, platform, requests, time
+
+pparev = input("ppa revision number: ")
+pparev = '-ppa'+str(pparev)
+
+series = input("distro series: ")
+publish = input("publish ('yes'/'no'?: ")
+
 
 thisDir = os.getcwd()
 #get current version number from setup.py
@@ -57,3 +64,34 @@ os.system("dpkg-buildpackage -F")
 
 #For Launchpad Upload
 #os.system("debuild -S -sa")
+
+os.chdir("../")
+print(os.getcwd()) 
+
+
+if publish == 1 or publish == "yes":
+    API_KEY = os.environ["BINTRAY_API_KEY"]
+    package = "pychoacoustics"
+    architecture = "amd64"
+    component = "main"
+    origdebname = package + "_" + ver +  "_" + architecture + ".deb"
+    debname = package + "_" + ver + pparev + "~" + series + "_" + architecture + ".deb"
+    os.system("cp" + " " + origdebname + " " + debname)
+    USERNAME = "sam81"
+
+
+    URL = "https://api.bintray.com/content/sam81/hearinglab/"+ package + "/" + ver + "/pool/" + component + "/"+ package[0] + "/" + package + "/" + debname + "?publish=1"
+    parameters = {"publish": "1"}
+    headers = {
+        "X-Bintray-Debian-Distribution": series,
+        "X-Bintray-Debian-Architecture": architecture,
+        "X-Bintray-Debian-Component": component
+    }
+
+    with open(debname, "rb") as package_fp:
+        response = requests.put(
+            URL, auth=(USERNAME, API_KEY), params=parameters,
+            headers=headers, data=package_fp) 
+
+    print("status code: " + response.status_code)
+    
