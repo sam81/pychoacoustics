@@ -6,8 +6,12 @@ import os, platform, requests, time
 pparev = input("ppa revision number: ")
 pparev = '-ppa'+str(pparev)
 
-series = input("distro series: ")
+series = os.popen("lsb_release -c").read().split('\t')[1].strip() #input("distro series: ")
 publish = input("publish ('yes'/'no'?: ")
+
+package = "pychoacoustics"
+architecture = os.popen("dpkg --print-architecture").read().strip()
+component = "main"
 
 
 thisDir = os.getcwd()
@@ -66,19 +70,15 @@ os.system("dpkg-buildpackage -F")
 #os.system("debuild -S -sa")
 
 os.chdir("../")
-print(os.getcwd()) 
-
+origdebname = package + "_" + ver +  "_" + architecture + ".deb"
+debname = package + "_" + ver + pparev + "~" + series + "_" + architecture + ".deb"
+os.system("mv" + " " + origdebname + " " + debname)
 
 if publish == 1 or publish == "yes":
-    API_KEY = os.environ["BINTRAY_API_KEY"]
-    package = "pychoacoustics"
-    architecture = "amd64"
-    component = "main"
-    origdebname = package + "_" + ver +  "_" + architecture + ".deb"
-    debname = package + "_" + ver + pparev + "~" + series + "_" + architecture + ".deb"
-    os.system("cp" + " " + origdebname + " " + debname)
-    USERNAME = "sam81"
 
+    API_KEY = os.environ["BINTRAY_API_KEY"]
+
+    USERNAME = "sam81"
 
     URL = "https://api.bintray.com/content/sam81/hearinglab/"+ package + "/" + ver + "/pool/" + component + "/"+ package[0] + "/" + package + "/" + debname + "?publish=1"
     parameters = {"publish": "1"}
@@ -93,5 +93,9 @@ if publish == 1 or publish == "yes":
             URL, auth=(USERNAME, API_KEY), params=parameters,
             headers=headers, data=package_fp) 
 
-    print("status code: " + response.status_code)
+    print("status code: " + str(response.status_code))
+    if response.status_code == 201:
+        print("#####################\n Upload successful!")
+    else:
+        print("#####################\n Upload Unsuccessful.")
     
