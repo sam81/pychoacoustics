@@ -26,6 +26,19 @@ from numpy import abs, angle, arange, array, asarray, ceil, concatenate, convolv
 from numpy.fft import fft, ifft, irfft, rfft
 from scipy.signal import firwin2
 
+try:
+    from .pyqtver import*
+except:
+    pyqtversion = 5
+
+if pyqtversion == 4:
+    from PyQt4.QtCore import QCoreApplication
+elif pyqtversion == -4:
+    from PySide.QtCore import QCoreApplication
+elif pyqtversion == 5:
+    from PyQt5.QtCore import QCoreApplication
+
+trn = QCoreApplication.translate
 
 def addSounds(snd1, snd2, delay, fs):
     """
@@ -99,7 +112,7 @@ def addSounds(snd1, snd2, delay, fs):
 
 
 def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
-           duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
+           duration=980, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Generate an amplitude modulated tone.
 
@@ -155,28 +168,28 @@ def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
 
     snd = zeros((nTot, 2))
 
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[0:nRamp, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+AMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
         snd[nRamp:nRamp+nSamples, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+AMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
         snd[nRamp+nSamples:nTot, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+AMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + phase)
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+AMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
         snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+AMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
         snd[nRamp+nSamples:nTot, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+AMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + phase)
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+AMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
         snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+AMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
         snd[nRamp+nSamples:nTot, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+AMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + phase)
         snd[:, 1] = snd[:, 0]
     else:
-        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'")
+        raise ValueError(trn("", "Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'"))
        
     return snd
 
 
 def AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0,
               phaseIPD=0, AMPhaseIPD=0, level=60, duration=980, ramp=10,
-              channel="Right", fs=48000, maxLevel=101):
+              channel=trn("","Right"), fs=48000, maxLevel=101):
     """
     Generate an amplitude modulated tone with an interaural
     phase difference (IPD) in the carrier and/or modulation phase.
@@ -241,7 +254,7 @@ def AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0,
     shiftedAMPhase = AMPhase+AMPhaseIPD
     #print(shiftedPhase-phase, shiftedAMPhase-AMPhase)
 
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[0:nRamp, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+shiftedAMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + shiftedPhase)
         snd[nRamp:nRamp+nSamples, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+shiftedAMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + shiftedPhase)
         snd[nRamp+nSamples:nTot, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+shiftedAMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + shiftedPhase)
@@ -249,7 +262,7 @@ def AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0,
         snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+AMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
         snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+AMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
         snd[nRamp+nSamples:nTot, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+AMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + phase)
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[0:nRamp, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+AMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
         snd[nRamp:nRamp+nSamples, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+AMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
         snd[nRamp+nSamples:nTot, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+AMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + phase)
@@ -264,7 +277,7 @@ def AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0,
     return snd
 
 
-def binauralPureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, channel="Both", itd=0, itdRef="Right", ild=10, ildRef="Right", fs=48000, maxLevel=101):
+def binauralPureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, channel=trn("","Both"), itd=0, itdRef=trn("","Right"), ild=10, ildRef=trn("","Right"), fs=48000, maxLevel=101):
     """
     Generate a pure tone with an optional interaural time or level difference.
 
@@ -318,9 +331,9 @@ def binauralPureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, c
     
     """
         
-    if itdRef not in ["Right", "Left", None]:
+    if itdRef not in [trn("","Right"), trn("","Left"), None]:
         raise ValueError("Invalid 'itdRef' argument. 'itdRef' must be one of 'Right', 'Left' or None")
-    if ildRef not in ["Right", "Left", None]:
+    if ildRef not in [trn("","Right"), trn("","Left"), None]:
         raise ValueError("Invalid 'ildRef' argument. 'ildRef' must be one of 'Right', 'Left' or None")
     
     if itd != 0 and itdRef == None:
@@ -366,15 +379,15 @@ def binauralPureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, c
     snd = zeros((nTot, 2))
 
 
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
         snd[nRamp:nRamp+nSamples, 1] = amp* sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
         snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:len(timeAll)] + phase)
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:len(timeAll)] + phase)
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[0:nRamp, 0] = ampLeft * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phaseLeft)
         snd[nRamp:nRamp+nSamples, 0] = ampLeft* sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phaseLeft)
         snd[nRamp+nSamples:len(timeAll), 0] = ampLeft * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:len(timeAll)] + phaseLeft)
@@ -389,7 +402,7 @@ def binauralPureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, c
     return snd
 
 
-def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Synthetise a broadband noise.
 
@@ -470,11 +483,11 @@ def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel="Both", fs=4
         snd_mono2[nRamp:nRamp+nSamples] = amp * scaled_noise2[nRamp:nRamp+nSamples]
         snd_mono2[nRamp+nSamples:len(timeAll)] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise2[nRamp+nSamples:len(timeAll)]
         
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[:,1] = snd_mono
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[:,0] = snd_mono
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[:,1] = snd_mono
         snd[:,0] = snd_mono
     elif channel == "Dichotic":
@@ -485,7 +498,7 @@ def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel="Both", fs=4
         
     return snd
 
-def camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=5, deltaCams=1, fmPhase=pi, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase=trn("","Sine"), fm=5, deltaCams=1, fmPhase=pi, level=60, duration=180, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Generate a complex tone frequency modulated with an exponential sinusoid.
 
@@ -533,11 +546,11 @@ def camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=5, delt
     
     """
     for i in range(int(lowHarm), int(highHarm)+1):
-        if harmPhase == "Sine":
+        if harmPhase == trn("","Sine"):
             startPhase = 0
-        elif harmPhase == "Cosine":
+        elif harmPhase == trn("","Cosine"):
             startPhase = pi/2
-        elif harmPhase == "Alternating":
+        elif harmPhase == trn("","Alternating"):
             if i%2 > 0: #odd harmonic
                 startPhase = 0
             else:
@@ -553,7 +566,7 @@ def camSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=5, delt
     return snd
 
 
-def camSinFMTone(fc=450, fm=5, deltaCams=1, fmPhase=pi, startPhase=0, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=100):
+def camSinFMTone(fc=450, fm=5, deltaCams=1, fmPhase=pi, startPhase=0, level=60, duration=180, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=100):
     """
     Generate a tone frequency modulated with an exponential sinusoid.
 
@@ -611,15 +624,15 @@ def camSinFMTone(fc=450, fm=5, deltaCams=1, fmPhase=pi, startPhase=0, level=60, 
 
     snd = zeros((nTot, 2))
 
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
         snd[nRamp:nRamp+nSamples, 1] = amp* sin(ang[nRamp:nRamp+nSamples])
         snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
@@ -630,7 +643,7 @@ def camSinFMTone(fc=450, fm=5, deltaCams=1, fmPhase=pi, startPhase=0, level=60, 
 
     return snd
 
-def chirp(freqStart=440, ftype="linear", rate=500, level=60, duration=980, phase=0, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def chirp(freqStart=440, ftype=trn("","linear"), rate=500, level=60, duration=980, phase=0, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Synthetize a chirp, that is a tone with frequency changing linearly or
     exponentially over time with a give rate.
@@ -682,26 +695,26 @@ def chirp(freqStart=440, ftype="linear", rate=500, level=60, duration=980, phase
     nTot = nSamples + (nRamp * 2)
     timeAll = arange(0, nTot) / fs
     timeRamp = arange(0, nRamp)
-    if ftype == "exponential":
+    if ftype == trn("","exponential"):
         k = 2**(rate/1200)
         frequency = freqStart*( ( ( (k**timeAll) - 1) /log(k) + phase) )
-    elif ftype == "linear":
+    elif ftype == trn("","linear"):
         frequency = freqStart*timeAll + (rate/2)*timeAll**2 + phase
     else:
-        raise ValueError("Invalid ftype argument. 'ftype' must be either 'linear', or 'exponential'")
+        raise ValueError(trn("", "Invalid ftype argument. 'ftype' must be either 'linear', or 'exponential'"))
 
 
     snd = zeros((nTot, 2))
 
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency[0:nRamp] )
         snd[nRamp:nRamp+nSamples, 1] = amp* sin(2*pi*frequency[nRamp:nRamp+nSamples])
         snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency[nRamp+nSamples:len(timeAll)])
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency[0:nRamp] )
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(2*pi*frequency[nRamp:nRamp+nSamples])
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency[nRamp+nSamples:len(timeAll)])
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency[0:nRamp] )
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(2*pi*frequency[nRamp:nRamp+nSamples])
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency[nRamp+nSamples:len(timeAll)])
@@ -712,7 +725,7 @@ def chirp(freqStart=440, ftype="linear", rate=500, level=60, duration=980, phase
     return snd
 
 
-def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, level=0, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def complexTone(F0=220, harmPhase=trn("","Sine"), lowHarm=1, highHarm=10, stretch=0, level=0, duration=980, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Synthetise a complex tone.
 
@@ -772,58 +785,58 @@ def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, lev
     timeRamp = arange(0, nRamp) 
 
     snd = zeros((nTot, 2))
-    if channel == "Right" or channel == "Left" or channel == "Both":
+    if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
         tone = zeros(nTot)
-    elif channel == "Odd Left" or channel == "Odd Right":
+    elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
         toneOdd = zeros(nTot)
         toneEven = zeros(nTot)
 
-    if harmPhase == "Sine":
+    if harmPhase == trn("","Sine"):
         for i in range(lowHarm, highHarm+1):
-            if channel == "Right" or channel == "Left" or channel == "Both":
+            if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                 tone =  tone + sin(2 * pi * ((F0 * i) + stretchHz) * timeAll)
-            elif channel == "Odd Left" or channel == "Odd Right":
+            elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                 if i%2 > 0: #odd harmonic
                     toneOdd = toneOdd + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll)
                 else:
                     toneEven = toneEven + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll)
-    elif harmPhase == "Cosine":
+    elif harmPhase == trn("","Cosine"):
         for i in range(lowHarm, highHarm+1):
-            if channel == "Right" or channel == "Left" or channel == "Both":
+            if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                 tone = tone + cos(2 * pi * ((F0 * i)+stretchHz) * timeAll)
-            elif channel == "Odd Left" or channel == "Odd Right":
+            elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                 if i%2 > 0: #odd harmonic
                     toneOdd = toneOdd + cos(2 * pi * ((F0 * i)+stretchHz) * timeAll)
                 else:
                     toneEven = toneEven + cos(2 * pi * ((F0 * i)+stretchHz) * timeAll)
-    elif harmPhase == "Alternating":
+    elif harmPhase == trn("","Alternating"):
         for i in range(lowHarm, highHarm+1):
             if i%2 > 0: #odd harmonic
-                if channel == "Right" or channel == "Left" or channel == "Both":
+                if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                     tone = tone + cos(2 * pi * ((F0 * i)+stretchHz) * timeAll)
-                elif channel == "Odd Left" or channel == "Odd Right":
+                elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                     toneOdd = toneOdd + cos(2 * pi * ((F0 * i)+stretchHz) * timeAll)
             else: #even harmonic
-                if channel == "Right" or channel == "Left" or channel == "Both":
+                if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                     tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll)
-                elif channel == "Odd Left" or channel == "Odd Right":
+                elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                     toneEven = toneEven + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll)
-    elif harmPhase == "Schroeder":
+    elif harmPhase == trn("","Schroeder"):
         for i in range(lowHarm, highHarm+1):
             phase = -pi * i * (i - 1) / float(highHarm)
-            if channel == "Right" or channel == "Left" or channel == "Both":
+            if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                 tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
-            elif channel == "Odd Left" or channel == "Odd Right":
+            elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                 if i%2 > 0: #odd harmonic
                     toneOdd = toneOdd + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
                 else:
                     toneEven = toneEven + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
-    elif harmPhase == "Random":
+    elif harmPhase == trn("","Random"):
         for i in range(lowHarm, highHarm+1):
             phase = numpy.random.random() * 2 * pi
-            if channel == "Right" or channel == "Left" or channel == "Both":
+            if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                 tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
-            elif channel == "Odd Left" or channel == "Odd Right":
+            elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                 if i%2 > 0: #odd harmonic
                     toneOdd = toneOdd + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
                 else:
@@ -832,27 +845,27 @@ def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, lev
         raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
 
 
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * tone[0:nRamp]
         snd[nRamp:nRamp+nSamples, 1]        = amp * tone[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:len(timeAll)]
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0]        = amp * tone[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:len(timeAll)]
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0]        = amp * tone[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:len(timeAll)]
         snd[:, 1] = snd[:, 0]
-    elif channel == "Odd Left":
+    elif channel == trn("", "Odd Left"):
         snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneOdd[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0]        = amp * toneOdd[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneOdd[nRamp+nSamples:len(timeAll)]
         snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * toneEven[0:nRamp]
         snd[nRamp:nRamp+nSamples, 1]        = amp * toneEven[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneEven[nRamp+nSamples:len(timeAll)]
-    elif channel == "Odd Right":
+    elif channel == trn("","Odd Right"):
         snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneOdd[0:nRamp]
         snd[nRamp:nRamp+nSamples, 1]        = amp * toneOdd[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneOdd[nRamp+nSamples:len(timeAll)]
@@ -866,7 +879,7 @@ def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, lev
     return snd
 
 
-def complexToneParallel(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, level=0, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def complexToneParallel(F0=220, harmPhase=trn("","Sine"), lowHarm=1, highHarm=10, stretch=0, level=0, duration=980, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Synthetise a complex tone.
 
@@ -934,34 +947,34 @@ def complexToneParallel(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretc
     
     for i in range(lowHarm, highHarm+1):
         #Select channel
-        if channel == "Right" or channel == "Left" or channel == "Both":
+        if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
             thisChan = channel
-        elif channel == "Odd Left" or channel == "Odd Right":
+        elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
             if i%2 > 0: #odd harmonic
-                if channel == "Odd Left":
-                    thisChan = "Left"
-                elif channel == "Odd Right":
-                    thisChan = "Right"
+                if channel == trn("", "Odd Left"):
+                    thisChan = trn("","Left")
+                elif channel == trn("","Odd Right"):
+                    thisChan = trn("","Right")
             else: #even harmonic
-                if channel == "Odd Left":
-                    thisChan = "Right"
-                elif channel == "Odd Right":
-                    thisChan = "Left"
+                if channel == trn("", "Odd Left"):
+                    thisChan = trn("","Right")
+                elif channel == trn("","Odd Right"):
+                    thisChan = trn("","Left")
         else:
             raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left', 'Both', 'Odd Right', or 'Odd Left'")
         #Select phase
-        if harmPhase == "Sine":
+        if harmPhase == trn("","Sine"):
             thisPhase = 0
-        elif harmPhase == "Cosine":
+        elif harmPhase == trn("","Cosine"):
             thisPhase = pi/2
-        elif harmPhase == "Alternating":
+        elif harmPhase == trn("","Alternating"):
             if i%2 > 0: #odd harmonic
                 thisPhase = 0
             else:
                 thisPhase = pi/2
-        elif harmPhase == "Schroeder":
+        elif harmPhase == trn("","Schroeder"):
             thisPhase = -pi * i * (i - 1) / highHarm
-        elif harmPhase == "Random":
+        elif harmPhase == trn("","Random"):
             thisPhase =  numpy.random.random() * 2 * pi
         else:
             raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
@@ -1020,12 +1033,12 @@ def delayAdd(sig, delay, gain, iterations, configuration, fs):
     en_input_left = sqrt(sum(sig[:,0]**2))
     snd = zeros((nSamples, 2))
     delayed_sig = zeros((nSamples, 2))
-    if configuration == "Add Same":
+    if configuration == trn("", "Add Same"):
         for i in range(iterations):
             delayed_sig = concatenate((sig[delayPnt:nSamples], sig[0:delayPnt]), axis=0)
             delayed_sig = delayed_sig * gain
             sig = sig + delayed_sig
-    elif configuration == "Add Original":
+    elif configuration == trn("", "Add Original"):
         original_sig = copy.copy(sig)
         for i in range(iterations):
             delayed_sig = concatenate((sig[delayPnt:nSamples], sig[0:delayPnt]), axis=0)
@@ -1043,8 +1056,8 @@ def delayAdd(sig, delay, gain, iterations, configuration, fs):
     return snd
 
 def dichoticNoiseFromSin(F0=300, lowHarm=1, highHarm=3, compLevel=30, narrowBandCompLevel=30,
-                         lowFreq=40, highFreq=2000, compSpacing=10, sigBandwidth=100, distanceUnit="Cent",
-                         phaseRelationship="NoSpi", dichoticDifference="IPD Stepped",
+                         lowFreq=40, highFreq=2000, compSpacing=10, sigBandwidth=100, distanceUnit=trn("", "Cent"),
+                         phaseRelationship=trn("", "NoSpi"), dichoticDifference=trn("", "IPD Stepped"),
                          dichoticDifferenceValue=pi, duration=380, ramp=10, fs=48000, maxLevel=101):
     """
     Generate Huggins pitch or narrow-band noise from random-phase sinusoids.
@@ -1139,14 +1152,14 @@ def dichoticNoiseFromSin(F0=300, lowHarm=1, highHarm=3, compLevel=30, narrowBand
     timeRamp = arange(0, nRamp) 
     snd = zeros((nTot, 2))
 
-    if distanceUnit == 'Hz':
+    if distanceUnit == trn("","Hz"):
         noiseBandwidth = highFreq - lowFreq
-    elif distanceUnit == 'Cent':
+    elif distanceUnit == trn("","Cent"):
         noiseBandwidth = 1200*log2(highFreq/lowFreq) #in cents
-    elif distanceUnit == 'ERB':
+    elif distanceUnit == trn("","ERB"):
         noiseBandwidth = ERBDistance(lowFreq, highFreq)
     else:
-        raise ValueError("Invalid 'distanceUnit' argument. 'distanceUnit' must be one 'Hz', 'Cent', or 'ERB'")
+        raise ValueError(trn("", "Invalid 'distanceUnit' argument. 'distanceUnit' must be one 'Hz', 'Cent', or 'ERB'"))
     
     nComponents = int(floor(noiseBandwidth/compSpacing))
     
@@ -1154,13 +1167,13 @@ def dichoticNoiseFromSin(F0=300, lowHarm=1, highHarm=3, compLevel=30, narrowBand
     amp2 = 10**((narrowBandCompLevel - maxLevel) / 20) #change amp to the amp of narrow-bands
     freqs = zeros(nComponents)
     freqs[0] = lowFreq
-    if distanceUnit == "Hz":
+    if distanceUnit == trn("","Hz"):
         for i in range(1, nComponents): #indexing starts from 1
             freqs[i] = freqs[i-1] + compSpacing
-    elif distanceUnit == "Cent":
+    elif distanceUnit == trn("","Cent"):
         for i in range(1, nComponents): #indexing starts from 1
             freqs[i] = freqs[i-1]*(2**(compSpacing/1200))
-    elif distanceUnit == "ERB":
+    elif distanceUnit == trn("","ERB"):
         for i in range(1, nComponents): #indexing starts from 1
             freqs[i] = freqFromERBInterval(freqs[i-1], compSpacing) 
 
@@ -1170,23 +1183,23 @@ def dichoticNoiseFromSin(F0=300, lowHarm=1, highHarm=3, compLevel=30, narrowBand
     for i in range(lowHarm, highHarm+1):
         thisFreq = F0*i;
         prevFreq = F0*(i-1)
-        if distanceUnit == "Hz":
+        if distanceUnit == trn("","Hz"):
             lo = thisFreq - (sigBandwidth/2)
             hi = thisFreq + (sigBandwidth/2)
             hiPrev = prevFreq + (sigBandwidth/2)
-        if distanceUnit == "Cent":
+        if distanceUnit == trn("","Cent"):
             lo = thisFreq*2**(-(sigBandwidth/2)/1200)
             hi = thisFreq*2**((sigBandwidth/2)/1200)
             hiPrev = prevFreq*2**((sigBandwidth/2)/1200)
-        elif distanceUnit == "ERB":
+        elif distanceUnit == trn("","ERB"):
             lo = freqFromERBInterval(thisFreq, -sigBandwidth/2) 
             hi = freqFromERBInterval(thisFreq, sigBandwidth/2)
             hiPrev = freqFromERBInterval(prevFreq, sigBandwidth/2)
         
-        if phaseRelationship == "NoSpi":
+        if phaseRelationship == trn("","NoSpi"):
             thisFreqsToShift = numpy.where((freqs>lo) & (freqs<hi))
             freqsToShift = numpy.append(freqsToShift, thisFreqsToShift)
-        elif phaseRelationship == "NpiSo":
+        elif phaseRelationship == trn("","NpiSo"):
             if i == 0:
                 thisFreqsToShift = where((freqs>lowFreq) & (freqs<lo))
             else:
@@ -1196,7 +1209,7 @@ def dichoticNoiseFromSin(F0=300, lowHarm=1, highHarm=3, compLevel=30, narrowBand
                 thisFreqsToShift = numpy.append(thisFreqsToShift, foo)
             freqsToShift = numpy.append(freqsToShift, thisFreqsToShift)
         else:
-            raise ValueError("Invalid 'phaseRelationship' argument. 'phaseRelationship must be either 'NoSpi', or 'NpiSo'")
+            raise ValueError(trn("","Invalid 'phaseRelationship' argument. 'phaseRelationship must be either 'NoSpi', or 'NpiSo'"))
 
     amps = numpy.repeat(amp, nComponents)
     amps[freqsToShift] = amp2
@@ -1205,28 +1218,28 @@ def dichoticNoiseFromSin(F0=300, lowHarm=1, highHarm=3, compLevel=30, narrowBand
         sinArrayRight[i,] = amps[i] * sin(2*pi*freqs[i] * timeAll + phasesR[i])          
     sinArrayLeft = copy.copy(sinArrayRight)
     
-    if dichoticDifference == "IPD Stepped":
+    if dichoticDifference == trn("","IPD Stepped"):
         for i in range(0,len(freqsToShift)):
             sinArrayLeft[freqsToShift[i],] =  amp2* sin(2*pi*freqs[freqsToShift[i]] * timeAll + (phasesR[freqsToShift[i]]+dichoticDifferenceValue))
-    elif dichoticDifference == "IPD Random":
+    elif dichoticDifference == trn("","IPD Random"):
         phasesL = copy.copy(phasesR)
         phasesL[freqsToShift] = phasesL[freqsToShift] + numpy.random.uniform(0, dichoticDifferenceValue, len(phasesL[freqsToShift]))
         for i in range(0,len(freqsToShift)):
             sinArrayLeft[freqsToShift[i],] =  amp2* sin(2*pi*freqs[freqsToShift[i]] * timeAll + phasesL[i])
-    elif dichoticDifference == "ITD":
+    elif dichoticDifference == trn("","ITD"):
         for i in range(0,len(freqsToShift)):
             thisIpd = itdtoipd(dichoticDifferenceValue/1000000, freqs[freqsToShift[i]])
             sinArrayLeft[freqsToShift[i],] =  amp2* sin(2*pi*freqs[freqsToShift[i]] * timeAll + (phasesR[freqsToShift[i]]+thisIpd))
-    elif dichoticDifference == "ILD Right" or dichoticDifference == "ILD Left":
+    elif dichoticDifference == trn("","ILD Right") or dichoticDifference == trn("","ILD Left"):
         amp3 = 10**((narrowBandCompLevel+dichoticDifferenceValue - maxLevel) / 20) #change amp to the amp of narrow-bands
-        if dichoticDifference == "ILD Left":
+        if dichoticDifference == trn("","ILD Left"):
             for i in range(0,len(freqsToShift)):
                 sinArrayLeft[freqsToShift[i],]  = amp3* sin(2*pi*freqs[freqsToShift[i]] * timeAll + phasesR[freqsToShift[i]])
-        elif dichoticDifference == "ILD Right":
+        elif dichoticDifference == trn("","ILD Right"):
             for i in range(0,len(freqsToShift)):
                 sinArrayRight[freqsToShift[i],]  = amp3* sin(2*pi*freqs[freqsToShift[i]] * timeAll + phasesR[freqsToShift[i]])
     else:
-        raise ValueError("Invalid 'dichoticDifference' argument. 'dichoticDifference' must be one of 'IPD Stepped', 'IPD Random', 'ITD', 'IDL Right', or 'IDL Left'")
+        raise ValueError(trn("","Invalid 'dichoticDifference' argument. 'dichoticDifference' must be one of 'IPD Stepped', 'IPD Random', 'ITD', 'IDL Right', or 'IDL Left'"))
 
     snd[:,0] = sum(sinArrayRight,0)
     snd[:,1] = sum(sinArrayLeft,0)
@@ -1266,7 +1279,7 @@ def ERBDistance(f1, f2):
 
 
 def expAMNoise(fc=150, fm=2.5, deltaCents=1200, fmPhase=pi, AMDepth=1,
-               spectrumLevel=24, duration=480, ramp=10, channel="Both",
+               spectrumLevel=24, duration=480, ramp=10, channel=trn("","Both"),
                fs=48000, maxLevel=101):
     """
     Generate a sinusoidally amplitude-modulated noise with an exponentially
@@ -1339,15 +1352,15 @@ def expAMNoise(fc=150, fm=2.5, deltaCents=1200, fmPhase=pi, AMDepth=1,
     #* (1 + AMDepth*sin(ang[0:nRamp]))
     #* (1 + AMDepth*sin(ang[nRamp:nRamp+nSamples]))
     #* (1 + AMDepth*sin(ang[nRamp+nSamples:len(timeAll)]))
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[0:nRamp, 1] = amp * (1 + AMDepth*sin(ang[0:nRamp])) * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
         snd[nRamp:nRamp+nSamples, 1] = amp * (1 + AMDepth*sin(ang[nRamp:nRamp+nSamples])) * scaled_noise[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 1] = amp * (1 + AMDepth*sin(ang[nRamp+nSamples:len(timeAll)])) * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(ang[0:nRamp])) * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(ang[nRamp:nRamp+nSamples])) * scaled_noise[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 0] = amp * (1 + AMDepth*sin(ang[nRamp+nSamples:len(timeAll)])) * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[0:nRamp, 1] = amp * (1 + AMDepth*sin(ang[0:nRamp])) * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
         snd[nRamp:nRamp+nSamples, 1] = amp * (1 + AMDepth*sin(ang[nRamp:nRamp+nSamples])) * scaled_noise[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 1] = amp * (1 + AMDepth*sin(ang[nRamp+nSamples:len(timeAll)])) * ((1+cos(pi * timeRamp/nRamp))/2) * scaled_noise[nRamp+nSamples:len(timeAll)]
@@ -1361,7 +1374,7 @@ def expAMNoise(fc=150, fm=2.5, deltaCents=1200, fmPhase=pi, AMDepth=1,
     return snd
 
 
-def expSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, deltaCents=1200, fmPhase=0, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def expSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase=trn("","Sine"), fm=40, deltaCents=1200, fmPhase=0, level=60, duration=180, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Generate a frequency-modulated complex tone with an exponential sinusoid.
 
@@ -1405,11 +1418,11 @@ def expSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, del
     """
 
     for i in range(int(lowHarm), int(highHarm)+1):
-        if harmPhase == "Sine":
+        if harmPhase == trn("","Sine"):
             startPhase = 0
-        elif harmPhase == "Cosine":
+        elif harmPhase == trn("","Cosine"):
             startPhase = pi/2
-        elif harmPhase == "Alternating":
+        elif harmPhase == trn("","Alternating"):
             if i%2 > 0: #odd harmonic
                 startPhase = 0
             else:
@@ -1424,7 +1437,7 @@ def expSinFMComplex(F0=150, lowHarm=1, highHarm=10, harmPhase="Sine", fm=40, del
     return snd
 
 
-def expSinFMTone(fc=450, fm=5, deltaCents=300, fmPhase=pi, startPhase=0, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def expSinFMTone(fc=450, fm=5, deltaCents=300, fmPhase=pi, startPhase=0, level=60, duration=180, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Generate a frequency-modulated tone with an exponential sinusoid.
 
@@ -1482,15 +1495,15 @@ def expSinFMTone(fc=450, fm=5, deltaCents=300, fmPhase=pi, startPhase=0, level=6
 
     snd = zeros((nTot, 2))
 
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
         snd[nRamp:nRamp+nSamples, 1] = amp* sin(ang[nRamp:nRamp+nSamples])
         snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(ang[0:nRamp])
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(ang[nRamp:nRamp+nSamples])
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(ang[nRamp+nSamples:len(timeAll)])
@@ -1502,7 +1515,7 @@ def expSinFMTone(fc=450, fm=5, deltaCents=300, fmPhase=pi, startPhase=0, level=6
     return snd
 
 
-def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, duration=430, ramp=10, fmFreq=1.25, fmDepth=40, fmStartPhase=1.5*pi, fmStartTime=25, fmDuration=400, levelAdj=True, channel="Both", fs=48000, maxLevel=101):
+def fm_complex1(midF0=140, harmPhase=trn("","Sine"), lowHarm=1, highHarm=10, level=60, duration=430, ramp=10, fmFreq=1.25, fmDepth=40, fmStartPhase=1.5*pi, fmStartTime=25, fmDuration=400, levelAdj=True, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Synthetise a complex tone with an embedded FM starting and stopping
     at a chosen time after the tone onset.
@@ -1585,9 +1598,9 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
     startF0Rad = 2*pi*(midF0 + fmDepthHz*sin(fmStartPhase))/fs
     endF0Rad = 2*pi*(midF0 + fmDepthHz*sin(fmStartPhase + nFMSamples*fmRadFreq)) / fs
     
-    if channel == "Right" or channel == "Left" or channel == "Both":
+    if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
         tone = zeros(nTot)
-    elif channel == "Odd Left" or channel == "Odd Right":
+    elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
         toneOdd = zeros(nTot)
         toneEven = zeros(nTot)
     snd = zeros((nTot, 2))
@@ -1607,15 +1620,15 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
     #eq.4: PHI(t) = wc*t - (dw/wm)*cos(wm*t+phi)
     #this is what we're actually using below
     
-    if harmPhase == "Sine":
+    if harmPhase == trn("","Sine"):
         for i in range(lowHarm, highHarm+1):
-            if channel == "Right" or channel == "Left" or channel == "Both":
+            if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                 tone[0:fmStartPnt] =  tone[0:fmStartPnt] + sin(startF0Rad*i*time1)
                 phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
                 tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
                 phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                 tone[fmStartPnt+nFMSamples:nTot] =  tone[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2)
-            elif channel == "Odd Left" or channel == "Odd Right":
+            elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                 if i%2 > 0: #odd harmonic
                     toneOdd[0:fmStartPnt] = toneOdd[0:fmStartPnt] + sin(startF0Rad*i*time1)
                     phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
@@ -1628,15 +1641,15 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
                     toneEven[fmStartPnt:fmStartPnt+nFMSamples] = toneEven[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
                     phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                     toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2)
-    elif harmPhase == "Cosine":
+    elif harmPhase == trn("","Cosine"):
         for i in range(lowHarm, highHarm+1):
-            if channel == "Right" or channel == "Left" or channel == "Both":
+            if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                 tone[0:fmStartPnt] =  tone[0:fmStartPnt] + cos(startF0Rad*i*time1)
                 phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
                 tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] + cos(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
                 phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                 tone[fmStartPnt+nFMSamples:nTot] =  tone[fmStartPnt+nFMSamples:nTot] + cos(i*endF0Rad*time3 + phaseCorrect2)
-            elif channel == "Odd Left" or channel == "Odd Right":
+            elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                 if i%2 > 0: #odd harmonic
                     toneOdd[0:fmStartPnt] = toneOdd[0:fmStartPnt] + cos(startF0Rad*i*time1)
                     phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
@@ -1650,44 +1663,44 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
                     phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                     toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + cos(i*endF0Rad*time3 + phaseCorrect2)
 
-    elif harmPhase == "Alternating":
+    elif harmPhase == trn("","Alternating"):
         for i in range(lowHarm, highHarm+1):
             if i%2 > 0: #odd harmonic
-                if channel == "Right" or channel == "Left" or channel == "Both":
+                if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                     tone[0:fmStartPnt] =  tone[0:fmStartPnt] + cos(startF0Rad*i*time1)
                     phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
                     tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] + cos(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
                     phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                     tone[fmStartPnt+nFMSamples:nTot] =  tone[fmStartPnt+nFMSamples:nTot] + cos(i*endF0Rad*time3 + phaseCorrect2)
-                elif channel == "Odd Left" or channel == "Odd Right":
+                elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                     toneOdd[0:fmStartPnt] = toneOdd[0:fmStartPnt] + cos(startF0Rad*i*time1)
                     phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
                     toneOdd[fmStartPnt:fmStartPnt+nFMSamples] = toneOdd[fmStartPnt:fmStartPnt+nFMSamples] + cos(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
                     phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                     toneOdd[fmStartPnt+nFMSamples:nTot] =  toneOdd[fmStartPnt+nFMSamples:nTot] + cos(i*endF0Rad*time3 + phaseCorrect2)
             else: #even harmonic
-                if channel == "Right" or channel == "Left" or channel == "Both":
+                if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                     tone[0:fmStartPnt] =  tone[0:fmStartPnt] + sin(startF0Rad*i*time1)
                     phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
                     tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
                     phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                     tone[fmStartPnt+nFMSamples:nTot] =  tone[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2)
-                elif channel == "Odd Left" or channel == "Odd Right":
+                elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                     toneEven[0:fmStartPnt] = toneEven[0:fmStartPnt] + sin(startF0Rad*i*time1)
                     phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
                     toneEven[fmStartPnt:fmStartPnt+nFMSamples] = toneEven[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
                     phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                     toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2)
-    elif harmPhase == "Schroeder":
+    elif harmPhase == trn("","Schroeder"):
         for i in range(lowHarm, highHarm+1):
             phase = -pi * i * (i - 1) / float(highHarm)
-            if channel == "Right" or channel == "Left" or channel == "Both":
+            if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                 tone[0:fmStartPnt] =  tone[0:fmStartPnt] + sin(startF0Rad*i*time1 + phase)
                 phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
                 tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)) + phase)
                 phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                 tone[fmStartPnt+nFMSamples:nTot] =  tone[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2 + phase)
-            elif channel == "Odd Left" or channel == "Odd Right":
+            elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                 if i%2 > 0: #odd harmonic
                     toneOdd[0:fmStartPnt] =  toneOdd[0:fmStartPnt] + sin(startF0Rad*i*time1 + phase)
                     phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
@@ -1700,16 +1713,16 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
                     toneEven[fmStartPnt:fmStartPnt+nFMSamples] = toneEven[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)) + phase)
                     phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                     toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2 + phase)
-    elif harmPhase == "Random":
+    elif harmPhase == trn("","Random"):
         for i in range(lowHarm, highHarm+1):
             phase = numpy.random.random() * 2 * pi
-            if channel == "Right" or channel == "Left" or channel == "Both":
+            if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                 tone[0:fmStartPnt] =  tone[0:fmStartPnt] + sin(startF0Rad*i*time1 + phase)
                 phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
                 tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)) + phase)
                 phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                 tone[fmStartPnt+nFMSamples:nTot] =  tone[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2 + phase)
-            elif channel == "Odd Left" or channel == "Odd Right":
+            elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                 if i%2 > 0: #odd harmonic
                     toneOdd[0:fmStartPnt] =  toneOdd[0:fmStartPnt] + sin(startF0Rad*i*time1 + phase)
                     phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
@@ -1729,7 +1742,7 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
     #numpy.savetxt('ptone.txt', tone)
     #level correction --------------
     if levelAdj == True:
-        if channel == "Right" or channel == "Left" or channel == "Both":
+        if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
             tone[0:fmStartPnt] = tone[0:fmStartPnt] * sqrt(((startF0Rad / (2*pi)) * (fs))/ midF0)
             tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] * sqrt((midF0 + (fmDepthHz * sin (fmStartPhase + (fmTime * fmRadFreq)))) / midF0)
             tone[fmStartPnt+nFMSamples:nTot] = tone[fmStartPnt+nFMSamples:nTot] * sqrt( ((endF0Rad / (2*pi)) * (fs))/ midF0)
@@ -1744,27 +1757,27 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
 
     #end of level correction -----------    
     
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * tone[0:nRamp]
         snd[nRamp:nRamp+nSamples, 1]        = amp * tone[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:nTot]
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0]        = amp * tone[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:nTot]
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0]        = amp * tone[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:nTot]
         snd[:, 1] = snd[:, 0]
-    elif channel == "Odd Left":
+    elif channel == trn("", "Odd Left"):
         snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneOdd[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0]        = amp * toneOdd[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneOdd[nRamp+nSamples:nTot]
         snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * toneEven[0:nRamp]
         snd[nRamp:nRamp+nSamples, 1]        = amp * toneEven[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneEven[nRamp+nSamples:nTot]
-    elif channel == "Odd Right":
+    elif channel == trn("","Odd Right"):
         snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneOdd[0:nRamp]
         snd[nRamp:nRamp+nSamples, 1]        = amp * toneOdd[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneOdd[nRamp+nSamples:nTot]
@@ -1777,7 +1790,7 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
 
     return snd
 
-def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, duration=430, ramp=10, fmFreq=1.25, fmDepth=40, fmStartPhase=1.5*pi, fmStartTime=25, fmDuration=400, levelAdj=True, channel="Both", fs=48000, maxLevel=101):
+def fm_complex2(midF0=140, harmPhase=trn("","Sine"), lowHarm=1, highHarm=10, level=60, duration=430, ramp=10, fmFreq=1.25, fmDepth=40, fmStartPhase=1.5*pi, fmStartTime=25, fmDuration=400, levelAdj=True, channel=trn("","Both"), fs=48000, maxLevel=101):
 
     """
     Synthetise a complex tone with an embedded FM starting and stopping
@@ -1864,9 +1877,9 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
     startF0 = midF0 + fmDepthHz*sin(fmStartPhase)
     endF0 = midF0 + fmDepthHz*sin(fmStartPhase + nFMSamples*fmRadFreq)
     
-    if channel == "Right" or channel == "Left" or channel == "Both":
+    if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
         tone = zeros(nTot)
-    elif channel == "Odd Left" or channel == "Odd Right":
+    elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
         toneOdd = zeros(nTot)
         toneEven = zeros(nTot)
     snd = zeros((nTot, 2))
@@ -1891,53 +1904,53 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
             fArr[0:fmStartPnt] = startF0*i
             fArr[fmStartPnt:fmStartPnt+nFMSamples] = (midF0*i + fmDepthHz*i*sin(2*pi*fmFreq*fmTime/fs+fmStartPhase))
             fArr[fmStartPnt+nFMSamples:nTot] = endF0*i
-            if harmPhase == "Sine":
+            if harmPhase == trn("","Sine"):
                 ang = cumsum(2*pi*fArr/fs)
-                if channel == "Right" or channel == "Left" or channel == "Both":
+                if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                     tone = tone + sin(ang)
-                elif channel == "Odd Left" or channel == "Odd Right":
+                elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                     if i%2 > 0: #odd harmonic
                         toneOdd = toneOdd + sin(ang)
                     else:
                         toneEven = toneEven + sin(ang)
-            elif harmPhase == "Cosine":
+            elif harmPhase == trn("","Cosine"):
                 ang = cumsum(2*pi*fArr/fs)
-                if channel == "Right" or channel == "Left" or channel == "Both":
+                if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                     tone = tone + cos(ang)
-                elif channel == "Odd Left" or channel == "Odd Right":
+                elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                     if i%2 > 0: #odd harmonic
                         toneOdd = toneOdd + cos(ang)
                     else:
                         toneEven = toneEven + cos(ang)
 
-            elif harmPhase == "Alternating":
+            elif harmPhase == trn("","Alternating"):
                 ang = cumsum(2*pi*fArr/fs)
                 if i%2 > 0: #odd harmonic
-                    if channel == "Right" or channel == "Left" or channel == "Both":
+                    if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                         tone = tone + cos(ang)
-                    elif channel == "Odd Left" or channel == "Odd Right":
+                    elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                         toneOdd = toneOdd + cos(ang)
                 else: #even harmonic
-                    if channel == "Right" or channel == "Left" or channel == "Both":
+                    if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                         tone = tone + sin(ang)
-                    elif channel == "Odd Left" or channel == "Odd Right":
+                    elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                         toneEven = toneEven + sin(ang)
-            elif harmPhase == "Schroeder":
+            elif harmPhase == trn("","Schroeder"):
                 phase = -pi * i * (i - 1) / highHarm
                 ang = cumsum(2*pi*fArr/fs + phase)
-                if channel == "Right" or channel == "Left" or channel == "Both":
+                if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                     tone = tone + sin(ang)
-                elif channel == "Odd Left" or channel == "Odd Right":
+                elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                     if i%2 > 0: #odd harmonic
                         toneOdd = toneOdd + sin(ang)
                     else:
                         toneEven = toneEven + sin(ang)
-            elif harmPhase == "Random":
+            elif harmPhase == trn("","Random"):
                 phase = numpy.random.random() * 2 * pi
                 ang = cumsum(2*pi*fArr/fs + phase)
-                if channel == "Right" or channel == "Left" or channel == "Both":
+                if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
                     tone = tone + sin(ang)
-                elif channel == "Odd Left" or channel == "Odd Right":
+                elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
                     if i%2 > 0: #odd harmonic
                         toneOdd = toneOdd + sin(ang)
                     else:
@@ -1948,7 +1961,7 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
 
     #level correction --------------
     if levelAdj == True:
-        if channel == "Right" or channel == "Left" or channel == "Both":
+        if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
             tone[0:fmStartPnt] = tone[0:fmStartPnt] * sqrt(((startF0Rad / (2*pi)) * (fs))/ midF0)
             tone[fmStartPnt:fmStartPnt+nFMSamples] = tone[fmStartPnt:fmStartPnt+nFMSamples] * sqrt((midF0 + (fmDepthHz * sin (fmStartPhase + (fmTime * fmRadFreq)))) / midF0)
             tone[fmStartPnt+nFMSamples:nTot] = tone[fmStartPnt+nFMSamples:nTot] * sqrt( ((endF0Rad / (2*pi)) * (fs))/ midF0)
@@ -1963,27 +1976,27 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
 
     #end of level correction -----------    
     
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * tone[0:nRamp]
         snd[nRamp:nRamp+nSamples, 1]        = amp * tone[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:nTot]
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0]        = amp * tone[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:nTot]
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0]        = amp * tone[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:nTot]
         snd[:, 1] = snd[:, 0]
-    elif channel == "Odd Left":
+    elif channel == trn("", "Odd Left"):
         snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneOdd[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0]        = amp * toneOdd[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneOdd[nRamp+nSamples:nTot]
         snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) * toneEven[0:nRamp]
         snd[nRamp:nRamp+nSamples, 1]        = amp * toneEven[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneEven[nRamp+nSamples:nTot]
-    elif channel == "Odd Right":
+    elif channel == trn("","Odd Right"):
         snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneOdd[0:nRamp]
         snd[nRamp:nRamp+nSamples, 1]        = amp * toneOdd[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:nTot, 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneOdd[nRamp+nSamples:nTot]
@@ -1997,7 +2010,7 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
     return snd
 
 
-def FMTone(fc=1000, fm=40, mi=1, phase=0, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def FMTone(fc=1000, fm=40, mi=1, phase=0, level=60, duration=180, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Generate a frequency modulated tone.
 
@@ -2051,15 +2064,15 @@ def FMTone(fc=1000, fm=40, mi=1, phase=0, level=60, duration=180, ramp=10, chann
     timeRamp = arange(0, nRamp) 
 
     snd = zeros((nTot, 2))
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fc*timeAll[0:nRamp] + mi*sin(2*pi*fm * timeAll[0:nRamp] + phase))
         snd[nRamp:nRamp+nSamples, 1] = amp* sin(2*pi*fc * timeAll[nRamp:nRamp+nSamples] +mi*sin(2*pi*fm * timeAll[nRamp:nRamp+nSamples] + phase))
         snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fc * timeAll[nRamp+nSamples:len(timeAll)]+mi*sin(2*pi*fm * timeAll[nRamp+nSamples:len(timeAll)] + phase))
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fc*timeAll[0:nRamp] + mi*sin(2*pi*fm * timeAll[0:nRamp] + phase))
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(2*pi*fc * timeAll[nRamp:nRamp+nSamples] +mi*sin(2*pi*fm * timeAll[nRamp:nRamp+nSamples] + phase))
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fc * timeAll[nRamp+nSamples:len(timeAll)]+mi*sin(2*pi*fm * timeAll[nRamp+nSamples:len(timeAll)] + phase))
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fc*timeAll[0:nRamp] + mi*sin(2*pi*fm * timeAll[0:nRamp] + phase))
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(2*pi*fc * timeAll[nRamp:nRamp+nSamples] +mi*sin(2*pi*fm * timeAll[nRamp:nRamp+nSamples] + phase))
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*fc * timeAll[nRamp+nSamples:len(timeAll)]+mi*sin(2*pi*fm * timeAll[nRamp+nSamples:len(timeAll)] + phase))
@@ -2290,7 +2303,7 @@ def getRMS(sig, channel="each"):
     return rms
 
 
-def glide(freqStart=440, ftype="exponential", excursion=500, level=60, duration=180, phase=0, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def glide(freqStart=440, ftype=trn("", "exponential"), excursion=500, level=60, duration=180, phase=0, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Synthetize a rising or falling tone glide with frequency changing
     linearly or exponentially. 
@@ -2342,7 +2355,7 @@ def glide(freqStart=440, ftype="exponential", excursion=500, level=60, duration=
     return snd
 
 
-def harmComplFromNarrowbandNoise(F0=440, lowHarm=1, highHarm=8, level=40, bandwidth=80, bandwidthUnit="Hz", stretch=0, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def harmComplFromNarrowbandNoise(F0=440, lowHarm=1, highHarm=8, level=40, bandwidth=80, bandwidthUnit="Hz", stretch=0, duration=180, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Generate an harmonic complex tone from narrow noise bands.
 
@@ -2400,9 +2413,9 @@ def harmComplFromNarrowbandNoise(F0=440, lowHarm=1, highHarm=8, level=40, bandwi
     nTot = nSamples + (nRamp * 2)
     snd = zeros((nTot, 2))
     
-    if channel == "Right" or channel == "Left" or channel == "Both":
+    if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
         tone = zeros((nTot, 2))
-    elif channel == "Odd Left" or channel == "Odd Right":
+    elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
         toneOdd = zeros((nTot, 2))
         toneEven = zeros((nTot, 2))
     else:
@@ -2424,22 +2437,22 @@ def harmComplFromNarrowbandNoise(F0=440, lowHarm=1, highHarm=8, level=40, bandwi
         raise ValueError("Invalid 'bandwidthUnit' argument. 'bandwidthUnit' must be one of 'Hz', 'Cent', or 'ERB'")
 
     for i in range(len(fLo)):
-        if channel == "Right" or channel == "Left" or channel == "Both":
+        if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
             tone =  tone + steepNoise(fLo[i], fHi[i], level, duration, ramp, channel, fs, maxLevel)
-        elif channel == "Odd Left" or channel == "Odd Right":
+        elif channel == trn("", "Odd Left") or channel == trn("","Odd Right"):
             if i%2 > 0: #odd harmonic
                         #make the tone in the left channel, then move it where needed
-                toneOdd = toneOdd + steepNoise(fLo[i], fHi[i], level, duration, ramp, "Left", fs, maxLevel)
+                toneOdd = toneOdd + steepNoise(fLo[i], fHi[i], level, duration, ramp, trn("","Left"), fs, maxLevel)
             else:
-                toneEven = toneEven + steepNoise(fLo[i], fHi[i], level, duration, ramp, "Left", fs, maxLevel)
+                toneEven = toneEven + steepNoise(fLo[i], fHi[i], level, duration, ramp, trn("","Left"), fs, maxLevel)
   
 
-    if channel == "Right" or channel == "Left" or channel == "Both":
+    if channel == trn("","Right") or channel == trn("","Left") or channel == trn("","Both"):
         snd = tone
-    elif channel == "Odd Left":
+    elif channel == trn("", "Odd Left"):
         snd[:,0] = toneOdd[:,0]
         snd[:,1] = toneEven[:,0]
-    elif channel == "Odd Right":
+    elif channel == trn("","Odd Right"):
      snd[:,1] = toneOdd[:,0]
      snd[:,0] = toneEven[:,0]
   
@@ -2541,11 +2554,11 @@ def imposeLevelGlide(sig, deltaL, startTime, endTime, channel, fs):
 
     
         snd = zeros((nSamples,2))
-        if channel == "Right":
+        if channel == trn("","Right"):
             snd[:,1] = sig[:,1] * ampArray
-        elif channel == "Left":
+        elif channel == trn("","Left"):
             snd[:,0] = sig[:,0] * ampArray
-        elif channel == "Both":
+        elif channel == trn("","Both"):
             snd[:,1] = sig[:,1] * ampArray
             snd[:,0] = sig[:,0] * ampArray
 
@@ -2610,9 +2623,9 @@ def ITDShift(sig, f1, f2, ITD, channel, fs):
     #get the indexes of the second half of the FFT
     p2Start = len(freqArray1); p2End = fftPoints 
         
-    if channel == "Left":
+    if channel == trn("","Left"):
         x = fft(sig[:,0], fftPoints)
-    elif channel == "Right":
+    elif channel == trn("","Right"):
         x = fft(sig[:,1], fftPoints)
     else:
         raise ValueError("Invalid channel argument. Channel must either 'Right', or 'Left'")
@@ -2628,10 +2641,10 @@ def ITDShift(sig, f1, f2, ITD, channel, fs):
     x = concatenate((x1, x2))
     x = real(ifft(x)) #inverse transform to get the sound back
     
-    if channel == "Left":
+    if channel == trn("","Left"):
         snd[:,0] = x[0:nSamples]
         snd[:,1] = sig[:,1]
-    elif channel == "Right":
+    elif channel == trn("","Right"):
         snd[:,1] = x[0:nSamples]
         snd[:,0] = sig[:,0]
 
@@ -2857,7 +2870,7 @@ def makeHugginsPitch(F0=300, lowHarm=1, highHarm=3, spectrumLevel=45, bandwidth=
     nTot = nSamples + (nRamp * 2)
     snd = zeros((nTot, 2))
 
-    tone = broadbandNoise(spectrumLevel, duration+(ramp*2), 0, "Both", fs, maxLevel)
+    tone = broadbandNoise(spectrumLevel, duration+(ramp*2), 0, trn("","Both"), fs, maxLevel)
     if noiseType == "Pink":
         makePink(tone, fs)
 
@@ -2894,13 +2907,13 @@ def makeHugginsPitch(F0=300, lowHarm=1, highHarm=3, spectrumLevel=45, bandwidth=
 
     for i in range(len(shiftLo)):
         if dichoticDifference == "IPD Linear":
-            tone = phaseShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, 'Linear', "Left", fs)
+            tone = phaseShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, 'Linear', trn("","Left"), fs)
         elif dichoticDifference == "IPD Stepped":
-            tone = phaseShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, 'Step', "Left", fs)
+            tone = phaseShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, 'Step', trn("","Left"), fs)
         elif dichoticDifference == "IPD Random":
-            tone = phaseShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, 'Random', "Left", fs)
+            tone = phaseShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, 'Random', trn("","Left"), fs)
         elif dichoticDifference == "ITD":
-            tone = ITDShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, "Left", fs)
+            tone = ITDShift(tone, shiftLo[i], shiftHi[i], dichoticDifferenceValue, trn("","Left"), fs)
         else:
             raise ValueError("Invalid 'dichoticDifference' argument. 'dichoticDifference' must be one of 'IPD Linear, 'IPD Stepped', 'IPD Random', or 'ITD'")
     
@@ -2910,7 +2923,7 @@ def makeHugginsPitch(F0=300, lowHarm=1, highHarm=3, spectrumLevel=45, bandwidth=
     return snd
 
 
-def makeIRN(delay=1/440, gain=1, iterations=6, configuration="Add Same", spectrumLevel=25, duration=280, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def makeIRN(delay=1/440, gain=1, iterations=6, configuration="Add Same", spectrumLevel=25, duration=280, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Synthetise a iterated rippled noise
 
@@ -3384,19 +3397,19 @@ def phaseShift(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
     p1Start = 0; p1End = len(freqArray1)
     p2Start = len(freqArray1); p2End = fftPoints
 
-    if phaseShiftType == "Linear":
+    if phaseShiftType == trn("", "Linear"):
         phaseShiftArray1 = linspace(0, phaseShift, len(sh1))
         phaseShiftArray2 = - linspace(phaseShift, 0, len(sh2))
-    elif phaseShiftType == "Step":
+    elif phaseShiftType == trn("", "Step"):
         phaseShiftArray1 = repeat(phaseShift, len(sh1))
         phaseShiftArray2 = - repeat(phaseShift, len(sh1))
-    elif phaseShiftType == "Random":
+    elif phaseShiftType == trn("","Random"):
         phaseShiftArray1 = numpy.random.uniform(0, phaseShift, len(sh1))
         phaseShiftArray2 = -phaseShiftArray1[::-1]
     else:
-        raise ValueError("Invalid 'phaseShiftType' argument. 'phaseShiftType' must be one of 'Linear', 'Step', or 'Random'")
+        raise ValueError(trn("", "Invalid 'phaseShiftType' argument. 'phaseShiftType' must be one of 'Linear', 'Step', or 'Random'"))
 
-    if channel == "Left":
+    if channel == trn("","Left"):
         x = fft(sig[:,0], fftPoints)
         x1 = x[p1Start:p1End]
         x2 = x[p2Start:p2End]
@@ -3410,7 +3423,7 @@ def phaseShift(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
         x = real(ifft(x))
         snd[:,0] = x[0:nSamples]
         snd[:,1] = sig[:,1]
-    elif channel == "Right":
+    elif channel == trn("","Right"):
         x = fft(sig[:,1], fftPoints)
         x1 = x[p1Start:p1End]
         x2 = x[p2Start:p2End]
@@ -3424,7 +3437,7 @@ def phaseShift(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
         x = real(ifft(x))
         snd[:,1] = x[0:nSamples]
         snd[:,0] = sig[:,0]
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         x = fft(sig[:,0], fftPoints)
         x1 = x[p1Start:p1End]
         x2 = x[p2Start:p2End]
@@ -3456,7 +3469,7 @@ def phaseShift(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
     return snd
 
 
-def pinkNoiseFromSin(compLevel=23, lowCmp=100, highCmp=1000, spacing=20, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def pinkNoiseFromSin(compLevel=23, lowCmp=100, highCmp=1000, spacing=20, duration=180, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Generate a pink noise by adding sinusoids spaced by a fixed
     interval in cents.
@@ -3520,11 +3533,11 @@ def pinkNoiseFromSin(compLevel=23, lowCmp=100, highCmp=1000, spacing=20, duratio
     for i in range(0, nComponents):
         sinArray[i,] = amp* sin(2*pi*freqs[i] * timeAll + phasesR[i])
     
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[:,1] = sum(sinArray,0)
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[:,0] = sum(sinArray,0)
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[:,1] = sum(sinArray,0)
         snd[:,0] = snd[:,1]
     else:
@@ -3534,7 +3547,7 @@ def pinkNoiseFromSin(compLevel=23, lowCmp=100, highCmp=1000, spacing=20, duratio
     return snd
 
 
-def pinkNoiseFromSin2(compLevel=23, lowCmp=100, highCmp=1000, spacing=20, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def pinkNoiseFromSin2(compLevel=23, lowCmp=100, highCmp=1000, spacing=20, duration=180, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Generate a pink noise by adding sinusoids spaced by a fixed
     interval in cents.
@@ -3606,11 +3619,11 @@ def pinkNoiseFromSin2(compLevel=23, lowCmp=100, highCmp=1000, spacing=20, durati
 
     sinMatrix = amp*sin(2*pi*freqs*timeMatrix+phasesR)
     
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[:,1] = sum(sinMatrix,0)
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[:,0] = sum(sinMatrix,0)
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[:,1] = sum(sinMatrix,0)
         snd[:,0] = snd[:,1]
     else:
@@ -3620,7 +3633,7 @@ def pinkNoiseFromSin2(compLevel=23, lowCmp=100, highCmp=1000, spacing=20, durati
     return snd
 
 
-def pureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def pureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Synthetise a pure tone.
 
@@ -3671,21 +3684,21 @@ def pureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, channel="
     timeRamp = arange(0, nRamp) 
 
     snd = zeros((nTot, 2))
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
         snd[nRamp:nRamp+nSamples, 1] = amp* sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
         snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:len(timeAll)] + phase)
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:len(timeAll)] + phase)
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
         snd[nRamp:nRamp+nSamples, 0] = amp* sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:len(timeAll)] + phase)
         snd[:, 1] = snd[:, 0]
     else:
-        raise ValueError("Invalid channel argument. Channel must one of 'Right', 'Left', or 'Both'")
+        raise ValueError(trn("", "Invalid channel argument. Channel must one of 'Right', 'Left', or 'Both'"))
 
        
 
@@ -3721,7 +3734,7 @@ def scale(level, sig):
     return sig
 
 
-def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, channel=trn("","Both"), fs=48000, maxLevel=101):
     """
     Synthetise band-limited noise from the addition of random-phase
     sinusoids.
@@ -3758,8 +3771,8 @@ def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, 
     
     """
 
-    if channel not in ["Right", "Left", "Both"]:
-        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'")
+    if channel not in [trn("","Right"), trn("","Left"), trn("","Both")]:
+        raise ValueError(trn("", "Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'"))
 
     duration = duration/1000 #convert from ms to sec
     ramp = ramp/1000
@@ -3788,15 +3801,15 @@ def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, 
         phase = numpy.random.random(1) * 2 * pi
         noise = noise + sin(phase + (radFreq * timeAll))
 
-    if channel == "Right":
+    if channel == trn("","Right"):
         snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * noise[0:nRamp]
         snd[nRamp:nRamp+nSamples, 1] = amp * noise[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * noise[nRamp+nSamples:len(timeAll)]
-    elif channel == "Left":
+    elif channel == trn("","Left"):
         snd[0:nRamp, 0] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * noise[0:nRamp]
         snd[nRamp:nRamp+nSamples, 0] = amp * noise[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * noise[nRamp+nSamples:len(timeAll)]
-    elif channel == "Both":
+    elif channel == trn("","Both"):
         snd[0:nRamp, 1] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * noise[0:nRamp]
         snd[nRamp:nRamp+nSamples, 1] = amp * noise[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * noise[nRamp+nSamples:len(timeAll)]
@@ -3804,7 +3817,7 @@ def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, 
         snd[nRamp:nRamp+nSamples, 0] = amp * noise[nRamp:nRamp+nSamples]
         snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * noise[nRamp+nSamples:len(timeAll)]
     else:
-        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'")
+        raise ValueError(trn("", "Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'"))
 
     return snd
 
