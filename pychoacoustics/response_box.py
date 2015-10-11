@@ -263,7 +263,7 @@ class responseBox(QMainWindow):
             nAlternatives = nIntervals
 
         screen = QDesktopWidget().screenGeometry()
-        if self.parent().currExp == "Coordinate Response Matrix":
+        if self.parent().currExp == self.tr("Coordinate Response Matrix"):
             self.statusButton.setMaximumSize(screen.width(), screen.height()/15)
             self.responseLight.setMaximumSize(screen.width(), screen.height()/10)
             self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
@@ -282,7 +282,7 @@ class responseBox(QMainWindow):
                     self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
                     self.responseButton[cnt].setStyleSheet("background-color: " + cols[cl])
                     cnt = cnt+1
-        elif self.parent().currExp == "Digit Triplets Test":
+        elif self.parent().currExp == self.tr("Digit Triplets Test"):
             self.statusButton.setMaximumSize(screen.width(), screen.height()/15)
             self.responseLight.setMaximumSize(screen.width(), screen.height()/10)
             self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
@@ -309,7 +309,7 @@ class responseBox(QMainWindow):
                     self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
                     cnt = cnt+1
 
-            self.responseButton.append(QPushButton("Backspace", self))
+            self.responseButton.append(QPushButton(self.tr("Backspace"), self))
             self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 0)
             sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             self.responseButton[cnt].setSizePolicy(sizePolicy)
@@ -320,7 +320,7 @@ class responseBox(QMainWindow):
 
 
             
-            self.responseButton.append(QPushButton("Enter", self))
+            self.responseButton.append(QPushButton(self.tr("Enter"), self))
             self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 2)
             sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             self.responseButton[cnt].setSizePolicy(sizePolicy)
@@ -339,7 +339,7 @@ class responseBox(QMainWindow):
         else:
             self.statusButton.setMaximumSize(screen.width(), screen.height())
             self.responseLight.setMaximumSize(screen.width(), screen.height())
-            if self.parent().currParadigm in ["Transformed Up-Down",
+            if self.parent().currParadigm in ["Transformed Up-Down", #add translation
                                               "Transformed Up-Down (Fixed No. Trials)",
                                               "Transformed Up-Down Limited",
                                               "Weighted Up-Down",

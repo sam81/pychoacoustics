@@ -5,7 +5,7 @@
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram.py" line="49"/>
         <source>Audiogram</source>
-        <translation type="unfinished">Audiogramma</translation>
+        <translation>Audiogramma</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram.py" line="52"/>
@@ -30,102 +30,102 @@
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="99"/>
         <source>Right</source>
-        <translation type="unfinished">Destro</translation>
+        <translation>Destro</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="95"/>
         <source>Left</source>
-        <translation type="unfinished">Sinistro</translation>
+        <translation>Sinistro</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="95"/>
         <source>Both</source>
-        <translation type="unfinished">Entrambi</translation>
+        <translation>Entrambi</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram.py" line="128"/>
         <source>Frequency (Hz)</source>
-        <translation type="unfinished">Frequenza (Hz)</translation>
+        <translation>Frequenza (Hz)</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="141"/>
         <source>Bandwidth (Hz)</source>
-        <translation type="unfinished">Larghezza di banda (Hz)</translation>
+        <translation>Larghezza di banda (Hz)</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram.py" line="123"/>
         <source>Level (dB SPL)</source>
-        <translation type="unfinished">Livello (dB SPL)</translation>
+        <translation>Livello (dB SPL)</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="145"/>
         <source>Duration (ms)</source>
-        <translation type="unfinished">Durata (ms)</translation>
+        <translation>Durata (ms)</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="146"/>
         <source>Ramps (ms)</source>
-        <translation type="unfinished">Rampe (ms)</translation>
+        <translation>Rampe (ms)</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="147"/>
         <source>Ear:</source>
-        <translation type="unfinished">Orecchio:</translation>
+        <translation>Orecchio:</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="156"/>
         <source>Sinusoid</source>
-        <translation type="unfinished">Sinusoide</translation>
+        <translation>Sinusoide</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="150"/>
         <source>Narrowband Noise</source>
-        <translation type="unfinished">Rumore a banda stretta</translation>
+        <translation>Rumore a banda stretta</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="148"/>
         <source>Type:</source>
-        <translation type="unfinished">Tipo:</translation>
+        <translation>Tipo:</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="60"/>
         <source>Arithmetic</source>
-        <translation type="unfinished">Aritmetica</translation>
+        <translation>Aritmetica</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/freq.py" line="57"/>
         <source>Geometric</source>
-        <translation type="unfinished">Geometrica</translation>
+        <translation>Geometrica</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/global_parameters.py" line="130"/>
         <source>No</source>
-        <translation type="unfinished">No</translation>
+        <translation>No</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/global_parameters.py" line="273"/>
         <source>Ask</source>
-        <translation type="unfinished">Chiedi</translation>
+        <translation>Chiedi</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/global_parameters.py" line="130"/>
         <source>Auto</source>
-        <translation type="unfinished">Automatico</translation>
+        <translation>Automatico</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/global_parameters.py" line="335"/>
         <source>custom</source>
-        <translation type="unfinished">personalizzato</translation>
+        <translation>personalizzato</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/global_parameters.py" line="203"/>
         <source>System Settings</source>
-        <translation type="unfinished">Setting del sistema</translation>
+        <translation>Setting del sistema</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/global_parameters.py" line="318"/>
         <source>en</source>
-        <translation type="unfinished">en</translation>
+        <translation>en</translation>
     </message>
     <message>
         <location filename="../pychoacoustics_pack/response_box.py" line="1275"/>
@@ -180,7 +180,7 @@
     <message>
         <location filename="../pychoacoustics/global_parameters.py" line="364"/>
         <source>Yes</source>
-        <translation type="unfinished">Sì</translation>
+        <translation>Sì</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="53"/>
@@ -350,12 +350,12 @@
     <message>
         <location filename="../pychoacoustics/global_parameters.py" line="131"/>
         <source>Psychometric</source>
-        <translation type="unfinished"></translation>
+        <translation>Psicometrico</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/global_parameters.py" line="132"/>
         <source>Logistic</source>
-        <translation type="unfinished"></translation>
+        <translation>Logistica</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/global_parameters.py" line="132"/>
@@ -375,17 +375,17 @@
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram.py" line="56"/>
         <source>PSI</source>
-        <translation type="unfinished"></translation>
+        <translation>PSI</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/audiogram.py" line="57"/>
         <source>UML</source>
-        <translation type="unfinished"></translation>
+        <translation>UML</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/wav_comparison.py" line="22"/>
         <source>WAV Comparison</source>
-        <translation type="unfinished"></translation>
+        <translation>Compara WAV</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="22"/>
@@ -467,12 +467,12 @@
     <message>
         <location filename="../pychoacoustics/dialog_edit_experimenters.py" line="296"/>
         <source>There are unsaved changes. Apply Changes?</source>
-        <translation type="unfinished">Ci sono modifiche non registrate. Applicare le modifiche?</translation>
+        <translation>Ci sono modifiche non registrate. Applicare le modifiche?</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/dialog_edit_experimenters.py" line="306"/>
         <source>Apply Changes</source>
-        <translation type="unfinished">Applica le modifiche</translation>
+        <translation>Applica le modifiche</translation>
     </message>
 </context>
 <context>
@@ -563,32 +563,32 @@
     <message>
         <location filename="../pychoacoustics/dialog_edit_experimenters.py" line="265"/>
         <source>Input Dialog</source>
-        <translation type="unfinished">Dialogo di inserimento</translation>
+        <translation>Dialogo di inserimento</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/dialog_edit_experimenters.py" line="253"/>
         <source>Message</source>
-        <translation type="unfinished">Messaggio</translation>
+        <translation>Messaggio</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/dialog_edit_experimenters.py" line="53"/>
         <source>Experimenter ID:</source>
-        <translation type="unfinished"></translation>
+        <translation>ID Sperimentatore:</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/dialog_edit_experimenters.py" line="62"/>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome:</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/dialog_edit_experimenters.py" line="69"/>
         <source>Surname:</source>
-        <translation type="unfinished"></translation>
+        <translation>Cognome:</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/dialog_edit_experimenters.py" line="76"/>
         <source>e-mail:</source>
-        <translation type="unfinished"></translation>
+        <translation>e-mail:</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/dialog_edit_experimenters.py" line="84"/>
@@ -2423,7 +2423,7 @@
     <message>
         <location filename="../pychoacoustics/control_window.py" line="2008"/>
         <source>PSI</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PSI</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/control_window.py" line="2480"/>
@@ -2593,7 +2593,7 @@
     <message>
         <location filename="../pychoacoustics/control_window.py" line="2398"/>
         <source>UML</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">UML</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/control_window.py" line="2411"/>
@@ -2603,7 +2603,7 @@
     <message>
         <location filename="../pychoacoustics/control_window.py" line="2838"/>
         <source>Psychometric</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Psicometrico</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/control_window.py" line="3428"/>
@@ -3341,7 +3341,7 @@
     <message>
         <location filename="../pychoacoustics/response_box.py" line="1189"/>
         <source>PSI</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PSI</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/response_box.py" line="904"/>
@@ -3481,7 +3481,7 @@
     <message>
         <location filename="../pychoacoustics/response_box.py" line="1191"/>
         <source>UML</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">UML</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/response_box.py" line="900"/>
@@ -3491,7 +3491,7 @@
     <message>
         <location filename="../pychoacoustics/response_box.py" line="4033"/>
         <source>Psychometric</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Psicometrico</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/response_box.py" line="1096"/>
@@ -3536,6 +3536,26 @@
     <message>
         <location filename="../pychoacoustics/response_box.py" line="157"/>
         <source>Show Task Instructions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pychoacoustics/response_box.py" line="266"/>
+        <source>Coordinate Response Matrix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pychoacoustics/response_box.py" line="285"/>
+        <source>Digit Triplets Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pychoacoustics/response_box.py" line="312"/>
+        <source>Backspace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pychoacoustics/response_box.py" line="323"/>
+        <source>Enter</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

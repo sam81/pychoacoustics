@@ -30,6 +30,18 @@ Low priority:
 - replace os.system with subprocess, possibly popen for sending kill signal #partly done
 - Qthread for playing audio
 - plot track from adaptive procedure
+- on pyqt5 a QMainWindow without a parent is a primary window and has an entry in the taskbar, but a
+QMainWindow with a parent is a secondary window and doesn't have an entry in the task bar (see http://doc.qt.io/qt-5/application-windows.html). The
+response box, being a child of the control window doesn't have an entry in the task bar and cannot
+be shown independently of the control window, which is annoying. A solution might be to set the response
+box parent to `None` (not sure it works). There would be at least two consequences. First the response
+box and associated widgets rely heavily on the parent attribute to exchange data/methods with the control
+window, so this should be handled in another way. Second, the response box should close when the control
+window closes.
+- Internazionalization:
+   - all the functions printing numbers '{0:5.3f}'.format(myFloat) should use self.currLocale.toString()
+   - the sndlib and other modules should use translations too
+   
 
 
 

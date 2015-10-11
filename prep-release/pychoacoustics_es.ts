@@ -3027,6 +3027,26 @@
         <source>Show Task Instructions</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../pychoacoustics/response_box.py" line="266"/>
+        <source>Coordinate Response Matrix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pychoacoustics/response_box.py" line="285"/>
+        <source>Digit Triplets Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pychoacoustics/response_box.py" line="312"/>
+        <source>Backspace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pychoacoustics/response_box.py" line="323"/>
+        <source>Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>showFortuneDialog</name>
