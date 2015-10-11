@@ -1,0 +1,52 @@
+Phones: HD650
+Shuffle Mode: No
+Response Mode: Psychometric
+Auto Resp. Mode Perc. Corr.: 75
+Sample Rate: 48000
+Bits: 32
+Trigger On/Off: False
+Experiment Label: 
+End Command: 
+Instructions At BP: 
+Shuffling Scheme: 
+No. Repetitions: 1
+Proc. Res.: False
+Proc. Res. Table: False
+Plot: False
+PDF Plot: False
+*******************************************************
+Block Position: 1
+Condition Label: 
+Task Label: 
+Instructions: 
+Experiment: Dummy Adaptive
+Paradigm: Transformed Up-Down
+Intervals: 2 :False
+Alternatives: 2 :False
+Pre-Trial Silence (ms): 0
+Warning Interval: No
+Interval Lights: No
+Psychometric Listener Function: Logistic
+Psychometric Listener Function Fit: Logarithmic
+Psychometric Listener Midpoint: 5
+Psychometric Listener Slope: 3
+Psychometric Listener Lapse: 0
+Response Light: Neutral :False
+Response Light Duration (ms): 0 :False
+.
+Procedure: Geometric :False
+Initial Track Direction: Down :False
+..
+Rule Down: 2 :False
+Rule Up: 1 :False
+Initial Turnpoints: 4 :False
+Total Turnpoints: 16 :False
+Step Size 1: 4 :False
+Step Size 2: 2 :False
+...
+....
+.....
+......
+Difference: 20 :False
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+

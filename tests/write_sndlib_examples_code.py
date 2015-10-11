@@ -1,8 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sndlib_default_tests
-
 fIn = open("../pychoacoustics/sndlib.py", "r")
 lns = fIn.readlines()
 fIn.close()
@@ -37,9 +35,9 @@ for i in range(len(startPoints)):
             thisLine = lns[startPoints[i]+l].strip()
         exLines.append(thisLine.strip() + "\n")
 
-fOut = open("examples_code.py", "w")
+fOut = open("sndlib_examples_code.py", "w")
 fOut.writelines(exLines)
 fOut.close()
 
-import examples_code
+
 

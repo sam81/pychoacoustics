@@ -527,6 +527,7 @@ class responseBox(QMainWindow):
             self.blockGauge.hide()
 
     def onClickStatusButton(self):
+        print(self.statusButton.text())
         if self.prm['storedBlocks'] == 0 or self.statusButton.text() in [self.prm['rbTrans'].translate("rb", "Running"), "&"+self.prm['rbTrans'].translate("rb", "Running")] or self.statusButton.text() in [self.prm['rbTrans'].translate("rb", "Finished"), "&" + self.prm['rbTrans'].translate("rb", "Finished")]:
             return
         self.parent().compareGuiStoredParameters()
@@ -2802,7 +2803,7 @@ class responseBox(QMainWindow):
         self.fullFileLog.write('\n')
         self.fullFileLines.append('\n')
         self.fullFileLog.flush()
-        print(self.fullFileSummLines)
+
         cnt = 0
         for j in range(self.prm['nDifferences']):
             cnt = cnt + self.trialCountAll[j]
@@ -2986,7 +2987,7 @@ class responseBox(QMainWindow):
         self.fullFileLog.write('\n')
         self.fullFileLines.append('\n')
         self.fullFileLog.flush()
-        #print(self.fullFileSummLines)
+
         cnt = 0
         for j in range(self.prm['nDifferences']):
             cnt = cnt + self.trialCountAll[j]
@@ -3794,7 +3795,6 @@ class responseBox(QMainWindow):
         self.prm['buttonCounter'][buttonClicked-1] = self.prm['buttonCounter'][buttonClicked-1] +1
 
         self.trialCountCnds[self.currentCondition] = self.trialCountCnds[self.currentCondition] +1
-        print(buttonClicked)
         if self.trialCountCnds[self.currentCondition] > self.prm['nPracticeTrials']:
             if buttonClicked == 1:
                 #self.prm['ones'] = self.prm['ones'] + 1

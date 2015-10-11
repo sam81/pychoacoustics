@@ -261,7 +261,7 @@ class categoricalPlot(QMainWindow):
             return
         
         self.dats = pd.read_csv(self.fName, sep=csv_separator)
-        print(self.dats)
+        
         idx = copy.copy(self.dats.index)
         self.dats = self.dats.sort('condition')
         self.dats.index = idx
