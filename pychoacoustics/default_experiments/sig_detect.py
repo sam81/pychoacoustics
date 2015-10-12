@@ -21,7 +21,6 @@ def initialize_sig_detect(prm):
     
     prm[exp_name]["execString"] = "sig_detect"
     prm[exp_name]["version"] = __name__ + ' ' + pychoacoustics_version + ' ' + pychoacoustics_builddate
-    #prm[exp_name]["version"] = __name__ + ' ' + labexp_version + ' ' + labexp_builddate
     
     return prm
 
@@ -82,7 +81,6 @@ def doTrial_sig_detect(parent):
     elif parent.currentCondition == 'No':
         parent.correctButton = 2
 
-                
 
     freq    = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Frequency (Hz)")]
     dur     = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Duration (ms)")]

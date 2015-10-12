@@ -1,0 +1,336 @@
+*******************************************************
+pychoacoustics version: 0.3.20; build date: 10-Oct-2015 21:14
+Experiment version: pychoacoustics.default_experiments.dummy_adaptive 0.3.20 10-Oct-2015 21:14
+Block Number: 1
+Block Position: 1
+Start: 10/12/15 1:40 AM
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Experiment Label: 
+Session Label: 
+Condition Label: 
+Experiment:    Dummy Adaptive
+Listener:      
+Response Mode: Psychometric
+Psychometric Listener Function: Logistic
+Psychometric Listener Function Fit: Linear
+Psychometric Listener Midpoint: 10.0
+Psychometric Listener Slope: 1.0
+Psychometric Listener Lapse: 0.0
+Paradigm:      PSI
+Intervals:     2
+Alternatives:  2
+Mid Point Prior: Uniform
+Slope Prior: Uniform
+Lapse Prior: Uniform
+Psychometric Function: Logistic
+Stim. Scaling: Linear
+Marginalize Lapse: No
+Marginalize Slope: No
+Marginalize Mid Point: No
+Start Level: Auto
+Slope Spacing: Logarithmic
+Lapse Spacing: Linear
+Stim. Min: 0
+Stim. Max: 40
+Stim. Step: 0.5
+Mid Point Min: 2
+Mid Point Max: 20
+Mid Point Step: 0.5
+Slope Min: 0.1
+Slope Max: 10
+Slope Step: 1.125
+Lapse Min: 0
+Lapse Max: 0.2
+Lapse Step: 0.01
+Mid Point mu: 0.001
+Mid Point STD: 1.1
+Slope mu: 1.1
+Slope STD: 1.1
+Lapse mu: 0.01
+Lapse STD: 1.1
+No. Trials: 100
+Phones:        HD650
+Sample Rate:   48000
+Bits:          32
+Pre-Trial Silence (ms): 0
+Warning Interval: No
+Interval Lights: No
+Response Light: Neutral
+Response Light Duration (ms): 0
+
+Difference:  20
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+20.0; 1; 
+12.5; 1; 
+11.0; 1; 
+9.5; 1; 
+8.5; 0; 
+12.0; 1; 
+11.0; 1; 
+10.5; 1; 
+10.0; 1; 
+8.0; 1; 
+8.0; 1; 
+7.5; 0; 
+10.0; 1; 
+8.5; 1; 
+8.0; 1; 
+7.0; 0; 
+9.0; 0; 
+11.0; 1; 
+10.5; 1; 
+10.0; 1; 
+9.0; 0; 
+10.5; 1; 
+10.5; 1; 
+10.0; 1; 
+10.0; 1; 
+10.0; 1; 
+9.0; 1; 
+9.0; 1; 
+8.5; 0; 
+9.5; 0; 
+10.5; 1; 
+10.0; 1; 
+10.0; 1; 
+10.0; 1; 
+10.0; 1; 
+10.0; 1; 
+9.0; 1; 
+9.0; 0; 
+10.0; 1; 
+10.0; 1; 
+10.0; 1; 
+10.0; 1; 
+9.0; 1; 
+9.0; 0; 
+10.0; 0; 
+11.0; 1; 
+10.0; 1; 
+10.0; 1; 
+11.5; 1; 
+10.0; 0; 
+12.0; 1; 
+12.0; 1; 
+12.0; 1; 
+12.0; 1; 
+10.0; 0; 
+9.5; 1; 
+12.5; 1; 
+9.5; 0; 
+11.5; 1; 
+11.5; 1; 
+9.5; 1; 
+9.5; 0; 
+11.5; 1; 
+11.5; 1; 
+9.5; 0; 
+11.0; 1; 
+11.0; 1; 
+11.0; 1; 
+11.0; 1; 
+9.5; 1; 
+9.5; 0; 
+11.0; 1; 
+11.0; 1; 
+11.0; 1; 
+11.0; 1; 
+9.5; 1; 
+9.5; 1; 
+9.5; 1; 
+9.5; 1; 
+9.5; 1; 
+10.0; 1; 
+10.0; 1; 
+10.0; 0; 
+9.5; 0; 
+9.5; 1; 
+9.5; 0; 
+11.0; 1; 
+9.5; 1; 
+9.5; 1; 
+9.5; 1; 
+9.5; 0; 
+9.5; 0; 
+11.0; 1; 
+11.0; 1; 
+11.0; 1; 
+14.0; 1; 
+10.5; 0; 
+15.0; 1; 
+15.5; 1; 
+15.5; 1; 
+
+End: 10/12/15 1:40 AM
+Duration: 0.22120266358057658 min. 
+
+*******************************************************
+pychoacoustics version: 0.3.20; build date: 10-Oct-2015 21:14
+Experiment version: pychoacoustics.default_experiments.dummy_adaptive 0.3.20 10-Oct-2015 21:14
+Block Number: 2
+Block Position: 2
+Start: 10/12/15 1:40 AM
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Experiment Label: 
+Session Label: 
+Condition Label: 
+Experiment:    Dummy Adaptive
+Listener:      
+Response Mode: Psychometric
+Psychometric Listener Function: Logistic
+Psychometric Listener Function Fit: Linear
+Psychometric Listener Midpoint: 10.0
+Psychometric Listener Slope: 1.0
+Psychometric Listener Lapse: 0.0
+Paradigm:      PSI
+Intervals:     2
+Alternatives:  2
+Mid Point Prior: Uniform
+Slope Prior: Uniform
+Lapse Prior: Uniform
+Psychometric Function: Logistic
+Stim. Scaling: Linear
+Marginalize Lapse: No
+Marginalize Slope: No
+Marginalize Mid Point: No
+Start Level: Auto
+Slope Spacing: Logarithmic
+Lapse Spacing: Linear
+Stim. Min: 0
+Stim. Max: 40
+Stim. Step: 0.5
+Mid Point Min: 2
+Mid Point Max: 20
+Mid Point Step: 0.5
+Slope Min: 0.1
+Slope Max: 10
+Slope Step: 1.125
+Lapse Min: 0
+Lapse Max: 0.2
+Lapse Step: 0.01
+Mid Point mu: 0.001
+Mid Point STD: 1.1
+Slope mu: 1.1
+Slope STD: 1.1
+Lapse mu: 0.01
+Lapse STD: 1.1
+No. Trials: 100
+Phones:        HD650
+Sample Rate:   48000
+Bits:          32
+Pre-Trial Silence (ms): 0
+Warning Interval: No
+Interval Lights: No
+Response Light: Neutral
+Response Light Duration (ms): 0
+
+Difference:  20
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+20.0; 1; 
+12.5; 1; 
+11.0; 1; 
+9.5; 1; 
+8.5; 1; 
+7.5; 0; 
+10.5; 0; 
+13.5; 1; 
+13.0; 1; 
+12.0; 1; 
+10.0; 1; 
+10.0; 1; 
+9.5; 0; 
+12.0; 1; 
+10.5; 1; 
+10.0; 1; 
+9.0; 1; 
+9.0; 1; 
+8.0; 0; 
+9.5; 1; 
+9.0; 0; 
+11.0; 1; 
+10.0; 1; 
+10.0; 1; 
+9.0; 0; 
+11.0; 1; 
+10.5; 1; 
+10.0; 1; 
+9.0; 0; 
+10.5; 1; 
+10.0; 0; 
+12.0; 1; 
+11.5; 1; 
+12.0; 1; 
+12.0; 1; 
+10.0; 0; 
+12.0; 1; 
+11.0; 1; 
+12.0; 1; 
+10.5; 0; 
+12.5; 1; 
+12.5; 1; 
+11.0; 1; 
+11.0; 0; 
+13.0; 1; 
+13.0; 1; 
+10.5; 1; 
+10.5; 1; 
+14.0; 1; 
+14.0; 1; 
+10.5; 1; 
+10.0; 0; 
+13.5; 1; 
+11.0; 0; 
+13.5; 1; 
+10.5; 1; 
+14.5; 1; 
+10.5; 1; 
+15.0; 1; 
+15.0; 1; 
+10.5; 1; 
+16.0; 1; 
+16.0; 1; 
+10.5; 1; 
+17.0; 1; 
+17.0; 1; 
+10.5; 0; 
+11.0; 1; 
+15.5; 1; 
+10.5; 0; 
+11.5; 1; 
+11.5; 1; 
+10.5; 0; 
+11.5; 1; 
+11.5; 1; 
+10.5; 1; 
+10.5; 0; 
+11.5; 1; 
+11.5; 1; 
+10.5; 1; 
+10.5; 1; 
+10.5; 1; 
+10.5; 1; 
+12.0; 0; 
+21.0; 1; 
+21.5; 1; 
+22.0; 1; 
+40.0; 1; 
+22.5; 1; 
+40.0; 1; 
+40.0; 1; 
+22.0; 1; 
+40.0; 1; 
+40.0; 1; 
+22.0; 1; 
+40.0; 1; 
+12.0; 1; 
+12.0; 1; 
+40.0; 1; 
+11.5; 1; 
+
+End: 10/12/15 1:41 AM
+Duration: 0.22334744930267333 min. 
+

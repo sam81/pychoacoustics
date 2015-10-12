@@ -23,7 +23,7 @@ def initialize_wav_ABX(prm):
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
     prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Multiple Constants ABX","")]
-    prm[exp_name]["opts"] = ["hasISIBox", "hasFeedback", "hasIntervalLights", "hasNDifferencesChooser"]
+    prm[exp_name]["opts"] = ["hasISIBox", "hasFeedback", "hasNDifferencesChooser"]
     prm[exp_name]['defaultNIntervals'] = 3
     prm[exp_name]['defaultNAlternatives'] = 2
     prm[exp_name]["buttonLabels"] = ["A", "B"]#[prm['buttonTranslator'].translate('rb', "Same"), prm['buttonTranslator'].translate('rb', "Different")]

@@ -56,8 +56,7 @@ def initialize_audiogram(prm):
                                         QApplication.translate("","PSI",""),
                                         QApplication.translate("","UML","")]
 
-    prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
-                             "hasIntervalLights"]
+    prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback"]
     prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Arithmetic","")
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2

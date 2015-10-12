@@ -91,7 +91,7 @@ experiment is shown below:
                                           "Weighted Up-Down"]
     
       prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", 
-                               "hasFeedback", "hasIntervalLights"]
+                               "hasFeedback"]
 
       prm[exp_name]['defaultAdaptiveType'] = "Geometric"
       prm[exp_name]['defaultNIntervals'] = 2
@@ -121,9 +121,8 @@ of options. The full list of options that can be set here is described
 in details in Section :ref:`sec-experiment_opts`. In brief, for our
 experiment we want to have a widget to set the ISI between presentation
 intervals (``hasISIBox``), a widget to choose the number of response
-alternatives (``hasAlternativesChooser``), a widget to set the feedback
-on or off for a given block of trials (``hasFeedback``), and finally we
-want lights to mark the observation intervals (``hasIntervalLights``).
+alternatives (``hasAlternativesChooser``), and a widget to set the feedback
+on or off for a given block of trials (``hasFeedback``).
 
 In the next line we specify ``defaultAdaptiveType``, the default type of adaptive 
 track that will be selected when the experiment is loaded, this could be 

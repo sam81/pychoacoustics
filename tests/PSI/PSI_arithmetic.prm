@@ -1,0 +1,132 @@
+Phones: HD650
+Shuffle Mode: No
+Response Mode: Psychometric
+Auto Resp. Mode Perc. Corr.: 75
+Sample Rate: 48000
+Bits: 32
+Trigger On/Off: False
+Experiment Label: 
+End Command: 
+Instructions At BP: 
+Shuffling Scheme: 
+No. Repetitions: 1
+Proc. Res.: True
+Proc. Res. Table: True
+Plot: False
+PDF Plot: False
+*******************************************************
+Block Position: 1
+Condition Label: 
+Task Label: 
+Instructions: 
+Experiment: Dummy Adaptive
+Paradigm: PSI
+Intervals: 2 :False
+Alternatives: 2 :False
+Pre-Trial Silence (ms): 0
+Warning Interval: No
+Interval Lights: No
+Psychometric Listener Function: Logistic
+Psychometric Listener Function Fit: Linear
+Psychometric Listener Midpoint: 10
+Psychometric Listener Slope: 1
+Psychometric Listener Lapse: 0
+Response Light: Neutral :False
+Response Light Duration (ms): 0 :False
+.
+Mid Point Prior: Uniform :False
+Slope Prior: Uniform :False
+Lapse Prior: Uniform :False
+Psychometric Function: Logistic :False
+Stim. Scaling: Linear :False
+Marginalize Lapse: No :False
+Marginalize Slope: No :False
+Marginalize Mid Point: No :False
+Start Level: Auto :False
+Slope Spacing: Logarithmic :False
+Lapse Spacing: Linear :False
+..
+Stim. Min: 0 :False
+Stim. Max: 40 :False
+Stim. Step: 0.5 :False
+Mid Point Min: 2 :False
+Mid Point Max: 20 :False
+Mid Point Step: 0.5 :False
+Slope Min: 0.1 :False
+Slope Max: 10 :False
+Slope Step: 1.125 :False
+Lapse Min: 0 :False
+Lapse Max: 0.2 :False
+Lapse Step: 0.01 :False
+Mid Point mu: 0.001 :False
+Mid Point STD: 1.1 :False
+Slope mu: 1.1 :False
+Slope STD: 1.1 :False
+Lapse mu: 0.01 :False
+Lapse STD: 1.1 :False
+No. Trials: 100 :False
+...
+....
+.....
+......
+Difference: 20 :False
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+*******************************************************
+Block Position: 2
+Condition Label: 
+Task Label: 
+Instructions: 
+Experiment: Dummy Adaptive
+Paradigm: PSI
+Intervals: 2 :False
+Alternatives: 2 :False
+Pre-Trial Silence (ms): 0
+Warning Interval: No
+Interval Lights: No
+Psychometric Listener Function: Logistic
+Psychometric Listener Function Fit: Linear
+Psychometric Listener Midpoint: 10
+Psychometric Listener Slope: 1
+Psychometric Listener Lapse: 0
+Response Light: Neutral :False
+Response Light Duration (ms): 0 :False
+.
+Mid Point Prior: Uniform :False
+Slope Prior: Uniform :False
+Lapse Prior: Uniform :False
+Psychometric Function: Logistic :False
+Stim. Scaling: Linear :False
+Marginalize Lapse: No :False
+Marginalize Slope: No :False
+Marginalize Mid Point: No :False
+Start Level: Auto :False
+Slope Spacing: Logarithmic :False
+Lapse Spacing: Linear :False
+..
+Stim. Min: 0 :False
+Stim. Max: 40 :False
+Stim. Step: 0.5 :False
+Mid Point Min: 2 :False
+Mid Point Max: 20 :False
+Mid Point Step: 0.5 :False
+Slope Min: 0.1 :False
+Slope Max: 10 :False
+Slope Step: 1.125 :False
+Lapse Min: 0 :False
+Lapse Max: 0.2 :False
+Lapse Step: 0.01 :False
+Mid Point mu: 0.001 :False
+Mid Point STD: 1.1 :False
+Slope mu: 1.1 :False
+Slope STD: 1.1 :False
+Lapse mu: 0.01 :False
+Lapse STD: 1.1 :False
+No. Trials: 100 :False
+...
+....
+.....
+......
+Difference: 20 :False
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+

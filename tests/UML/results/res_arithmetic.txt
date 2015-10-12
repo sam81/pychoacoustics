@@ -1,0 +1,144 @@
+*******************************************************
+pychoacoustics version: 0.3.20; build date: 10-Oct-2015 21:14
+Experiment version: pychoacoustics.default_experiments.dummy_adaptive 0.3.20 10-Oct-2015 21:14
+Block Number: 1
+Block Position: 1
+Start: 10/12/15 1:33 AM
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Experiment Label: 
+Session Label: 
+Condition Label: 
+Experiment:    Dummy Adaptive
+Listener:      
+Response Mode: Psychometric
+Psychometric Listener Function: Logistic
+Psychometric Listener Function Fit: Linear
+Psychometric Listener Midpoint: 10.0
+Psychometric Listener Slope: 1.0
+Psychometric Listener Lapse: 0.0
+Paradigm:      UML
+Intervals:     2
+Alternatives:  2
+Mid Point Prior: Uniform
+Slope Prior: Uniform
+Lapse Prior: Uniform
+Psychometric Function: Logistic
+Posterior Summary: Mean
+Stim. Scaling: Linear
+Slope Spacing: Logarithmic
+Lapse Spacing: Linear
+Stim. Min: 0
+Stim. Max: 40
+Rule Down: 2
+Mid Point Min: 2
+Mid Point Max: 20
+Mid Point Step: 1
+Slope Min: 0.1
+Slope Max: 10
+Slope Step: 1.125
+Lapse Min: 0
+Lapse Max: 0.2
+Lapse Step: 0.01
+Mid Point mu: 0.001
+Mid Point STD: 1.1
+Slope mu: 1.1
+Slope STD: 1.1
+Lapse mu: 0.01
+Lapse STD: 1.1
+No. Trials: 100
+Phones:        HD650
+Sample Rate:   48000
+Bits:          32
+Pre-Trial Silence (ms): 0
+Warning Interval: No
+Interval Lights: No
+Response Light: Neutral
+Response Light Duration (ms): 0
+
+Difference:  20
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+Midpoint = 9.769 
+Slope = 3.600 
+Lapse = 0.040 
+
+B1 = 49, B2 = 51
+
+End: 10/12/15 1:33 AM
+Duration: 0.04350664615631104 min. 
+
+*******************************************************
+pychoacoustics version: 0.3.20; build date: 10-Oct-2015 21:14
+Experiment version: pychoacoustics.default_experiments.dummy_adaptive 0.3.20 10-Oct-2015 21:14
+Block Number: 2
+Block Position: 2
+Start: 10/12/15 1:33 AM
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Experiment Label: 
+Session Label: 
+Condition Label: 
+Experiment:    Dummy Adaptive
+Listener:      
+Response Mode: Psychometric
+Psychometric Listener Function: Logistic
+Psychometric Listener Function Fit: Linear
+Psychometric Listener Midpoint: 10.0
+Psychometric Listener Slope: 1.0
+Psychometric Listener Lapse: 0.0
+Paradigm:      UML
+Intervals:     2
+Alternatives:  2
+Mid Point Prior: Uniform
+Slope Prior: Uniform
+Lapse Prior: Uniform
+Psychometric Function: Logistic
+Posterior Summary: Mean
+Stim. Scaling: Linear
+Slope Spacing: Logarithmic
+Lapse Spacing: Linear
+Stim. Min: 0
+Stim. Max: 40
+Rule Down: 2
+Mid Point Min: 2
+Mid Point Max: 20
+Mid Point Step: 1
+Slope Min: 0.1
+Slope Max: 10
+Slope Step: 1.125
+Lapse Min: 0
+Lapse Max: 0.2
+Lapse Step: 0.01
+Mid Point mu: 0.001
+Mid Point STD: 1.1
+Slope mu: 1.1
+Slope STD: 1.1
+Lapse mu: 0.01
+Lapse STD: 1.1
+No. Trials: 100
+Phones:        HD650
+Sample Rate:   48000
+Bits:          32
+Pre-Trial Silence (ms): 0
+Warning Interval: No
+Interval Lights: No
+Response Light: Neutral
+Response Light Duration (ms): 0
+
+Difference:  20
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+Midpoint = 10.096 
+Slope = 0.954 
+Lapse = 0.063 
+
+B1 = 48, B2 = 52
+
+End: 10/12/15 1:33 AM
+Duration: 0.044174329439798994 min. 
+

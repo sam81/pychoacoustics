@@ -23,7 +23,7 @@ def initialize_wav_sameDifferent(prm):
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
     prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Multiple Constants 1-Pair Same/Different","")]
-    prm[exp_name]["opts"] = ["hasISIBox", "hasFeedback", "hasIntervalLights", "hasNDifferencesChooser"]
+    prm[exp_name]["opts"] = ["hasISIBox", "hasFeedback", "hasNDifferencesChooser"]
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2
     prm[exp_name]["buttonLabels"] = ["Same", "Different"]#[prm['buttonTranslator'].translate('rb', "Same"), prm['buttonTranslator'].translate('rb', "Different")]

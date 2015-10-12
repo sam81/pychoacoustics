@@ -35,7 +35,7 @@ def initialize_level_discrimination(prm):
                                         QApplication.translate("","UML","")]
 
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
-                             "hasIntervalLights", "hasAltReps"]
+                             "hasAltReps"]
     prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Geometric","")
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2

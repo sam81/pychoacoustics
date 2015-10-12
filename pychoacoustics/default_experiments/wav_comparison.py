@@ -23,7 +23,7 @@ def initialize_wav_comparison(prm):
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
     prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Multiple Constants Odd One Out","")]
-    prm[exp_name]["opts"] = ["hasISIBox", "hasFeedback", "hasIntervalLights", "hasNDifferencesChooser"]
+    prm[exp_name]["opts"] = ["hasISIBox", "hasFeedback", "hasNDifferencesChooser"]
     prm[exp_name]['defaultNIntervals'] = 3
     prm[exp_name]['defaultNAlternatives'] = 3
     prm[exp_name]["buttonLabels"] = [prm['buttonTranslator'].translate('rb', "1"), prm['buttonTranslator'].translate('rb', "2"), prm['buttonTranslator'].translate('rb', "3")]
