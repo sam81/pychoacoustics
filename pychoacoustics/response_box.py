@@ -200,15 +200,24 @@ class responseBox(QMainWindow):
         else:
             self.toggleGauge.setChecked(False)
             self.onToggleGauge()
-        if self.prm['blockProgbar'] == True:
+
+        if self.prm["pref"]["general"]["showBlockProgBar"] == True:
             self.toggleBlockGauge.setChecked(True)
             self.onToggleBlockGauge()
         else:
            self.toggleBlockGauge.setChecked(False)
            self.onToggleBlockGauge()
+        if self.prm['blockProgbar'] == True:
+            self.toggleBlockGauge.setChecked(True)
+            self.onToggleBlockGauge()
+
         self.rb.setLayout(self.rb_sizer)
         self.setCentralWidget(self.rb)
-        self.show()
+        if self.prm['startMinimized'] == True:
+            self.showMinimized()
+        else:
+            self.show()
+
         self.prm['listener'] = self.parent().listenerTF.text()
         self.prm['sessionLabel'] = self.parent().sessionLabelTF.text()
         if self.prm['hideWins'] == True:

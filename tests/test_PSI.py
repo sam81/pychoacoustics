@@ -10,7 +10,7 @@ class TestPSI(unittest.TestCase):
         resFileRoot = "res_geometric"
         removePreviousResFiles(rootPath+"PSI/"+resFileRoot)
 
-        cmdStr = "python3 ../pychoacoustics.pyw -f"+ rootPath+ "PSI/PSI_geometric.prm -a -q -c --seed 2033 -r" + rootPath + "PSI/"+ resFileRoot  + ".txt"
+        cmdStr = "python3 ../pychoacoustics.pyw -f"+ rootPath+ "PSI/PSI_geometric.prm -a -q -o --seed 2033 -r" + rootPath + "PSI/"+ resFileRoot  + ".txt"
         x = os.system(cmdStr)
         assert(x==0)
         storedRes = pd.read_csv(rootPath + "PSI/results/res_geometric_table.csv", sep=";")
@@ -24,7 +24,7 @@ class TestPSI(unittest.TestCase):
         resFileRoot = "res_arithmetic"
         removePreviousResFiles(rootPath + "PSI/"+resFileRoot)
 
-        cmdStr = "python3 ../pychoacoustics.pyw -f" + rootPath + "PSI/PSI_arithmetic.prm -a -q -c --seed 2033 -r" + rootPath + "PSI/"+resFileRoot  + ".txt"
+        cmdStr = "python3 ../pychoacoustics.pyw -f" + rootPath + "PSI/PSI_arithmetic.prm -a -q -o --seed 2033 -r" + rootPath + "PSI/"+resFileRoot  + ".txt"
         x = os.system(cmdStr)
         assert(x==0)
         storedRes = pd.read_csv(rootPath + "PSI/results/res_arithmetic_table.csv", sep=";")

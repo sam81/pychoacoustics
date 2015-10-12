@@ -128,6 +128,7 @@ def main(argv):
     parser.add_argument("-l", "--listener", help="Listener Name")
     parser.add_argument("-s", "--session", help="Session Label")
     parser.add_argument("-c", "--conceal", help="Hide Control and Parameters Windows", action="store_true")
+    parser.add_argument("-o", "--minimized", help="Start minimized (useful for testing)", action="store_true")
     parser.add_argument("-p", "--progbar", help="Show the progress bar", action="store_true")
     parser.add_argument("-b", "--blockprogbar", help="Show the block progress bar", action="store_true")
     parser.add_argument("-q", "--quit", help="Quit after finished", action="store_true")
@@ -151,6 +152,10 @@ def main(argv):
         prm['sessionLabel'] = args.session
     if args.conceal:
         prm['hideWins'] = True
+    if args.minimized:
+        prm['startMinimized'] = True
+    else:
+        prm['startMinimized'] = False
     if args.progbar:
         prm['progbar'] = True
     if args.blockprogbar:

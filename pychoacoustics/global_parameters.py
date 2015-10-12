@@ -262,6 +262,7 @@ def def_pref(prm):
     prm["pref"]["general"]["responseLightDuration"] = "500"
     prm["pref"]["general"]["maxRecursionDepth"] = sys.getrecursionlimit()
     prm["pref"]["general"]["startupCommand"] = ""
+    prm["pref"]["general"]["showBlockProgBar"] = True
    
 
     prm["pref"]["general"]["endMessageFiles"] = []

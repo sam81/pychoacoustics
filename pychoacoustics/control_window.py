@@ -798,9 +798,11 @@ class pychControlWin(QMainWindow):
         #self.splitter.setStretchFactor(2, 1.5)
         self.setCentralWidget(self.splitter)
         
-        
-        self.show()
-       
+        if self.prm['startMinimized'] == True:
+            self.showMinimized()
+        else:
+            self.show()
+
         self.responseBox = responseBox(self)
         self.responseBox.resize(int((1/4)*screen.width()), int((1/3)*screen.height()))
         if self.prm['calledWithPrm'] == True:
