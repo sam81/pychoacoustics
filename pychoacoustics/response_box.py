@@ -1141,7 +1141,7 @@ class responseBox(QMainWindow):
         currBlock = 'b'+ str(self.prm['currentBlock'])
         if buttonClicked == 0: #0 is not a response option
             return
-        if self.parent().currExp == "Digit Triplets Test":
+        if self.parent().currExp == self.tr("Digit Triplets Test"):
             if buttonClicked < 10:
                 return
             if self.statusButton.text() not in [self.prm['rbTrans'].translate("rb", "Running"), "&"+self.prm['rbTrans'].translate("rb", "Running")]:

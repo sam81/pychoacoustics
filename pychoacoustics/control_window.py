@@ -114,7 +114,7 @@ class pychControlWin(QMainWindow):
         self.prm['builddate'] = pychoacoustics_builddate
         #
         screen = QDesktopWidget().screenGeometry()
-        self.setGeometry(80, 100, int((2/3)*screen.width()), int((7/10)*screen.height()))
+        self.setGeometry(25, 50, int((2/3)*screen.width()), int((7/10)*screen.height())) #was 80, 100
         #self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.WindowStaysOnTopHint)
         self.currLocale = prm['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
@@ -248,7 +248,8 @@ class pychControlWin(QMainWindow):
         self.soundCheckButton.clicked.connect(self.onClickSoundCheckButton)
         self.soundCheckButton.setIcon(QIcon.fromTheme("media-playback-start", QIcon(":/media-playback-start")))
         #self.soundCheckButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
-        self.soundCheckButton.setToolTip(self.tr("Test sound"))
+        self.soundCheckButton.setToolTip(self.tr("Play test sounds"))
+        self.soundCheckButton.setWhatsThis(self.tr("Play some test sounds to check that audio output is working OK."))
         self.def_widg_sizer.addWidget(self.soundCheckButton, n, 3)
         #EXPERIMENT LABEL
         n = n+1
@@ -284,6 +285,7 @@ class pychControlWin(QMainWindow):
         self.instructionsLabel = QLabel(self.tr('Instructions:'), self)
         self.def_widg_sizer.addWidget(self.instructionsLabel, n, 0)
         self.instructionsTF = QTextEdit()
+        self.instructionsTF.setWhatsThis(self.tr("Set the instructions to be shown to the participant for the current block."))
         self.instructionsTF.setMaximumHeight(60)
         self.def_widg_sizer.addWidget(self.instructionsTF, n, 1, 1, 3)
         #SHOW INSTRUCTIONS AT
@@ -311,20 +313,24 @@ class pychControlWin(QMainWindow):
         n = n+1
         #PROC RES
         self.procResCheckBox = QCheckBox(self.tr('Proc. Res.'))
+        self.procResCheckBox.setWhatsThis(self.tr("If checked, and if the procedure supports it the plain text results will be automatically processed at the end of the session. Does not work if different procedures are mixed within a session"))
         self.def_widg_sizer.addWidget(self.procResCheckBox, n, 0)
         #PROC RES TABLE
         self.procResTableCheckBox = QCheckBox(self.tr('Proc. Res. Table'))
+        self.procResTableCheckBox.setWhatsThis(self.tr("If checked, and if the procedure supports it the tabular results will be automatically processed at the end of the session. Does not work if different procedures are mixed within a session"))
         self.procResTableCheckBox.stateChanged[int].connect(self.toggleResTableCheckBox)
         self.def_widg_sizer.addWidget(self.procResTableCheckBox, n, 1)
         n = n+1
         #PLOT
         self.winPlotCheckBox = QCheckBox(self.tr('Plot'))
+        self.winPlotCheckBox.setWhatsThis(self.tr("If checked, and if the procedure supports it the results will be automatically plotted in a window at the end of the session. Does not work if different procedures are mixed within a session"))
         self.winPlotCheckBox.stateChanged[int].connect(self.toggleWinPlotCheckBox)
         self.def_widg_sizer.addWidget(self.winPlotCheckBox, n, 0)
         if self.prm['appData']['plotting_available'] == False:
             self.winPlotCheckBox.hide()
         #PDF PLOT
         self.pdfPlotCheckBox = QCheckBox(self.tr('PDF Plot'))
+        self.pdfPlotCheckBox.setWhatsThis(self.tr("If checked, and if the procedure supports it the results will be automatically plotted in a pdf file at the end of the session. Does not work if different procedures are mixed within a session"))
         self.pdfPlotCheckBox.stateChanged[int].connect(self.togglePdfPlotCheckBox)
         self.def_widg_sizer.addWidget(self.pdfPlotCheckBox, n, 1)
         if self.prm['appData']['plotting_available'] == False:
@@ -346,6 +352,7 @@ class pychControlWin(QMainWindow):
         self.experimentLabel =  QLabel(self.tr("Experiment:"), self)
         self.def_widg_sizer.addWidget(self.experimentLabel, n, 0)
         self.experimentChooser = QComboBox()
+        self.experimentChooser.setWhatsThis(self.tr("Choose the experiment for the current block."))
         self.experimentChooser.addItems(self.prm["experimentsChoices"])
         self.def_widg_sizer.addWidget(self.experimentChooser, n, 1)
         self.experimentChooser.activated[str].connect(self.onExperimentChange)
@@ -356,6 +363,7 @@ class pychControlWin(QMainWindow):
         self.paradigmChooser = QComboBox()
         self.paradigmChooser.addItems(self.prm[self.tr('Audiogram')]['paradigmChoices'])
         self.paradigmChooser.setCurrentIndex(1)
+        self.paradigmChooser.setWhatsThis(self.tr("Choose the paradigm for the current block."))
         self.def_widg_sizer.addWidget(self.paradigmChooser, n, 1)
         self.paradigmChooser.activated[str].connect(self.onParadigmChange)
         #PHONES
@@ -365,6 +373,7 @@ class pychControlWin(QMainWindow):
         self.phonesChooser = QComboBox()
         self.phonesChooser.addItems(self.prm['phones']['phonesChoices'])
         self.phonesChooser.setCurrentIndex(self.prm['phones']['defaultPhones'].index("\u2713"))
+        self.phonesChooser.setWhatsThis(self.tr("Choose the phones used in the current session. This calibrates sound levels if the phones have been registered in the phones database (see manual)."))
         self.def_widg_sizer.addWidget(self.phonesChooser, n, 1)
         #SAMPLING RATE
         n = n+1
@@ -373,6 +382,7 @@ class pychControlWin(QMainWindow):
         self.sampRateTF = QLineEdit()
         self.sampRateTF.setText(self.prm["pref"]["sound"]["defaultSampleRate"])
         self.sampRateTF.setValidator(QIntValidator(self))
+        self.sampRateTF.setWhatsThis(self.tr("Set the sample rate for the current session. Sample rate chosen must be supported by your soundcard"))
         self.def_widg_sizer.addWidget(self.sampRateTF, n, 1)
         self.prm['sampRate'] =  self.currLocale.toInt(self.sampRateTF.text())[0]
         self.sampRateTF.editingFinished.connect(self.audioManager.initializeAudio)
@@ -382,6 +392,7 @@ class pychControlWin(QMainWindow):
         self.def_widg_sizer.addWidget(self.nBitsLabel, n, 0)
         self.nBitsChooser = QComboBox()
         self.nBitsChooser.addItems(self.prm["nBitsChoices"])
+        self.nBitsChooser.setWhatsThis(self.tr("Choose the bit depth for the current session. The bit depth chosen must be supported by your soundcard and the playing method chosen in the sound preferences (see manual)"))
         self.nBitsChooser.setCurrentIndex(self.prm["nBitsChoices"].index(self.prm["pref"]["sound"]["defaultNBits"])) 
         self.def_widg_sizer.addWidget(self.nBitsChooser, n, 1)
         self.nBitsChooser.activated[str].connect(self.audioManager.initializeAudio)
@@ -394,7 +405,7 @@ class pychControlWin(QMainWindow):
         self.repetitionsTF = QLineEdit()
         self.repetitionsTF.setText('1')
         self.repetitionsTF.setValidator(QIntValidator(self))
-        self.repetitionsTF.setWhatsThis(self.tr("Sets the number of times the series of blocks is repeated"))
+        self.repetitionsTF.setWhatsThis(self.tr("Sets the number of times the series of blocks will be repeated."))
         self.def_widg_sizer.addWidget(self.repetitionsTF, n, 1)
         #PRE-TRIAL Silence
         n = n+1
@@ -412,6 +423,7 @@ class pychControlWin(QMainWindow):
         self.warningIntervalChooser.addItems([self.tr("Yes"), self.tr("No")])
         self.warningIntervalChooser.setCurrentIndex(self.warningIntervalChooser.findText(self.tr("No")))
         self.warningIntervalChooser.activated[str].connect(self.onWarningIntervalChange)
+        self.warningIntervalChooser.setWhatsThis(self.tr("Should a warning interval be presented at the beginning of each trial?"))
         self.def_widg_sizer.addWidget(self.warningIntervalLabel, n, 0)
         self.def_widg_sizer.addWidget(self.warningIntervalChooser, n, 1)
         n = n+1
@@ -440,6 +452,7 @@ class pychControlWin(QMainWindow):
         self.def_widg_sizer.addWidget(self.intervalLightsLabel, n, 0)
         self.intervalLightsChooser = QComboBox()
         self.intervalLightsChooser.addItems([self.tr("Yes"), self.tr("No")])
+        self.intervalLightsChooser.setWhatsThis(self.tr("Should interval lights be shown in the response box for the current block?"))
         self.intervalLightsChooser.setCurrentIndex(self.intervalLightsChooser.findText(self.prm['intervalLights']))
         self.def_widg_sizer.addWidget(self.intervalLightsChooser, n, 1)
         self.intervalLightsChooser.activated[str].connect(self.onIntervalLightsChange)
@@ -456,6 +469,7 @@ class pychControlWin(QMainWindow):
         self.saveResultsButton.setIcon(QIcon.fromTheme("document-save", QIcon(":/document-save")))
         self.saveResultsButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.saveResultsButton.setToolTip(self.tr("Choose file to save results"))
+        self.saveResultsButton.setWhatsThis(self.tr("Choose where to save the result files"))
         self.def_widg_sizer.addWidget(self.saveResultsButton, n, 1, 1, 1)
         #Additional Widgets
         self.add_widg_sizer = QGridLayout()
@@ -2397,8 +2411,8 @@ class pychControlWin(QMainWindow):
         # self.responseModeChooser.addItems(self.prm['responseModeChoices'])
         if self.currParadigm in [self.tr("UML")]:
             n = 0
-            priorOptions = ["Uniform", "Normal"]
-            psyFunOptions = ["Logistic", "Gaussian", "Weibull"]
+            priorOptions = [self.tr("Uniform"), self.tr("Normal")]
+            psyFunOptions = [self.tr("Logistic"), self.tr("Gaussian"), self.tr("Weibull")]
             # n = n+1
             self.psyFunChooserLabel = QLabel(self.tr("Psychometric Function:"), self)
             self.paradigm_widg_sizer.addWidget(self.psyFunChooserLabel, n, 1)
@@ -2686,10 +2700,10 @@ class pychControlWin(QMainWindow):
                                                priorOptions,
                                                priorOptions,
                                                psyFunOptions,
-                                               ["Mean", "Mode"],
-                                               ["Linear", "Logarithmic"],
-                                               ["Linear", "Logarithmic"],
-                                               ["Linear", "Logarithmic"]]
+                                               [self.tr("Mean"), self.tr("Mode")],
+                                               [self.tr("Linear"), self.tr("Logarithmic")],
+                                               [self.tr("Linear"), self.tr("Logarithmic")],
+                                               [self.tr("Linear"), self.tr("Logarithmic")]]
             self.paradigmChooserCheckBoxList = [self.threshPriorChooserCheckBox,
                                                 self.slopePriorChooserCheckBox,
                                                 self.lapsePriorChooserCheckBox,
@@ -3199,7 +3213,6 @@ class pychControlWin(QMainWindow):
         self.onChooserChange(None)
         self.responseBox.setupLights()
 
-
     def onClickSaveResultsButton(self):
         ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), "", QFileDialog.DontConfirmOverwrite)[0]
         if len(ftow) > 0:
@@ -3213,7 +3226,6 @@ class pychControlWin(QMainWindow):
 
             self.statusBar().showMessage(self.tr('Saving results to file: ') + self.prm["resultsFile"])
            
-
     def onClickStoreParametersButton(self):
         currExp =  self.tr(self.experimentChooser.currentText())
         currParadigm = self.tr(self.paradigmChooser.currentText())
