@@ -537,7 +537,7 @@ class responseBox(QMainWindow):
             self.blockGauge.hide()
 
     def onClickStatusButton(self):
-        print(self.statusButton.text())
+        #print(self.statusButton.text())
         if self.prm['storedBlocks'] == 0 or self.statusButton.text() in [self.prm['rbTrans'].translate("rb", "Running"), "&"+self.prm['rbTrans'].translate("rb", "Running")] or self.statusButton.text() in [self.prm['rbTrans'].translate("rb", "Finished"), "&" + self.prm['rbTrans'].translate("rb", "Finished")]:
             return
         self.parent().compareGuiStoredParameters()
@@ -1036,11 +1036,11 @@ class responseBox(QMainWindow):
                                            self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                            self.prm[currBlock]['psyListLapse'])
                 elif self.prm[currBlock]['psyListFunFit'] == "Logarithmic":
-                    print(self.prm['adaptiveDifference'])
-                    print(self.prm[currBlock]['psyListMidpoint'])
-                    print(self.prm[currBlock]['psyListSlope'])
-                    print(1/self.prm[currBlock]['nAlternatives'])
-                    print(self.prm[currBlock]['psyListLapse'])
+                    # print(self.prm['adaptiveDifference'])
+                    # print(self.prm[currBlock]['psyListMidpoint'])
+                    # print(self.prm[currBlock]['psyListSlope'])
+                    # print(1/self.prm[currBlock]['nAlternatives'])
+                    # print(self.prm[currBlock]['psyListLapse'])
                     probCorr = logisticPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
                                            self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                            self.prm[currBlock]['psyListLapse'])
@@ -2828,10 +2828,10 @@ class responseBox(QMainWindow):
         if self.trialCount[self.prm['currentDifference']] == self.prm['nTrials']:
             self.prm['differenceChoices'].remove(self.currentDifferenceName)
 
-        print('Trial Count:', self.trialCount)
-        print('Trial Count All:', self.trialCountAll)
-        print('Difference Choices:', self.prm['differenceChoices'])
-        print(self.currentDifferenceName)
+        # print('Trial Count:', self.trialCount)
+        # print('Trial Count All:', self.trialCountAll)
+        # print('Difference Choices:', self.prm['differenceChoices'])
+        # print(self.currentDifferenceName)
 
         if len(self.prm['differenceChoices']) == 0:
             totalCorrectCount = {}
@@ -3011,10 +3011,10 @@ class responseBox(QMainWindow):
         if self.trialCount[self.prm['currentDifference']] == self.prm['nTrials']:
             self.prm['differenceChoices'].remove(self.currentDifferenceName)
 
-        print('Trial Count:', self.trialCount)
-        print('Trial Count All:', self.trialCountAll)
-        print('Difference Choices:', self.prm['differenceChoices'])
-        print(self.currentDifferenceName)
+        # print('Trial Count:', self.trialCount)
+        # print('Trial Count All:', self.trialCountAll)
+        # print('Difference Choices:', self.prm['differenceChoices'])
+        # print(self.currentDifferenceName)
 
         if len(self.prm['differenceChoices']) == 0:
             totalCorrectCount = {}
@@ -3396,7 +3396,7 @@ class responseBox(QMainWindow):
                                                              1/self.prm[currBlock]['nAlternatives'],
                                                              self.prm['psyFunLapseRate'])[0])
             
-        print(self.prm['adaptiveDifference'])
+        #print(self.prm['adaptiveDifference'])
         self.trialCount = self.trialCount +1
 
         self.fullFileLog.flush()
@@ -3615,9 +3615,9 @@ class responseBox(QMainWindow):
         else:
             self.PSI = PSI_update(self.PSI, response)
             self.prm['adaptiveDifference'] = self.PSI["xnextLinear"]
-            print("Est. thresh: " + str(self.PSI['est_midpoint']))  
-            print('Next Stim: ' + str(self.prm['adaptiveDifference']))
-            print(self.PSI["phi"])
+            # print("Est. thresh: " + str(self.PSI['est_midpoint']))  
+            # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
+            # print(self.PSI["phi"])
             self.doTrial()
 
     def sortResponseUML(self, buttonClicked):
@@ -3783,9 +3783,9 @@ class responseBox(QMainWindow):
         else:
             self.UML = UML_update(self.UML, response)
             self.prm['adaptiveDifference'] = self.UML["xnextLinear"]
-            print("Est. thresh: " + str(self.UML['est_midpoint']))  
-            print('Next Stim: ' + str(self.prm['adaptiveDifference']))
-            print(self.UML["phi"])
+            # print("Est. thresh: " + str(self.UML['est_midpoint']))  
+            # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
+            # print(self.UML["phi"])
             self.doTrial()
             
     def sortResponseMultipleConstantsOddOneOut(self, buttonClicked):
