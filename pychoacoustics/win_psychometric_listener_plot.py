@@ -196,27 +196,18 @@ class psychListenerPlot(QMainWindow):
         self.ax.set_xlabel("Stimulus Strength")
         self.ax.set_ylabel("Probability of correct response")
     def toggleGrid(self, state):
-        self.ax.grid(True)
         if self.gridOn.isChecked():
             self.ax.grid(True)#True, color=self.gridColor, linewidth=self.gridLineWidth)
             self.ax.grid(True, 'minor', linewidth=0.6)#True, color=self.gridColor, linewidth=self.gridLineWidth)
-            try:
-                self.ax2.grid(True)#True, color=self.gridColor, linewidth=self.gridLineWidth)
-                self.ax2.grid(True, 'minor', linewidth=0.6)#True, color=self.gridColor, linewidth=self.gridLineWidth)
-            except:
-                pass
         else:
             self.ax.grid(False)
             self.ax.grid(False, 'minor')
-            try:
-                self.ax2.grid(False)
-                self.ax2.grid(False, 'minor')
-            except:
-                pass
+        
 
         self.canvas.draw()
 
     def onClickUpdateButton(self):
         self.getPsyFun()
         self.plotData()
+        self.toggleGrid(0)
         self.canvas.draw()

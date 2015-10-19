@@ -386,7 +386,7 @@ def dprime_yes_no_from_counts(nCA, nTA, nCB, nTB, corr):
 
 def logisticPsy(x, alphax, betax, gammax, lambdax):
     """
-    Compute the logistic function
+    Compute the logistic psychometric function.
 
     Parameters
     ----------
@@ -400,6 +400,12 @@ def logisticPsy(x, alphax, betax, gammax, lambdax):
         Lower limit of the psychometric function.
     lambdax:
         The lapse rate.
+
+    Returns
+    -------
+    pc :
+         Percent correct at the stimulus level(s)
+         in `x`.
     
     """
     
@@ -408,7 +414,7 @@ def logisticPsy(x, alphax, betax, gammax, lambdax):
 
 def invLogisticPsy(p, alphax, betax, gammax, lambdax):
     """
-    Compute the inverse of the logistic function
+    Compute the inverse of the logistic function.
 
     Parameters
     ----------
@@ -422,6 +428,12 @@ def invLogisticPsy(p, alphax, betax, gammax, lambdax):
         Lower limit of the psychometric function.
     lambdax:
         The lapse rate.
+
+    Returns
+    -------
+    x :
+         Stimulus level at which percent correct equals `p`
+         for the listener specified by the function.
     
     """
 

@@ -114,9 +114,10 @@ class responseBox(QMainWindow):
         self.executerThread = commandExecuter(self)
         self.playThread = threadedPlayer(self)
         self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowMaximizeButtonHint)
+        #self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowMaximizeButtonHint | QtCore.Qt.WindowSystemMenuHint) 
         self.setWindowModality(Qt.NonModal)
         self.prm = parent.prm
-        self.audioManager = parent.audioManager#(self)
+        self.audioManager = parent.audioManager
         self.currLocale = self.parent().prm['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         self.setWindowTitle(self.tr('Response Box'))
@@ -3476,7 +3477,7 @@ class responseBox(QMainWindow):
             gammax = 1/self.prm[currBlock]['nAlternatives']
                     
             self.PSI = setupPSI(model=self.prm['psyFunType'], x0=self.prm['adaptiveDifference'], xLim=(self.prm['stimLo'], self.prm['stimHi']), xStep=self.prm['stimStep'], stimScale=self.prm['stimScale'],
-                                alphaLim=(self.prm['loMidPoint'],self.prm['hiMidPoint']), alphaStep=self.prm['midPointStep'], alphaSpacing="Linear",
+                                alphaLim=(self.prm['loMidPoint'], self.prm['hiMidPoint']), alphaStep=self.prm['midPointStep'], alphaSpacing="Linear",
                                 alphaDist=self.prm['midPointPrior'], alphaMu=self.prm['slopePriorMu'], alphaSTD=self.prm['slopePriorSTD'],
                                 betaLim=(self.prm['loSlope'],self.prm['hiSlope']), betaStep=self.prm['slopeStep'], betaSpacing=self.prm['slopeSpacing'],
                                 betaDist=self.prm['slopePrior'], betaMu=self.prm['slopePriorMu'], betaSTD=self.prm['slopePriorSTD'],

@@ -76,6 +76,7 @@ def setupUML(model="Logistic", nDown=2, centTend="Mean", stimScale="Linear", x0=
     UML["par"]["lambda"]["std"] = lambdaSTD
 
     if stimScale == "Logarithmic":
+        UML["par"]["x0"] = log(x0)
         UML["par"]["x"]["limits"] = log(xLim)
         UML["par"]["alpha"]["limits"] = log(alphaLim)
         UML["par"]["alpha"]["step"] = log(alphaStep)
@@ -85,7 +86,7 @@ def setupUML(model="Logistic", nDown=2, centTend="Mean", stimScale="Linear", x0=
 
     UML = setP0(UML)
     UML["x"] = np.array([])
-    UML["xnext"] = copy.copy(x0)
+    UML["xnext"] = copy.copy(UML["par"]["x0"])
     UML["r"] = np.array([])
     #UML["phi"] = np.array([])
     UML["n"] = 0

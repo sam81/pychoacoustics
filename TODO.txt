@@ -6,7 +6,9 @@ High priority:
 - write tests, for example the output of sound generating functions could be compared to stored numpy arrays, the output of procedures could be fixed with set seed and compared with result files
 - Check bug with repetitions and automatic mode
 - Add tools to fit psychometric functions (pystan or pymc)
-- add command line option to hide all windows (useful for tests)
+- add command line option to hide all windows (useful for tests, currently best alternative is the commandline option to minimize windows)
+- add UML random sweetpoint selection option
+- Make PSI procedure faster (try 4-D PSI["p"])
 
 Medium priority:
 
@@ -17,6 +19,7 @@ Medium priority:
 - Figure out way to add instructions at the beginning of a task
 - Correct/Incorrect and smiley feedback options. Also, add the ability to change color of feedback lights.
 - Write 'what's this' and tooltips for all widgets. The 'what's this' are currently written for the text fields, choosers etc. Copy them also for the text field labels, chooser labels, etc...
+- Add PySoundFile https://github.com/bastibe/PySoundFile as wav manager option.
 
 Low priority:
 

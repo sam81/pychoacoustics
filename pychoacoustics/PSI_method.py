@@ -27,12 +27,13 @@ from scipy.special import erf
 from .pysdt import*
 
 
-def setupPSI(model="Logistic", stimScale="Linear", x0=None, xLim=(-10, 10), xStep=1, 
-             alphaLim=(-10,10), alphaStep=1, alphaSpacing="Linear", alphaDist="Uniform", alphaMu=0, alphaSTD=20,
-             betaLim=(0.1,10), betaStep=0.1, betaSpacing="Linear", betaDist="Uniform", betaMu=1, betaSTD=2,
-             gamma=0.5,
-             lambdaLim=(0,0.2), lambdaStep=0.01, lambdaSpacing="Linear", lambdaDist="Uniform", lambdaMu=0, lambdaSTD=0.1,
-             marginalize = None):
+def setupPSI(model="Logistic", stimScale="Linear", x0=None, xLim=(-10, 10),
+             xStep=1, alphaLim=(-10,10), alphaStep=1, alphaSpacing="Linear",
+             alphaDist="Uniform", alphaMu=0, alphaSTD=20, betaLim=(0.1,10),
+             betaStep=0.1, betaSpacing="Linear", betaDist="Uniform", betaMu=1,
+             betaSTD=2, gamma=0.5, lambdaLim=(0,0.2), lambdaStep=0.01,
+             lambdaSpacing="Linear", lambdaDist="Uniform", lambdaMu=0,
+             lambdaSTD=0.1, marginalize = None):
 
     
     PSI = {}

@@ -5,4 +5,4 @@ This builds the source package to be uploaded in Ubuntu Launchpad
 run `launchpad_build.py`
 input ppa revision number (0, 1, 2, etc...), input distro series ('trusty', 'vivid', etc...) remember to put in it quotes. The gpg signing key needs to be in the home directory. If the build is successful it can be uploaded on Launchpad with:
 
-    dput ppa:samuele-carcagno/pychoacoustics <source.changes>
+    dput ppa:samuele-carcagno/hearinglab <source.changes>

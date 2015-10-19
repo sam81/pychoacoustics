@@ -617,7 +617,8 @@ class pychControlWin(QMainWindow):
         self.deleteParametersButton.clicked.connect(self.onClickDeleteParametersButton)
         self.deleteParametersButton.setIcon(QIcon.fromTheme("edit-delete", QIcon(":/edit-delete")))
         self.deleteParametersButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
-        self.deleteParametersButton.setToolTip(self.tr("Delete current Block"))
+        self.deleteParametersButton.setToolTip(self.tr("Delete current block"))
+        self.deleteParametersButton.setWhatsThis(self.tr("Delete the current block of trials."))
         self.deleteParametersButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.pw_buttons_sizer.addWidget(self.deleteParametersButton, n, 2)
 
@@ -627,6 +628,7 @@ class pychControlWin(QMainWindow):
         self.undoUnsavedButton.setIcon(QIcon.fromTheme("edit-undo", QIcon(":/edit-undo")))
         self.undoUnsavedButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.undoUnsavedButton.setToolTip(self.tr("Undo unsaved changes"))
+        self.undoUnsavedButton.setWhatsThis(self.tr("Undo changes in the current block that have not yet been stored in memory."))
         self.undoUnsavedButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.pw_buttons_sizer.addWidget(self.undoUnsavedButton, n, 3)
 
@@ -636,19 +638,22 @@ class pychControlWin(QMainWindow):
         self.storeParametersButton.clicked.connect(self.onClickStoreParametersButton)
         self.storeParametersButton.setIcon(QIcon.fromTheme("media-flash-memory-stick", QIcon(":/media-flash-memory-stick")))
         self.storeParametersButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
-        self.storeParametersButton.setToolTip(self.tr("Store current Block"))
+        self.storeParametersButton.setToolTip(self.tr("Store parameters in memory"))
+        self.storeParametersButton.setWhatsThis(self.tr("Store parameters in memory."))
         self.storeParametersButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.pw_buttons_sizer.addWidget(self.storeParametersButton, n, 0)
 
         self.storeandaddParametersButton = QPushButton(self.tr("Store 'n' add!"), self)
         self.storeandaddParametersButton.clicked.connect(self.onClickStoreandaddParametersButton)
-        self.storeandaddParametersButton.setToolTip(self.tr("Store current Block and add a new one"))
+        self.storeandaddParametersButton.setToolTip(self.tr("Store parameters in memory and add a new block"))
+        self.storeandaddParametersButton.setWhatsThis(self.tr("Store parameters in memory and add a new block."))
         self.storeandaddParametersButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.pw_buttons_sizer.addWidget(self.storeandaddParametersButton, n, 1)
         
         self.storeandgoParametersButton = QPushButton(self.tr("Store 'n' go!"), self)
         self.storeandgoParametersButton.clicked.connect(self.onClickStoreandgoParametersButton)
-        self.storeandgoParametersButton.setToolTip(self.tr("Store current Block and move to the next"))
+        self.storeandgoParametersButton.setToolTip(self.tr("Store parameters and go to the next block"))
+        self.storeandgoParametersButton.setWhatsThis(self.tr("Store parameters and go to the next block"))
         self.storeandgoParametersButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.pw_buttons_sizer.addWidget(self.storeandgoParametersButton, n, 2)
 
@@ -657,6 +662,7 @@ class pychControlWin(QMainWindow):
         self.newBlockButton.setIcon(QIcon.fromTheme("document-new", QIcon(":/document-new")))
         self.newBlockButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.newBlockButton.setToolTip(self.tr("Append a new block"))
+        self.newBlockButton.setWhatsThis(self.tr("Append a new block."))
         self.newBlockButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.pw_buttons_sizer.addWidget(self.newBlockButton, n, 3)
 
@@ -670,6 +676,7 @@ class pychControlWin(QMainWindow):
         self.prevBlockButton.setIcon(QIcon.fromTheme("go-previous", QIcon(":/go-previous")))
         self.prevBlockButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.prevBlockButton.setToolTip(self.tr("Move to previous block"))
+        self.prevBlockButton.setWhatsThis(self.tr("Move to previous block."))
         self.prevBlockButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.pw_buttons_sizer.addWidget(self.prevBlockButton, n, 0)
 
@@ -678,6 +685,7 @@ class pychControlWin(QMainWindow):
         self.nextBlockButton.setIcon(QIcon.fromTheme("go-next", QIcon(":/go-next")))
         self.nextBlockButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.nextBlockButton.setToolTip(self.tr("Move to next block"))
+        self.nextBlockButton.setWhatsThis(self.tr("Move to next block."))
         self.nextBlockButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.pw_buttons_sizer.addWidget(self.nextBlockButton, n, 1)
 
@@ -686,6 +694,7 @@ class pychControlWin(QMainWindow):
         self.shuffleBlocksButton.setIcon(QIcon.fromTheme("media-playlist-shuffle", QIcon(":/media-playlist-shuffle")))
         self.shuffleBlocksButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.shuffleBlocksButton.setToolTip(self.tr("Shuffle blocks"))
+        self.shuffleBlocksButton.setWhatsThis(self.tr("Shuffle the blocks."))
         self.shuffleBlocksButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.pw_buttons_sizer.addWidget(self.shuffleBlocksButton, n, 2)
 
@@ -694,6 +703,7 @@ class pychControlWin(QMainWindow):
         self.resetParametersButton.setIcon(QIcon.fromTheme("go-home", QIcon(":/go-home")))
         self.resetParametersButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.resetParametersButton.setToolTip(self.tr("Reset parameters"))
+        self.resetParametersButton.setWhatsThis(self.tr("Reset the parameters."))
         self.resetParametersButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.pw_buttons_sizer.addWidget(self.resetParametersButton, n, 3)
         n = n+1
@@ -724,6 +734,8 @@ class pychControlWin(QMainWindow):
         self.jumpToBlockLabel = QLabel(self.tr("Jump to Block:"))
         self.jumpToBlockChooser = QComboBox()
         self.jumpToBlockChooser.activated[str].connect(self.onJumpToBlockChange)
+        self.jumpToBlockChooser.setToolTip(self.tr("Jump to a given block"))
+        self.jumpToBlockChooser.setWhatsThis(self.tr("Jump to a given block."))
         self.pw_buttons_sizer.addWidget(self.jumpToBlockLabel, n, 2)
         self.pw_buttons_sizer.addWidget(self.jumpToBlockChooser, n, 3)
         # SIXTH ROW
@@ -732,17 +744,21 @@ class pychControlWin(QMainWindow):
         self.prevBlockPositionButton.clicked.connect(self.onClickPrevBlockPositionButton)
         self.prevBlockPositionButton.setIcon(QIcon.fromTheme("go-previous", QIcon(":/go-previous")))
         self.prevBlockPositionButton.setToolTip(self.tr("Move to previous block position"))
+        self.prevBlockPositionButton.setWhatsThis(self.tr("Move to previous block position."))
         self.pw_buttons_sizer.addWidget(self.prevBlockPositionButton, n, 0)
 
         self.nextBlockPositionButton = QPushButton(self.tr("Next Position"), self)
         self.nextBlockPositionButton.clicked.connect(self.onClickNextBlockPositionButton)
         self.nextBlockPositionButton.setIcon(QIcon.fromTheme("go-next", QIcon(":/go-next")))
         self.nextBlockPositionButton.setToolTip(self.tr("Move to next block position"))
+        self.nextBlockPositionButton.setWhatsThis(self.tr("Move to next block position."))
         self.pw_buttons_sizer.addWidget(self.nextBlockPositionButton, n, 1)
 
         self.jumpToPositionLabel = QLabel(self.tr("Jump to Position:"))
         self.jumpToPositionChooser = QComboBox()
         self.jumpToPositionChooser.activated[str].connect(self.onJumpToPositionChange)
+        self.jumpToPositionChooser.setToolTip(self.tr("Jump to a given block position."))
+        self.jumpToPositionChooser.setWhatsThis(self.tr("Jump to a given block position."))
         self.pw_buttons_sizer.addWidget(self.jumpToPositionLabel, n, 2)
         self.pw_buttons_sizer.addWidget(self.jumpToPositionChooser, n, 3)
 
@@ -750,12 +766,14 @@ class pychControlWin(QMainWindow):
         n = n+1
         self.shiftBlockDownButton = QPushButton(self.tr("< Shift Blk. Down"), self)
         self.shiftBlockDownButton.clicked.connect(self.onClickShiftBlockDownButton)
-        self.shiftBlockDownButton.setToolTip(self.tr("Shift Block. Down"))
+        self.shiftBlockDownButton.setToolTip(self.tr("Shift Block Down"))
+        self.shiftBlockDownButton.setWhatsThis(self.tr("Shift block down."))
         self.pw_buttons_sizer.addWidget(self.shiftBlockDownButton, n, 2)
 
         self.shiftBlockUpButton = QPushButton(self.tr("Shift Blk. Up >"), self)
         self.shiftBlockUpButton.clicked.connect(self.onClickShiftBlockUpButton)
         self.shiftBlockUpButton.setToolTip(self.tr("Shift Block Up"))
+        self.shiftBlockUpButton.setWhatsThis(self.tr("Shift block up."))
         self.pw_buttons_sizer.addWidget(self.shiftBlockUpButton, n, 3)
         
         
@@ -2212,7 +2230,7 @@ class pychControlWin(QMainWindow):
             self.loLapseLabel = QLabel(self.tr("Lapse Min"), self)
             self.paradigm_widg_sizer.addWidget(self.loLapseLabel, n, 1)
             self.loLapse = QLineEdit()
-            self.loLapse.setText('0.01')
+            self.loLapse.setText('0')
             self.loLapse.setValidator(QDoubleValidator(self))
             self.paradigm_widg_sizer.addWidget(self.loLapse, n, 2)
             self.loLapseCheckBox = QCheckBox()
@@ -2620,7 +2638,7 @@ class pychControlWin(QMainWindow):
             self.loLapseLabel = QLabel(self.tr("Lapse Min"), self)
             self.paradigm_widg_sizer.addWidget(self.loLapseLabel, n, 1)
             self.loLapse = QLineEdit()
-            self.loLapse.setText('0.01')
+            self.loLapse.setText('0')
             self.loLapse.setValidator(QDoubleValidator(self))
             self.paradigm_widg_sizer.addWidget(self.loLapse, n, 2)
             self.loLapseCheckBox = QCheckBox()

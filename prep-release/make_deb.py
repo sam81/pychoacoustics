@@ -7,12 +7,11 @@ pparev = input("ppa revision number: ")
 pparev = '-ppa'+str(pparev)
 
 series = os.popen("lsb_release -c").read().split('\t')[1].strip() #input("distro series: ")
-publish = input("publish ('yes'/'no'?: ")
-
+#series = os.popen("cat /etc/debian_version").read().split('/')[0].strip() #input("distro series: ")
+publish = input("publish ('y'/'n')?: ")
 package = "pychoacoustics"
 architecture = os.popen("dpkg --print-architecture").read().strip()
 component = "main"
-
 
 thisDir = os.getcwd()
 #get current version number from setup.py
@@ -74,8 +73,10 @@ origdebname = package + "_" + ver +  "_" + architecture + ".deb"
 debname = package + "_" + ver + pparev + "~" + series + "_" + architecture + ".deb"
 os.system("mv" + " " + origdebname + " " + debname)
 
-if publish == 1 or publish == "yes":
-
+if publish == 1 or publish == "y":
+    print("###############################")
+    print("Publishing")
+    print("###############################")
     API_KEY = os.environ["BINTRAY_API_KEY"]
 
     USERNAME = "sam81"
@@ -98,4 +99,8 @@ if publish == 1 or publish == "yes":
         print("#####################\n Upload successful!")
     else:
         print("#####################\n Upload Unsuccessful.")
+else:
+    print("###############################")
+    print("Not Publishing")
+    print("###############################")
     
