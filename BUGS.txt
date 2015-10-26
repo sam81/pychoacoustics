@@ -1,8 +1,0 @@
-KNOWN BUGS
-
-- When the control window is hidden, a dialog box sometimes causes a crash
-- Closing the edit preferences window when sending the test e-mail may cause a crash.
-This is related to misuse of qthread. As a workaround, when sending a test e-mail, please
-wait a few seconds before closing the preferences dialog.
-
-

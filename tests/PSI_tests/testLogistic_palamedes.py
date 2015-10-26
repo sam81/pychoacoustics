@@ -3,7 +3,8 @@ import numpy as np
 from virtual_observer import*
 sys.path.append(os.path.normpath('../../'))
 from pychoacoustics.PSI_method import*
-
+import time
+t1 = time.time()
 rootPath = "../../../pychoacoustics_data/test_data/PSI_method/results/"
 np.random.seed(seed=837849)
 runChecks = True
@@ -56,3 +57,5 @@ if runChecks == True:
           np.testing.assert_almost_equal(res_pyth, res_pal, decimal=decimalTol)
 
 
+t2 = time.time()
+print(t2-t1)

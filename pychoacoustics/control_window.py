@@ -71,6 +71,7 @@ from .dialog_edit_preferences import*
 from .dialog_edit_phones import*
 from .dialog_edit_experimenters import*
 from .dialog_process_results import*
+from .dialog_show_exp_doc import*
 from .dialog_show_fortune import*
 from .dialog_swap_blocks import*
 from .pysdt import*
@@ -764,6 +765,14 @@ class pychControlWin(QMainWindow):
 
         # SEVENTH ROW
         n = n+1
+
+        self.showExpDocButton = QPushButton(self.tr("Experiment Doc"), self)
+        self.showExpDocButton.setIcon(QIcon.fromTheme("help-contents", QIcon(":/help-contents")))
+        self.showExpDocButton.clicked.connect(self.onClickShowExpDocButton)
+        self.showExpDocButton.setToolTip(self.tr("Show doc for current experiment"))
+        self.showExpDocButton.setWhatsThis(self.tr("Show the documentation for the current experiment."))
+        self.pw_buttons_sizer.addWidget(self.showExpDocButton, n, 0)
+
         self.shiftBlockDownButton = QPushButton(self.tr("< Shift Blk. Down"), self)
         self.shiftBlockDownButton.clicked.connect(self.onClickShiftBlockDownButton)
         self.shiftBlockDownButton.setToolTip(self.tr("Shift Block Down"))
@@ -4305,7 +4314,13 @@ class pychControlWin(QMainWindow):
         
     def onClickShiftBlockUpButton(self):
         self.shiftBlock(self.prm['currentBlock'], 'up')
+
+    def onClickShowExpDocButton(self):
         
+        thisDoc = eval(self.prm[self.currExp]['execString']+".__doc__")
+        winTitle = self.currExp
+        dialog = showExpDocDialog(self, thisDoc, winTitle)
+
     def onChangeNDifferences(self):
         nDifferences = self.currLocale.toInt(self.nDifferencesChooser.currentText())[0]
         self.removePrmWidgets()

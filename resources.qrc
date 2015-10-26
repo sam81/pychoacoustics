@@ -20,6 +20,7 @@
 <file alias="go-next">icons/go-next.svgz</file>
 <file alias="go-previous">icons/go-previous.svgz</file>
 <file alias="help-about">icons/help-about.svgz</file>
+<file alias="help-contents">icons/help-contents.svgz</file>
 <file alias="help-contextual">icons/help-contextual.svgz</file>
 <file alias="media-flash-memory-stick">icons/media-flash-memory-stick.svgz</file>
 <file alias="media-playback-start">icons/media-playback-start.svgz</file>

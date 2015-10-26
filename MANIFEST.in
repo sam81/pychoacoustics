@@ -7,7 +7,6 @@ include translations/*
 #include postinstall.py
 include INSTALL.txt
 include README.txt
-include BUGS.txt
 include pychoacoustics.desktop
 include x-prm.xml
 include COPYING.txt
