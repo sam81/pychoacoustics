@@ -6,7 +6,7 @@ include icons/*
 include translations/*
 #include postinstall.py
 include INSTALL.txt
-include README.txt
+include README.md
 include pychoacoustics.desktop
 include x-prm.xml
 include COPYING.txt
