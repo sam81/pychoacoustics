@@ -157,8 +157,8 @@ class audioManager():
                                               channels = nChannels,
                                               rate = fs,
                                               output = True,
-                                              input_device_index = self.prm["pref"]["sound"]["pyaudioDevice"],
-                                              output_device_index=None,
+                                              input_device_index = None,
+                                              output_device_index=self.prm["pref"]["sound"]["pyaudioDevice"],
                                               frames_per_buffer=bufferSize)
 
             for i in range(nSeg):

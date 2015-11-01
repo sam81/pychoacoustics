@@ -273,7 +273,7 @@ class responseBox(QMainWindow):
             nAlternatives = nIntervals
 
         screen = QDesktopWidget().screenGeometry()
-        if self.parent().currExp == self.tr("Coordinate Response Matrix"):
+        if self.parent().currExp == self.tr("Coordinate Response Measure"):
             self.statusButton.setMaximumSize(screen.width(), screen.height()/15)
             self.responseLight.setMaximumSize(screen.width(), screen.height()/10)
             self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))

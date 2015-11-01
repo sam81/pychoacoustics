@@ -831,7 +831,7 @@ class pychControlWin(QMainWindow):
             self.show()
 
         self.responseBox = responseBox(self)
-        self.responseBox.resize(int((1/4)*screen.width()), int((1/3)*screen.height()))
+        self.responseBox.resize(int((1/4)*screen.width()), int((1.1/3)*screen.height()))
         if self.prm['calledWithPrm'] == True:
             self.loadParameters(self.prm['prmFile'])
         if self.prm['calledWithReset'] == True:

@@ -522,7 +522,9 @@ def doTrial_F0DL(parent):
     parent.currF0 = F0
 
     corrF0 = F0 + (F0 * parent.prm['adaptiveDifference']) / 100
-    stretchHz = (corrF0*stretch)/100 
+    stretchHz = (corrF0*stretch)/100
+    print(F0)
+    print(corrF0)
     if fixSpectrumLevel == parent.tr("Yes") and harmType in [parent.tr("Sinusoid"), parent.tr("Narrowband Noise")]:
         corrHarmonicLevel = harmonicLevel + 10 * log10(corrF0/F0)
         corrSpectrumLevel = spectrumLevel + 10 * log10(corrF0/F0) #for narrowband noise
