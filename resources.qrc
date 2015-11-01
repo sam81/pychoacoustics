@@ -33,5 +33,8 @@
 <file alias="user-group-properties">icons/user-group-properties.svgz</file>
 <file alias="office-chart-line-stacked">icons/office-chart-line-stacked.svgz</file>
 <file alias="view-refresh">icons/view-refresh.svgz</file>
+<file alias="face-plain">icons/face-plain.svgz</file>
+<file alias="face-smile">icons/face-smile.svgz</file>
+<file alias="face-sad">icons/face-sad.svgz</file>
 </qresource>
 </RCC>

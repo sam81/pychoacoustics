@@ -20,8 +20,8 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
-    from PyQt4.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
-    from PyQt4.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QIntValidator, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
+    from PyQt4.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime, QRect
+    from PyQt4.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QIcon, QInputDialog, QIntValidator, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
     QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
     QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
     QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
@@ -34,8 +34,8 @@ if pyqtversion == 4:
         matplotlib_available = False
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
-    from PySide.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
-    from PySide.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QIntValidator, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
+    from PySide.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime, QRect
+    from PySide.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QIcon, QInputDialog, QIntValidator, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
     try:
         import matplotlib
         matplotlib_available = True
@@ -45,9 +45,9 @@ elif pyqtversion == -4:
         matplotlib_available = False
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
-    from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime
+    from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime, QRect
     from PyQt5.QtWidgets import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
-    from PyQt5.QtGui import QIntValidator, QPainter
+    from PyQt5.QtGui import QIcon, QIntValidator, QPainter
     try:
         import matplotlib
         matplotlib_available = True
@@ -747,6 +747,7 @@ class responseBox(QMainWindow):
         else:
             self.prm['altReps'] = 0
         self.prm["responseLight"] = self.prm[currBlock]['responseLight']
+        self.prm["responseLightType"] = self.prm[currBlock]['responseLightType']
 
         if self.prm['startOfBlock'] == True:
             self.getStartTime()
@@ -4052,6 +4053,7 @@ class responseBox(QMainWindow):
                 thisFile.write('Warning Interval Duration (ms): ' + self.currLocale.toString(self.prm[currBlock]['warningIntervalDur']) + '\n')
                 thisFile.write('Warning Interval ISI (ms): ' + self.currLocale.toString(self.prm[currBlock]['warningIntervalISI']) + '\n')
             thisFile.write('Response Light: ' + self.prm['responseLight'] + '\n')
+            thisFile.write('Response Light Type: ' + self.prm['responseLightType'] + '\n')
             thisFile.write('Response Light Duration (ms): ' + self.currLocale.toString(self.prm[currBlock]['responseLightDuration']) + '\n')
             if self.prm[self.parent().currExp]["hasISIBox"] == True:
                 thisFile.write('ISI:           ' + self.currLocale.toString(self.prm['isi']) + '\n')
@@ -4380,6 +4382,8 @@ class responseBox(QMainWindow):
                 
         if self.prm[currBlock]['responseLightCheckBox'] == True:
             headerToWrite = headerToWrite + 'Response Light' + self.prm['pref']["general"]["csvSeparator"]
+        if self.prm[currBlock]['responseLightTypeCheckBox'] == True:
+            headerToWrite = headerToWrite + 'Response Light Type' + self.prm['pref']["general"]["csvSeparator"]
         if self.prm[currBlock]['responseLightDurationCheckBox'] == True:
             headerToWrite = headerToWrite + 'Response Light Duration' + self.prm['pref']["general"]["csvSeparator"]
               
@@ -4537,6 +4541,8 @@ class responseBox(QMainWindow):
                 
         if self.prm[currBlock]['responseLightCheckBox'] == True:
             headerToWrite = headerToWrite + 'Response Light' + self.prm['pref']["general"]["csvSeparator"]
+        if self.prm[currBlock]['responseLightTypeCheckBox'] == True:
+            headerToWrite = headerToWrite + 'Response Light Type' + self.prm['pref']["general"]["csvSeparator"]
         if self.prm[currBlock]['responseLightDurationCheckBox'] == True:
             headerToWrite = headerToWrite + 'Response Light Duration' + self.prm['pref']["general"]["csvSeparator"]
               
@@ -4622,6 +4628,8 @@ class responseBox(QMainWindow):
        
         if self.prm[currBlock]['responseLightCheckBox'] == True:
             resLineToWrite = resLineToWrite + self.prm[currBlock]['responseLight'] + self.prm['pref']["general"]["csvSeparator"]
+        if self.prm[currBlock]['responseLightTypeCheckBox'] == True:
+            resLineToWrite = resLineToWrite + self.prm[currBlock]['responseLightType'] + self.prm['pref']["general"]["csvSeparator"]
 
         if self.prm[currBlock]['responseLightDurationCheckBox'] == True:
                 resLineToWrite = resLineToWrite + self.currLocale.toString(self.prm[currBlock]['responseLightDuration']) + self.prm['pref']["general"]["csvSeparator"]
@@ -4779,41 +4787,85 @@ class responseLight(QWidget):
                                        QSizePolicy.Expanding))
         self.borderColor = Qt.black
         self.lightColor = Qt.black
+        self.feedbackText = ""
+        self.responseLightType = self.tr("Light")#self.parent().parent().prm["responseLightType"]
+
+        self.correctSmiley = QIcon.fromTheme("face-smile", QIcon(":/face-smile"))
+        self.incorrectSmiley = QIcon.fromTheme("face-sad", QIcon(":/face-sad"))
+        self.neutralSmiley = QIcon.fromTheme("face-plain", QIcon(":/face-plain"))
+        self.offSmiley = QIcon() #create just a null icon
+        self.feedbackSmiley = self.offSmiley
     def giveFeedback(self, feedback):
+        currBlock = 'b'+ str(self.parent().parent().prm['currentBlock'])
+        self.responseLightType = self.parent().parent().prm[currBlock]['responseLightType']
         self.setStatus(feedback)
         self.parent().repaint()
         QApplication.processEvents()
-        currBlock = 'b'+ str(self.parent().parent().prm['currentBlock'])
-        time.sleep(self.parent().parent().prm[currBlock]['responseLightDuration']/1000.)
+        time.sleep(self.parent().parent().prm[currBlock]['responseLightDuration']/1000)
         self.setStatus('off')
         self.parent().repaint()
         QApplication.processEvents()
+        
     def setStatus(self, status):
-        if status == 'correct':
-            self.lightColor = Qt.green
-        elif status == 'incorrect':
-            self.lightColor = Qt.red
-        elif status == 'neutral':
-            self.lightColor = Qt.white
-        elif status == 'off':
+        if self.responseLightType == self.tr("Light"):
+            if status == 'correct':
+                self.lightColor = Qt.green
+            elif status == 'incorrect':
+                self.lightColor = Qt.red
+            elif status == 'neutral':
+                self.lightColor = Qt.white
+            elif status == 'off':
+                self.lightColor = Qt.black
+        elif self.responseLightType == self.tr("Text"):
             self.lightColor = Qt.black
+            if status == 'correct':
+                self.feedbackText = self.tr("CORRECT")
+            elif status == 'incorrect':
+                self.feedbackText = self.tr("INCORRECT")
+            elif status == 'neutral':
+                self.feedbackText = ""
+            elif status == 'off':
+                self.feedbackText = ""
+        elif self.responseLightType == self.tr("Smiley"):
+            self.lightColor = Qt.black
+            if status == 'correct':
+                self.feedbackSmiley = self.correctSmiley
+            elif status == 'incorrect':
+                self.feedbackSmiley = self.incorrectSmiley
+            elif status == 'neutral':
+                self.feedbackSmiley = self.neutralSmiley
+            elif status == 'off':
+                self.feedbackSmiley = self.offSmiley
+
     def paintEvent(self, event=None):
-        #ftype = "text"
-        #if ftype not in ["text"]:
-        painter = QPainter(self)
-        painter.setViewport(0,0,self.width(),self.height())
-        painter.setPen(self.borderColor)
-        painter.setBrush(self.lightColor)
-        painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
-        # else:
-        #     painter = QPainter(self)
-        #     painter.setViewport(0,0,self.width(),self.height())
-        #     painter.setPen(Qt.black)
-        #     painter.setBrush(Qt.white)
-        #     painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
-        #     r = QtCore.QRectF(0,0,self.width(),self.height())
-        #     #painter.drawText(self.width()/2,40,"CORRECT")
-        #     painter.drawText(r, Qt.AlignCenter,"CORRECT")
+        if self.responseLightType == self.tr("Light"):
+            painter = QPainter(self)
+            painter.setViewport(0,0,self.width(),self.height())
+            painter.setPen(self.borderColor)
+            painter.setBrush(self.lightColor)
+            painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+        elif self.responseLightType == self.tr("Text"):
+            painter = QPainter(self)
+            painter.setViewport(0,0,self.width(),self.height())
+            painter.setPen(Qt.white)
+            painter.setBrush(self.lightColor)
+            painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            r = QtCore.QRectF(0,0,self.width(),self.height())
+            qfont = QtGui.QFont('Arial', 20)
+            qfont.setHintingPreference(QtGui.QFont.PreferDefaultHinting)
+            qfont.setStyleStrategy(QtGui.QFont.PreferAntialias)
+            qfont.setStyle(QtGui.QFont.StyleNormal)
+            qfont.setWeight(QtGui.QFont.Normal)
+            painter.setFont(qfont)
+            painter.drawText(r, Qt.AlignCenter, self.feedbackText)
+        elif self.responseLightType == self.tr("Smiley"):
+            painter = QPainter(self)
+            painter.setViewport(0,0,self.width(),self.height())
+            painter.setPen(Qt.black)
+            painter.setBrush(self.lightColor)
+            rect = painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            rect = QRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            self.feedbackSmiley.paint(painter, rect, Qt.AlignCenter)
 
 
 class intervalLight(QFrame):

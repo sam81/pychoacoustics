@@ -1061,6 +1061,19 @@ class pychControlWin(QMainWindow):
             self.additionalWidgetsChooserLabelList.append(self.responseLightLabel)
             self.additionalWidgetsChooserCheckBoxList.append(self.responseLightCheckBox)
             n = n+1
+
+            self.responseLightTypeLabel =  QLabel(self.tr("Response Light Type:"), self)
+            self.responseLightTypeChooser = QComboBox()
+            self.responseLightTypeChooser.addItems([self.tr("Light"), self.tr("Text"), self.tr("Smiley")])
+            self.add_widg_sizer.addWidget(self.responseLightTypeLabel, n, 1)
+            self.add_widg_sizer.addWidget(self.responseLightTypeChooser, n, 2)
+            self.responseLightTypeCheckBox = QCheckBox()
+            self.add_widg_sizer.addWidget(self.responseLightTypeCheckBox, n, 0)
+            self.additionalWidgetsChooserList.append(self.responseLightTypeChooser)
+            self.additionalWidgetsChooserLabelList.append(self.responseLightTypeLabel)
+            self.additionalWidgetsChooserCheckBoxList.append(self.responseLightTypeCheckBox)
+            
+            n = n+1
             self.responseLightDurationLabel = QLabel(self.tr("Response Light Duration (ms):"), self)
             self.add_widg_sizer.addWidget(self.responseLightDurationLabel, n, 1)
             self.responseLightDurationTF = QLineEdit()
@@ -1085,6 +1098,17 @@ class pychControlWin(QMainWindow):
             self.additionalWidgetsChooserList.append(self.responseLightChooser)
             self.additionalWidgetsChooserLabelList.append(self.responseLightLabel)
             self.additionalWidgetsChooserCheckBoxList.append(self.responseLightCheckBox)
+            n = n+1
+            self.responseLightTypeLabel =  QLabel(self.tr("Response Light Type:"), self)
+            self.responseLightTypeChooser = QComboBox()
+            self.responseLightTypeChooser.addItems([self.tr("Light"), self.tr("Text"), self.tr("Smiley")])
+            self.add_widg_sizer.addWidget(self.responseLightTypeLabel, n, 1)
+            self.add_widg_sizer.addWidget(self.responseLightTypeChooser, n, 2)
+            self.responseLightTypeCheckBox = QCheckBox()
+            self.add_widg_sizer.addWidget(self.responseLightTypeCheckBox, n, 0)
+            self.additionalWidgetsChooserList.append(self.responseLightTypeChooser)
+            self.additionalWidgetsChooserLabelList.append(self.responseLightTypeLabel)
+            self.additionalWidgetsChooserCheckBoxList.append(self.responseLightTypeCheckBox)
             n = n+1
             self.responseLightDurationLabel = QLabel(self.tr("Response Light Duration (ms):"), self)
             self.add_widg_sizer.addWidget(self.responseLightDurationLabel, n, 1)
@@ -3223,6 +3247,8 @@ class pychControlWin(QMainWindow):
      
         self.responseLightChooser.setCurrentIndex(self.responseLightChooser.findText(self.prm[block]['responseLight']))
         self.responseLightCheckBox.setChecked(self.prm[block]['responseLightCheckBox'])
+        self.responseLightTypeChooser.setCurrentIndex(self.responseLightTypeChooser.findText(self.prm[block]['responseLightType']))
+        self.responseLightTypeCheckBox.setChecked(self.prm[block]['responseLightTypeCheckBox'])
         self.responseLightDurationTF.setText(self.currLocale.toString(self.prm[block]['responseLightDuration']))
         self.responseLightDurationCheckBox.setChecked(self.prm[block]['responseLightDurationCheckBox'])
         self.currentBlockCountLabel.setText(str(self.prm["currentBlock"]))
@@ -3358,6 +3384,8 @@ class pychControlWin(QMainWindow):
         
         self.prm[currBlock]['responseLight'] = self.responseLightChooser.currentText()
         self.prm[currBlock]['responseLightCheckBox'] = self.responseLightCheckBox.isChecked()
+        self.prm[currBlock]['responseLightType'] = self.responseLightTypeChooser.currentText()
+        self.prm[currBlock]['responseLightTypeCheckBox'] = self.responseLightTypeCheckBox.isChecked()
         self.prm[currBlock]['responseLightDuration'] = self.currLocale.toInt(self.responseLightDurationTF.text())[0]
         self.prm[currBlock]['responseLightDurationCheckBox'] = self.responseLightDurationCheckBox.isChecked()
         
@@ -3538,7 +3566,7 @@ class pychControlWin(QMainWindow):
             tmpPrm[currBlock]['paradigmFieldCheckBox'] = []
          
 
-            otherKeysToCompare = ['preTrialSilence', 'intervalLights', 'responseLight', 'responseLightDuration',
+            otherKeysToCompare = ['preTrialSilence', 'intervalLights', 'responseLight', 'responseLightType', 'responseLightDuration',
                                   'conditionLabel', 'taskLabel', 'instructions', 'warningInterval', 'warningIntervalDur', 'warningIntervalISI',
                                   'psyListFun', 'psyListFunFit', 'psyListMidpoint', 'psyListSlope', 'psyListLapse']
         
@@ -3549,6 +3577,8 @@ class pychControlWin(QMainWindow):
             tmpPrm[currBlock]['warningIntervalISI'] = self.currLocale.toInt(self.warningIntervalISITF.text())[0]
             tmpPrm[currBlock]['responseLight'] = self.responseLightChooser.currentText()
             tmpPrm[currBlock]['responseLightCheckBox'] = self.responseLightCheckBox.isChecked()
+            tmpPrm[currBlock]['responseLightType'] = self.responseLightTypeChooser.currentText()
+            tmpPrm[currBlock]['responseLightTypeCheckBox'] = self.responseLightTypeCheckBox.isChecked()
             tmpPrm[currBlock]['responseLightDuration'] = self.currLocale.toInt(self.responseLightDurationTF.text())[0]
             tmpPrm[currBlock]['responseLightDurationCheckBox'] = self.responseLightDurationCheckBox.isChecked()
             tmpPrm[currBlock]['psyListFun'] = self.psyListFunChooser.currentText()
@@ -3852,6 +3882,8 @@ class pychControlWin(QMainWindow):
                 tmp['b'+str(blockNumber)]['taskLabel'] = ""
                 tmp['b'+str(blockNumber)]['instructions'] = ""
                 tmp['b'+str(blockNumber)]['instructionsAt'] = ""
+                tmp['b'+str(blockNumber)]['responseLightType'] = self.tr("Light")
+                tmp['b'+str(blockNumber)]['responseLightTypeCheckBox'] = False
                 
             if allLines[i].split(':')[0] == 'Block Position':
                 tmp['b'+str(blockNumber)]['blockPosition'] = allLines[i].split(':')[1].strip()
@@ -3911,6 +3943,9 @@ class pychControlWin(QMainWindow):
             if allLines[i].split(':')[0] == 'Response Light':
                 tmp['b'+str(blockNumber)]['responseLight'] = allLines[i].split(':')[1].strip()
                 tmp['b'+str(blockNumber)]['responseLightCheckBox'] = strToBoolean(allLines[i].split(':')[2].strip())
+            if allLines[i].split(':')[0] == 'Response Light Type':
+                tmp['b'+str(blockNumber)]['responseLightType'] = allLines[i].split(':')[1].strip()
+                tmp['b'+str(blockNumber)]['responseLightTypeCheckBox'] = strToBoolean(allLines[i].split(':')[2].strip())
             if allLines[i].split(':')[0] == 'Response Light Duration (ms)':
                 tmp['b'+str(blockNumber)]['responseLightDuration'] = self.currLocale.toInt(allLines[i].split(':')[1].strip())[0]
                 tmp['b'+str(blockNumber)]['responseLightDurationCheckBox'] = strToBoolean(allLines[i].split(':')[2].strip())
@@ -4120,6 +4155,7 @@ class pychControlWin(QMainWindow):
              
 
             fName.write(self.tr('Response Light: ') + str(self.prm[currBlock]['responseLight']) + ' :' + str(self.prm[currBlock]['responseLightCheckBox']) + '\n')
+            fName.write(self.tr('Response Light Type: ') + str(self.prm[currBlock]['responseLightType']) + ' :' + str(self.prm[currBlock]['responseLightTypeCheckBox']) + '\n')
             fName.write(self.tr('Response Light Duration (ms): ') + self.currLocale.toString(self.prm[currBlock]['responseLightDuration']) + ' :' + str(self.prm[currBlock]['responseLightDurationCheckBox']) + '\n')
             fName.write('.\n')
             for k in range(len(self.prm[currBlock]['paradigmChooser'])):

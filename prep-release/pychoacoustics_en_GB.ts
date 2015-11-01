@@ -341,24 +341,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="4914"/>
+        <location filename="../pychoacoustics/response_box.py" line="4959"/>
         <source>Experimenter {} e-mail&apos;s address {} not valid 
  Please specify a valid address for the current experimenter 
  in the Edit -&gt; Experimenters dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="4918"/>
+        <location filename="../pychoacoustics/response_box.py" line="4963"/>
         <source>username invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="4922"/>
+        <location filename="../pychoacoustics/response_box.py" line="4967"/>
         <source>SMTP server name invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="4969"/>
+        <location filename="../pychoacoustics/response_box.py" line="5014"/>
         <source>Something went wrong, try to change server settings 
  {}</source>
         <translation type="unfinished"></translation>
@@ -3338,11 +3338,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="276"/>
-        <source>Coordinate Response Matrix</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../pychoacoustics/response_box.py" line="1154"/>
         <source>Digit Triplets Test</source>
         <translation type="unfinished"></translation>
@@ -3355,6 +3350,29 @@
     <message>
         <location filename="../pychoacoustics/response_box.py" line="333"/>
         <source>Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pychoacoustics/response_box.py" line="276"/>
+        <source>Coordinate Response Measure</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>responseLight</name>
+    <message>
+        <location filename="../pychoacoustics/response_box.py" line="4851"/>
+        <source>Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pychoacoustics/response_box.py" line="4857"/>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pychoacoustics/response_box.py" line="4871"/>
+        <source>Smiley</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
