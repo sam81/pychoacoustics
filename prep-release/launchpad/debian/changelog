@@ -1,3 +1,9 @@
+pychoacoustics (0.3.27-ppa0~wily) wily; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Mon, 02 Nov 2015 03:38:04 +0100
+
 pychoacoustics (0.3.25-ppa0~vivid) vivid; urgency=low
 
   * New upstream release

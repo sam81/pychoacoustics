@@ -12,16 +12,19 @@ for i in range(len(ln)):
     if ln[i].strip().split('=')[0].strip() == "version":
            ver = ln[i].strip().split('=')[1].strip()
            ver = ver[1:len(ver)-2]
-fNames = ["../dist/pychoacoustics-" + ver + ".tar.gz",
-          "../dist/pychoacoustics-" + ver + ".zip"
-          "../dist/pychoacoustics-pyqt4-" + ver + ".tar.gz"
-          "../dist/pychoacoustics-pyqt4-" + ver + ".zip"
-          "../dist/pychoacoustics-pyside-" + ver + ".tar.gz"
+fPaths = ["../dist/pychoacoustics-" + ver + ".tar.gz",
+          "../dist/pychoacoustics-" + ver + ".zip",
+          "../dist/pychoacoustics-pyqt4-" + ver + ".tar.gz",
+          "../dist/pychoacoustics-pyqt4-" + ver + ".zip",
+          "../dist/pychoacoustics-pyside-" + ver + ".tar.gz",
           "../dist/pychoacoustics-pyside-" + ver + ".zip"]
-          
-for fName in fNames:
-    fHandle = open(fName, 'rb')
-    session.storebinary("STOR " + fName, fHandle)
+
+# for fPath in fPaths:
+#     print(fPath)
+for fPath in fPaths:
+    print("Uploading: " + fPath)
+    fHandle = open(fPath, 'rb')
+    session.storbinary("STOR " + fPath.split('/')[2], fHandle)
 
 htmlPagePath = "/media/ntfsShared/lin_home/dc/devel/websites/xoom-website/xoom/pychoacoustics/pychoacoustics.html"
 fIn = open(htmlPagePath, "r")
@@ -44,10 +47,10 @@ for i in range(len(lns)):
         elif lns[i].split("</a>")[1] == ' Windows source package (PySide)</li>\n':
             lns[i] = '<li> <a href="pych_builds/pychoacoustics-pyside-'+ver+'.zip">pychoacoustics-pyside-'+ver+'.zip</a> Windows source package (PySide)</li>'
         
-fOut = open(htmlPathPage, 'w')
+fOut = open(htmlPagePath, 'w')
 fOut.writelines(lns)
 fOut.close()
 
 session.cwd('../')
-fHandle = open(htmlPathPage, 'rb')
-session.storebinary("STOR " + htmlPathPage, fHandle)
+fHandle = open(htmlPagePath, 'rb')
+session.storbinary("STOR " + "pychoacoustics.html", fHandle)

@@ -1,4 +1,4 @@
-
+#!/bin/sh
 
 pyrcc5 -o ../pychoacoustics/qrc_resources.py ../resources.qrc
 pylupdate5 -verbose pychoacoustics.pro

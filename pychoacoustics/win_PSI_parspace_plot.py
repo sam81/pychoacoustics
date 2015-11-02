@@ -60,7 +60,7 @@ from matplotlib.lines import Line2D
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import pandas as pd
+#import pandas as pd
 import matplotlib.font_manager as fm
 
 from .pysdt import*
