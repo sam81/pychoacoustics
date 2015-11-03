@@ -42,3 +42,10 @@ class redirectStreamToFile():
             self.log.close()
         except:
             pass
+
+    def flush(self):
+        try:
+            self.stdout.flush()
+            self.log.flush()
+        except:
+            pass

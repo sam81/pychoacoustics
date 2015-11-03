@@ -246,30 +246,34 @@ class fitPsychometricFunctionDialog(QDialog):
             else:
                 self.dats = self.dats.append(pd.read_csv(self.fList[i], sep=self.csvSeparator))
 
-        x = self.dats['adaptive_difference']
-        y = self.dats['response']
-        xScale = self.functionScaling.currentText()
-        midpointPrior = self.midpointPrior.currentText()
-        if self.midpointPriorMu.text() == "":
-            midpointMu = np.nan
-        else:
-            midpointMu = self.currLocale.toDouble(self.midpointPriorMu.text())[0]
-        if self.midpointPriorSTD.text() == "":
-            midpointSTD = np.nan
-        else:
-            midpointSTD = self.currLocale.toDouble(self.midpointPriorSTD.text())[0]
-        slopePrior = self.slopePrior.currentText()
-        slopeMode = self.currLocale.toDouble(self.slopePriorMode.text())[0]
-        slopeSTD = self.currLocale.toDouble(self.slopePriorSTD.text())[0]
-        lapsePrior = self.lapsePrior.currentText()
-        lapseMode = self.currLocale.toDouble(self.lapsePriorMode.text())[0]
-        lapseSTD = self.currLocale.toDouble(self.lapsePriorSTD.text())[0]
-        guess = self.currLocale.toDouble(self.guessTF.text())[0]
-        self.pystanFitLogisticPsy(x=x, y=6, xScale=xScale,
-                                  midpointPrior=midpointPrior, midpointMu=midpointMu, midpointSTD=midpointSTD,
-                                  slopePrior=slopePrior, slopeMode=slopeMode, slopeSTD=slopeSTD,
-                                  lapsePrior=lapsePrior, lapseMode=lapseMode, lapseSTD=lapseSTD,
-                                  guess=guess)
+        cnds = np.unique(self.dats['condition'])
+        for c in range(len(cnds)):
+            thisCnd = cnds[c]
+            thisDats = self.dats[self.dats['condition'] == thisCnd]
+            x = thisDats['adaptive_difference']
+            y = thisDats['response']
+            xScale = self.functionScaling.currentText()
+            midpointPrior = self.midpointPrior.currentText()
+            if self.midpointPriorMu.text() == "":
+                midpointMu = np.nan
+            else:
+                midpointMu = self.currLocale.toDouble(self.midpointPriorMu.text())[0]
+            if self.midpointPriorSTD.text() == "":
+                midpointSTD = np.nan
+            else:
+                midpointSTD = self.currLocale.toDouble(self.midpointPriorSTD.text())[0]
+            slopePrior = self.slopePrior.currentText()
+            slopeMode = self.currLocale.toDouble(self.slopePriorMode.text())[0]
+            slopeSTD = self.currLocale.toDouble(self.slopePriorSTD.text())[0]
+            lapsePrior = self.lapsePrior.currentText()
+            lapseMode = self.currLocale.toDouble(self.lapsePriorMode.text())[0]
+            lapseSTD = self.currLocale.toDouble(self.lapsePriorSTD.text())[0]
+            guess = self.currLocale.toDouble(self.guessTF.text())[0]
+            self.pystanFitLogisticPsy(x=x, y=y, xScale=xScale,
+                                      midpointPrior=midpointPrior, midpointMu=midpointMu, midpointSTD=midpointSTD,
+                                      slopePrior=slopePrior, slopeMode=slopeMode, slopeSTD=slopeSTD,
+                                      lapsePrior=lapsePrior, lapseMode=lapseMode, lapseSTD=lapseSTD,
+                                      guess=guess)
 
         # if self.outfileTF.text() == '': #no output file has been chosen
         #     self.onClickChooseOutFileButton()
@@ -364,3 +368,4 @@ class fitPsychometricFunctionDialog(QDialog):
         fit = pystan.stan(model_code=modelString, data=dataList,
                           iter=20000, warmup=500, chains=4, thin=10)
 
+        print(fit)
