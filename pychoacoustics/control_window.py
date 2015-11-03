@@ -63,6 +63,12 @@ elif pyqtversion == 5:
         matplotlib_available = True
     except:
         matplotlib_available = False
+
+try:
+    import pystan
+    pystan_available = True
+except:
+    pystan_available = False
     
 from .audio_manager import*
 from .global_parameters import*
@@ -74,6 +80,7 @@ from .dialog_process_results import*
 from .dialog_show_exp_doc import*
 from .dialog_show_fortune import*
 from .dialog_swap_blocks import*
+from .dialog_fit_psychometric_function import*
 from .pysdt import*
 
 if matplotlib_available == True:
@@ -142,6 +149,11 @@ class pychControlWin(QMainWindow):
         self.processResultsTableButton.setStatusTip(self.tr('Process Results Table'))
         self.processResultsTableButton.triggered.connect(self.processResultsTableDialog)
 
+        if pystan_available == True:
+            self.fitPsyFunButton = QAction(self.tr('&Fit Psychometric Function'), self)
+            self.fitPsyFunButton.setStatusTip(self.tr('Fit Psychometric Function'))
+            self.fitPsyFunButton.triggered.connect(self.onClickFitPsyFunButton)
+
 
         self.openResultsButton = QAction(QIcon.fromTheme("document-open", QIcon(":/document-open")), self.tr('Open Results File'), self)
         self.openResultsButton.setStatusTip(self.tr('Open Results File'))
@@ -149,6 +161,9 @@ class pychControlWin(QMainWindow):
 
         self.processResultsMenu.addAction(self.processResultsLinearButton)
         self.processResultsMenu.addAction(self.processResultsTableButton)
+        if pystan_available == True:
+            self.processResultsMenu.addAction(self.fitPsyFunButton)
+
         
         self.fileMenu.addAction(self.openResultsButton)
         self.fileMenu.addAction(self.exitButton)
@@ -4589,6 +4604,14 @@ class pychControlWin(QMainWindow):
             paradigm = thisLines[1].split(sep)[prdgCol]
                 
             dialog = processResultsDialog(self, fList, resformat, paradigm, sep)
+
+    def onClickFitPsyFunButton(self):
+        fList = QFileDialog.getOpenFileNames(self, self.tr("Choose results file to load"), '', self.tr("All Files (*)"))[0]
+        sep = None
+        if len(fList) > 0:
+           
+            resformat = 'table'
+            dialog = fitPsychometricFunctionDialog(self, fList)
    
 
     def onClickOpenResultsButton(self):

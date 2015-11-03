@@ -70,3 +70,23 @@ def getdprime(A_correct, A_total, B_correct, B_total, corrected):
         tB = B_correct/(B_total)
     dp = norm.ppf(tA) - norm.ppf(1-(tB))
     return dp
+
+
+def gammaShRaFromMeanSD(mean, sd):
+    if mean <= 0:
+         raise ValueError("mean must be > 0")
+    if sd <= 0:
+         raise ValueError("sd must be > 0")
+    shape = mean**2/sd**2
+    rate = mean/sd**2
+    return((shape, rate))
+
+def gammaShRaFromModeSD(mode, sd):
+    if mode <=0:
+         raise ValueError("mean must be > 0")
+    if sd <=0:
+         raise ValueError("sd must be > 0")
+    rate = (mode + sqrt(mode**2 + 4 * sd**2)) / (2 * sd**2)
+    shape = 1 + mode * rate
+    return((shape, rate))
+
