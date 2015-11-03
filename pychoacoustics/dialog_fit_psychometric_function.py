@@ -56,9 +56,9 @@ elif pyqtversion == 5:
         matplotlib_available = False
 
     
-import os
+import os, pystan
 import numpy as np
-from stats_utils import*
+from .stats_utils import*
 
 pandas_available = True
 try:
@@ -246,6 +246,31 @@ class fitPsychometricFunctionDialog(QDialog):
             else:
                 self.dats = self.dats.append(pd.read_csv(self.fList[i], sep=self.csvSeparator))
 
+        x = self.dats['adaptive_difference']
+        y = self.dats['response']
+        xScale = self.functionScaling.currentText()
+        midpointPrior = self.midpointPrior.currentText()
+        if self.midpointPriorMu.text() == "":
+            midpointMu = np.nan
+        else:
+            midpointMu = self.currLocale.toDouble(self.midpointPriorMu.text())[0]
+        if self.midpointPriorSTD.text() == "":
+            midpointSTD = np.nan
+        else:
+            midpointSTD = self.currLocale.toDouble(self.midpointPriorSTD.text())[0]
+        slopePrior = self.slopePrior.currentText()
+        slopeMode = self.currLocale.toDouble(self.slopePriorMode.text())[0]
+        slopeSTD = self.currLocale.toDouble(self.slopePriorSTD.text())[0]
+        lapsePrior = self.lapsePrior.currentText()
+        lapseMode = self.currLocale.toDouble(self.lapsePriorMode.text())[0]
+        lapseSTD = self.currLocale.toDouble(self.lapsePriorSTD.text())[0]
+        guess = self.currLocale.toDouble(self.guessTF.text())[0]
+        self.pystanFitLogisticPsy(x=x, y=6, xScale=xScale,
+                                  midpointPrior=midpointPrior, midpointMu=midpointMu, midpointSTD=midpointSTD,
+                                  slopePrior=slopePrior, slopeMode=slopeMode, slopeSTD=slopeSTD,
+                                  lapsePrior=lapsePrior, lapseMode=lapseMode, lapseSTD=lapseSTD,
+                                  guess=guess)
+
         # if self.outfileTF.text() == '': #no output file has been chosen
         #     self.onClickChooseOutFileButton()
         #     if len(self.foutName) < 1:
@@ -277,7 +302,7 @@ class fitPsychometricFunctionDialog(QDialog):
             categoricalPlot(self, 'average', self.foutName, winPlot, pdfPlot, self.paradigm, self.separator, None, self.prm)
          
                 
-    def pystanFitLogisticPsy(x, y, xScale="Linear",
+    def pystanFitLogisticPsy(self, x, y, xScale="Linear",
                              midpointPrior="Normal", midpointMu=np.nan, midpointSTD=np.nan,
                              slopePrior="Gamma", slopeMode=2, slopeSTD=2,
                              lapsePrior="Gamma", lapseMode=0.5, lapseSTD=0.5,
