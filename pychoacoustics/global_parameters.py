@@ -325,13 +325,16 @@ def def_pref(prm):
     if platform.system() == 'Windows':
         prm["pref"]["sound"]["playCommand"] = "winsound"
         prm["pref"]["sound"]["playCommandType"] = "winsound"
+    elif platform.system() == 'Darwin':
+        prm["pref"]["sound"]["playCommand"] = "afplay"
+        prm["pref"]["sound"]["playCommandType"] = QApplication.translate("","custom","")
     else:
         prm["pref"]["sound"]["playCommand"] = "aplay"
         prm["pref"]["sound"]["playCommandType"] = QApplication.translate("","custom","")
     if alsaaudioAvailable == True:
         prm["pref"]["sound"]["alsaaudioDevice"] = "default"
-    if pyaudioAvailable == True:
-        prm["pref"]["sound"]["pyaudioDevice"] = 0
+if pyaudioAvailable == True:
+    prm["pref"]["sound"]["pyaudioDevice"] = 0
 
     #PHONES
     prm["phones"] = {}
