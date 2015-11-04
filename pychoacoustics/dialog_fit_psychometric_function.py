@@ -105,6 +105,11 @@ class fitPsychometricFunctionDialog(QDialog):
         # self.chooseOutFileButton.clicked.connect(self.onClickChooseOutFileButton)
         # self.hBox1_1.addWidget(self.chooseOutFileButton)
 
+        self.csvSeparatorLabel = QLabel(self.tr('csv separator:'))
+        self.csvSeparatorTF = QLineEdit(self.prm['pref']["general"]["csvSeparator"])
+        self.gridBox.addWidget(self.csvSeparatorLabel, n, 0)
+        self.gridBox.addWidget(self.csvSeparatorTF, n, 1)
+        n = n+1
         self.functionShapeLabel = QLabel("Shape: ")
         self.functionShape = QComboBox()
         self.functionShape.addItems([self.tr("Logistic")])
@@ -142,7 +147,7 @@ class fitPsychometricFunctionDialog(QDialog):
         n = n+1
 
         n = n+1
-        self.slopePriorLabel = QLabel("Slope Prior: ")
+        self.slopePriorLabel = QLabel(self.tr("Slope Prior: "), self)
         self.slopePrior = QComboBox()
         self.slopePrior.addItems([self.tr("Gamma")])
         self.gridBox.addWidget(self.slopePriorLabel, n, 0)
@@ -165,7 +170,7 @@ class fitPsychometricFunctionDialog(QDialog):
         self.gridBox.addWidget(self.slopePriorSTD, n, 5)
         n = n+1
 
-        self.lapsePriorLabel = QLabel("Lapse Prior: ")
+        self.lapsePriorLabel = QLabel(self.tr("Lapse Prior: "), self)
         self.lapsePrior = QComboBox()
         self.lapsePrior.addItems([self.tr("Gamma")])
         self.gridBox.addWidget(self.lapsePriorLabel, n, 0)
@@ -188,17 +193,38 @@ class fitPsychometricFunctionDialog(QDialog):
         n = n+1
 
         n = n+1
-        self.guessLabel = QLabel("Guess Rate: ")
+        self.guessLabel = QLabel(self.tr("Guess Rate: "), self)
         self.guessTF = QLineEdit('0.5')
         self.guessTF.setValidator(QDoubleValidator(self))
         self.gridBox.addWidget(self.guessLabel, n, 0)
         self.gridBox.addWidget(self.guessTF, n, 1)
         n = n+1
-        self.csvSeparatorLabel = QLabel(self.tr('csv separator:'))
-        self.csvSeparatorTF = QLineEdit(self.prm['pref']["general"]["csvSeparator"])
-        
-        self.gridBox.addWidget(self.csvSeparatorLabel, n, 0)
-        self.gridBox.addWidget(self.csvSeparatorTF, n, 1)
+
+        self.iterationsLabel = QLabel(self.tr("No. Iterations"), self)
+        self.iterationsTF = QLineEdit("10000")
+        self.iterationsTF.setValidator(QIntValidator(self))
+        self.gridBox.addWidget(self.iterationsLabel, n, 0)
+        self.gridBox.addWidget(self.iterationsTF, n, 1)
+
+        self.warmupLabel = QLabel(self.tr("No. Warmup"), self)
+        self.warmupTF = QLineEdit("500")
+        self.warmupTF.setValidator(QIntValidator(self))
+        self.gridBox.addWidget(self.warmupLabel, n, 2)
+        self.gridBox.addWidget(self.warmupTF, n, 3)
+
+        self.thinLabel = QLabel(self.tr("Thin"), self)
+        self.thinTF = QLineEdit("1")
+        self.thinTF.setValidator(QIntValidator(self))
+        self.gridBox.addWidget(self.thinLabel, n, 4)
+        self.gridBox.addWidget(self.thinTF, n, 5)
+
+        self.chainsLabel = QLabel(self.tr("No. Chains"), self)
+        self.chainsTF = QLineEdit("4")
+        self.chainsTF.setValidator(QIntValidator(self))
+        self.gridBox.addWidget(self.chainsLabel, n, 6)
+        self.gridBox.addWidget(self.chainsTF, n, 7)
+
+
         if self.parent().prm['appData']['plotting_available'] == True:
             self.plotCheckBox = QCheckBox(self.tr('Plot'))
             self.plotBox.addWidget(self.plotCheckBox)
@@ -269,7 +295,11 @@ class fitPsychometricFunctionDialog(QDialog):
             lapseMode = self.currLocale.toDouble(self.lapsePriorMode.text())[0]
             lapseSTD = self.currLocale.toDouble(self.lapsePriorSTD.text())[0]
             guess = self.currLocale.toDouble(self.guessTF.text())[0]
-            self.pystanFitLogisticPsy(x=x, y=y, xScale=xScale,
+            iterations = self.currLocale.toInt(self.iterationsTF.text())[0]
+            warmup = self.currLocale.toInt(self.warmupTF.text())[0]
+            thin = self.currLocale.toInt(self.thinTF.text())[0]
+            chains = self.currLocale.toInt(self.chainsTF.text())[0]
+            self.pystanFitLogisticPsy(x=x, y=y, iterations=iterations, warmup=warmup, thin=thin, chains=chains, xScale=xScale,
                                       midpointPrior=midpointPrior, midpointMu=midpointMu, midpointSTD=midpointSTD,
                                       slopePrior=slopePrior, slopeMode=slopeMode, slopeSTD=slopeSTD,
                                       lapsePrior=lapsePrior, lapseMode=lapseMode, lapseSTD=lapseSTD,
@@ -306,7 +336,7 @@ class fitPsychometricFunctionDialog(QDialog):
             categoricalPlot(self, 'average', self.foutName, winPlot, pdfPlot, self.paradigm, self.separator, None, self.prm)
          
                 
-    def pystanFitLogisticPsy(self, x, y, xScale="Linear",
+    def pystanFitLogisticPsy(self, x, y, iterations=10000, warmup=500, thin=1, chains=4, xScale="Linear",
                              midpointPrior="Normal", midpointMu=np.nan, midpointSTD=np.nan,
                              slopePrior="Gamma", slopeMode=2, slopeSTD=2,
                              lapsePrior="Gamma", lapseMode=0.5, lapseSTD=0.5,
@@ -366,6 +396,6 @@ class fitPsychometricFunctionDialog(QDialog):
 
 
         fit = pystan.stan(model_code=modelString, data=dataList,
-                          iter=20000, warmup=500, chains=4, thin=10)
+                          iter=iterations, warmup=warmup, chains=chains, thin=thin)
 
         print(fit)
