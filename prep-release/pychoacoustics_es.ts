@@ -58,7 +58,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="336"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="339"/>
         <source>custom</source>
         <translation type="unfinished"></translation>
     </message>
@@ -148,7 +148,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="365"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="368"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>

@@ -4785,10 +4785,16 @@ class responseLight(QWidget):
         super(responseLight, self).__init__(parent)
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding,
                                        QSizePolicy.Expanding))
+        self.correctLightColor = self.parent().parent().prm["pref"]["resp_box"]["correctLightColor"]
+        self.incorrectLightColor = self.parent().parent().prm["pref"]["resp_box"]["incorrectLightColor"]
+        self.neutralLightColor = self.parent().parent().prm["pref"]["resp_box"]["neutralLightColor"]
+        self.offLightColor = self.parent().parent().prm["pref"]["resp_box"]["offLightColor"]
+        
         self.borderColor = Qt.black
-        self.lightColor = Qt.black
+        self.lightColor = self.offLightColor#Qt.black
         self.feedbackText = ""
-        self.responseLightType = self.tr("Light")#self.parent().parent().prm["responseLightType"]
+        self.responseLightType = self.tr("Light") #this is just for inizialization purposes
+        
 
         self.correctSmiley = QIcon.fromTheme("face-smile", QIcon(":/face-smile"))
         self.incorrectSmiley = QIcon.fromTheme("face-sad", QIcon(":/face-sad"))
@@ -4807,15 +4813,19 @@ class responseLight(QWidget):
         QApplication.processEvents()
         
     def setStatus(self, status):
+        self.correctLightColor = self.parent().parent().prm["pref"]["resp_box"]["correctLightColor"]
+        self.incorrectLightColor = self.parent().parent().prm["pref"]["resp_box"]["incorrectLightColor"]
+        self.neutralLightColor = self.parent().parent().prm["pref"]["resp_box"]["neutralLightColor"]
+        self.offLightColor = self.parent().parent().prm["pref"]["resp_box"]["offLightColor"]
         if self.responseLightType == self.tr("Light"):
             if status == 'correct':
-                self.lightColor = Qt.green
+                self.lightColor = self.correctLightColor#Qt.green
             elif status == 'incorrect':
-                self.lightColor = Qt.red
+                self.lightColor = self.incorrectLightColor #Qt.red
             elif status == 'neutral':
-                self.lightColor = Qt.white
+                self.lightColor = self.neutralLightColor #Qt.white
             elif status == 'off':
-                self.lightColor = Qt.black
+                self.lightColor = self.offLightColor #Qt.black
         elif self.responseLightType == self.tr("Text"):
             self.lightColor = Qt.black
             if status == 'correct':

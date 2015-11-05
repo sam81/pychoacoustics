@@ -22,7 +22,7 @@ import os, sys, platform, pickle, hashlib, base64
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QApplication
+    from PyQt4.QtGui import QApplication, QColor
     try:
         import matplotlib
         matplotlib_available = True
@@ -32,7 +32,7 @@ if pyqtversion == 4:
         matplotlib_available = False
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
-    from PySide.QtGui import QApplication
+    from PySide.QtGui import QApplication, QColor
     try:
         import matplotlib
         matplotlib_available = True
@@ -43,6 +43,7 @@ elif pyqtversion == -4:
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtGui import QColor
     try:
         import matplotlib
         matplotlib_available = True
@@ -252,6 +253,7 @@ def def_pref(prm):
     prm["pref"]["email"] = {}
     prm["pref"]["exp"] = {}
     prm["pref"]["interface"] = {}
+    prm["pref"]["resp_box"] = {}
 
     prm["pref"]["general"]["triggerONOFF"] = False
     prm["pref"]["general"]["ONTrigger"] = 254
@@ -333,8 +335,13 @@ def def_pref(prm):
         prm["pref"]["sound"]["playCommandType"] = QApplication.translate("","custom","")
     if alsaaudioAvailable == True:
         prm["pref"]["sound"]["alsaaudioDevice"] = "default"
-if pyaudioAvailable == True:
-    prm["pref"]["sound"]["pyaudioDevice"] = 0
+    if pyaudioAvailable == True:
+        prm["pref"]["sound"]["pyaudioDevice"] = 0
+
+    prm["pref"]["resp_box"]["correctLightColor"] = QColor(0,255,0)
+    prm["pref"]["resp_box"]["incorrectLightColor"] = QColor(255,0,0)
+    prm["pref"]["resp_box"]["neutralLightColor"] = QColor(255,255,255)
+    prm["pref"]["resp_box"]["offLightColor"] = QColor(0,0,0)
 
     #PHONES
     prm["phones"] = {}
