@@ -22,7 +22,7 @@ import os, sys, platform, pickle, hashlib, base64
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QApplication, QColor
+    from PyQt4.QtGui import QApplication, QColor, QFont
     try:
         import matplotlib
         matplotlib_available = True
@@ -32,7 +32,7 @@ if pyqtversion == 4:
         matplotlib_available = False
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
-    from PySide.QtGui import QApplication, QColor
+    from PySide.QtGui import QApplication, QColor, QFont
     try:
         import matplotlib
         matplotlib_available = True
@@ -43,7 +43,7 @@ elif pyqtversion == -4:
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QApplication
-    from PyQt5.QtGui import QColor
+    from PyQt5.QtGui import QColor, QFont
     try:
         import matplotlib
         matplotlib_available = True
@@ -338,10 +338,30 @@ def def_pref(prm):
     if pyaudioAvailable == True:
         prm["pref"]["sound"]["pyaudioDevice"] = 0
 
+    prm["pref"]["resp_box"]["responseBoxButtonFont"] = QFont('Sans Serif', 24, QFont.Bold, False).toString()
     prm["pref"]["resp_box"]["correctLightColor"] = QColor(0,255,0)
     prm["pref"]["resp_box"]["incorrectLightColor"] = QColor(255,0,0)
     prm["pref"]["resp_box"]["neutralLightColor"] = QColor(255,255,255)
     prm["pref"]["resp_box"]["offLightColor"] = QColor(0,0,0)
+    prm["pref"]["resp_box"]["responseLightFont"] = QFont('Sans Serif', 20, QFont.Bold, False).toString()
+
+    prm["pref"]["resp_box"]["correctTextFeedback"] = "CORRECT" #QApplication.translate("","Yes","") #self.tr("CORRECT")
+    prm["pref"]["resp_box"]["incorrectTextFeedback"] = "INCORRECT"
+    prm["pref"]["resp_box"]["neutralTextFeedback"] = "DONE"
+    prm["pref"]["resp_box"]["offTextFeedback"] = ""
+    prm["pref"]["resp_box"]["correctTextColor"] = QColor(255,255,255)
+    prm["pref"]["resp_box"]["incorrectTextColor"] = QColor(255,255,255)
+    prm["pref"]["resp_box"]["neutralTextColor"] = QColor(255,255,255)
+    prm["pref"]["resp_box"]["offTextColor"] = QColor(255,255,255)
+
+    prm["pref"]["resp_box"]["correctTextFeedbackUserSet"] = False
+    prm["pref"]["resp_box"]["incorrectTextFeedbackUserSet"] = False
+    prm["pref"]["resp_box"]["neutralTextFeedbackUserSet"] = False
+    prm["pref"]["resp_box"]["offTextFeedbackUserSet"] = False
+    prm["pref"]["resp_box"]["userSetCorrectTextFeedback"] = ""
+    prm["pref"]["resp_box"]["userSetIncorrectTextFeedback"] = ""
+    prm["pref"]["resp_box"]["userSetNeutralTextFeedback"] = ""
+    prm["pref"]["resp_box"]["userSetOffTextFeedback"] = ""
 
     #PHONES
     prm["phones"] = {}

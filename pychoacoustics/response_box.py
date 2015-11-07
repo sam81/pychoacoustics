@@ -121,10 +121,19 @@ class responseBox(QMainWindow):
         self.currLocale = self.parent().prm['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         self.setWindowTitle(self.tr('Response Box'))
-        self.setStyleSheet("QPushButton[responseBoxButton='true'] {font-weight:bold; font-size: %spx;} " % self.prm['pref']['interface']['responseButtonSize'])
+        self.responseBoxButtonFont = QFont()
+        self.responseBoxButtonFont.fromString(self.prm["pref"]["resp_box"]["responseBoxButtonFont"])
+        #self.setStyleSheet("QPushButton[responseBoxButton='true'] {font-weight:bold; font-size: %spx;} " % self.prm['pref']['interface']['responseButtonSize'])
         self.menubar = self.menuBar()
         #FILE MENU
         self.fileMenu = self.menubar.addMenu(self.tr('-'))
+
+        ## for some reason couldn't get these into translation files in any other way
+        foo = self.prm['rbTrans'].translate('rb', "CORRECT")
+        foo = self.prm['rbTrans'].translate('rb', "INCORRECT")
+        foo = self.prm['rbTrans'].translate('rb', "DONE")
+        foo = self.prm['rbTrans'].translate('rb', "")
+        ##
        
         self.toggleControlWin = QAction(self.tr('Show/Hide Control Window'), self)
         self.toggleControlWin.setShortcut('Ctrl+C')
@@ -171,7 +180,8 @@ class responseBox(QMainWindow):
         self.statusButton = QPushButton(self.prm['rbTrans'].translate('rb', "Wait"), self)
         self.statusButton.clicked.connect(self.onClickStatusButton)
         self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-        self.statusButton.setProperty("responseBoxButton", True)
+        #self.statusButton.setProperty("responseBoxButton", True)
+        self.statusButton.setFont(self.responseBoxButtonFont)
         self.statBtnShortcut = QShortcut("Ctrl+R", self, activated = self.onClickStatusButton)
         self.statusButton.setToolTip(self.tr("Press Ctrl+R to activate"))
         
@@ -287,7 +297,8 @@ class responseBox(QMainWindow):
                     self.responseButtonSizer.addWidget(self.responseButton[cnt], rw, cl)
                     sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
                     self.responseButton[cnt].setSizePolicy(sizePolicy)
-                    self.responseButton[cnt].setProperty("responseBoxButton", True)
+                    #self.responseButton[cnt].setProperty("responseBoxButton", True)
+                    self.responseButton[cnt].setFont(self.responseBoxButtonFont)
                     self.responseButton[cnt].clicked.connect(self.sortResponseButton)
                     self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
                     self.responseButton[cnt].setStyleSheet("background-color: " + cols[cl])
@@ -303,7 +314,8 @@ class responseBox(QMainWindow):
             self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 1)
             sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             self.responseButton[cnt].setSizePolicy(sizePolicy)
-            self.responseButton[cnt].setProperty("responseBoxButton", True)
+            #self.responseButton[cnt].setProperty("responseBoxButton", True)
+            self.responseButton[cnt].setFont(self.responseBoxButtonFont)
             self.responseButton[cnt].clicked.connect(self.dialerButtonClicked)
             self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
             cnt = cnt+1
@@ -314,7 +326,8 @@ class responseBox(QMainWindow):
                     self.responseButtonSizer.addWidget(self.responseButton[cnt], rw, cl)
                     sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
                     self.responseButton[cnt].setSizePolicy(sizePolicy)
-                    self.responseButton[cnt].setProperty("responseBoxButton", True)
+                    #self.responseButton[cnt].setProperty("responseBoxButton", True)
+                    self.responseButton[cnt].setFont(self.responseBoxButtonFont)
                     self.responseButton[cnt].clicked.connect(self.dialerButtonClicked)
                     self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
                     cnt = cnt+1
@@ -323,7 +336,8 @@ class responseBox(QMainWindow):
             self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 0)
             sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             self.responseButton[cnt].setSizePolicy(sizePolicy)
-            self.responseButton[cnt].setProperty("responseBoxButton", True)
+            #self.responseButton[cnt].setProperty("responseBoxButton", True)
+            self.responseButton[cnt].setFont(self.responseBoxButtonFont)
             self.responseButton[cnt].clicked.connect(self.backspaceButtonPressed)
             self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
             cnt = cnt+1
@@ -334,7 +348,8 @@ class responseBox(QMainWindow):
             self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 2)
             sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             self.responseButton[cnt].setSizePolicy(sizePolicy)
-            self.responseButton[cnt].setProperty("responseBoxButton", True)
+            #self.responseButton[cnt].setProperty("responseBoxButton", True)
+            self.responseButton[cnt].setFont(self.responseBoxButtonFont)
             self.responseButton[cnt].clicked.connect(self.enterButtonPressed)
             self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
 
@@ -398,7 +413,8 @@ class responseBox(QMainWindow):
                         self.responseButton.append(QPushButton(str(i+1), self))
                         self.responseButtonSizer.addWidget(self.responseButton[i], 1, r)
                         self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-                        self.responseButton[i].setProperty("responseBoxButton", True)
+                        #self.responseButton[i].setProperty("responseBoxButton", True)
+                        self.responseButton[i].setFont(self.responseBoxButtonFont)
                         r = r+1
                         if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
                             self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
@@ -418,7 +434,8 @@ class responseBox(QMainWindow):
                         self.responseButton.append(QPushButton(str(i+1), self))
                         self.responseButtonSizer.addWidget(self.responseButton[i], 1, r)
                         self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-                        self.responseButton[i].setProperty("responseBoxButton", True)
+                        #self.responseButton[i].setProperty("responseBoxButton", True)
+                        self.responseButton[i].setFont(self.responseBoxButtonFont)
                         r = r+1
                         self.responseButton[i].clicked.connect(self.sortResponseButton)
                         self.responseButton[i].setFocusPolicy(Qt.NoFocus)
@@ -442,7 +459,8 @@ class responseBox(QMainWindow):
 
                     self.responseButtonSizer.addWidget(self.responseButton[i], 1, i)
                     self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-                    self.responseButton[i].setProperty("responseBoxButton", True)
+                    #self.responseButton[i].setProperty("responseBoxButton", True)
+                    self.responseButton[i].setFont(self.responseBoxButtonFont)
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
                     self.responseButton[i].setFocusPolicy(Qt.NoFocus)
             elif self.parent().currParadigm in ["Constant ABX", "Multiple Constants ABX"]:
@@ -456,7 +474,8 @@ class responseBox(QMainWindow):
 
                     self.responseButtonSizer.addWidget(self.responseButton[i], 1, i)
                     self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-                    self.responseButton[i].setProperty("responseBoxButton", True)
+                    #self.responseButton[i].setProperty("responseBoxButton", True)
+                    self.responseButton[i].setFont(self.responseBoxButtonFont)
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
                     self.responseButton[i].setFocusPolicy(Qt.NoFocus)
             elif self.parent().currParadigm in ["Multiple Constants Odd One Out"]:
@@ -473,7 +492,8 @@ class responseBox(QMainWindow):
                     self.responseButton.append(QPushButton(str(i+1), self))
                     self.responseButtonSizer.addWidget(self.responseButton[i], 1, i+r)
                     self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-                    self.responseButton[i].setProperty("responseBoxButton", True)
+                    #self.responseButton[i].setProperty("responseBoxButton", True)
+                    self.responseButton[i].setFont(self.responseBoxButtonFont)
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
                     self.responseButton[i].setFocusPolicy(Qt.NoFocus)
 
@@ -4794,7 +4814,8 @@ class responseLight(QWidget):
         self.lightColor = self.offLightColor#Qt.black
         self.feedbackText = ""
         self.responseLightType = self.tr("Light") #this is just for inizialization purposes
-        
+        self.rb = self.parent() #response box
+        self.cw = self.parent().parent() #control window
 
         self.correctSmiley = QIcon.fromTheme("face-smile", QIcon(":/face-smile"))
         self.incorrectSmiley = QIcon.fromTheme("face-sad", QIcon(":/face-sad"))
@@ -4813,11 +4834,11 @@ class responseLight(QWidget):
         QApplication.processEvents()
         
     def setStatus(self, status):
-        self.correctLightColor = self.parent().parent().prm["pref"]["resp_box"]["correctLightColor"]
-        self.incorrectLightColor = self.parent().parent().prm["pref"]["resp_box"]["incorrectLightColor"]
-        self.neutralLightColor = self.parent().parent().prm["pref"]["resp_box"]["neutralLightColor"]
-        self.offLightColor = self.parent().parent().prm["pref"]["resp_box"]["offLightColor"]
-        if self.responseLightType == self.tr("Light"):
+        self.correctLightColor = self.cw.prm["pref"]["resp_box"]["correctLightColor"]
+        self.incorrectLightColor = self.cw.prm["pref"]["resp_box"]["incorrectLightColor"]
+        self.neutralLightColor = self.cw.prm["pref"]["resp_box"]["neutralLightColor"]
+        self.offLightColor = self.cw.prm["pref"]["resp_box"]["offLightColor"]
+        if self.responseLightType in [self.tr("Light"), self.tr("Light & Text"), self.tr("Light & Smiley"), self.tr("Light & Text & Smiley")]:
             if status == 'correct':
                 self.lightColor = self.correctLightColor#Qt.green
             elif status == 'incorrect':
@@ -4826,18 +4847,32 @@ class responseLight(QWidget):
                 self.lightColor = self.neutralLightColor #Qt.white
             elif status == 'off':
                 self.lightColor = self.offLightColor #Qt.black
-        elif self.responseLightType == self.tr("Text"):
-            self.lightColor = Qt.black
+        if self.responseLightType in [self.tr("Text"), self.tr("Light & Text"), self.tr("Text & Smiley"), self.tr("Light & Text & Smiley")]:
             if status == 'correct':
-                self.feedbackText = self.tr("CORRECT")
+                if self.cw.prm["pref"]["resp_box"]["correctTextFeedbackUserSet"] == True:
+                    self.feedbackText = self.cw.prm["pref"]["resp_box"]["userSetCorrectTextFeedback"]
+                else:
+                    self.feedbackText = self.cw.prm['rbTrans'].translate('rb', self.cw.prm["pref"]["resp_box"]["correctTextFeedback"])
+                self.penColor = self.cw.prm["pref"]["resp_box"]["correctTextColor"]
             elif status == 'incorrect':
-                self.feedbackText = self.tr("INCORRECT")
+                if self.cw.prm["pref"]["resp_box"]["incorrectTextFeedbackUserSet"] == True:
+                    self.feedbackText = self.cw.prm["pref"]["resp_box"]["userSetIncorrectTextFeedback"]
+                else:
+                    self.feedbackText = self.cw.prm['rbTrans'].translate('rb', self.cw.prm["pref"]["resp_box"]["incorrectTextFeedback"])
+                self.penColor = self.cw.prm["pref"]["resp_box"]["incorrectTextColor"]
             elif status == 'neutral':
-                self.feedbackText = ""
+                if self.cw.prm["pref"]["resp_box"]["neutralTextFeedbackUserSet"] == True:
+                    self.feedbackText = self.cw.prm["pref"]["resp_box"]["userSetNeutralTextFeedback"]
+                else:
+                    self.feedbackText = self.cw.prm['rbTrans'].translate('rb', self.cw.prm["pref"]["resp_box"]["neutralTextFeedback"])
+                self.penColor = self.cw.prm["pref"]["resp_box"]["neutralTextColor"]
             elif status == 'off':
-                self.feedbackText = ""
-        elif self.responseLightType == self.tr("Smiley"):
-            self.lightColor = Qt.black
+                if self.cw.prm["pref"]["resp_box"]["offTextFeedbackUserSet"] == True:
+                    self.feedbackText = self.cw.prm["pref"]["resp_box"]["userSetOffTextFeedback"]
+                else:
+                    self.feedbackText = self.cw.prm['rbTrans'].translate('rb', self.cw.prm["pref"]["resp_box"]["offTextFeedback"])
+                self.penColor = self.cw.prm["pref"]["resp_box"]["offTextColor"]
+        if self.responseLightType in [self.tr("Smiley"), self.tr("Light & Smiley"), self.tr("Text & Smiley"), self.tr("Light & Text & Smiley")]:
             if status == 'correct':
                 self.feedbackSmiley = self.correctSmiley
             elif status == 'incorrect':
@@ -4857,26 +4892,70 @@ class responseLight(QWidget):
         elif self.responseLightType == self.tr("Text"):
             painter = QPainter(self)
             painter.setViewport(0,0,self.width(),self.height())
-            painter.setPen(Qt.white)
-            painter.setBrush(self.lightColor)
+            painter.setBrush(self.offLightColor)
             painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
             r = QtCore.QRectF(0,0,self.width(),self.height())
-            qfont = QtGui.QFont('Arial', 20)
-            qfont.setHintingPreference(QtGui.QFont.PreferDefaultHinting)
-            qfont.setStyleStrategy(QtGui.QFont.PreferAntialias)
-            qfont.setStyle(QtGui.QFont.StyleNormal)
-            qfont.setWeight(QtGui.QFont.Normal)
+            painter.setPen(self.penColor)
+            qfont = QFont()
+            qfont.fromString(self.cw.prm["pref"]["resp_box"]["responseLightFont"])
             painter.setFont(qfont)
             painter.drawText(r, Qt.AlignCenter, self.feedbackText)
         elif self.responseLightType == self.tr("Smiley"):
             painter = QPainter(self)
             painter.setViewport(0,0,self.width(),self.height())
-            painter.setPen(Qt.black)
+            painter.setBrush(self.offLightColor)
+            rect = painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            rect = QRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            self.feedbackSmiley.paint(painter, rect, Qt.AlignCenter)
+        elif self.responseLightType == self.tr("Light & Text"):
+            painter = QPainter(self)
+            painter.setViewport(0,0,self.width(),self.height())
+            painter.setPen(self.borderColor)
+            painter.setBrush(self.lightColor)
+            painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            r = QtCore.QRectF(0,0,self.width(),self.height())
+            painter.setPen(self.penColor)
+            qfont = QFont()
+            qfont.fromString(self.cw.prm["pref"]["resp_box"]["responseLightFont"])
+            painter.setFont(qfont)
+            painter.drawText(r, Qt.AlignCenter, self.feedbackText)
+        elif self.responseLightType == self.tr("Light & Smiley"):
+            painter = QPainter(self)
+            painter.setViewport(0,0,self.width(),self.height())
             painter.setBrush(self.lightColor)
             rect = painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
             rect = QRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
             self.feedbackSmiley.paint(painter, rect, Qt.AlignCenter)
-
+        elif self.responseLightType == self.tr("Text & Smiley"):
+            painter = QPainter(self)
+            painter.setViewport(0,0,self.width(),self.height())
+            painter.setBrush(self.offLightColor)
+            rect = painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            rectRight = QRect(self.width()/60, self.height()/60, self.width()+self.width()/2, self.height())
+            self.feedbackSmiley.paint(painter, rectRight, Qt.AlignCenter)
+            rectLeft = QRect(self.width()/60, self.height()/60, self.width()-self.width()/2, self.height())
+            self.feedbackSmiley.paint(painter, rectLeft, Qt.AlignCenter)
+            r = QtCore.QRectF(0,0,self.width(),self.height())
+            painter.setPen(self.penColor)
+            qfont = QFont()
+            qfont.fromString(self.cw.prm["pref"]["resp_box"]["responseLightFont"])
+            painter.setFont(qfont)
+            painter.drawText(r, Qt.AlignCenter, self.feedbackText)
+        elif self.responseLightType == self.tr("Light & Text & Smiley"):
+            painter = QPainter(self)
+            painter.setViewport(0,0,self.width(),self.height())
+            painter.setBrush(self.lightColor)
+            rect = painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            rectRight = QRect(self.width()/60, self.height()/60, self.width()+self.width()/2, self.height())
+            self.feedbackSmiley.paint(painter, rectRight, Qt.AlignCenter)
+            rectLeft = QRect(self.width()/60, self.height()/60, self.width()-self.width()/2, self.height())
+            self.feedbackSmiley.paint(painter, rectLeft, Qt.AlignCenter)
+            r = QtCore.QRectF(0,0,self.width(),self.height())
+            painter.setPen(self.penColor)
+            qfont = QFont()
+            qfont.fromString(self.cw.prm["pref"]["resp_box"]["responseLightFont"])
+            painter.setFont(qfont)
+            painter.drawText(r, Qt.AlignCenter, self.feedbackText)
 
 class intervalLight(QFrame):
 

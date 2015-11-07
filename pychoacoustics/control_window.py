@@ -1064,7 +1064,10 @@ class pychControlWin(QMainWindow):
 
             self.responseLightTypeLabel =  QLabel(self.tr("Response Light Type:"), self)
             self.responseLightTypeChooser = QComboBox()
-            self.responseLightTypeChooser.addItems([self.tr("Light"), self.tr("Text"), self.tr("Smiley")])
+            self.responseLightTypeChooser.addItems([self.tr("Light"), self.tr("Text"),
+                                                    self.tr("Smiley"), self.tr("Light & Text"),
+                                                    self.tr("Light & Smiley"), self.tr("Text & Smiley"),
+                                                    self.tr("Light & Text & Smiley")])
             self.add_widg_sizer.addWidget(self.responseLightTypeLabel, n, 1)
             self.add_widg_sizer.addWidget(self.responseLightTypeChooser, n, 2)
             self.responseLightTypeCheckBox = QCheckBox()
@@ -1101,7 +1104,10 @@ class pychControlWin(QMainWindow):
             n = n+1
             self.responseLightTypeLabel =  QLabel(self.tr("Response Light Type:"), self)
             self.responseLightTypeChooser = QComboBox()
-            self.responseLightTypeChooser.addItems([self.tr("Light"), self.tr("Text"), self.tr("Smiley")])
+            self.responseLightTypeChooser.addItems([self.tr("Light"), self.tr("Text"),
+                                                    self.tr("Smiley"), self.tr("Light & Text"),
+                                                    self.tr("Light & Smiley"), self.tr("Text & Smiley"),
+                                                    self.tr("Light & Text & Smiley")])
             self.add_widg_sizer.addWidget(self.responseLightTypeLabel, n, 1)
             self.add_widg_sizer.addWidget(self.responseLightTypeChooser, n, 2)
             self.responseLightTypeCheckBox = QCheckBox()

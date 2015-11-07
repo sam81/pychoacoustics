@@ -21,18 +21,18 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale, QThread, pyqtSignal
-    from PyQt4.QtGui import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QGridLayout, QIntValidator, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
+    from PyQt4.QtGui import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFont, QFontDialog, QGridLayout, QIntValidator, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
     QtCore.Signal = QtCore.pyqtSignal
     QtCore.Slot = QtCore.pyqtSlot
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtCore import QLocale, QThread, Signal
-    from PySide.QtGui import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QGridLayout, QIntValidator, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
+    from PySide.QtGui import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFont, QFontDialog, QGridLayout, QIntValidator, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, QThread, pyqtSignal
-    from PyQt5.QtWidgets import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QGridLayout, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
-    from PyQt5.QtGui import QIntValidator
+    from PyQt5.QtWidgets import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFontDialog, QGridLayout, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
+    from PyQt5.QtGui import QFont, QIntValidator
     QtCore.Signal = QtCore.pyqtSignal
     QtCore.Slot = QtCore.pyqtSlot
     
@@ -368,6 +368,20 @@ class preferencesDialog(QDialog):
         respBoxPrefGrid = QGridLayout()
         n = 0
 
+        self.responseBoxButtonFont = self.tmpPref['pref']['resp_box']['responseBoxButtonFont']
+        self.responseBoxButtonFontButton = QPushButton(self.tr("Response Box Button Font"), self)
+        self.responseBoxButtonFontButton.clicked.connect(self.onChangeResponseBoxButtonFont)
+        respBoxPrefGrid.addWidget(self.responseBoxButtonFontButton, n, 0)
+
+        tmpFont = QFont(); tmpFont.fromString(self.responseBoxButtonFont)
+        self.responseBoxButtonFontTF = QLabel(tmpFont.family() + " " + str(tmpFont.pointSize()))
+        self.responseBoxButtonFontTF.setStyleSheet("QWidget { font-family: %s }" % tmpFont.family())
+        respBoxPrefGrid.addWidget(self.responseBoxButtonFontTF, n, 1)
+
+        self.responseBoxButtonFontWarn = QLabel("("+self.tr("Requires Restart")+")")
+        respBoxPrefGrid.addWidget(self.responseBoxButtonFontWarn, n, 2)
+
+        n = n+1
         self.correctLightColor = self.tmpPref['pref']['resp_box']['correctLightColor']
         self.correctLightColorButton = QPushButton(self.tr("Correct Light Color"), self)
         self.correctLightColorButton.clicked.connect(self.onChangeCorrectLightColor)
@@ -405,9 +419,96 @@ class preferencesDialog(QDialog):
         self.offLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.offLightColor.name())
         respBoxPrefGrid.addWidget(self.offLightColorSquare, n, 1)
         
+        n = n+1
+        self.responseLightFont = self.tmpPref['pref']['resp_box']['responseLightFont']
+        self.responseLightFontButton = QPushButton(self.tr("Response Light Font"), self)
+        self.responseLightFontButton.clicked.connect(self.onChangeResponseLightFont)
+        respBoxPrefGrid.addWidget(self.responseLightFontButton, n, 0)
 
+        tmpFont = QFont(); tmpFont.fromString(self.responseLightFont)
+        self.responseLightFontTF = QLabel(tmpFont.family() + " " + str(tmpFont.pointSize()))
+        self.responseLightFontTF.setStyleSheet("QWidget { font-family: %s }" % tmpFont.family())
+        respBoxPrefGrid.addWidget(self.responseLightFontTF, n, 1)
 
-        respBoxPrefGrid.addItem(QSpacerItem(10,10,QSizePolicy.Expanding), n+1, 1)
+        n = n+1
+        self.correctTextFeedbackLabel = QLabel(self.tr("Correct Response Text Feedback: "))
+        if self.tmpPref['pref']['resp_box']["correctTextFeedbackUserSet"] == True:
+            self.correctTextFeedbackTF = QLineEdit(self.tmpPref["pref"]["resp_box"]["userSetCorrectTextFeedback"])
+        else:
+            self.correctTextFeedbackTF = QLineEdit("(" + self.tr("Default") + ")")
+
+        respBoxPrefGrid.addWidget(self.correctTextFeedbackLabel, n, 0)
+        respBoxPrefGrid.addWidget(self.correctTextFeedbackTF, n, 1)
+
+        n = n+1
+        self.incorrectTextFeedbackLabel = QLabel(self.tr("Incorrect Response Text Feedback: "))
+        if self.tmpPref['pref']['resp_box']["incorrectTextFeedbackUserSet"] == True:
+            self.incorrectTextFeedbackTF = QLineEdit(self.tmpPref["pref"]["resp_box"]["userSetIncorrectTextFeedback"])
+        else:
+            self.incorrectTextFeedbackTF = QLineEdit("(" + self.tr("Default") + ")")
+
+        respBoxPrefGrid.addWidget(self.incorrectTextFeedbackLabel, n, 0)
+        respBoxPrefGrid.addWidget(self.incorrectTextFeedbackTF, n, 1)
+
+        n = n+1
+        self.neutralTextFeedbackLabel = QLabel(self.tr("Neutral Response Text Feedback: "))
+        if self.tmpPref['pref']['resp_box']["neutralTextFeedbackUserSet"] == True:
+            self.neutralTextFeedbackTF = QLineEdit(self.tmpPref["pref"]["resp_box"]["userSetNeutralTextFeedback"])
+        else:
+            self.neutralTextFeedbackTF = QLineEdit("(" + self.tr("Default") + ")")
+
+        respBoxPrefGrid.addWidget(self.neutralTextFeedbackLabel, n, 0)
+        respBoxPrefGrid.addWidget(self.neutralTextFeedbackTF, n, 1)
+
+        # n = n+1
+        # self.offTextFeedbackLabel = QLabel(self.tr("Off Response Text Feedback: "))
+        # if self.tmpPref['pref']['resp_box']["offTextFeedbackUserSet"] == True:
+        #     self.offTextFeedbackTF = QLineEdit(self.tmpPref["pref"]["resp_box"]["userSetOffTextFeedback"])
+        # else:
+        #     self.offTextFeedbackTF = QLineEdit("(" + self.tr("Default") + ")")
+
+        # respBoxPrefGrid.addWidget(self.offTextFeedbackLabel, n, 0)
+        # respBoxPrefGrid.addWidget(self.offTextFeedbackTF, n, 1)
+
+        n = n+1
+        self.correctTextColor = self.tmpPref['pref']['resp_box']['correctTextColor']
+        self.correctTextColorButton = QPushButton(self.tr("Correct Text Color"), self)
+        self.correctTextColorButton.clicked.connect(self.onChangeCorrectTextColor)
+        respBoxPrefGrid.addWidget(self.correctTextColorButton, n, 0)
+
+        self.correctTextColorSquare = QWidget(self)
+        self.correctTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.correctTextColor.name())
+        respBoxPrefGrid.addWidget(self.correctTextColorSquare, n, 1)
+
+        n = n+1
+        self.incorrectTextColor = self.tmpPref['pref']['resp_box']['incorrectTextColor']
+        self.incorrectTextColorButton = QPushButton(self.tr("Incorrect Text Color"), self)
+        self.incorrectTextColorButton.clicked.connect(self.onChangeIncorrectTextColor)
+        respBoxPrefGrid.addWidget(self.incorrectTextColorButton, n, 0)
+
+        self.incorrectTextColorSquare = QWidget(self)
+        self.incorrectTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.incorrectTextColor.name())
+        respBoxPrefGrid.addWidget(self.incorrectTextColorSquare, n, 1)
+        n = n+1
+        self.neutralTextColor = self.tmpPref['pref']['resp_box']['neutralTextColor']
+        self.neutralTextColorButton = QPushButton(self.tr("Neutral Text Color"), self)
+        self.neutralTextColorButton.clicked.connect(self.onChangeNeutralTextColor)
+        respBoxPrefGrid.addWidget(self.neutralTextColorButton, n, 0)
+
+        self.neutralTextColorSquare = QWidget(self)
+        self.neutralTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.neutralTextColor.name())
+        respBoxPrefGrid.addWidget(self.neutralTextColorSquare, n, 1)
+        # n = n+1
+        # self.offTextColor = self.tmpPref['pref']['resp_box']['offTextColor']
+        # self.offTextColorButton = QPushButton(self.tr("Off Text Color"), self)
+        # self.offTextColorButton.clicked.connect(self.onChangeOffTextColor)
+        # respBoxPrefGrid.addWidget(self.offTextColorButton, n, 0)
+
+        # self.offTextColorSquare = QWidget(self)
+        # self.offTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.offTextColor.name())
+        # respBoxPrefGrid.addWidget(self.offTextColorSquare, n, 1)
+
+        #respBoxPrefGrid.addItem(QSpacerItem(10,10,QSizePolicy.Expanding), n+1, 1)
         
         self.respBoxPrefWidget.setLayout(respBoxPrefGrid)
         self.respBoxPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
@@ -552,6 +653,45 @@ class preferencesDialog(QDialog):
         if col.isValid():
             self.offLightColor = col
             self.offLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.offLightColor.name())
+
+    def onChangeCorrectTextColor(self):
+        col = QColorDialog.getColor()
+        if col.isValid():
+            self.correctTextColor = col
+            self.correctTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.correctTextColor.name())
+    def onChangeIncorrectTextColor(self):
+        col = QColorDialog.getColor()
+        if col.isValid():
+            self.incorrectTextColor = col
+            self.incorrectTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.incorrectTextColor.name())
+    def onChangeNeutralTextColor(self):
+        col = QColorDialog.getColor()
+        if col.isValid():
+            self.neutralTextColor = col
+            self.neutralTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.neutralTextColor.name())
+    # def onChangeOffTextColor(self):
+    #     col = QColorDialog.getColor()
+    #     if col.isValid():
+    #         self.offTextColor = col
+    #         self.offTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.offTextColor.name())
+            
+    def onChangeResponseBoxButtonFont(self):
+        tmp = QFont(); tmp.fromString(self.responseBoxButtonFont)
+        font, ok = QFontDialog.getFont(tmp)
+        if ok:
+            self.responseBoxButtonFont = font.toString()
+            tmpFont = QFont(); tmpFont.fromString(self.responseBoxButtonFont)
+            self.responseBoxButtonFontTF.setText(tmpFont.family() + " " + str(tmpFont.pointSize()))
+            self.responseBoxButtonFontTF.setStyleSheet("QWidget { font-family: %s }" % tmpFont.family())
+    def onChangeResponseLightFont(self):
+        tmp = QFont(); tmp.fromString(self.responseLightFont)
+        font, ok = QFontDialog.getFont(tmp)
+        if ok:
+            self.responseLightFont = font.toString()
+            tmpFont = QFont(); tmpFont.fromString(self.responseLightFont)
+            self.responseLightFontTF.setText(tmpFont.family() + " " + str(tmpFont.pointSize()))
+            self.responseLightFontTF.setStyleSheet("QWidget { font-family: %s }" % tmpFont.family())
+           
             
     def tryApply(self):
         self.tmpPref['pref']['language'] = self.tr(self.languageChooser.currentText())
@@ -658,6 +798,38 @@ class preferencesDialog(QDialog):
         self.tmpPref['pref']['resp_box']['incorrectLightColor'] = self.incorrectLightColor
         self.tmpPref['pref']['resp_box']['neutralLightColor'] = self.neutralLightColor
         self.tmpPref['pref']['resp_box']['offLightColor'] = self.offLightColor
+
+        self.tmpPref['pref']['resp_box']['correctTextColor'] = self.correctTextColor
+        self.tmpPref['pref']['resp_box']['incorrectTextColor'] = self.incorrectTextColor
+        self.tmpPref['pref']['resp_box']['neutralTextColor'] = self.neutralTextColor
+        #self.tmpPref['pref']['resp_box']['offTextColor'] = self.offTextColor
+        
+        self.tmpPref['pref']['resp_box']['responseLightFont'] = self.responseLightFont
+        self.tmpPref['pref']['resp_box']['responseBoxButtonFont'] = self.responseBoxButtonFont
+
+        if self.correctTextFeedbackTF.text() != "("+self.tr("Default")+")":
+            self.tmpPref['pref']['resp_box']["correctTextFeedbackUserSet"] = True
+            self.tmpPref['pref']['resp_box']["userSetCorrectTextFeedback"] = self.correctTextFeedbackTF.text()
+        else:
+            self.tmpPref['pref']['resp_box']["correctTextFeedbackUserSet"] = False
+
+        if self.incorrectTextFeedbackTF.text() != "("+self.tr("Default")+")":
+            self.tmpPref['pref']['resp_box']["incorrectTextFeedbackUserSet"] = True
+            self.tmpPref['pref']['resp_box']["userSetIncorrectTextFeedback"] = self.incorrectTextFeedbackTF.text()
+        else:
+            self.tmpPref['pref']['resp_box']["incorrectTextFeedbackUserSet"] = False
+
+        if self.neutralTextFeedbackTF.text() != "("+self.tr("Default")+")":
+            self.tmpPref['pref']['resp_box']["neutralTextFeedbackUserSet"] = True
+            self.tmpPref['pref']['resp_box']["userSetNeutralTextFeedback"] = self.neutralTextFeedbackTF.text()
+        else:
+            self.tmpPref['pref']['resp_box']["neutralTextFeedbackUserSet"] = False
+
+        # if self.offTextFeedbackTF.text() != "("+self.tr("Default")+")":
+        #     self.tmpPref['pref']['resp_box']["offTextFeedbackUserSet"] = True
+        #     self.tmpPref['pref']['resp_box']["userSetOffTextFeedback"] = self.offTextFeedbackTF.text()
+        # else:
+        #     self.tmpPref['pref']['resp_box']["offTextFeedbackUserSet"] = False
             
     def revertChanges(self):
         self.languageChooser.setCurrentIndex(self.languageChooser.findText(self.tmpPref['pref']['language']))
@@ -721,6 +893,44 @@ class preferencesDialog(QDialog):
         self.offLightColor = self.tmpPref['pref']['resp_box']['offLightColor']
         self.offLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.offLightColor.name())
 
+        self.correctTextColor = self.tmpPref['pref']['resp_box']['correctTextColor']
+        self.correctTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.correctTextColor.name())
+        self.incorrectTextColor = self.tmpPref['pref']['resp_box']['incorrectTextColor']
+        self.incorrectTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.incorrectTextColor.name())
+        self.neutralTextColor = self.tmpPref['pref']['resp_box']['neutralTextColor']
+        self.neutralTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.neutralTextColor.name())
+        # self.offTextColor = self.tmpPref['pref']['resp_box']['offTextColor']
+        # self.offTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.offTextColor.name())
+        
+        self.responseLightFont = self.tmpPref['pref']['resp_box']['responseLightFont']
+        tmpFont = QFont(); tmpFont.fromString(self.responseLightFont)
+        self.responseLightFontTF.setText(tmpFont.family() + " " + str(tmpFont.pointSize()))
+        self.responseLightFontTF.setStyleSheet("QWidget { font-family: %s }" % tmpFont.family())
+
+        self.responseBoxButtonFont = self.tmpPref['pref']['resp_box']['responseBoxButtonFont']
+        tmpFont = QFont(); tmpFont.fromString(self.responseBoxButtonFont)
+        self.responseBoxButtonFontTF.setText(tmpFont.family() + " " + str(tmpFont.pointSize()))
+        self.responseBoxButtonFontTF.setStyleSheet("QWidget { font-family: %s }" % tmpFont.family())
+
+        if self.tmpPref['pref']['resp_box']["correctTextFeedbackUserSet"] == True:
+            self.correctTextFeedbackTF.setText(tmpPref["pref"]["resp_box"]["userSetCorrectTextFeedback"])
+        else:
+            self.correctTextFeedbackTF.setText("(" + self.tr("Default") + ")")
+
+        if self.tmpPref['pref']['resp_box']["incorrectTextFeedbackUserSet"] == True:
+            self.incorrectTextFeedbackTF.setText(tmpPref["pref"]["resp_box"]["userSetIncorrectTextFeedback"])
+        else:
+            self.incorrectTextFeedbackTF.setText("(" + self.tr("Default") + ")")
+
+        if self.tmpPref['pref']['resp_box']["neutralTextFeedbackUserSet"] == True:
+            self.neutralTextFeedbackTF.setText(tmpPref["pref"]["resp_box"]["userSetNeutralTextFeedback"])
+        else:
+            self.neutralTextFeedbackTF.setText("(" + self.tr("Default") + ")")
+
+        # if self.tmpPref['pref']['resp_box']["offTextFeedbackUserSet"] == True:
+        #     self.offTextFeedbackTF.setText(tmpPref["pref"]["resp_box"]["userSetOffTextFeedback"])
+        # else:
+        #     self.offTextFeedbackTF.setText("(" + self.tr("Default") + ")")
         
     def permanentApply(self):
         self.tryApply()
