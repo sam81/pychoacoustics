@@ -4787,7 +4787,7 @@ class responseBox(QMainWindow):
         for i in range(len(cmdSplit)):
             if cmdSplit[i] in self.pychovariables:
                 idx = self.pychovariables.index(cmdSplit[i])
-                cmdList.append(self.pychovariablesSubstitute[idx])
+                cmdList.append('"'+self.pychovariablesSubstitute[idx]+'"')
             else:
                 cmdList.append(cmdSplit[i])
         parsedCmd = " ".join(cmdList)
