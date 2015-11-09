@@ -1005,7 +1005,7 @@ class responseBox(QMainWindow):
                                          self.prm['resultsFile'].split('.txt')[0]+'_full.txt',
                                          self.prm['resultsFile'].split('.txt')[0]+'_res.txt',
                                          self.prm['resultsFile'].split('.txt')[0]+'_table.csv',
-                                         self.prm['listener'], self.prm['experimenter'],
+                                         self.prm['listener'], self.prm['allBlocks']['currentExperimenter'],
                                          self.prm['resultsFile'].split('.txt')[0]+'_table_processed.csv',
                                          self.prm['resultsFile'].split('.txt')[0]+'_table_processed.pdf']
       
@@ -4782,16 +4782,10 @@ class responseBox(QMainWindow):
 
                 
     def parseCustomCommandArguments(self, cmd):
-        cmdList = []
-        cmdSplit = cmd.split()
-        for i in range(len(cmdSplit)):
-            if cmdSplit[i] in self.pychovariables:
-                idx = self.pychovariables.index(cmdSplit[i])
-                cmdList.append('"'+self.pychovariablesSubstitute[idx]+'"')
-            else:
-                cmdList.append(cmdSplit[i])
-        parsedCmd = " ".join(cmdList)
-        return parsedCmd
+        for vr in self.pychovariables:
+            cmd = str.replace(cmd, vr, self.pychovariablesSubstitute[self.pychovariables.index(vr)])
+            
+        return cmd
                 
     def playEndMessage(self):
         idx = get_list_indices(self.prm['pref']['general']['endMessageFilesUse'], "\u2713")

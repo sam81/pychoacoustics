@@ -646,8 +646,18 @@ to the directory "/home/foo/res/", you can use the command
     $ cp [resFile] /home/foo/backup/exp/
 
 here the special string ``[resFile]`` will be converted to the name of
-the file where ``pychoacoustics`` has saved the data. A full listing of
-these special strings is given in Table :ref:`tab-pycho_variables`
+the file where ``pychoacoustics`` has saved the data. To make sure that
+the command executes without errors even if the name of the result file
+contains white spaces you should put the variable referring
+to the filename between quotes:
+
+.. code-block:: bash
+
+    $ cp "[resFile]" /home/foo/backup/exp/
+
+A full listing of the internal ``pychoacoustics`` variables that
+can be called by special strings in your commands is given in
+Table :ref:`tab-pycho_variables`
 
 .. _tab-pycho_variables:
 
