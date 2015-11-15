@@ -698,36 +698,32 @@ class responseBox(QMainWindow):
             if i < (len(sndList) - 1):
                 time.sleep(ISIList[i]/1000)
 
+        return
+
     def playSequentialIntervalsNoLights(self, sndList, ISIList=[], trigNum=None):
         currBlock = 'b'+ str(self.prm['currentBlock'])
-        #cmd = self.prm['pref']['sound']['playCommand']
+        #self.dialerResponseField.setReadOnly(True)
+        
         for i in range(len(sndList)):
             if self.prm['pref']['sound']['writeSndSeqSegments'] == True:
                 self.audioManager.scipy_wavwrite("sndSeq%i.wav"%(i+1), self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], sndList[i])
-        # nLight = 0
-        # if self.prm["warningInterval"] == True:
-        #     self.intervalLight[nLight].setStatus('on')
-        #     time.sleep(self.prm[currBlock]['warningIntervalDur']/1000)
-        #     self.intervalLight[nLight].setStatus('off')
-        #     nLight = nLight+1
-        #     time.sleep(self.prm[currBlock]['warningIntervalISI']/1000)
         for i in range(len(sndList)):
-            #self.intervalLight[nLight].setStatus('on')
             if trigNum != None:
                 self.audioManager.playSoundWithTrigger(sndList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'soundSequence.wav', trigNum)
             else:
                 self.audioManager.playSound(sndList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'soundSequence.wav')
-            #self.intervalLight[nLight].setStatus('off')
-            #nLight = nLight+1
 
             if i < (len(sndList) - 1):
                 time.sleep(ISIList[i]/1000)
+        #self.dialerResponseField.setReadOnly(False)
+        #self.dialerResponseField.setText("")
+        #QApplication.processEvents()
 
-
+        return
+    
     def playSoundsWavComp(self, soundList, fsList, nBitsList):
         currBlock = 'b'+ str(self.prm['currentBlock'])
         nIntervals = self.prm['nIntervals']
-        #cmd = self.prm['pref']['sound']['playCommand']
 
         nLight = 0
         if self.prm["warningInterval"] == True:
