@@ -303,7 +303,7 @@ class responseBox(QMainWindow):
                     self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
                     self.responseButton[cnt].setStyleSheet("background-color: " + cols[cl])
                     cnt = cnt+1
-        elif self.parent().currExp == self.tr("Digit Triplets Test"):
+        elif self.parent().currExp in [self.tr("Digit Triplets Test"), self.tr("Digit Span")]:
             self.statusButton.setMaximumSize(screen.width(), screen.height()/15)
             self.responseLight.setMaximumSize(screen.width(), screen.height()/10)
             self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
@@ -314,7 +314,6 @@ class responseBox(QMainWindow):
             self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 1)
             sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             self.responseButton[cnt].setSizePolicy(sizePolicy)
-            #self.responseButton[cnt].setProperty("responseBoxButton", True)
             self.responseButton[cnt].setFont(self.responseBoxButtonFont)
             self.responseButton[cnt].clicked.connect(self.dialerButtonClicked)
             self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
@@ -326,7 +325,6 @@ class responseBox(QMainWindow):
                     self.responseButtonSizer.addWidget(self.responseButton[cnt], rw, cl)
                     sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
                     self.responseButton[cnt].setSizePolicy(sizePolicy)
-                    #self.responseButton[cnt].setProperty("responseBoxButton", True)
                     self.responseButton[cnt].setFont(self.responseBoxButtonFont)
                     self.responseButton[cnt].clicked.connect(self.dialerButtonClicked)
                     self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
@@ -336,7 +334,6 @@ class responseBox(QMainWindow):
             self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 0)
             sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             self.responseButton[cnt].setSizePolicy(sizePolicy)
-            #self.responseButton[cnt].setProperty("responseBoxButton", True)
             self.responseButton[cnt].setFont(self.responseBoxButtonFont)
             self.responseButton[cnt].clicked.connect(self.backspaceButtonPressed)
             self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
@@ -348,17 +345,19 @@ class responseBox(QMainWindow):
             self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 2)
             sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             self.responseButton[cnt].setSizePolicy(sizePolicy)
-            #self.responseButton[cnt].setProperty("responseBoxButton", True)
             self.responseButton[cnt].setFont(self.responseBoxButtonFont)
             self.responseButton[cnt].clicked.connect(self.enterButtonPressed)
             self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
 
-            self.DTTResponseField = QLineEdit("")
-            self.DTTResponseField.setValidator(QIntValidator(0,999,self))
-            self.responseButtonSizer.addWidget(self.DTTResponseField, 4, 0, 1, 3)
-            self.DTTResponseField.returnPressed.connect(self.enterButtonPressed)
-            self.DTTResponseField.setSizePolicy(sizePolicy)
-            self.DTTResponseField.setStyleSheet("font-size: 40px")
+            self.dialerResponseField = QLineEdit("")
+            if self.parent().currExp == self.tr("Digit Triplets Test"): #only three max digits
+                self.dialerResponseField.setValidator(QIntValidator(0, 999, self))
+            else:
+                self.dialerResponseField.setValidator(QIntValidator(self))
+            self.responseButtonSizer.addWidget(self.dialerResponseField, 4, 0, 1, 3)
+            self.dialerResponseField.returnPressed.connect(self.enterButtonPressed)
+            self.dialerResponseField.setSizePolicy(sizePolicy)
+            self.dialerResponseField.setStyleSheet("font-size: 40px")
            
 
         else:
@@ -1100,43 +1099,41 @@ class responseBox(QMainWindow):
        #==================================================================
 
     def dialerButtonClicked(self):
-        buttonClicked = self.responseButton.index(self.sender())#+1
-        currText = self.DTTResponseField.text()
+        if self.parent().currExp == self.tr("Digit Span") and self.prm['trialRunning'] == True:
+            return
+        buttonClicked = self.responseButton.index(self.sender())
+        currText = self.dialerResponseField.text()
         newText = currText + str(buttonClicked)
-        nDigits = len(newText)
-        if nDigits > 3:
-            newText = newText[0:3]
-        self.DTTResponseField.setText(newText)
-
-    # def dialerButtonPressed(self, buttonClicked):
-    #     currText = self.DTTResponseField.text()
-    #     newText = currText + str(buttonClicked)
-    #     nDigits = len(newText)
-    #     if nDigits > 3:
-    #         newText = newText[0:3]
-    #     self.DTTResponseField.setText(newText)
+        if self.parent().currExp == self.tr("Digit Triplets Test"):
+            nDigits = len(newText)
+            if nDigits > 3:
+                newText = newText[0:3]
+        self.dialerResponseField.setText(newText)
 
     def backspaceButtonPressed(self):
-        self.DTTResponseField.backspace()
+        self.dialerResponseField.backspace()
 
     def enterButtonPressed(self):
-        currText = self.DTTResponseField.text()
-        if len(currText) < 3:
-            return
-        else:
-            if currText[0] == currText[1] or currText[0] == currText[2] or currText[1] == currText[2]:
+        currText = self.dialerResponseField.text()
+        if self.parent().currExp == self.tr("Digit Triplets Test"):
+            if len(currText) < 3:
+                return
+            else:
+                if currText[0] == currText[1] or currText[0] == currText[2] or currText[1] == currText[2]:
+                    ret = QMessageBox.warning(self, self.tr("Warning"),
+                                              self.tr("Repeated digits are not allowed. Please, edit your response."),
+                                              QMessageBox.Ok)
+                    return
+
+        if self.parent().currExp == self.tr("Digit Span"):
+            if len(currText) < len(str(self.correctButton)):
                 ret = QMessageBox.warning(self, self.tr("Warning"),
-                                          self.tr("Repeated digits are not allowed. Please, edit your response."),
+                                          self.tr("Input sequence is shorter than correct sequence."),
                                           QMessageBox.Ok)
                 return
                 
-            self.DTTResponseField.setText("")
-            
+        self.dialerResponseField.setText("")
         self.sortResponse(int(currText))
-
-
-        
-
     def sortResponseButton(self):
         buttonClicked = self.responseButton.index(self.sender())+1
         self.sortResponse(buttonClicked)
@@ -1175,7 +1172,10 @@ class responseBox(QMainWindow):
         if self.parent().currExp == self.tr("Digit Triplets Test"):
             if buttonClicked < 10:
                 return
-            if self.statusButton.text() not in [self.prm['rbTrans'].translate("rb", "Running"), "&"+self.prm['rbTrans'].translate("rb", "Running")]:
+            if self.statusButton.text() not in [self.prm['rbTrans'].translate("rb", "Running"), "&" + self.prm['rbTrans'].translate("rb", "Running")]:
+                return
+        elif self.parent().currExp == self.tr("Digit Span"):
+            if self.statusButton.text() not in [self.prm['rbTrans'].translate("rb", "Running"), "&" + self.prm['rbTrans'].translate("rb", "Running")]:
                 return
         else:
             if buttonClicked > self.prm['nAlternatives'] or self.statusButton.text() not in [self.prm['rbTrans'].translate("rb", "Running"), "&"+ self.prm['rbTrans'].translate("rb", "Running")]: #self.tr("Running"): #1) do not accept responses outside the possible alternatives and 2) if the block is not running (like wait or finished)
@@ -1224,6 +1224,8 @@ class responseBox(QMainWindow):
             self.sortResponseUML(buttonClicked)
         elif self.prm['paradigm'] == self.tr("Multiple Constants Odd One Out"):
             self.sortResponseMultipleConstantsOddOneOut(buttonClicked)
+        elif self.prm['paradigm'] == self.tr("Adaptive Digit Span"):
+            self.sortResponseAdaptiveDigitSpan(buttonClicked)
         self.prm['sortingResponse'] = False
             
     def sortResponseAdaptive(self, buttonClicked, method):
@@ -3923,6 +3925,142 @@ class responseBox(QMainWindow):
         else:
             self.doTrial()
 
+    def sortResponseAdaptiveDigitSpan(self, buttonClicked):
+        if self.prm['startOfBlock'] == True:
+            self.prm['correct'] = []
+            self.prm['sequenceLength'] = []
+            self.prm['startOfBlock'] = False
+            
+            self.fullFileLines = []
+            self.fullFileSummLines = []
+
+        self.prm['sequenceLength'].append(self.prm['adaptiveDifference'])
+        if buttonClicked == self.correctButton:
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback("correct")
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback("neutral")
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback("off")
+            
+            self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"]])
+            self.fullFileLog.write('1; ')
+            self.fullFileLines.append('1; ')
+            self.fullFileSummLines[len(self.fullFileSummLines)-1].append('1' + self.prm['pref']["general"]["csvSeparator"])
+            if 'additional_parameters_to_write' in self.prm:
+                for p in range(len(self.prm['additional_parameters_to_write'])):
+                    self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLog.write(' ;')
+                    self.fullFileLines.append(' ;')
+                    self.fullFileSummLines[len(self.fullFileSummLines)-1].append(self.prm['pref']["general"]["csvSeparator"])
+            self.prm['correct'].append(1)
+            self.prm['adaptiveDifference'] = self.prm['adaptiveDifference']+1
+            self.runAnotherTrial = True
+                
+        elif buttonClicked != self.correctButton:
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback("incorrect")
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback("neutral")
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback("off")
+                
+            self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"]])
+            self.fullFileLog.write('0; ')
+            self.fullFileLines.append('0; ')
+            self.fullFileSummLines[len(self.fullFileSummLines)-1].append('0' + self.prm['pref']["general"]["csvSeparator"])
+            if 'additional_parameters_to_write' in self.prm:
+                for p in range(len(self.prm['additional_parameters_to_write'])):
+                    self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileLog.write('; ')
+                    self.fullFileLines.append('; ')
+                    self.fullFileSummLines[len(self.fullFileSummLines)-1].append(self.prm['pref']["general"]["csvSeparator"])
+        
+            self.prm['correct'].append(0)
+            if self.prm['correct'][len(self.prm['correct'])-2] == 1: 
+                self.runAnotherTrial = True
+            elif self.prm['correct'][len(self.prm['correct'])-2] == 0: #got two consecutive incorrect responses
+                self.runAnotherTrial = False
+
+        self.fullFileLog.write(str(buttonClicked) + '; ')
+        self.fullFileLines.append(str(buttonClicked) + '; ')
+        self.fullFileLog.write('\n')
+        self.fullFileLines.append('\n')
+        self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(buttonClicked))
+        self.fullFileSummLines[len(self.fullFileSummLines)-1].append(self.prm['pref']["general"]["csvSeparator"])
+        self.fullFileLog.flush()
+        # pcDone = (self.prm['nTurnpoints'] / self.prm['totalTurnpoints']) * 100
+        # bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
+        # pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
+        # pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
+        # self.gauge.setValue(pcTot)
+        if self.runAnotherTrial == False:
+            self.gauge.setValue(100)
+            self.writeResultsHeader('standard')
+            self.fullFileLog.write('\n')
+            self.fullFileLines.append('\n')
+            digitSpan = int(self.prm['adaptiveDifference'] -1)
+            for i in range(len(self.fullFileLines)):
+                self.fullFile.write(self.fullFileLines[i])
+            self.resFile.write("Digit Span = " + str(digitSpan))
+
+            self.resFile.write('\n\n')
+            self.resFile.flush()
+            self.resFileLog.write('\n\n')
+            self.resFileLog.flush()
+            self.getEndTime()
+
+            currBlock = 'b' + str(self.prm['currentBlock'])
+            durString = '{0:5.3f}'.format(self.prm['blockEndTime'] - self.prm['blockStartTime'])
+            resLineToWrite = str(digitSpan) + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             durString + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
+            resLineToWrite = resLineToWrite + '\n'
+            
+            self.writeResultsSummaryLine('Digit Span', resLineToWrite)
+
+            resLineToWriteSummFull = ""
+            for i in range(len(self.fullFileSummLines)):
+              resLineToWriteSummFull = resLineToWriteSummFull + " ".join(self.fullFileSummLines[i]) + \
+                             self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             durString + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+             
+              resLineToWriteSummFull = self.getCommonTabFields(resLineToWriteSummFull)
+              resLineToWriteSummFull = resLineToWriteSummFull + '\n'
+            
+            
+            self.writeResultsSummaryFullLine('Digit Span', resLineToWriteSummFull)
+
+            self.atBlockEnd()
+            
+        else:
+            self.doTrial()
+
             
     def whenFinished(self):
         if self.prm['currentRepetition'] == self.prm['allBlocks']['repetitions']:
@@ -4362,6 +4500,18 @@ class responseBox(QMainWindow):
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
                             'paradigm' + self.prm['pref']["general"]["csvSeparator"]
+        elif paradigm in ['Digit Span']:
+            headerToWrite = 'span' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'condition' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"] 
             
 
         currBlock = 'b'+str(self.prm['currentBlock'])
@@ -4520,6 +4670,23 @@ class responseBox(QMainWindow):
                             'block'+ self.prm['pref']["general"]["csvSeparator"] + \
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
                             'paradigm' + self.prm['pref']["general"]["csvSeparator"]
+        if paradigm in ['Digit Span']:
+            headerToWrite = 'sequence_length' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'response' + self.prm['pref']["general"]["csvSeparator"]
+            if 'additional_parameters_to_write' in self.prm:
+                for p in range(len(self.prm['additional_parameters_to_write_labels'])):
+                    headerToWrite = headerToWrite + self.prm['additional_parameters_to_write_labels'][p] +  self.prm['pref']["general"]["csvSeparator"]
+                headerToWrite = headerToWrite + "response_sequence" +  self.prm['pref']["general"]["csvSeparator"]
+            headerToWrite = headerToWrite + 'condition' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"] 
 
      
                     

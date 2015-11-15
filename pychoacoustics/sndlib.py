@@ -712,7 +712,7 @@ def chirp(freqStart=440, ftype="linear", rate=500, level=60, duration=980, phase
     return snd
 
 
-def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, level=0, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
+def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, level=60, duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
     Synthetise a complex tone.
 
