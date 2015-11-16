@@ -20,6 +20,7 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from tempfile import mkstemp
 import platform, os, subprocess 
 from numpy import ceil, concatenate, floor, float32, int16, int32, mean, sqrt, transpose, zeros
+from .multirate import resample
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4.QtCore import QThread
@@ -237,10 +238,10 @@ class audioManager():
                 os.remove(fname)
 
 
-    def loadWavFile(self, fName, desiredLevel, maxLevel, channel):
+    def loadWavFile(self, fName, desiredLevel, maxLevel, channel, desiredSampleRate=None):
         wavmanager = self.prm["pref"]["sound"]["wavmanager"]
         if wavmanager == "scipy":
-            fs, snd = self.wavfile.read(fName)
+            orig_fs, snd = self.wavfile.read(fName)
             if snd.dtype == "int16":
                 snd = snd / (2.**15)
                 nbits = 16
@@ -271,6 +272,16 @@ class audioManager():
             snd[:, 1] = zeros(len(snd[:,1]))
         elif channel == "Original":
             pass
+
+        if desiredSampleRate != None and desiredSampleRate != orig_fs:
+            ch0 = resample(snd[:,0], desiredSampleRate, orig_fs)
+            ch1 = resample(snd[:,1], desiredSampleRate, orig_fs)
+            snd = zeros((ch0.shape[0],2))
+            snd[:,0] = ch0; snd[:,1] = ch1
+            fs = desiredSampleRate
+        else:
+            fs = orig_fs
+
         return snd, fs, nbits
 
     def read_wav(self, fName):

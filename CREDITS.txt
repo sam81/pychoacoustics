@@ -1,3 +1,5 @@
 The pychoacoustics application icon is taken from the open clipart library http://openclipart.org/ created by user Machovka https://openclipart.org/detail/2337/headphones
 
 The fallback icons are taken from the Oxygen project http://www.oxygen-icons.org/ 
+
+pychoacoustics includes a copy of the 'multirate.py' file from https://github.com/mubeta06/python which is also released under the GNU GENERAL PUBLIC LICENSE Version 3
