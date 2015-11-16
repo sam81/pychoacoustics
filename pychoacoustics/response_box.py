@@ -3929,11 +3929,13 @@ class responseBox(QMainWindow):
         if self.prm['startOfBlock'] == True:
             self.prm['correct'] = []
             self.prm['sequenceLength'] = []
+            self.prm['nTrialsSequence'] = 0
             self.prm['startOfBlock'] = False
             
             self.fullFileLines = []
             self.fullFileSummLines = []
 
+        self.prm['nTrialsSequence'] = self.prm['nTrialsSequence'] +1
         self.prm['sequenceLength'].append(self.prm['adaptiveDifference'])
         if buttonClicked == self.correctButton:
             if self.prm["responseLight"] == self.tr("Feedback"):
@@ -3958,8 +3960,8 @@ class responseBox(QMainWindow):
                     self.fullFileLines.append(' ;')
                     self.fullFileSummLines[len(self.fullFileSummLines)-1].append(self.prm['pref']["general"]["csvSeparator"])
             self.prm['correct'].append(1)
-            self.prm['adaptiveDifference'] = self.prm['adaptiveDifference']+1
-            self.runAnotherTrial = True
+            #self.prm['adaptiveDifference'] = self.prm['adaptiveDifference']+1
+            #self.runAnotherTrial = True
                 
         elif buttonClicked != self.correctButton:
             if self.prm["responseLight"] == self.tr("Feedback"):
@@ -3985,10 +3987,10 @@ class responseBox(QMainWindow):
                     self.fullFileSummLines[len(self.fullFileSummLines)-1].append(self.prm['pref']["general"]["csvSeparator"])
         
             self.prm['correct'].append(0)
-            if self.prm['correct'][len(self.prm['correct'])-2] == 1: 
-                self.runAnotherTrial = True
-            elif self.prm['correct'][len(self.prm['correct'])-2] == 0: #got two consecutive incorrect responses
-                self.runAnotherTrial = False
+            #if self.prm['correct'][len(self.prm['correct'])-2] == 1: 
+            #    self.runAnotherTrial = True
+            #elif self.prm['correct'][len(self.prm['correct'])-2] == 0: #got two consecutive incorrect responses
+            #    self.runAnotherTrial = False
 
         self.fullFileLog.write(str(buttonClicked) + '; ')
         self.fullFileLines.append(str(buttonClicked) + '; ')
@@ -4002,15 +4004,28 @@ class responseBox(QMainWindow):
         # pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         # pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
         # self.gauge.setValue(pcTot)
-        if self.runAnotherTrial == False:
+        #if self.runAnotherTrial == False:
+        if self.prm['nTrialsSequence'] == 2:
+            if self.prm['correct'][len(self.prm['correct'])-1] == 1 or self.prm['correct'][len(self.prm['correct'])-2] == 1:
+                keepGoing = True
+                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference']+1
+                self.prm['nTrialsSequence'] = 0
+            else:
+                keepGoing = False
+        else:
+            keepGoing = True
+
+        if keepGoing == False:
             self.gauge.setValue(100)
             self.writeResultsHeader('standard')
             self.fullFileLog.write('\n')
             self.fullFileLines.append('\n')
             digitSpan = int(self.prm['adaptiveDifference'] -1)
+            digitSpanScore = np.sum(np.array(self.prm['correct']))
             for i in range(len(self.fullFileLines)):
                 self.fullFile.write(self.fullFileLines[i])
-            self.resFile.write("Digit Span = " + str(digitSpan))
+            self.resFile.write("Longest Digit Span = " + str(digitSpan) + '\n')
+            self.resFile.write("Digit Span Score= " + str(digitSpanScore) + '\n')
 
             self.resFile.write('\n\n')
             self.resFile.flush()
@@ -4021,6 +4036,7 @@ class responseBox(QMainWindow):
             currBlock = 'b' + str(self.prm['currentBlock'])
             durString = '{0:5.3f}'.format(self.prm['blockEndTime'] - self.prm['blockStartTime'])
             resLineToWrite = str(digitSpan) + self.prm['pref']["general"]["csvSeparator"] + \
+                             str(digitSpanScore) + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
@@ -4501,7 +4517,8 @@ class responseBox(QMainWindow):
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
                             'paradigm' + self.prm['pref']["general"]["csvSeparator"]
         elif paradigm in ['Digit Span']:
-            headerToWrite = 'span' + self.prm['pref']["general"]["csvSeparator"] + \
+            headerToWrite = 'longest_span' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'span_score' + self.prm['pref']["general"]["csvSeparator"] + \
                             'condition' + self.prm['pref']["general"]["csvSeparator"] + \
                             'listener' + self.prm['pref']["general"]["csvSeparator"] + \
                             'session'+ self.prm['pref']["general"]["csvSeparator"] + \
