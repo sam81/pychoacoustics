@@ -31,7 +31,8 @@ def setupUML(model="Logistic", nDown=2, centTend="Mean", stimScale="Linear", x0=
              alphaLim=(-10,10), alphaStep=1, alphaSpacing="Linear", alphaDist="Uniform", alphaMu=0, alphaSTD=20,
              betaLim=(0.1,10), betaStep=0.1, betaSpacing="Linear", betaDist="Uniform", betaMu=1, betaSTD=2,
              gamma=0.5,
-             lambdaLim=(0,0.2), lambdaStep=0.01, lambdaSpacing="Linear", lambdaDist="Uniform", lambdaMu=0, lambdaSTD=0.1):
+             lambdaLim=(0,0.2), lambdaStep=0.01, lambdaSpacing="Linear", lambdaDist="Uniform", lambdaMu=0, lambdaSTD=0.1,
+             suggestedLambdaSwpt=10, lambdaSwptPC=0.99):
 
     
     UML = {}
@@ -75,6 +76,9 @@ def setupUML(model="Logistic", nDown=2, centTend="Mean", stimScale="Linear", x0=
     UML["par"]["lambda"]["mu"] = lambdaMu
     UML["par"]["lambda"]["std"] = lambdaSTD
 
+    UML["par"]["suggestedLambdaSwpt"] = suggestedLambdaSwpt
+    UML["par"]["lambdaSwptPC"] = lambdaSwptPC
+    
     if stimScale == "Logarithmic":
         UML["par"]["x0"] = log(x0)
         UML["par"]["x"]["limits"] = log(xLim)
@@ -82,7 +86,7 @@ def setupUML(model="Logistic", nDown=2, centTend="Mean", stimScale="Linear", x0=
         UML["par"]["alpha"]["step"] = log(alphaStep)
         UML["par"]["alpha"]["mu"] = log(alphaMu)
         UML["par"]["alpha"]["spacing"] = "Linear" #on a log scale
-        
+        UML["par"]["suggestedLambdaSwpt"] = log(UML["par"]["suggestedLambdaSwpt"])
 
     UML = setP0(UML)
     UML["x"] = np.array([])
@@ -93,11 +97,11 @@ def setupUML(model="Logistic", nDown=2, centTend="Mean", stimScale="Linear", x0=
     UML["gamma"] = gamma
 
     UML["swpts_idx"] = np.array([], dtype="int32")
-    if len(UML["alpha"]) > 1:
+    if len(UML["alpha"]) > 1: #alpha is not fixed, estimate it
         UML["swpts_idx"] = np.append(UML["swpts_idx"], 1)
-    if len(UML["beta"]) > 1:
+    if len(UML["beta"]) > 1: #beta is not fixed, estimate it
         UML["swpts_idx"] = np.append(UML["swpts_idx"], [0,2])
-    if len(UML["lambda"]) > 1:
+    if len(UML["lambda"]) > 1: #lambda is not fixed, estimate it
         UML["swpts_idx"] = np.append(UML["swpts_idx"], 3)
 
     UML["swpts_idx"].sort()
@@ -225,8 +229,19 @@ def UML_update(UML, r):
         swpt = gaussian_sweetpoints(UML["phi"][-1,:])
     elif UML["par"]["model"] == "Weibull":
         swpt = weibull_sweetpoints(UML["phi"][-1,:])
+
+    est_alpha = UML["phi"][UML["phi"].shape[0]-1, 0] #if scale is Logarithmic this needs to stay in log coordinates
+    if UML["par"]["model"] == "Logistic":
+        xCeiling = invLogisticPsy(UML["par"]["lambdaSwptPC"]-UML["est_lapse"], est_alpha, UML["est_slope"], UML["gamma"], UML["est_lapse"])
+    elif UML["par"]["model"] == "Gaussian":
+        xCeiling = invGaussianPsy(UML["par"]["lambdaSwptPC"]-UML["est_lapse"], est_alpha, UML["est_slope"], UML["gamma"], UML["est_lapse"])
+    elif UML["par"]["model"] == "Weibull":
+        xCeiling = invWeibullPsy(UML["par"]["lambdaSwptPC"]-UML["est_lapse"], est_alpha, UML["est_slope"], UML["gamma"], UML["est_lapse"])
+   
+    lmbdSwpt = min(max(UML["par"]["suggestedLambdaSwpt"], xCeiling), UML["par"]["x"]["limits"][1])
     
-    swpt = np.append(swpt, UML["par"]["x"]["limits"][1])
+    #swpt = np.append(swpt, UML["par"]["x"]["limits"][1])
+    swpt = np.append(swpt, lmbdSwpt)
     UML["swpt"] = swpt
     swpt = np.maximum(np.minimum(swpt[UML["swpts_idx"]], UML["par"]["x"]["limits"][1]), UML["par"]["x"]["limits"][0])#; % limit the sweet points to be within the stimulus space
 
@@ -261,6 +276,17 @@ def UML_update(UML, r):
         UML["xnextLinear"] = exp(UML["xnext"])
     else:
         UML["xnextLinear"] = UML["xnext"]
+
+    print('Est Midpoint: ', UML["est_midpoint"])
+    print('Est Slope: ', UML["est_slope"])
+    print('Est Lapse: ', UML["est_lapse"])
+    print('Next level: ', UML["xnextLinear"])
+    if UML["par"]["stimScale"] == "Logarithmic":
+        print('xCeiling: ', exp(xCeiling))
+        print('Lambda Swpt: ', exp(lmbdSwpt))
+    else:
+        print('xCeiling: ', xCeiling)
+        print('Lambda Swpt: ', lmbdSwpt)
         
     return UML
 

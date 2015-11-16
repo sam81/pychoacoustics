@@ -931,6 +931,8 @@ class responseBox(QMainWindow):
                 self.prm['stimScale'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Stim. Scaling:"))]
                 self.prm['stimLo'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Stim. Min"))])
                 self.prm['stimHi'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Stim. Max"))])
+                self.prm['suggestedLambdaSwpt'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Suggested Lapse Swpt."))])
+                self.prm['lambdaSwptPC'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Pr. Corr. at Est. Lapse Swpt."))])
 
                 self.prm['loMidPoint'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point Min"))])
                 self.prm['hiMidPoint'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point Max"))])
@@ -3671,7 +3673,9 @@ class responseBox(QMainWindow):
                                 lambdaSpacing=self.prm['lapseSpacing'],
                                 lambdaDist=self.prm['lapsePrior'],
                                 lambdaMu=self.prm['lapsePriorMu'],
-                                lambdaSTD=self.prm['lapsePriorSTD'])
+                                lambdaSTD=self.prm['lapsePriorSTD'],
+                                suggestedLambdaSwpt=self.prm['suggestedLambdaSwpt'],
+                                lambdaSwptPC=self.prm['lambdaSwptPC'])
 
             self.prm['startOfBlock'] = False
             self.trialCount = 0

@@ -2549,6 +2549,20 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.stimScalingCheckBox, n, 6)
             self.stimScalingChooser.activated[str].connect(self.onStimScalingChooserChange)
             n = n+1
+            self.suggestedLambdaSwptLabel = QLabel(self.tr("Suggested Lapse Swpt."))
+            self.suggestedLambdaSwpt = QLineEdit("40")
+            self.suggestedLambdaSwptCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.suggestedLambdaSwptLabel, n, 1)
+            self.paradigm_widg_sizer.addWidget(self.suggestedLambdaSwpt, n, 2)
+            self.paradigm_widg_sizer.addWidget(self.suggestedLambdaSwptCheckBox, n, 0)
+            n = n+1
+            self.lambdaSwptPCLabel = QLabel(self.tr("Pr. Corr. at Est. Lapse Swpt."))
+            self.lambdaSwptPC = QLineEdit("0.99")
+            self.lambdaSwptPCCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.lambdaSwptPCLabel, n, 1)
+            self.paradigm_widg_sizer.addWidget(self.lambdaSwptPC, n, 2)
+            self.paradigm_widg_sizer.addWidget(self.lambdaSwptPCCheckBox, n, 0)
+            n = n+1
             #min midpoint
             self.loMidPointLabel = QLabel(self.tr("Mid Point Min"), self)
             self.paradigm_widg_sizer.addWidget(self.loMidPointLabel, n, 1)
@@ -2772,7 +2786,8 @@ class pychControlWin(QMainWindow):
                                                 self.slopeSpacingChooserCheckBox,
                                                 self.lapseSpacingChooserCheckBox]
 
-            self.paradigmFieldList = [self.loStim, self.hiStim, self.ruleDownTF,
+            self.paradigmFieldList = [self.loStim, self.hiStim, self.suggestedLambdaSwpt,
+                                      self.lambdaSwptPC, self.ruleDownTF,
                                       self.loMidPoint, self.hiMidPoint, self.threshGridStep,
                                       self.loSlope, self.hiSlope, self.slopeGridStep,
                                       self.loLapse, self.hiLapse, self.lapseGridStep,
@@ -2780,7 +2795,8 @@ class pychControlWin(QMainWindow):
                                       self.slopePriorMu, self.slopePriorSTD,
                                       self.lapsePriorMu, self.lapsePriorSTD,
                                       self.nTrialsTF]
-            self.paradigmFieldLabelList = [self.loStimLabel, self.hiStimLabel, self.ruleDownLabel,
+            self.paradigmFieldLabelList = [self.loStimLabel, self.hiStimLabel, self.suggestedLambdaSwptLabel,
+                                           self.lambdaSwptPCLabel, self.ruleDownLabel,
                                            self.loMidPointLabel, self.hiMidPointLabel, self.threshGridStepLabel,
                                            self.loSlopeLabel, self.hiSlopeLabel, self.slopeGridStepLabel,
                                            self.loLapseLabel, self.hiLapseLabel, self.lapseGridStepLabel,
@@ -2788,7 +2804,8 @@ class pychControlWin(QMainWindow):
                                            self.slopePriorMuLabel, self.slopePriorSTDLabel,
                                            self.lapsePriorMuLabel, self.lapsePriorSTDLabel,
                                            self.nTrialsLabel]
-            self.paradigmFieldCheckBoxList = [self.loStimCheckBox, self.hiStimCheckBox, self.ruleDownCheckBox,
+            self.paradigmFieldCheckBoxList = [self.loStimCheckBox, self.hiStimCheckBox, self.suggestedLambdaSwptCheckBox,
+                                              self.lambdaSwptPCCheckBox, self.ruleDownCheckBox,
                                               self.loMidPointCheckBox, self.hiMidPointCheckBox, self.threshGridStepCheckBox,
                                               self.loSlopeCheckBox, self.hiSlopeCheckBox, self.slopeGridStepCheckBox,
                                               self.loLapseCheckBox, self.hiLapseCheckBox, self.lapseGridStepCheckBox,
