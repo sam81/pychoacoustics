@@ -18,21 +18,20 @@
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-#import sip
-#sip.setapi("QString", 2)
+
 from pychoacoustics.pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtCore
-    from PyQt4.QtGui import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QVBoxLayout
+    from PyQt4.QtGui import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QStyleFactory, QVBoxLayout
     QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
     QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
     QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
 elif pyqtversion == -4:
     from PySide import QtCore
-    from PySide.QtGui import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QVBoxLayout
+    from PySide.QtGui import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QStyleFactory, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtCore
-    from PyQt5.QtWidgets import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QVBoxLayout
+    from PyQt5.QtWidgets import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QStyleFactory, QVBoxLayout
     
 
 import argparse, fnmatch, numpy, os, random, signal, sys, time, traceback
@@ -224,6 +223,8 @@ def main(argv):
 
     prm = global_parameters.set_global_parameters(prm)
     app.setWindowIcon(QtGui.QIcon(":/Machovka_Headphones.svg"))
+    #app.setStyle("cleanlooks")
+    #app.setStyle(QStyleFactory.create('Cleanlooks'))
     x = pychControlWin(parent=None, prm=prm)
     sys.exit(app.exec_())
     

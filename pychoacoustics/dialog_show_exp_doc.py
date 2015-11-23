@@ -41,21 +41,16 @@ class showExpDocDialog(QDialog):
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
        
         self.vBoxSizer = QVBoxLayout()
-        self.hBoxSizer = QVBoxLayout()
         self.browser = QTextBrowser()
         self.browser.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
       
         self.browser.append(docText)
         self.browser.verticalScrollBar().setValue(self.browser.verticalScrollBar().minimum())
-
-        
-
         cursor = self.browser.textCursor();
+        
         cursor.setPosition(0);
         self.browser.setTextCursor(cursor);
-
-
         
         font = QFont()
         font.setFamily("Arial")
@@ -63,12 +58,10 @@ class showExpDocDialog(QDialog):
         self.browser.setFont(font)
         
         self.vBoxSizer.addWidget(self.browser)
-        self.vBoxSizer.addLayout(self.hBoxSizer)
 
         buttonBox = QDialogButtonBox(QDialogButtonBox.Ok)
         buttonBox.accepted.connect(self.accept)
         self.vBoxSizer.addWidget(buttonBox)
-
         
         self.setLayout(self.vBoxSizer)
         self.setWindowTitle(self.tr(expName) + " - " + self.tr("documentation"))

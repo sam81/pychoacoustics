@@ -200,6 +200,9 @@ def select_default_parameters_F0DL(parent, par):
     
     fieldLabel.append(parent.tr("Noise 1 S. Level (dB SPL)"))
     field.append(-200)
+
+    fieldLabel.append(parent.tr("Noise 1 SL Ref. (Hz)"))
+    field.append(1000)
     
     fieldLabel.append(parent.tr("Noise 2 Low Freq. (Hz)"))
     field.append(2000)
@@ -210,11 +213,8 @@ def select_default_parameters_F0DL(parent, par):
     fieldLabel.append(parent.tr("Noise 2 S. Level (dB SPL)"))
     field.append(-200)
 
-    fieldLabel.append(parent.tr("Pure Tone Frequency (Hz)"))
-    field.append(600)
-
-    fieldLabel.append(parent.tr("Pure Tone Level (dB SPL)"))
-    field.append(50)
+    fieldLabel.append(parent.tr("Noise 2 SL Ref. (Hz)"))
+    field.append(1000)
     
     fieldLabel.append(parent.tr("Stretch (%)"))
     field.append(0)
@@ -234,7 +234,11 @@ def select_default_parameters_F0DL(parent, par):
     chooser.append(parent.tr("Sine"))
 
     chooserOptions.append([parent.tr("White"), parent.tr("Pink"), parent.tr("None")])
-    chooserLabel.append(parent.tr("Noise Type:"))
+    chooserLabel.append(parent.tr("Noise 1 Type:"))
+    chooser.append(parent.tr("White"))
+
+    chooserOptions.append([parent.tr("White"), parent.tr("Pink"), parent.tr("None")])
+    chooserLabel.append(parent.tr("Noise 2 Type:"))
     chooser.append(parent.tr("White"))
 
     chooserOptions.append([parent.tr("Yes"), parent.tr("No")])
@@ -269,10 +273,6 @@ def select_default_parameters_F0DL(parent, par):
     chooserLabel.append(parent.tr("Harmonicity:"))
     chooser.append(parent.tr("Harmonic"))
 
-    chooserOptions.append([parent.tr("Yes"), parent.tr("No")])
-    chooserLabel.append(parent.tr("Fixed Pure Tone:"))
-    chooser.append(parent.tr("No"))
-
     prm = {}
   
     prm['field'] = field
@@ -293,14 +293,17 @@ def get_fields_to_hide_F0DL(parent):
                                parent.prm['fieldLabel'].index(parent.tr("Iterations")),
                                parent.prm['fieldLabel'].index(parent.tr("Gain")),
                                parent.prm['fieldLabel'].index(parent.tr("Spectrum Level (dB SPL)"))]
-        parent.fieldsToShow = [parent.prm['fieldLabel'].index(parent.tr("Harmonic Level (dB SPL)"))]
+        parent.fieldsToShow = [parent.prm['fieldLabel'].index(parent.tr("Harmonic Level (dB SPL)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Low Harmonic")),
+                               parent.prm['fieldLabel'].index(parent.tr("High Harmonic"))]
         parent.choosersToHide = [parent.prm['chooserLabel'].index(parent.tr("IRN Type:")),
                                  parent.prm['chooserLabel'].index(parent.tr("Bandwidth Unit:")),
                                  parent.prm['chooserLabel'].index(parent.tr("Phase relationship:")),
                                  parent.prm['chooserLabel'].index(parent.tr("Dichotic Difference:"))]
         parent.choosersToShow = [parent.prm['chooserLabel'].index(parent.tr("Ear:")),
                                  parent.prm['chooserLabel'].index(parent.tr("Phase:")), #sine cos schroeder, etc
-                                 parent.prm['chooserLabel'].index(parent.tr("Noise Type:")), #white, pink
+                                 parent.prm['chooserLabel'].index(parent.tr("Noise 1 Type:")), #white, pink
+                                 parent.prm['chooserLabel'].index(parent.tr("Noise 2 Type:")), #white, pink
                                  parent.prm['chooserLabel'].index(parent.tr("Fix Spectrum Level:")), #fixed, non-fixed
                                  parent.prm['chooserLabel'].index(parent.tr("Vary Harm. No.:")), # with F0, no
                                  parent.prm['chooserLabel'].index(parent.tr("Harmonicity:"))] #Harmonic, stretched
@@ -311,13 +314,16 @@ def get_fields_to_hide_F0DL(parent):
                                parent.prm['fieldLabel'].index(parent.tr("Iterations")),
                                parent.prm['fieldLabel'].index(parent.tr("Gain")),
                                parent.prm['fieldLabel'].index(parent.tr("Harmonic Level (dB SPL)"))]
-        parent.fieldsToShow = [parent.prm['fieldLabel'].index(parent.tr("Spectrum Level (dB SPL)"))]
+        parent.fieldsToShow = [parent.prm['fieldLabel'].index(parent.tr("Spectrum Level (dB SPL)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Low Harmonic")),
+                               parent.prm['fieldLabel'].index(parent.tr("High Harmonic")),]
         parent.choosersToHide = [parent.prm['chooserLabel'].index(parent.tr("Phase:")), #sine cos schroeder, etc
                                  parent.prm['chooserLabel'].index(parent.tr("IRN Type:")),
                                  parent.prm['chooserLabel'].index(parent.tr("Phase relationship:")), #NoSpi, NpiSo
                                  parent.prm['chooserLabel'].index(parent.tr("Dichotic Difference:"))] #IPD, ITD
         parent.choosersToShow = [parent.prm['chooserLabel'].index(parent.tr("Ear:")),
-                                 parent.prm['chooserLabel'].index(parent.tr("Noise Type:")), #white, pink
+                                 parent.prm['chooserLabel'].index(parent.tr("Noise 1 Type:")), #white, pink
+                                 parent.prm['chooserLabel'].index(parent.tr("Noise 2 Type:")), #white, pink
                                  parent.prm['chooserLabel'].index(parent.tr("Bandwidth Unit:")),
                                  parent.prm['chooserLabel'].index(parent.tr("Fix Spectrum Level:")), #fixed, non-fixed
                                  parent.prm['chooserLabel'].index(parent.tr("Vary Harm. No.:")), # with F0, no
@@ -337,7 +343,8 @@ def get_fields_to_hide_F0DL(parent):
                                parent.prm['fieldLabel'].index(parent.tr("Gain")),
                                parent.prm['fieldLabel'].index(parent.tr("Spectrum Level (dB SPL)"))]
         parent.choosersToShow = [parent.prm['chooserLabel'].index(parent.tr("Ear:")), #left, right, both, odd left, odd right
-                                 parent.prm['chooserLabel'].index(parent.tr("Noise Type:")), #white, pink
+                                 parent.prm['chooserLabel'].index(parent.tr("Noise 1 Type:")), #white, pink
+                                 parent.prm['chooserLabel'].index(parent.tr("Noise 2 Type:")), #white, pink
                                  parent.prm['chooserLabel'].index(parent.tr("IRN Type:"))]
         parent.choosersToHide = [parent.prm['chooserLabel'].index(parent.tr("Phase:")), #sine cos schroeder, etc
                                  parent.prm['chooserLabel'].index(parent.tr("Fix Spectrum Level:")), #fixed, non-fixed
@@ -351,15 +358,26 @@ def get_fields_to_hide_F0DL(parent):
     elif parent.chooser[parent.prm['chooserLabel'].index(parent.tr("Type:"))].currentText() == parent.tr("Huggins Pitch"):
         parent.fieldsToHide = [parent.prm['fieldLabel'].index(parent.tr("Iterations")),
                                parent.prm['fieldLabel'].index(parent.tr("Gain")),
-                               parent.prm['fieldLabel'].index(parent.tr("Harmonic Level (dB SPL)"))]
-        parent.fieldsToShow = [parent.prm['fieldLabel'].index(parent.tr("Spectrum Level (dB SPL)"))]
+                               parent.prm['fieldLabel'].index(parent.tr("Harmonic Level (dB SPL)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Noise 1 Low Freq. (Hz)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Noise 1 High Freq. (Hz)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Noise 1 S. Level (dB SPL)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Noise 1 SL Ref. (Hz)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Noise 2 Low Freq. (Hz)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Noise 2 High Freq. (Hz)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Noise 2 S. Level (dB SPL)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Noise 2 SL Ref. (Hz)"))]
+        parent.fieldsToShow = [parent.prm['fieldLabel'].index(parent.tr("Spectrum Level (dB SPL)")),
+                               parent.prm['fieldLabel'].index(parent.tr("Low Harmonic")),
+                               parent.prm['fieldLabel'].index(parent.tr("High Harmonic"))]
         parent.choosersToShow = [parent.prm['chooserLabel'].index(parent.tr("Phase relationship:")), #NoSpi, NpiSo
                                  parent.prm['chooserLabel'].index(parent.tr("Harmonicity:")),
                                  parent.prm['chooserLabel'].index(parent.tr("Bandwidth Unit:")),
                                  parent.prm['chooserLabel'].index(parent.tr("Dichotic Difference:"))] #IPD stepped, IPD linear, ITD etc..
         parent.choosersToHide = [parent.prm['chooserLabel'].index(parent.tr("Ear:")), #left, right, both, odd left, odd right
                                  parent.prm['chooserLabel'].index(parent.tr("Phase:")), #sine cos schroeder, etc
-                                 parent.prm['chooserLabel'].index(parent.tr("Noise Type:")), #white, pink
+                                 parent.prm['chooserLabel'].index(parent.tr("Noise 1 Type:")), #white, pink
+                                 parent.prm['chooserLabel'].index(parent.tr("Noise 2 Type:")), #white, pink
                                  parent.prm['chooserLabel'].index(parent.tr("Fix Spectrum Level:")), #fixed, non-fixed
                                  parent.prm['chooserLabel'].index(parent.tr("Vary Harm. No.:")), # with F0, no
                                  parent.prm['chooserLabel'].index(parent.tr("IRN Type:"))]
@@ -402,21 +420,40 @@ def get_fields_to_hide_F0DL(parent):
 
 
     #Noise Type
-    if parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Noise Type:",""))].currentText() == QApplication.translate("","None",""):
-        parent.fieldsToHide.extend([parent.prm['fieldLabel'].index(parent.tr("Noise 1 Low Freq. (Hz)")),
-                                    parent.prm['fieldLabel'].index(parent.tr("Noise 1 High Freq. (Hz)")),
-                                    parent.prm['fieldLabel'].index(parent.tr("Noise 1 S. Level (dB SPL)")),
-                                    parent.prm['fieldLabel'].index(parent.tr("Noise 2 Low Freq. (Hz)")),
-                                    parent.prm['fieldLabel'].index(parent.tr("Noise 2 High Freq. (Hz)")),
-                                    parent.prm['fieldLabel'].index(parent.tr("Noise 2 S. Level (dB SPL)"))])
-    else:
-        parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("Noise 1 Low Freq. (Hz)")),
-                                    parent.prm['fieldLabel'].index(parent.tr("Noise 1 High Freq. (Hz)")),
-                                    parent.prm['fieldLabel'].index(parent.tr("Noise 1 S. Level (dB SPL)")),
-                                    parent.prm['fieldLabel'].index(parent.tr("Noise 2 Low Freq. (Hz)")),
-                                    parent.prm['fieldLabel'].index(parent.tr("Noise 2 High Freq. (Hz)")),
-                                    parent.prm['fieldLabel'].index(parent.tr("Noise 2 S. Level (dB SPL)"))])
+    if parent.chooser[parent.prm['chooserLabel'].index(parent.tr("Type:"))].currentText() != parent.tr("Huggins Pitch"):
+        if parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Noise 1 Type:",""))].currentText() == QApplication.translate("","None",""):
+            parent.fieldsToHide.extend([parent.prm['fieldLabel'].index(parent.tr("Noise 1 Low Freq. (Hz)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 1 High Freq. (Hz)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 1 S. Level (dB SPL)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 1 SL Ref. (Hz)"))])
+        elif parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Noise 1 Type:",""))].currentText() == QApplication.translate("","Pink",""):
+            parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("Noise 1 Low Freq. (Hz)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 1 High Freq. (Hz)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 1 S. Level (dB SPL)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 1 SL Ref. (Hz)"))])
+        elif parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Noise 1 Type:",""))].currentText() == QApplication.translate("","White",""):
+             parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("Noise 1 Low Freq. (Hz)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 1 High Freq. (Hz)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 1 S. Level (dB SPL)"))])
+             parent.fieldsToHide.extend([parent.prm['fieldLabel'].index(parent.tr("Noise 1 SL Ref. (Hz)"))])
 
+        if parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Noise 2 Type:",""))].currentText() == QApplication.translate("","None",""):
+            parent.fieldsToHide.extend([parent.prm['fieldLabel'].index(parent.tr("Noise 2 Low Freq. (Hz)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 2 High Freq. (Hz)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 2 S. Level (dB SPL)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 2 SL Ref. (Hz)"))])
+        elif parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Noise 2 Type:",""))].currentText() == QApplication.translate("","Pink",""):
+            parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("Noise 2 Low Freq. (Hz)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 2 High Freq. (Hz)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 2 S. Level (dB SPL)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 2 SL Ref. (Hz)"))])
+        elif parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Noise 2 Type:",""))].currentText() == QApplication.translate("","White",""):
+             parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("Noise 2 Low Freq. (Hz)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 2 High Freq. (Hz)")),
+                                        parent.prm['fieldLabel'].index(parent.tr("Noise 2 S. Level (dB SPL)"))])
+             parent.fieldsToHide.extend([parent.prm['fieldLabel'].index(parent.tr("Noise 2 SL Ref. (Hz)"))])
+                                    
+        
         
     if (parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Simple Dichotic","") or
         parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Narrowband Noise 2","")):
@@ -424,15 +461,6 @@ def get_fields_to_hide_F0DL(parent):
         
     else:
         parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("Low Stop")), parent.prm['fieldLabel'].index(parent.tr("High Stop"))])
-
-    if parent.chooser[parent.prm['chooserLabel'].index(parent.tr("Fixed Pure Tone:"))].currentText() == parent.tr("No"):
-        parent.fieldsToHide.extend([parent.prm['fieldLabel'].index(parent.tr("Pure Tone Frequency (Hz)")),
-                               parent.prm['fieldLabel'].index(parent.tr("Pure Tone Level (dB SPL)"))])
-        #parent.fieldsToShow.extend([])
-    elif parent.chooser[parent.prm['chooserLabel'].index(parent.tr("Fixed Pure Tone:"))].currentText() == parent.tr("Yes"):
-        parent.fieldsToShow.extend([parent.prm['fieldLabel'].index(parent.tr("Pure Tone Frequency (Hz)")),
-                               parent.prm['fieldLabel'].index(parent.tr("Pure Tone Level (dB SPL)"))])
-        #parent.fieldsToHide = []
 
 def doTrial_F0DL(parent):
     currBlock = 'b'+ str(parent.prm['currentBlock'])
@@ -468,17 +496,18 @@ def doTrial_F0DL(parent):
     noise1LowFreq       = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Noise 1 Low Freq. (Hz)"))]
     noise1HighFreq      = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Noise 1 High Freq. (Hz)"))]
     noise1SpectrumLevel = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Noise 1 S. Level (dB SPL)"))]
+    noise1RefHz = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Noise 1 SL Ref. (Hz)"))]
     noise2LowFreq       = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Noise 2 Low Freq. (Hz)"))]
     noise2HighFreq      = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Noise 2 High Freq. (Hz)"))]
     noise2SpectrumLevel = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Noise 2 S. Level (dB SPL)"))]
-    fixedPureToneFreq = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Pure Tone Frequency (Hz)"))]
-    fixedPureToneLev = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Pure Tone Level (dB SPL)"))]
+    noise2RefHz = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Noise 2 SL Ref. (Hz)"))]
     stretch             = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Stretch (%)"))]
 
     channel            = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Ear:"))]
     harmType           = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Type:"))]
     harmPhase          = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Phase:"))]
-    noiseType          = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Noise Type:"))]
+    noise1Type          = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Noise 1 Type:"))]
+    noise2Type          = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Noise 2 Type:"))]
     fixSpectrumLevel   = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Fix Spectrum Level:"))]
     adjustHarmonicN    = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Vary Harm. No.:"))]
     irnConfiguration   = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("IRN Type:"))]
@@ -487,7 +516,6 @@ def doTrial_F0DL(parent):
     dichoticDifference = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Dichotic Difference:"))]
     roving             = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Roving:"))]
     harmonicity        = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Harmonicity:"))]
-    fixedPureTone      = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Fixed Pure Tone:"))]
     altReps = parent.prm['altReps']
     altRepsISI = parent.prm['altRepsISI']
     
@@ -604,37 +632,39 @@ def doTrial_F0DL(parent):
                             highFreq*highStopComplex, thisTone,
                             parent.prm['sampRate'])
 
-        if noiseType != parent.tr("None"):
+        if noise1Type != parent.tr("None") or noise2Type != parent.tr("None"):
+            noise = numpy.zeros(thisTone.shape)
             if channel == parent.tr("Odd Left") or channel == parent.tr("Odd Right"): #alternating harmonics, different noise to the two ears
-                noiseR = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
-                                        parent.tr("Right"), parent.prm['sampRate'],
-                                        parent.prm['maxLevel'])
-                noiseL = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
-                                        parent.tr("Left"), parent.prm['sampRate'],
-                                        parent.prm['maxLevel'])
-                noise = noiseR + noiseL
+                noise1Source = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                                       "Dichotic", parent.prm['sampRate'],
+                                       parent.prm['maxLevel'])
             else:
-                noise = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                noise1Source = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
                                        channel, parent.prm['sampRate'],
                                        parent.prm['maxLevel'])
 
-            if noiseType == parent.tr("Pink"):
-                noise = makePink(noise, parent.prm['sampRate'])
-            noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq,
-                              noise1HighFreq*highStop, noise, parent.prm['sampRate'])
-            noise2 = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise)
-            noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq,
-                              noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
-            noise = noise1 + noise2
-            noise = noise[0:thisTone.shape[0],]
+            if noise1Type != parent.tr("None"): 
+                if noise1Type == parent.tr("Pink"):
+                    noise1 = makePinkRef(copy.copy(noise1Source), parent.prm['sampRate'], noise1RefHz)
+                else:
+                    noise1 = copy.copy(noise1Source)
+                noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq,
+                                  noise1HighFreq*highStop, noise1, parent.prm['sampRate'])
+                noise1 = noise1[0:thisTone.shape[0],]
+                noise = noise+noise1
+            if noise2Type != parent.tr("None"): 
+                noise2Source = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise1Source)
+                if noise2Type == parent.tr("Pink"):
+                    noise2 = makePinkRef(copy.copy(noise2Source), parent.prm['sampRate'], noise2RefHz)
+                else:
+                    noise2 = copy.copy(noise2Source)
+                noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq,
+                                  noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
+                noise2 = noise2[0:thisTone.shape[0],]
+                noise = noise+noise2
+            
             noise = gate(ramp, noise, parent.prm['sampRate'])
-            if fixedPureTone == "Yes":
-                pt = pureTone(fixedPureToneFreq, 0, fixedPureToneLev,
-                              duration, ramp, channel, parent.prm['sampRate'],
-                              parent.prm['maxLevel'])
-                thisTone = thisTone + noise + pt
-            else:
-                thisTone = thisTone + noise 
+            thisTone = thisTone + noise 
 
         correctTones.append(thisTone)
 
@@ -669,37 +699,65 @@ def doTrial_F0DL(parent):
         thisSnd = fir2Filt(lowFreq*lowStopComplex, lowFreq, highFreq,
                            highFreq*highStopComplex, thisSnd, parent.prm['sampRate'])
 
-        if noiseType != parent.tr("None"):
+        if noise1Type != parent.tr("None") or noise2Type != parent.tr("None"):
+            noise = numpy.zeros(thisSnd.shape)
             if channel == parent.tr("Odd Left") or channel == parent.tr("Odd Right"): #alternating harmonics, different noise to the two ears
-                noiseR = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
-                                        parent.tr("Right"),
-                                        parent.prm['sampRate'],
-                                        parent.prm['maxLevel'])
-                noiseL = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
-                                        parent.tr("Left"), parent.prm['sampRate'],
-                                        parent.prm['maxLevel'])
-                noise = noiseR + noiseL
+                noise1Source = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                                       "Dichotic", parent.prm['sampRate'],
+                                       parent.prm['maxLevel'])
             else:
-                noise = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                noise1Source = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
                                        channel, parent.prm['sampRate'],
                                        parent.prm['maxLevel'])
-            if noiseType == parent.tr("Pink"):
-                noise = makePink(noise, parent.prm['sampRate'])
-            noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq,
-                              noise1HighFreq*highStop, noise, parent.prm['sampRate'])
-            noise2 = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise)
-            noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq,
-                              noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
-            noise = noise1 + noise2
-            noise = noise[0:thisSnd.shape[0],]
+
+            if noise1Type != parent.tr("None"): 
+                if noise1Type == parent.tr("Pink"):
+                    noise1 = makePinkRef(copy.copy(noise1Source), parent.prm['sampRate'], noise1RefHz)
+                else:
+                    noise1 = copy.copy(noise1Source)
+                noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq,
+                                  noise1HighFreq*highStop, noise1, parent.prm['sampRate'])
+                noise1 = noise1[0:thisSnd.shape[0],]
+                noise = noise+noise1
+            if noise2Type != parent.tr("None"): 
+                noise2Source = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise1Source)
+                if noise2Type == parent.tr("Pink"):
+                    noise2 = makePinkRef(copy.copy(noise2Source), parent.prm['sampRate'], noise2RefHz)
+                else:
+                    noise2 = copy.copy(noise2Source)
+                noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq,
+                                  noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
+                noise2 = noise2[0:thisSnd.shape[0],]
+                noise = noise+noise2
+            
             noise = gate(ramp, noise, parent.prm['sampRate'])
-            if fixedPureTone == "Yes":
-                pt = pureTone(fixedPureToneFreq, 0, fixedPureToneLev,
-                              duration, ramp, channel, parent.prm['sampRate'],
-                              parent.prm['maxLevel'])
-                thisSnd = thisSnd + noise + pt
-            else:
-                thisSnd = thisSnd + noise 
+            thisSnd = thisSnd + noise 
+
+        # if noiseType != parent.tr("None"):
+        #     if channel == parent.tr("Odd Left") or channel == parent.tr("Odd Right"): #alternating harmonics, different noise to the two ears
+        #         noiseR = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+        #                                 parent.tr("Right"),
+        #                                 parent.prm['sampRate'],
+        #                                 parent.prm['maxLevel'])
+        #         noiseL = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+        #                                 parent.tr("Left"), parent.prm['sampRate'],
+        #                                 parent.prm['maxLevel'])
+        #         noise = noiseR + noiseL
+        #     else:
+        #         noise = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+        #                                channel, parent.prm['sampRate'],
+        #                                parent.prm['maxLevel'])
+        #     if noiseType == parent.tr("Pink"):
+        #         noise = makePink(noise, parent.prm['sampRate'])
+        #     noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq,
+        #                       noise1HighFreq*highStop, noise, parent.prm['sampRate'])
+        #     noise2 = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise)
+        #     noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq,
+        #                       noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
+        #     noise = noise1 + noise2
+        #     noise = noise[0:thisSnd.shape[0],]
+        #     noise = gate(ramp, noise, parent.prm['sampRate'])
+        #     thisSnd = thisSnd + noise 
 
         incorrectTones.append(thisSnd)
 

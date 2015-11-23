@@ -274,6 +274,7 @@ class audioManager():
             pass
 
         if desiredSampleRate != None and desiredSampleRate != orig_fs:
+            print("Resampling")
             ch0 = resample(snd[:,0], desiredSampleRate, orig_fs)
             ch1 = resample(snd[:,1], desiredSampleRate, orig_fs)
             snd = zeros((ch0.shape[0],2))

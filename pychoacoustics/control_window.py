@@ -74,6 +74,7 @@ from .dialog_process_results import*
 from .dialog_show_exp_doc import*
 from .dialog_show_fortune import*
 from .dialog_swap_blocks import*
+from .dialog_memory_file_parameters_differ import*
 from .pysdt import*
 
 if matplotlib_available == True:
@@ -84,7 +85,7 @@ if matplotlib_available == True:
 
 #from redirect_out import*
 from . import default_experiments
-import fnmatch
+import difflib, fnmatch
 from ._version_info import*
 __version__ = pychoacoustics_version
 
@@ -3721,7 +3722,6 @@ class pychControlWin(QMainWindow):
             if ret == QMessageBox.Yes:
                 self.onClickStoreParametersButton()
         elif prmChanged == True:
-           
             ret = QMessageBox.warning(self, self.tr("Warning"),
                                             self.tr("Some parameters have been modified but not stored. Do you want to store them?"),
                                             QMessageBox.Yes | QMessageBox.No)
@@ -4656,15 +4656,18 @@ class pychControlWin(QMainWindow):
                               <p>Python {2} - {3} {4} compiled against Qt {5}, and running with Qt {6} on {7}""").format(__version__, self.prm['builddate'], platform.python_version(), qt_pybackend, qt_pybackend_ver, qt_compiled_ver, qt_runtime_ver, platform.system()))
         
     def closeEvent(self, event):
+        self.exitFlag = True
         #here we need to check if parameters file and temporary parameters file are the same or not
         self.compareGuiStoredParameters()
         if self.prm['storedBlocks'] > 0:
             if self.parametersFile == None:
                 ret = QMessageBox.warning(self, self.tr("Warning"),
                                                 self.tr("The parameters have not been saved to a file. \n Do you want to save them before exiting?"),
-                                                QMessageBox.Yes | QMessageBox.No)
+                                                QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
                 if ret == QMessageBox.Yes:
                     self.onClickSaveParametersButton()
+                elif ret == QMessageBox.Cancel:
+                    self.exitFlag = False
             else:
                 f1 = open(self.parametersFile, 'r'); f2 = open(self.prm["tmpParametersFile"], 'r')
                 l1c = f1.readlines(); l2c = f2.readlines()
@@ -4678,16 +4681,16 @@ class pychControlWin(QMainWindow):
                     if line[0:14] != 'Block Position':
                         l2.append(line)
                 if  l1 != l2:
-                    ret = QMessageBox.warning(self, self.tr("Warning"),
-                                                    self.tr("The parameters in memory differ from the parameters on file. \n Do you want to save the parameters stored in memory them before exiting?"),
-                                                    QMessageBox.Yes | QMessageBox.No)
-                    if ret == QMessageBox.Yes:
+                    pardiff = difflib.unified_diff(l1,l2, n=0)
+                    pardiff = '\n'.join(list(pardiff))
+                    dialog = dialogMemoryFileParametersDiffer(self, "The parameters in memory differ from the parameters on file. \nDo you want to save the parameters stored in memory them before exiting?", pardiff)
+                    if dialog.exec_() and self.exitFlag == True:
                         self.onClickSaveParametersButton()
-            #else:
-            #    if os.path.exists(self.parametersFile) == True:
-            #        os.remove(self.parametersFile)
 
-        event.accept()
+        if self.exitFlag == True:
+            event.accept()
+        else:
+            event.ignore()
 
     def onWhatsThis(self):
         if QWhatsThis.inWhatsThisMode() == True:
