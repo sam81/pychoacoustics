@@ -21,15 +21,15 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale
-    from PyQt4.QtGui import QDialog, QDialogButtonBox, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
+    from PyQt4.QtGui import QDialog, QDesktopWidget, QDialogButtonBox, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtCore import QLocale
-    from PySide.QtGui import QDialog, QDialogButtonBox, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
+    from PySide.QtGui import QDialog, QDesktopWidget, QDialogButtonBox, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale
-    from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
+    from PyQt5.QtWidgets import QDialog, QDesktopWidget, QDialogButtonBox, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
     from PyQt5.QtGui import QFont
 import random
 
@@ -65,6 +65,10 @@ class dialogShowParDiff(QDialog):
         
         self.setLayout(self.vBoxSizer)
         self.setWindowTitle(self.tr("Diff"))
-        #self.resize(500, 500)
+
+        screen = QDesktopWidget().screenGeometry()
+        wd = screen.width()/4
+        ht = screen.height()/3
+        self.resize(wd, ht)
         self.show()
   

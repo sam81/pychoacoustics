@@ -21,15 +21,15 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale
-    from PyQt4.QtGui import QDialog, QDialogButtonBox, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
+    from PyQt4.QtGui import QDialog, QDesktopWidget, QDialogButtonBox, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtCore import QLocale
-    from PySide.QtGui import QDialog, QDialogButtonBox, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
+    from PySide.QtGui import QDialog, QDesktopWidget, QDialogButtonBox, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale
-    from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
+    from PyQt5.QtWidgets import QDialog, QDesktopWidget, QDialogButtonBox, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
     from PyQt5.QtGui import QFont
 import random
 
@@ -65,6 +65,9 @@ class showExpDocDialog(QDialog):
         
         self.setLayout(self.vBoxSizer)
         self.setWindowTitle(self.tr(expName) + " - " + self.tr("documentation"))
-        self.resize(550, 600)
+        screen = QDesktopWidget().screenGeometry()
+        wd = screen.width()/3
+        ht = 0.8*screen.height()
+        self.resize(wd, ht)
         self.show()
   
