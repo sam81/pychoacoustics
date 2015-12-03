@@ -25,6 +25,7 @@ import copy, numpy, multiprocessing, warnings
 from numpy import abs, angle, arange, array, asarray, ceil, concatenate, convolve, cos, cumsum, floor, int_, int64, log, log2, log10, linspace, logspace, mean, ones, pi, real, repeat, sin, sqrt, where, zeros
 from numpy.fft import fft, ifft, irfft, rfft
 from scipy.signal import firwin2
+import scipy
 
 
 def addSounds(snd1, snd2, delay, fs):
@@ -3057,7 +3058,7 @@ def makeBlueRef(sig, fs, refHz):
     nSamples = len(sig[:,0])
     ref = 1 + (refHz * nSamples/fs)
 
-    x = rfft(sig[:,0])
+    x = rfft(sig[:,0], nSamples)
     idx = arange(1, len(x))
     mag = zeros(len(x))
     mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref*idx)
@@ -3065,10 +3066,10 @@ def makeBlueRef(sig, fs, refHz):
     ph = angle(x)
     x = mag * (cos(ph) + 1j * sin(ph))
     
-    sig0 = irfft(x)
+    sig0 = irfft(x, nSamples)
 
 
-    x = rfft(sig[:,1])
+    x = rfft(sig[:,1], nSamples)
     idx = arange(1, len(x))
     mag = zeros(len(x))
     mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref*idx)
@@ -3076,7 +3077,7 @@ def makeBlueRef(sig, fs, refHz):
     ph = angle(x)
     x = mag * (cos(ph) + 1j * sin(ph))
 
-    sig1 = irfft(x)
+    sig1 = irfft(x, nSamples)
 
     sig[:, 0] = sig0
     sig[:, 1] = sig1
@@ -3119,7 +3120,7 @@ def makePinkRef(sig, fs, refHz):
     nSamples = len(sig[:,0])
     ref = 1 + (refHz * nSamples/fs)
 
-    x = rfft(sig[:,0])
+    x = rfft(sig[:,0], nSamples, axis=0)
     idx = arange(1, len(x))
     mag = zeros(len(x))
     mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref/idx)
@@ -3127,10 +3128,10 @@ def makePinkRef(sig, fs, refHz):
     ph = angle(x)
     x = mag * (cos(ph) + 1j * sin(ph))
     
-    sig0 = irfft(x)
+    sig0 = irfft(x, nSamples, axis=0)
 
 
-    x = rfft(sig[:,1])
+    x = rfft(sig[:,1], nSamples, axis=0)
     idx = arange(1, len(x))
     mag = zeros(len(x))
     mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref/idx)
@@ -3138,7 +3139,7 @@ def makePinkRef(sig, fs, refHz):
     ph = angle(x)
     x = mag * (cos(ph) + 1j * sin(ph))
 
-    sig1 = irfft(x)
+    sig1 = irfft(x, nSamples, axis=0)
 
     sig[:, 0] = sig0
     sig[:, 1] = sig1
@@ -3180,7 +3181,7 @@ def makeRedRef(sig, fs, refHz):
     nSamples = len(sig[:,0])
     ref = 1 + (refHz * nSamples/fs)
 
-    x = rfft(sig[:,0])
+    x = rfft(sig[:,0], nSamples)
     idx = arange(1, len(x))
     mag = zeros(len(x))
     mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref/(idx**2))
@@ -3188,10 +3189,10 @@ def makeRedRef(sig, fs, refHz):
     ph = angle(x)
     x = mag * (cos(ph) + 1j * sin(ph))
     
-    sig0 = irfft(x)
+    sig0 = irfft(x, nSamples)
 
 
-    x = rfft(sig[:,1])
+    x = rfft(sig[:,1], nSamples)
     idx = arange(1, len(x))
     mag = zeros(len(x))
     mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref/(idx**2))
@@ -3199,7 +3200,7 @@ def makeRedRef(sig, fs, refHz):
     ph = angle(x)
     x = mag * (cos(ph) + 1j * sin(ph))
 
-    sig1 = irfft(x)
+    sig1 = irfft(x, nSamples)
 
     sig[:, 0] = sig0
     sig[:, 1] = sig1
@@ -3241,7 +3242,7 @@ def makeVioletRef(sig, fs, refHz):
     nSamples = len(sig[:,0])
     ref = 1 + (refHz * nSamples/fs)
 
-    x = rfft(sig[:,0])
+    x = rfft(sig[:,0], nSamples)
     idx = arange(1, len(x))
     mag = zeros(len(x))
     mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref*(idx**2))
@@ -3249,10 +3250,10 @@ def makeVioletRef(sig, fs, refHz):
     ph = angle(x)
     x = mag * (cos(ph) + 1j * sin(ph))
     
-    sig0 = irfft(x)
+    sig0 = irfft(x, nSamples)
 
 
-    x = rfft(sig[:,1])
+    x = rfft(sig[:,1], nSamples)
     idx = arange(1, len(x))
     mag = zeros(len(x))
     mag[1:len(x)] = abs(x[1:len(x)]) * sqrt(ref*(idx**2))
@@ -3260,7 +3261,7 @@ def makeVioletRef(sig, fs, refHz):
     ph = angle(x)
     x = mag * (cos(ph) + 1j * sin(ph))
 
-    sig1 = irfft(x)
+    sig1 = irfft(x, nSamples)
 
     sig[:, 0] = sig0
     sig[:, 1] = sig1

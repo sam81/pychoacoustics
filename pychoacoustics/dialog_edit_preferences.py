@@ -21,17 +21,17 @@ from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
     from PyQt4.QtCore import QLocale, QThread, pyqtSignal
-    from PyQt4.QtGui import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFont, QFontDialog, QGridLayout, QIntValidator, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
+    from PyQt4.QtGui import QApplication, QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFont, QFontDialog, QGridLayout, QIntValidator, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QStyleFactory, QWidget, QTabWidget, QVBoxLayout
     QtCore.Signal = QtCore.pyqtSignal
     QtCore.Slot = QtCore.pyqtSlot
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtCore import QLocale, QThread, Signal
-    from PySide.QtGui import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFont, QFontDialog, QGridLayout, QIntValidator, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
+    from PySide.QtGui import QApplication, QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFont, QFontDialog, QGridLayout, QIntValidator, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QStyleFactory, QWidget, QTabWidget, QVBoxLayout
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, QThread, pyqtSignal
-    from PyQt5.QtWidgets import QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFontDialog, QGridLayout, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QWidget, QTabWidget, QVBoxLayout
+    from PyQt5.QtWidgets import QApplication, QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFontDialog, QGridLayout, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QStyleFactory, QWidget, QTabWidget, QVBoxLayout
     from PyQt5.QtGui import QFont, QIntValidator
     QtCore.Signal = QtCore.pyqtSignal
     QtCore.Slot = QtCore.pyqtSlot
@@ -148,6 +148,15 @@ class preferencesDialog(QDialog):
         self.startupCommandWidget = QLineEdit(self.tmpPref["pref"]["general"]["startupCommand"])
         appPrefGrid.addWidget(self.startupCommandWidget, n, 1)
         n = n+1
+
+        # self.styleChooserLabel = QLabel(self.tr('Style:'))
+        # appPrefGrid.addWidget(self.styleChooserLabel, n, 0)
+        # self.styleChooser = QComboBox()
+        # self.styleChooser.addItems(QStyleFactory.keys())
+        # self.styleChooser.setCurrentIndex(self.languageChooser.findText(self.tmpPref['pref']['appearance']['style']))
+        # self.styleChooser.currentIndexChanged[int].connect(self.onStyleChooserChange)
+        # appPrefGrid.addWidget(self.styleChooser, n, 1)
+        # n = n+1
         
         self.appPrefWidget.setLayout(appPrefGrid)
         self.appPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
@@ -567,6 +576,9 @@ class preferencesDialog(QDialog):
             self.responseBoxCountryChooser.removeItem(0)
         self.responseBoxCountryChooser.addItems(self.parent().prm['appData']['available_countries'][self.responseBoxLanguageChooser.currentText()])
 
+    # def onStyleChooserChange(self):
+    #     QApplication.setStyle(QStyleFactory.create(self.styleChooser.currentText()))
+
     def onPlayChooserChange(self):
         foo = self.playChooser.currentText()
         if foo != self.tr('custom'):
@@ -704,6 +716,7 @@ class preferencesDialog(QDialog):
         self.tmpPref['pref']['general']['triggerDur'] = self.currLocale.toDouble(self.triggerDurWidget.text())[0]
         self.tmpPref['pref']['general']['maxRecursionDepth'] = self.currLocale.toInt(self.recursionLimitWidget.text())[0]
         self.tmpPref['pref']['general']['startupCommand'] = self.startupCommandWidget.text()
+        #self.tmpPref['pref']['appearance']['style'] = self.tr(self.styleChooser.currentText())
         
         self.tmpPref['pref']['sound']['playCommand'] = self.tr(self.playCommandWidget.text())
         self.tmpPref['pref']['sound']['playCommandType'] = self.tr(self.playChooser.currentText())
@@ -833,6 +846,7 @@ class preferencesDialog(QDialog):
             
     def revertChanges(self):
         self.languageChooser.setCurrentIndex(self.languageChooser.findText(self.tmpPref['pref']['language']))
+        #self.styleChooser.setCurrentIndex(self.styleChooser.findText(self.tmpPref['pref']['appearance']['style']))
         self.countryChooser.setCurrentIndex(self.countryChooser.findText(self.tmpPref['pref']['country']))
         self.responseBoxLanguageChooser.setCurrentIndex(self.responseBoxLanguageChooser.findText(self.tmpPref['pref']['responseBoxLanguage']))
         self.responseBoxCountryChooser.setCurrentIndex(self.responseBoxCountryChooser.findText(self.tmpPref['pref']['responseBoxCountry']))

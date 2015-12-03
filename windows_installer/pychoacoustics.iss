@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "pychoacoustics"
-#define MyAppVersion "0.3.27"
+#define MyAppVersion "0.3.28"
 #define MyAppPublisher "Samuele Carcagno"
 #define MyAppURL "http://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html"
 
@@ -21,7 +21,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 LicenseFile=Z:\media\ntfsShared\lin_home\auditory\code\pychoacoustics\windows_installer\pychoacoustics_for_win\pychoacoustics\COPYING.txt
-InfoBeforeFile=Z:\media\ntfsShared\lin_home\auditory\code\pychoacoustics\pychoacoustics_for_win\pychoacoustics\README.md
+InfoBeforeFile=Z:\media\ntfsShared\lin_home\auditory\code\pychoacoustics\windows_installer\pychoacoustics_for_win\pychoacoustics\README.md
 OutputBaseFilename=pychoacoustics_{#MyAppVersion}-setup
 Compression=lzma2/ultra64
 SolidCompression=yes
@@ -38,7 +38,7 @@ Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
 ;Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "Z:\media\ntfsShared\lin_home\auditory\code\pychoacoustics\pychoacoustics_for_win\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "Z:\media\ntfsShared\lin_home\auditory\code\pychoacoustics\windows_installer\pychoacoustics_for_win\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

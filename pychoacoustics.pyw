@@ -223,8 +223,8 @@ def main(argv):
 
     prm = global_parameters.set_global_parameters(prm)
     app.setWindowIcon(QtGui.QIcon(":/Machovka_Headphones.svg"))
-    #app.setStyle("cleanlooks")
-    #app.setStyle(QStyleFactory.create('Cleanlooks'))
+    #app.setStyle("plastique")
+    #app.setStyle(QStyleFactory.create('GTK+'))
     x = pychControlWin(parent=None, prm=prm)
     sys.exit(app.exec_())
     

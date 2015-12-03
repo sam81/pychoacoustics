@@ -25,7 +25,7 @@ os.system('mv *.qm ../translations/')
 
 os.chdir('../')
 os.system('python3 setup-pyside.py sdist --formats=gztar,zip')
-os.system('python3 setup-pyside.py bdist_wininst')
+#os.system('python3 setup-pyside.py bdist_wininst')
 
 #revert to pyqt5
 

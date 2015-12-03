@@ -1130,8 +1130,10 @@ class responseBox(QMainWindow):
                                           QMessageBox.Ok)
                 return
                 
+        self.dialerResponseField.setText("   ")
         self.dialerResponseField.setText("")
         self.sortResponse(int(currText))
+
     def sortResponseButton(self):
         buttonClicked = self.responseButton.index(self.sender())+1
         self.sortResponse(buttonClicked)
@@ -3496,17 +3498,59 @@ class responseBox(QMainWindow):
                     
 
             gammax = 1/self.prm[currBlock]['nAlternatives']
-                    
-            self.PSI = setupPSI(model=self.prm['psyFunType'], x0=self.prm['adaptiveDifference'], xLim=(self.prm['stimLo'], self.prm['stimHi']), xStep=self.prm['stimStep'], stimScale=self.prm['stimScale'],
-                                alphaLim=(self.prm['loMidPoint'], self.prm['hiMidPoint']), alphaStep=self.prm['midPointStep'], alphaSpacing="Linear",
-                                alphaDist=self.prm['midPointPrior'], alphaMu=self.prm['slopePriorMu'], alphaSTD=self.prm['slopePriorSTD'],
-                                betaLim=(self.prm['loSlope'],self.prm['hiSlope']), betaStep=self.prm['slopeStep'], betaSpacing=self.prm['slopeSpacing'],
-                                betaDist=self.prm['slopePrior'], betaMu=self.prm['slopePriorMu'], betaSTD=self.prm['slopePriorSTD'],
-                                gamma=gammax,
-                                lambdaLim=(self.prm['loLapse'],self.prm['hiLapse']), lambdaStep=self.prm['lapseStep'], lambdaSpacing=self.prm['lapseSpacing'],
-                                lambdaDist=self.prm['lapsePrior'], lambdaMu=self.prm['lapsePriorMu'], lambdaSTD=self.prm['lapsePriorSTD'],
-                                marginalize = ax)
-
+            if self.prm['stimScale'] == "Linear":
+                self.PSI = setupPSI(model=self.prm['psyFunType'],
+                                    x0=self.prm['adaptiveDifference'],
+                                    xLim=(self.prm['stimLo'], self.prm['stimHi']),
+                                    xStep=self.prm['stimStep'],
+                                    stimScale=self.prm['stimScale'],
+                                    alphaLim=(self.prm['loMidPoint'], self.prm['hiMidPoint']),
+                                    alphaStep=self.prm['midPointStep'],
+                                    alphaSpacing="Linear",
+                                    alphaDist=self.prm['midPointPrior'],
+                                    alphaMu=self.prm['midPointPriorMu'],
+                                    alphaSTD=self.prm['midPointPriorSTD'],
+                                    betaLim=(self.prm['loSlope'],self.prm['hiSlope']),
+                                    betaStep=self.prm['slopeStep'],
+                                    betaSpacing=self.prm['slopeSpacing'],
+                                    betaDist=self.prm['slopePrior'],
+                                    betaMu=self.prm['slopePriorMu'],
+                                    betaSTD=self.prm['slopePriorSTD'],
+                                    gamma=gammax,
+                                    lambdaLim=(self.prm['loLapse'],self.prm['hiLapse']),
+                                    lambdaStep=self.prm['lapseStep'],
+                                    lambdaSpacing=self.prm['lapseSpacing'],
+                                    lambdaDist=self.prm['lapsePrior'],
+                                    lambdaMu=self.prm['lapsePriorMu'],
+                                    lambdaSTD=self.prm['lapsePriorSTD'],
+                                    marginalize = ax)
+            elif self.prm['stimScale'] == "Logarithmic":
+                self.PSI = setupPSI(model=self.prm['psyFunType'],
+                                    x0=abs(self.prm['adaptiveDifference']),
+                                    xLim=(abs(self.prm['stimLo']), abs(self.prm['stimHi'])),
+                                    xStep=self.prm['stimStep'],
+                                    stimScale=self.prm['stimScale'],
+                                    alphaLim=(abs(self.prm['loMidPoint']), abs(self.prm['hiMidPoint'])),
+                                    alphaStep=self.prm['midPointStep'],
+                                    alphaSpacing="Linear",
+                                    alphaDist=self.prm['midPointPrior'],
+                                    alphaMu=abs(self.prm['midPointPriorMu']),
+                                    alphaSTD=self.prm['midPointPriorSTD'],
+                                    betaLim=(self.prm['loSlope'],self.prm['hiSlope']),
+                                    betaStep=self.prm['slopeStep'],
+                                    betaSpacing=self.prm['slopeSpacing'],
+                                    betaDist=self.prm['slopePrior'],
+                                    betaMu=self.prm['slopePriorMu'],
+                                    betaSTD=self.prm['slopePriorSTD'],
+                                    gamma=gammax,
+                                    lambdaLim=(self.prm['loLapse'],self.prm['hiLapse']),
+                                    lambdaStep=self.prm['lapseStep'],
+                                    lambdaSpacing=self.prm['lapseSpacing'],
+                                    lambdaDist=self.prm['lapsePrior'],
+                                    lambdaMu=self.prm['lapsePriorMu'],
+                                    lambdaSTD=self.prm['lapsePriorSTD'],
+                                    marginalize = ax)
+                
             self.prm['startOfBlock'] = False
             self.trialCount = 0
             self.fullFileLines = []
@@ -3635,7 +3679,10 @@ class responseBox(QMainWindow):
             self.atBlockEnd()
         else:
             self.PSI = PSI_update(self.PSI, response)
-            self.prm['adaptiveDifference'] = self.PSI["xnextLinear"]
+            if self.prm['adaptiveDifference'] >=0:
+                self.prm['adaptiveDifference'] = self.PSI["xnextLinear"]
+            else:
+                self.prm['adaptiveDifference'] = -self.PSI["xnextLinear"]
             # print("Est. thresh: " + str(self.PSI['est_midpoint']))  
             # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
             # print(self.PSI["phi"])
@@ -3648,34 +3695,62 @@ class responseBox(QMainWindow):
             self.fullFileSummLines = []
 
             gammax = 1/self.prm[currBlock]['nAlternatives']
-                    
-            self.UML = setupUML(model=self.prm['psyFunType'],
-                                nDown=self.prm["numberCorrectNeeded"],
-                                centTend = self.prm["psyFunPosteriorSummary"],
-                                stimScale = self.prm['stimScale'],
-                                x0=self.prm['adaptiveDifference'],
-                                xLim=(self.prm['stimLo'], self.prm['stimHi']),
-                                alphaLim=(self.prm['loMidPoint'], self.prm['hiMidPoint']),
-                                alphaStep=self.prm['midPointStep'],
-                                alphaSpacing="Linear",
-                                alphaDist=self.prm['midPointPrior'],
-                                alphaMu=self.prm['slopePriorMu'],
-                                alphaSTD=self.prm['slopePriorSTD'],
-                                betaLim=(self.prm['loSlope'], self.prm['hiSlope']),
-                                betaStep=self.prm['slopeStep'],
-                                betaSpacing=self.prm['slopeSpacing'],
-                                betaDist=self.prm['slopePrior'],
-                                betaMu=self.prm['slopePriorMu'],
-                                betaSTD=self.prm['slopePriorSTD'],
-                                gamma=gammax,
-                                lambdaLim=(self.prm['loLapse'], self.prm['hiLapse']),
-                                lambdaStep=self.prm['lapseStep'],
-                                lambdaSpacing=self.prm['lapseSpacing'],
-                                lambdaDist=self.prm['lapsePrior'],
-                                lambdaMu=self.prm['lapsePriorMu'],
-                                lambdaSTD=self.prm['lapsePriorSTD'],
-                                suggestedLambdaSwpt=self.prm['suggestedLambdaSwpt'],
-                                lambdaSwptPC=self.prm['lambdaSwptPC'])
+            if self.prm['stimScale'] == "Linear":
+                self.UML = setupUML(model=self.prm['psyFunType'],
+                                    nDown=self.prm["numberCorrectNeeded"],
+                                    centTend = self.prm["psyFunPosteriorSummary"],
+                                    stimScale = self.prm['stimScale'],
+                                    x0=self.prm['adaptiveDifference'],
+                                    xLim=(self.prm['stimLo'], self.prm['stimHi']),
+                                    alphaLim=(self.prm['loMidPoint'], self.prm['hiMidPoint']),
+                                    alphaStep=self.prm['midPointStep'],
+                                    alphaSpacing="Linear",
+                                    alphaDist=self.prm['midPointPrior'],
+                                    alphaMu=self.prm['midPointPriorMu'],
+                                    alphaSTD=self.prm['midPointPriorSTD'],
+                                    betaLim=(self.prm['loSlope'], self.prm['hiSlope']),
+                                    betaStep=self.prm['slopeStep'],
+                                    betaSpacing=self.prm['slopeSpacing'],
+                                    betaDist=self.prm['slopePrior'],
+                                    betaMu=self.prm['slopePriorMu'],
+                                    betaSTD=self.prm['slopePriorSTD'],
+                                    gamma=gammax,
+                                    lambdaLim=(self.prm['loLapse'], self.prm['hiLapse']),
+                                    lambdaStep=self.prm['lapseStep'],
+                                    lambdaSpacing=self.prm['lapseSpacing'],
+                                    lambdaDist=self.prm['lapsePrior'],
+                                    lambdaMu=self.prm['lapsePriorMu'],
+                                    lambdaSTD=self.prm['lapsePriorSTD'],
+                                    suggestedLambdaSwpt=self.prm['suggestedLambdaSwpt'],
+                                    lambdaSwptPC=self.prm['lambdaSwptPC'])
+            elif self.prm['stimScale'] == "Logarithmic":
+                self.UML = setupUML(model=self.prm['psyFunType'],
+                                    nDown=self.prm["numberCorrectNeeded"],
+                                    centTend = self.prm["psyFunPosteriorSummary"],
+                                    stimScale = self.prm['stimScale'],
+                                    x0=abs(self.prm['adaptiveDifference']),
+                                    xLim=(abs(self.prm['stimLo']), abs(self.prm['stimHi'])),
+                                    alphaLim=(abs(self.prm['loMidPoint']), abs(self.prm['hiMidPoint'])),
+                                    alphaStep=abs(self.prm['midPointStep']),
+                                    alphaSpacing="Linear",
+                                    alphaDist=self.prm['midPointPrior'],
+                                    alphaMu=self.prm['midPointPriorMu'],
+                                    alphaSTD=self.prm['midPointPriorSTD'],
+                                    betaLim=(self.prm['loSlope'], self.prm['hiSlope']),
+                                    betaStep=self.prm['slopeStep'],
+                                    betaSpacing=self.prm['slopeSpacing'],
+                                    betaDist=self.prm['slopePrior'],
+                                    betaMu=self.prm['slopePriorMu'],
+                                    betaSTD=self.prm['slopePriorSTD'],
+                                    gamma=gammax,
+                                    lambdaLim=(self.prm['loLapse'], self.prm['hiLapse']),
+                                    lambdaStep=self.prm['lapseStep'],
+                                    lambdaSpacing=self.prm['lapseSpacing'],
+                                    lambdaDist=self.prm['lapsePrior'],
+                                    lambdaMu=self.prm['lapsePriorMu'],
+                                    lambdaSTD=self.prm['lapsePriorSTD'],
+                                    suggestedLambdaSwpt=abs(self.prm['suggestedLambdaSwpt']),
+                                    lambdaSwptPC=self.prm['lambdaSwptPC'])
 
             self.prm['startOfBlock'] = False
             self.trialCount = 0
@@ -3805,7 +3880,10 @@ class responseBox(QMainWindow):
             self.atBlockEnd()
         else:
             self.UML = UML_update(self.UML, response)
-            self.prm['adaptiveDifference'] = self.UML["xnextLinear"]
+            if self.prm['adaptiveDifference'] >=0:
+                self.prm['adaptiveDifference'] = self.UML["xnextLinear"]
+            else:
+                self.prm['adaptiveDifference'] = -self.UML["xnextLinear"]
             # print("Est. thresh: " + str(self.UML['est_midpoint']))  
             # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
             # print(self.UML["phi"])

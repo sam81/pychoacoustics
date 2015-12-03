@@ -30,6 +30,7 @@ if pyqtversion == 4:
         matplotlib.rcParams['backend.qt4'] = "PyQt4"
     except:
         matplotlib_available = False
+    prefFileSuffix = "-pyqt4"
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
     from PySide.QtGui import QApplication, QColor, QFont
@@ -40,6 +41,7 @@ elif pyqtversion == -4:
         matplotlib.rcParams['backend.qt4'] = "PySide"
     except:
         matplotlib_available = False
+    prefFileSuffix = "-pyside"
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QApplication
@@ -55,7 +57,7 @@ elif pyqtversion == 5:
         matplotlib_available = True
     except:
         matplotlib_available = False
-
+    prefFileSuffix = ""
 
 from .utils_redirect_stream_to_file import*
 
@@ -254,6 +256,7 @@ def def_pref(prm):
     prm["pref"]["exp"] = {}
     prm["pref"]["interface"] = {}
     prm["pref"]["resp_box"] = {}
+    prm["pref"]["appearance"] = {}
 
     prm["pref"]["general"]["triggerONOFF"] = False
     prm["pref"]["general"]["ONTrigger"] = 254
@@ -315,6 +318,9 @@ def def_pref(prm):
     prm['pref']['responseBoxLanguage'] = QApplication.translate("","en","")
     prm['pref']['responseBoxCountry'] = QApplication.translate("","US","")
 
+    #Appearance
+    #prm["pref"]["appearance"]["style"] = QApplication.translate("","Default","")
+    
     #Sound preferences
     prm["pref"]["sound"]["defaultNBits"] = "32"
     prm["pref"]["sound"]["defaultSampleRate"] = "48000"
@@ -394,7 +400,7 @@ def def_pref(prm):
 
 def get_prefs(prm):
     prm = def_pref(prm)
-    prm['prefFile'] = os.path.expanduser("~") +'/.config/pychoacoustics/preferences.py'
+    prm['prefFile'] = os.path.expanduser("~") +'/.config/pychoacoustics/preferences'+prefFileSuffix+'.py'
     prm['phonesPrefFile'] = os.path.expanduser("~") +'/.config/pychoacoustics/phones.py'
     prm['experimenterPrefFile'] = os.path.expanduser("~") +'/.config/pychoacoustics/experimenter.py'
     if os.path.exists(os.path.expanduser("~") +'/.config/') == False:

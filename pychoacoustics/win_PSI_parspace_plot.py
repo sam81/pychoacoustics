@@ -222,32 +222,58 @@ class PSIParSpacePlot(QMainWindow):
         else:
             ax = None
 
-        self.PSI = setupPSI(model=self.psyFun,
-                            x0=1,
-                            xLim=(self.loStim, self.hiStim),
-                            xStep=self.stimGridStep,
-                            stimScale=self.stimScaling,
-                            alphaLim=(self.loMidPoint, self.hiMidPoint),
-                            alphaStep=self.threshGridStep,
-                            alphaSpacing="Linear",
-                            alphaDist=self.threshPrior,
-                            alphaMu=self.threshPriorMu,
-                            alphaSTD=self.threshPriorSTD,
-                            betaLim=(self.loSlope, self.hiSlope),
-                            betaStep=self.slopeGridStep,
-                            betaSpacing=self.slopeSpacing,
-                            betaDist=self.slopePrior,
-                            betaMu=self.slopePriorMu,
-                            betaSTD=self.slopePriorSTD,
-                            gamma=1/self.nAlternatives,
-                            lambdaLim=(self.loLapse, self.hiLapse),
-                            lambdaStep=self.lapseGridStep,
-                            lambdaSpacing=self.lapseSpacing,
-                            lambdaDist=self.lapsePrior,
-                            lambdaMu=self.lapsePriorMu,
-                            lambdaSTD=self.lapsePriorSTD,
-                            marginalize = ax)
-
+        if self.stimScaling == "Linear":
+            self.PSI = setupPSI(model=self.psyFun,
+                                x0=1,
+                                xLim=(self.loStim, self.hiStim),
+                                xStep=self.stimGridStep,
+                                stimScale=self.stimScaling,
+                                alphaLim=(self.loMidPoint, self.hiMidPoint),
+                                alphaStep=self.threshGridStep,
+                                alphaSpacing="Linear",
+                                alphaDist=self.threshPrior,
+                                alphaMu=self.threshPriorMu,
+                                alphaSTD=self.threshPriorSTD,
+                                betaLim=(self.loSlope, self.hiSlope),
+                                betaStep=self.slopeGridStep,
+                                betaSpacing=self.slopeSpacing,
+                                betaDist=self.slopePrior,
+                                betaMu=self.slopePriorMu,
+                                betaSTD=self.slopePriorSTD,
+                                gamma=1/self.nAlternatives,
+                                lambdaLim=(self.loLapse, self.hiLapse),
+                                lambdaStep=self.lapseGridStep,
+                                lambdaSpacing=self.lapseSpacing,
+                                lambdaDist=self.lapsePrior,
+                                lambdaMu=self.lapsePriorMu,
+                                lambdaSTD=self.lapsePriorSTD,
+                                marginalize = ax)
+        elif self.stimScaling == "Logarithmic":
+            self.PSI = setupPSI(model=self.psyFun,
+                                x0=1,
+                                xLim=(abs(self.loStim), abs(self.hiStim)),
+                                xStep=self.stimGridStep,
+                                stimScale=self.stimScaling,
+                                alphaLim=(abs(self.loMidPoint), abs(self.hiMidPoint)),
+                                alphaStep=self.threshGridStep,
+                                alphaSpacing="Linear",
+                                alphaDist=self.threshPrior,
+                                alphaMu=abs(self.threshPriorMu),
+                                alphaSTD=self.threshPriorSTD,
+                                betaLim=(self.loSlope, self.hiSlope),
+                                betaStep=self.slopeGridStep,
+                                betaSpacing=self.slopeSpacing,
+                                betaDist=self.slopePrior,
+                                betaMu=self.slopePriorMu,
+                                betaSTD=self.slopePriorSTD,
+                                gamma=1/self.nAlternatives,
+                                lambdaLim=(self.loLapse, self.hiLapse),
+                                lambdaStep=self.lapseGridStep,
+                                lambdaSpacing=self.lapseSpacing,
+                                lambdaDist=self.lapsePrior,
+                                lambdaMu=self.lapsePriorMu,
+                                lambdaSTD=self.lapsePriorSTD,
+                                marginalize = ax)
 
     
     def plotDataMidpoint(self):
@@ -258,7 +284,9 @@ class PSIParSpacePlot(QMainWindow):
             markerline, stemlines, baseline = self.ax1.stem(self.PSI["alpha"], self.A[:,0,0], 'k')
         elif self.stimScaling == "Logarithmic":
             markerline, stemlines, baseline = self.ax1.stem(exp(self.PSI["alpha"]), self.A[:,0,0], 'k')
-            
+            if self.loStim < 0:
+                self.ax1.set_xticklabels(list(map(str, -self.ax1.get_xticks())))
+                
         plt.setp(markerline, 'markerfacecolor', 'k')
         nAlpha = len(self.A[:,0,0])
         self.ax1.set_title("Midpoint, #Points " + str(nAlpha))
@@ -287,6 +315,8 @@ class PSIParSpacePlot(QMainWindow):
             markerline, stemlines, baseline = self.ax4.stem(self.PSI["stims"], np.ones(nStim), 'k')
         elif self.stimScaling == "Logarithmic":
             markerline, stemlines, baseline = self.ax4.stem(exp(self.PSI["stims"]), np.ones(nStim), 'k')
+            if self.loStim < 0:
+                self.ax4.set_xticklabels(list(map(str, -self.ax4.get_xticks())))
             
         plt.setp(markerline, 'markerfacecolor', 'k')
         self.ax4.set_title("Stimulus, #Points " + str(nStim))
@@ -308,7 +338,10 @@ class PSIParSpacePlot(QMainWindow):
         self.ax1.set_xticks(majTicks)
         xTickLabels = []
         for tick in majTicks:
-            xTickLabels.append(str(10**tick))
+            if self.stimScaling == "Logarithmic" and self.loStim < 0:
+                xTickLabels.append(str(-10**tick))
+            else:
+                xTickLabels.append(str(10**tick))
         self.ax1.set_xticklabels(xTickLabels)
         minTicks = []
         for i in range(len(majTicks)-1):
@@ -380,7 +413,10 @@ class PSIParSpacePlot(QMainWindow):
         self.ax4.set_xticks(majTicks)
         xTickLabels = []
         for tick in majTicks:
-            xTickLabels.append(str(10**tick))
+            if self.stimScaling == "Logarithmic" and self.loStim < 0:
+                xTickLabels.append(str(-10**tick))
+            else:
+                xTickLabels.append(str(10**tick))
         self.ax4.set_xticklabels(xTickLabels)
         minTicks = []
         for i in range(len(majTicks)-1):

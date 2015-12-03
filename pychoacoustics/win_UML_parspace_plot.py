@@ -200,32 +200,59 @@ class UMLParSpacePlot(QMainWindow):
         self.lapsePriorMu = self.parent().currLocale.toDouble(self.parent().lapsePriorMu.text())[0]
         self.lapsePriorSTD = self.parent().currLocale.toDouble(self.parent().lapsePriorSTD.text())[0]
         self.nAlternatives = int(self.parent().nAlternativesChooser.currentText())
-      
-        self.UML = setupUML(model=self.psyFun,
-                            nDown=2,
-                            centTend = "Mean",
-                            stimScale = self.stimScaling,
-                            x0=1,
-                            xLim=(self.loStim, self.hiStim),
-                            alphaLim=(self.loMidPoint, self.hiMidPoint),
-                            alphaStep=self.threshGridStep,
-                            alphaSpacing="Linear",
-                            alphaDist=self.threshPrior,
-                            alphaMu=self.threshPriorMu,
-                            alphaSTD=self.threshPriorSTD,
-                            betaLim=(self.loSlope, self.hiSlope),
-                            betaStep=self.slopeGridStep,
-                            betaSpacing=self.slopeSpacing,
-                            betaDist=self.slopePrior,
-                            betaMu=self.slopePriorMu,
-                            betaSTD=self.slopePriorSTD,
-                            gamma=1/self.nAlternatives,
-                            lambdaLim=(self.loLapse, self.hiLapse),
-                            lambdaStep=self.lapseGridStep,
-                            lambdaSpacing=self.lapseSpacing,
-                            lambdaDist=self.lapsePrior,
-                            lambdaMu=self.lapsePriorMu,
-                            lambdaSTD=self.lapsePriorSTD)
+
+        if self.stimScaling == "Linear":
+            self.UML = setupUML(model=self.psyFun,
+                                nDown=2,
+                                centTend = "Mean",
+                                stimScale = self.stimScaling,
+                                x0=1,
+                                xLim=(self.loStim, self.hiStim),
+                                alphaLim=(self.loMidPoint, self.hiMidPoint),
+                                alphaStep=self.threshGridStep,
+                                alphaSpacing="Linear",
+                                alphaDist=self.threshPrior,
+                                alphaMu=self.threshPriorMu,
+                                alphaSTD=self.threshPriorSTD,
+                                betaLim=(self.loSlope, self.hiSlope),
+                                betaStep=self.slopeGridStep,
+                                betaSpacing=self.slopeSpacing,
+                                betaDist=self.slopePrior,
+                                betaMu=self.slopePriorMu,
+                                betaSTD=self.slopePriorSTD,
+                                gamma=1/self.nAlternatives,
+                                lambdaLim=(self.loLapse, self.hiLapse),
+                                lambdaStep=self.lapseGridStep,
+                                lambdaSpacing=self.lapseSpacing,
+                                lambdaDist=self.lapsePrior,
+                                lambdaMu=self.lapsePriorMu,
+                                lambdaSTD=self.lapsePriorSTD)
+        elif self.stimScaling == "Logarithmic":
+            self.UML = setupUML(model=self.psyFun,
+                                nDown=2,
+                                centTend = "Mean",
+                                stimScale = self.stimScaling,
+                                x0=1,
+                                xLim=(abs(self.loStim), abs(self.hiStim)),
+                                alphaLim=(abs(self.loMidPoint), abs(self.hiMidPoint)),
+                                alphaStep=self.threshGridStep,
+                                alphaSpacing="Linear",
+                                alphaDist=self.threshPrior,
+                                alphaMu=abs(self.threshPriorMu),
+                                alphaSTD=self.threshPriorSTD,
+                                betaLim=(self.loSlope, self.hiSlope),
+                                betaStep=self.slopeGridStep,
+                                betaSpacing=self.slopeSpacing,
+                                betaDist=self.slopePrior,
+                                betaMu=self.slopePriorMu,
+                                betaSTD=self.slopePriorSTD,
+                                gamma=1/self.nAlternatives,
+                                lambdaLim=(self.loLapse, self.hiLapse),
+                                lambdaStep=self.lapseGridStep,
+                                lambdaSpacing=self.lapseSpacing,
+                                lambdaDist=self.lapsePrior,
+                                lambdaMu=self.lapsePriorMu,
+                                lambdaSTD=self.lapsePriorSTD)
         
     def plotDataMidpoint(self):
         self.ax1.clear()
@@ -235,6 +262,8 @@ class UMLParSpacePlot(QMainWindow):
             markerline, stemlines, baseline = self.ax1.stem(self.UML["alpha"], self.A[:,0,0], 'k')
         elif self.stimScaling == "Logarithmic":
             markerline, stemlines, baseline = self.ax1.stem(exp(self.UML["alpha"]), self.A[:,0,0], 'k')
+            if self.loStim < 0:
+                self.ax1.set_xticklabels(list(map(str, -self.ax1.get_xticks())))
             
         plt.setp(markerline, 'markerfacecolor', 'k')
         nAlpha = len(self.A[:,0,0])
@@ -273,7 +302,10 @@ class UMLParSpacePlot(QMainWindow):
         self.ax1.set_xticks(majTicks)
         xTickLabels = []
         for tick in majTicks:
-            xTickLabels.append(str(10**tick))
+            if self.stimScaling == "Logarithmic" and self.loStim < 0:
+                xTickLabels.append(str(-10**tick))
+            else:
+                xTickLabels.append(str(10**tick))
         self.ax1.set_xticklabels(xTickLabels)
         minTicks = []
         for i in range(len(majTicks)-1):
@@ -284,6 +316,9 @@ class UMLParSpacePlot(QMainWindow):
         nAlpha = len(self.A[:,0,0])
         self.ax1.set_title("Midpoint, #Points " + str(nAlpha))
 
+        # if self.stimScaling == "Logarithmic":
+        #     if self.loStim < 0:
+        #         self.ax1.set_xlim(self.ax1.get_xlim()[::-1])
     def plotDataSlopeLogAxis(self):
         self.ax2.clear()
         self.B = setPrior(self.UML["b"], self.UML["par"]["beta"])

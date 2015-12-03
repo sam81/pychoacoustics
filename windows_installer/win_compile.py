@@ -3,7 +3,8 @@
 
 import ftplib, os, platform, requests, time
 
-winpythonpath = "/home/sam/tmp/pychoacoustics_for_win/"
+publish = input("publish ('y'/'n')?: ")
+winpythonpath = "pychoacoustics_for_win/"
 
 f = open('../setup.py', 'r')
 ln = f.readlines()
@@ -49,7 +50,7 @@ os.system(cmd)
 # Publish on Bintray
 #####################
 
-publish = 1
+#publish = 0
 package = "pychoacoustics"
 exeName = "pychoacoustics_"+ver+"-setup.exe"
 exePath = "Output/"+exeName
@@ -63,7 +64,7 @@ if publish == 1 or publish == "y":
 
     USERNAME = "sam81"
 
-    URL = "https://api.bintray.com/content/sam81/hearinglab-win/"+ package + "/" + ver + "/pychoacoustics_" + ver + "/" + exeName + "?publish=1"
+    URL = "https://api.bintray.com/content/sam81/hearinglab-win/"+ "/pychoacoustics_" + ver + "/" + exeName + "?publish=1"
     parameters = {"publish": "1"}
     headers = {
         "X-Bintray-Package": "pychoacoustics",
@@ -88,7 +89,7 @@ if publish == 1 or publish == "y":
 
     for i in range(len(lns)):
         if lns[i][0:73] == '<li> <a href="https://bintray.com/artifact/download/sam81/hearinglab-win/':
-            lns[i] = '<li> <a href="https://bintray.com/artifact/download/sam81/hearinglab-win/pychoacoustics_'+ver+'/pychoacoustics_'+ver+'-setup.exe">pychoacoustics_'+ver+'-setup.exe<a> Windows installer (experimental) </li>'
+            lns[i] = '<li> <a href="https://bintray.com/artifact/download/sam81/hearinglab-win/pychoacoustics_'+ver+'/pychoacoustics_'+ver+'-setup.exe">pychoacoustics_'+ver+'-setup.exe</a> Windows installer (experimental) </li>'
 
     fOut = open(htmlPagePath, 'w')
     fOut.writelines(lns)
