@@ -6,8 +6,8 @@ Graphical User Interface
 
 The user interface is divided into two windows: the “Control Window” and
 the “Response Box”. The “Control Window” is used to set the experimental
-parameters, while the “Response Box” is the interface that the listeners
-use to give their responses.
+parameters, while the “Response Box” is the interface with which
+listeners interact.
 
 Quickstart
 ----------
@@ -51,7 +51,7 @@ General Widgets (left panel)
 
 
 -  **Listener** This is simply a label that you can use to identify the
-   person who is running the experiment. This label will be written in
+   listener who is being tested. This label will be written in
    the header of the results file.
 
 -  **Experiment Label**. This is a label to identify the experiment you
@@ -64,17 +64,31 @@ General Widgets (left panel)
 
 -  **Condition Label** This is a label to identify the experimental
    condition of the current block of trials. It is optional, but it may
-   be useful when sorting the experimental results (see :ref:`sec-tabular-results-files`).
+   be useful when sorting the experimental results (see
+   :ref:`sec-tabular-results-files`).
+
+-  **Instructions** This box allows to give task instructions to
+   the listener. If the block of trials occurs at a block position in
+   which task instructions are set to be shown (see "Show Instructions
+   At BP" field below), the text written in this box will will be
+   shown to listeners at the beginning of the block of trials (see
+   :ref:`.. _sec-task_instructions` for more info).
+
+- **Show Instructions At BP** Indicate the block positions (see
+   :ref:`.. _sec-shuffling:` for a definition of block positions)
+   at which the instructions should be shown to the listener. The
+   block positions have to be indicated by a list of numbers separated
+   by commas (see :ref:`.. _sec-task_instructions` for more info).
 
 -  **End Command** Here you can write an operating system command
    (e.g. a bash command on Unix systems or a DOS command on Windows
    systems) to be performed at the end of the experimental session. This
    could be used to run a custom script to analyse the result files,
    make a backup of the results files or other purposes. There are some
-   variables that can be accessed with a special string, such as the
-   name of the results file. These are listed in
+   variables (such as the name of the results file) that can be
+   accessed with a special string. These are listed in
    Section :ref:`sec-os_commands` Table :ref:`tab-pycho_variables`
-   Please, refer to that section for further info on how to use them.
+   Please refer to that section for further info on how to use them.
 
 -  **Shuffling Scheme** By default when you click the “Shuffle” button,
    ``pychoacoustics`` randomly shuffles all blocks, here you can specify
@@ -156,12 +170,26 @@ General Widgets (left panel)
    first observation interval. This widget is shown only if the warning
    interval chooser is set to “Yes”.
 
--  **Response Light** Set the type of response light at the end of each
-   trial. "Feedback" will flash a green (correct response) or red
-   (incorrect response) light. "Neutral" will flash a white light.
-   "None" will not flash any light (there will nonetheless be a silent
-   interval equal to the response light duration, see below).
+-  **Response Light** Set the kind of feedback to give to participants
+   at the end of each trial. "Feedback" will give feedback (e.g. flash
+   a green, for a correct response, or red, for an incorrect response
+   light. "Neutral" will acknowledge that a responses has been given,
+   but will not give feedback as to whether the response was correct
+   (e.g. flash a white light). "None" will not give any feedback or
+   acknowledgment that a response has been given. (e.g. no light will
+   be flashed, there will nonetheless be a silent interval equal to
+   the response light duration, see below).
 
+-  **Response Light Type** Determines the mode in which feedback
+   or acknoledgment of listener responses is given. If "Light", a
+   colored light will be flashed (e.g. a green light to indicate a
+   correct response, and a red light to indicate an incorrect
+   response). If "Text", a string will be presented (e.g. "Correct!"
+   for a correct response, and "Incorrect!" for an incorrect
+   response. If "Smiley", a smiley will be painted in the response
+   light box. Combinations of these three basic feedback presentation
+   modes are also possible.
+   
 -  **Response Light Duration (ms)** Set the duration of the response
    light.
 
@@ -195,9 +223,43 @@ General Widgets (left panel)
    ``pychoacoustics`` will give responses on the bases of an auditory
    model. This model needs to be specified in the experiment file, the
    “Simulated Listener” mode provides just a hook to redirect the
-   control flow to your model. Please, refer to
-   Section :ref:`sec-response_mode` for more information.
+   control flow to your model. When the "Psychometric" listener mode
+   is selected responses are given automatically according to the
+   shape of a psychometric function (see boxes below for specifying the
+   psychometric function shape). The "Psychometric" listener mode works
+   only for adaptive paradigms (e.g. tranformed up-down, weighted up-down, PEST, UML, PSI).
+   Please, refer to Section :ref:`sec-response_mode` for more information.
+   
+-  **Psychometric Listener Function** The function family for the psychometric listener. Currently supported functions
+   are "Logistic", "Gaussian" (normal), "Gumbel", and "Weibull".
 
+-  **Psychometric Listener Function Fit** Whether the psychometric function is fitted on
+   "Linear" or "Logarithmic" coordinates. With the transformed up-down, PEST, and weighted up-down
+   paradigms you should choose "Logarithmic" if you're using a geometric adaptive procedure.
+   With the PSI and UML paradigms you should choose "Logarithmic" if your the stimulus scaling
+   is set to "Logarithmic".
+
+-  **Psychometric Listener Midpoint**
+   The midpoint of the psychometric function, that is the middle point between
+   chance performance and maximum performance. For a two-alternative forced choice
+   task this will correspond to the point at which the listener achieves a 75% correct
+   performance.
+
+-  **Psychometric Listener Slope**
+   The slope of the psychometric function. Please note that slopes measured with different
+   psychometric function families (e.g. "Logistic" and "Gaussian") are not directly comparable.
+
+-  **Psychometric Listener Lapse**
+   The lapse rate of the psychometric listener.
+
+-  **Save psychometric listener data**
+   Save the psychometric listener data to a text file. The first column of the saved file corresponds
+   to the probability of a correct response. The second column corresponds to the stimulus value at which
+   the psychometric listener achieves that probability of a correct response.
+
+-  **Plot psychometric listener function** Plot the psychometric function defined for the psychometric listener.
+
+   
 Additional Widgets (left panel)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -588,7 +650,7 @@ Multiple Constants 1-Interval 2-Alternatives Paradigm Widgets
    included in the statistics.
 
 Odd One Out Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 -  **No. Trials** Set the number of trials to be presented in the
    current block.
@@ -600,6 +662,18 @@ Odd One Out Paradigm Widgets
 
 -  **No. Differences** Set the number of comparisons to perform.
 
+.. todo::
+
+   Describe paradigm widgets for PSI, UML, and ABX paradigms.
+   
+PSI Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^
+   
+UML Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^
+
+Multiple Constants ABX Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Menu Bar
 ^^^^^^^^^^^^

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2015 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2016 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of sndlib
 
 #    sndlib is free software: you can redistribute it and/or modify

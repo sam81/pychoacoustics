@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2008-2015 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2016 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -3679,10 +3679,13 @@ class responseBox(QMainWindow):
             self.atBlockEnd()
         else:
             self.PSI = PSI_update(self.PSI, response)
-            if self.prm['adaptiveDifference'] >=0:
-                self.prm['adaptiveDifference'] = self.PSI["xnextLinear"]
+            if self.prm['stimScale'] == "Logarithmic":
+                if self.prm['adaptiveDifference'] >=0:
+                    self.prm['adaptiveDifference'] = self.PSI["xnextLinear"]
+                else:
+                    self.prm['adaptiveDifference'] = -self.PSI["xnextLinear"]
             else:
-                self.prm['adaptiveDifference'] = -self.PSI["xnextLinear"]
+                self.prm['adaptiveDifference'] = self.PSI["xnextLinear"]
             # print("Est. thresh: " + str(self.PSI['est_midpoint']))  
             # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
             # print(self.PSI["phi"])
@@ -3880,10 +3883,13 @@ class responseBox(QMainWindow):
             self.atBlockEnd()
         else:
             self.UML = UML_update(self.UML, response)
-            if self.prm['adaptiveDifference'] >=0:
-                self.prm['adaptiveDifference'] = self.UML["xnextLinear"]
+            if self.prm['stimScale'] == "Logarithmic":
+                if self.prm['adaptiveDifference'] >=0:
+                    self.prm['adaptiveDifference'] = self.UML["xnextLinear"]
+                else:
+                    self.prm['adaptiveDifference'] = -self.UML["xnextLinear"]
             else:
-                self.prm['adaptiveDifference'] = -self.UML["xnextLinear"]
+                self.prm['adaptiveDifference'] = self.UML["xnextLinear"]
             # print("Est. thresh: " + str(self.UML['est_midpoint']))  
             # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
             # print(self.UML["phi"])

@@ -603,7 +603,39 @@ is equivalent to:
 
     ([1,2,3,4], [5,6,7,8])
 
+    
 
+.. _sec-task_instructions:
+
+Displaying Task Instructions
+============================
+
+Although it is common to simply give task instructions verbally for
+psychophysics experiments, sometimes it is useful to present task
+instructions on the computer screen while the listener is running a test.
+For example, there may be cases in which you want to your participants to perform two
+different tasks within the same session. You may want your
+participants to perform a frequency discrimination task with a pure
+tone for the first two blocks of trials, and then run two blocks of
+an intensity discrimination task with the same stimulus. In these
+cases it is necessary to present visually the task instructions on the
+computer screen either at the beginning of each block, or only at the
+blocks where the task changes. `pychoacoustics` allows you to store
+task instructions for each block of trials in the "Instructions" box
+on the left side of the control window. The "Show Instructions At BP"
+box below allows you to set the block positions at which the
+instructions will be shown. In the example above, in which the
+listener has to complete two blocks of the frequency discrimination
+task first, and then complete two blocks of the intensity
+discrimination task, you could input`1,2,3,4` in the "Show
+Instructions At BP" box to show task instructions at the beginning of
+each block. Alternatively, you could input`1,3` in the "Show
+Instructions At BP" box to show task instructions only when a new task
+is starting. You should keep in mind that the "Show
+Instructions At BP" box sets the block positions at which the
+instructions will be shown. Depending on the shuffling scheme that
+you're using these may be different from the block storage points (see
+:ref:`sec-shuffling` above for more info). 
 
 .. _sec-os_commands:
 

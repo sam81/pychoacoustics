@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2013-2015 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2013-2016 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of wavpy
 
 #    wavpy is free software: you can redistribute it and/or modify
