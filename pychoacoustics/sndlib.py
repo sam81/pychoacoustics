@@ -977,6 +977,121 @@ def complexToneParallel(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretc
         
     return snd
 
+def complexToneIPD(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, level=60, duration=980, ramp=10, IPD=3.14, targetEar="Right", fs=48000, maxLevel=101):
+    """
+    Synthetise a complex tone with an interaural phase difference (IPD).
+
+    Parameters
+    ----------
+    F0 : float
+        Tone fundamental frequency in hertz.
+    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder-', 'Schroeder+'
+        Phase relationship between the partials of the complex tone.
+    lowHarm : int
+        Lowest harmonic component number.
+    highHarm : int
+        Highest harmonic component number.
+    stretch : float
+        Harmonic stretch in %F0. Increase each harmonic frequency by a fixed value
+        that is equal to (F0*stretch)/100. If 'stretch' is different than
+        zero, an inhanmonic complex tone will be generated.
+    level : float
+        The level of each partial in dB SPL.
+    duration : float
+        Tone duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    IPD : float
+        Interaural phase difference, in radians.
+    targetEar : string
+        The ear in which the phase will be shifted.
+    fs : int
+        Samplig frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+        The array has dimensions (nSamples, 2).
+
+    Examples
+    --------
+    >>> ct = complexToneIPD(F0=440, harmPhase='Sine', lowHarm=3, highHarm=10,
+    ...     stretch=0, level=55, duration=180, ramp=10, IPD=3.14, targetEar="Right",
+    ...     fs=48000, maxLevel=100)
+    
+    """
+    amp = 10**((level - maxLevel) / 20)
+    duration = duration / 1000. #convert from ms to sec
+    ramp = ramp / 1000
+    stretchHz = (F0*stretch)/100
+    
+    nSamples = int(round(duration * fs))
+    nRamp = int(round(ramp * fs))
+    nTot = nSamples + (nRamp * 2)
+    
+    timeAll = arange(0, nTot) / fs
+    timeRamp = arange(0, nRamp) 
+
+    snd = zeros((nTot, 2))
+    tone = zeros(nTot)
+    toneShift = zeros(nTot)
+
+    if harmPhase == "Sine":
+        for i in range(lowHarm, highHarm+1):
+            tone =  tone + sin(2 * pi * ((F0 * i) + stretchHz) * timeAll)
+            toneShift =  toneShift + sin(2 * pi * ((F0 * i) + stretchHz) * timeAll + IPD)
+    elif harmPhase == "Cosine":
+        for i in range(lowHarm, highHarm+1):
+            tone = tone + cos(2 * pi * ((F0 * i)+stretchHz) * timeAll)
+            toneShift = toneShift + cos(2 * pi * ((F0 * i)+stretchHz) * timeAll + IPD)
+    elif harmPhase == "Alternating":
+        for i in range(lowHarm, highHarm+1):
+            if i%2 > 0: #odd harmonic
+                tone = tone + cos(2 * pi * ((F0 * i)+stretchHz) * timeAll)
+                toneShift = toneShift + cos(2 * pi * ((F0 * i)+stretchHz) * timeAll + IPD)
+            else: #even harmonic
+                tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll)
+                toneShift = toneShift + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + IPD)
+    elif harmPhase == "Schroeder-":
+        for i in range(lowHarm, highHarm+1):
+            phase = -pi * i * (i - 1) / float(highHarm)
+            tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
+            toneShift = toneShift + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase + IPD)
+    elif harmPhase == "Schroeder+":
+        for i in range(lowHarm, highHarm+1):
+            phase = pi * i * (i - 1) / float(highHarm)
+            tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
+            toneShift = toneShift + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase + IPD)      
+    elif harmPhase == "Random":
+        for i in range(lowHarm, highHarm+1):
+            phase = numpy.random.random() * 2 * pi
+            tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
+            toneShift = toneShift + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase + IPD)
+    else:
+        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
+
+    if targetEar == "Right":
+        snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0]        = amp * tone[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:len(timeAll)]
+
+        snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneShift[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 1]        = amp * toneShift[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneShift[nRamp+nSamples:len(timeAll)]
+    elif targetEar == "Left":
+        snd[0:nRamp, 1]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 1]        = amp * tone[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:len(timeAll), 1] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * tone[nRamp+nSamples:len(timeAll)]
+
+        snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  toneShift[0:nRamp]
+        snd[nRamp:nRamp+nSamples, 0]        = amp * toneShift[nRamp:nRamp+nSamples]
+        snd[nRamp+nSamples:len(timeAll), 0] = amp * ((1+cos(pi * timeRamp/nRamp))/2) * toneShift[nRamp+nSamples:len(timeAll)]
+
+    return snd
+
 
 def delayAdd(sig, delay, gain, iterations, configuration, fs):
     """
@@ -3811,8 +3926,5 @@ def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, 
 
  
    
-
-
-
 
 
