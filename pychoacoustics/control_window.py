@@ -4447,7 +4447,7 @@ class pychControlWin(QMainWindow):
         if currScaling == "Linear":
             pass
         elif currScaling == "Logarithmic":
-            if self.currLocale.toDouble(self.threshGridStep.text())[0] < 1.0001:
+            if self.currLocale.toDouble(self.threshGridStep.text())[0] <= 1:
                 self.threshGridStep.setText('1.1')
                 try: #stimGridStep is only for PSI not UML
                     self.stimGridStep.setText('1.1')
@@ -4459,7 +4459,7 @@ class pychControlWin(QMainWindow):
         if currSpacing == "Linear":
             pass
         elif currSpacing == "Logarithmic":
-            if self.currLocale.toDouble(self.slopeGridStep.text())[0] < 1.0001:
+            if self.currLocale.toDouble(self.slopeGridStep.text())[0] <= 1:
                 self.slopeGridStep.setText('1.1')
 
     def onLapseSpacingChooserChange(self):
@@ -4467,7 +4467,7 @@ class pychControlWin(QMainWindow):
         if currSpacing == "Linear":
             pass
         elif currSpacing == "Logarithmic":
-            if self.currLocale.toDouble(self.lapseGridStep.text())[0] < 1.0001:
+            if self.currLocale.toDouble(self.lapseGridStep.text())[0] <= 1:
                 self.lapseGridStep.setText('1.1')
 
     def onChooserChange(self, selectedOption):

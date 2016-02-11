@@ -10,7 +10,7 @@ can add new custom experiments with relative ease. Custom experiments are
 written in Python, a programming language renowned for its clarity and 
 ease of use. The application is divided in two graphical windows 
 a) the “response box”, shown in Figure :ref:`fig-response_box`, with 
-which listeners interact during the experiment b) the control window, 
+which listeners interact during the experiment, and b) the control window, 
 shown in Figure :ref:`fig-control_window`, that contains a series of 
 widgets (choosers, text field and buttons) that are used by the experimenter 
 to set all of the relevant experimental parameters which can also be stored 
@@ -33,8 +33,17 @@ and later reloaded into the application.
    The pychoacoustics control window
 
 
+``pychoacoustics`` supports a number of constant and adaptive stimulus presentation paradigms, including:
+   
+  - the transformed up-down and weighted up-down procedures 
+  - the update maximum likelihood procedure
+  - the PSI+ and PSI marginal procedures  
+  - the same-different procedure
+  - the ABX procedure
+  - the constant stimuli procedure
+  
 I started writing ``pychoacoustics`` for fun and for the sake of
-learning around 2008 while doing my PhD with Professor Chris Plack at
+learning around 2008 while doing my PhD under the supervision of Professor Chris Plack at
 Lancaster University. At that time we were using in the lab a MATLAB
 program called the “Earlab” written by Professor Plack.
 ``pychoacoustics`` has been greatly influenced and inspired by the

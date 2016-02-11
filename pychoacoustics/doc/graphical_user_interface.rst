@@ -72,13 +72,13 @@ General Widgets (left panel)
    which task instructions are set to be shown (see "Show Instructions
    At BP" field below), the text written in this box will will be
    shown to listeners at the beginning of the block of trials (see
-   :ref:`.. _sec-task_instructions` for more info).
+   :ref:`sec-task_instructions` for more info).
 
 - **Show Instructions At BP** Indicate the block positions (see
-   :ref:`.. _sec-shuffling:` for a definition of block positions)
+   :ref:`sec-shuffling` for a definition of block positions)
    at which the instructions should be shown to the listener. The
    block positions have to be indicated by a list of numbers separated
-   by commas (see :ref:`.. _sec-task_instructions` for more info).
+   by commas (see :ref:`sec-task_instructions` for more info).
 
 -  **End Command** Here you can write an operating system command
    (e.g. a bash command on Unix systems or a DOS command on Windows

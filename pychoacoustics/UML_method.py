@@ -85,6 +85,7 @@ def setupUML(model="Logistic", nDown=2, centTend="Mean", stimScale="Linear", x0=
         UML["par"]["alpha"]["limits"] = log(alphaLim)
         UML["par"]["alpha"]["step"] = log(alphaStep)
         UML["par"]["alpha"]["mu"] = log(alphaMu)
+        UML["par"]["alpha"]["std"] = log(alphaSTD)
         UML["par"]["alpha"]["spacing"] = "Linear" #on a log scale
         UML["par"]["suggestedLambdaSwpt"] = log(UML["par"]["suggestedLambdaSwpt"])
 
@@ -156,8 +157,9 @@ def setPrior(phi, s):
             #this is the MATLAB equivalent of
             #p0 =  lognpdf(phi, s["mu"], s["std"])
             m = s["mu"]; st=s["std"]
+            print(s["std"])
             #p0 = lognorm.pdf(phi, scale=log(m/sqrt(1+st**2/m**2)), s=sqrt(log(1+st**2/m**2)))
-            p0  = exp(norm.pdf(log(phi), loc=log(s["mu"]), scale=s["std"]))
+            p0  = norm.pdf(log(phi), loc=log(s["mu"]), scale=log(s["std"]))
     elif s["dist"] == "Uniform":
         p0 = np.ones(phi.shape)
 

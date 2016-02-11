@@ -81,6 +81,7 @@ def setupPSI(model="Logistic", stimScale="Linear", x0=None, xLim=(-10, 10),
         PSI["par"]["alpha"]["limits"] = log(alphaLim)
         PSI["par"]["alpha"]["step"] = log(alphaStep)
         PSI["par"]["alpha"]["mu"] = log(alphaMu)
+        PSI["par"]["alpha"]["std"] = log(alphaSTD)
         PSI["par"]["alpha"]["spacing"] = "Linear" #on a log scale
         
     PSI = setP0(PSI)
@@ -152,7 +153,7 @@ def setPrior(phi, s):
             #p0 =  lognpdf(phi, s["mu"], s["std"])
             m = s["mu"]; st=s["std"]
             #p0 = lognorm.pdf(x, scale=log(m/sqrt(1+st**2/m**2)), s=sqrt(log(1+st**2/m**2)))
-            p0  = exp(norm.pdf(log(phi), loc=log(s["mu"]), scale=s["std"]))
+            p0  = norm.pdf(log(phi), loc=log(s["mu"]), scale=log(s["std"]))
     elif s["dist"] == "Uniform":
         p0 = np.ones(phi.shape)
 
