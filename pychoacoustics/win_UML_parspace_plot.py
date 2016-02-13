@@ -203,6 +203,7 @@ class UMLParSpacePlot(QMainWindow):
 
         if self.stimScaling == "Linear":
             self.UML = setupUML(model=self.psyFun,
+                                swptRule="Up-Down",
                                 nDown=2,
                                 centTend = "Mean",
                                 stimScale = self.stimScaling,
@@ -229,6 +230,7 @@ class UMLParSpacePlot(QMainWindow):
                                 lambdaSTD=self.lapsePriorSTD)
         elif self.stimScaling == "Logarithmic":
             self.UML = setupUML(model=self.psyFun,
+                                swptRule="Up-Down",
                                 nDown=2,
                                 centTend = "Mean",
                                 stimScale = self.stimScaling,

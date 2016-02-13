@@ -2501,23 +2501,33 @@ class pychControlWin(QMainWindow):
 
             n = n+1
 
-            self.ruleDownLabel = QLabel(self.tr("Rule Down"), self)
-            self.paradigm_widg_sizer.addWidget(self.ruleDownLabel, n, 1)
-            self.ruleDownTF = QLineEdit()
-            self.ruleDownTF.setText('2')
-            self.ruleDownTF.setValidator(QIntValidator(self))
-            self.paradigm_widg_sizer.addWidget(self.ruleDownTF, n, 2)
-            self.ruleDownCheckBox = QCheckBox()
-            self.paradigm_widg_sizer.addWidget(self.ruleDownCheckBox, n, 0)
-
             self.nTrialsLabel = QLabel(self.tr("No. Trials"), self)
-            self.paradigm_widg_sizer.addWidget(self.nTrialsLabel, n, 4)
+            self.paradigm_widg_sizer.addWidget(self.nTrialsLabel, n, 1)
             self.nTrialsTF = QLineEdit()
             self.nTrialsTF.setText("100")
             self.nTrialsTF.setValidator(QIntValidator(self))
-            self.paradigm_widg_sizer.addWidget(self.nTrialsTF, n, 5)
+            self.paradigm_widg_sizer.addWidget(self.nTrialsTF, n, 2)
             self.nTrialsCheckBox = QCheckBox()
-            self.paradigm_widg_sizer.addWidget(self.nTrialsCheckBox, n, 3)
+            self.paradigm_widg_sizer.addWidget(self.nTrialsCheckBox, n, 0)
+
+            self.swptRuleChooserLabel = QLabel(self.tr("Swpt. Rule:"), self)
+            self.paradigm_widg_sizer.addWidget(self.swptRuleChooserLabel, n, 4)
+            self.swptRuleChooser = QComboBox()
+            self.swptRuleChooser.addItems(["Up-Down", "Random"])
+            self.paradigm_widg_sizer.addWidget(self.swptRuleChooser, n, 5)
+            self.swptRuleChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.swptRuleChooserCheckBox, n, 3)
+            self.swptRuleChooser.activated[str].connect(self.onChangeSwptRule)
+            
+            self.ruleDownLabel = QLabel(self.tr("Rule Down"), self)
+            self.paradigm_widg_sizer.addWidget(self.ruleDownLabel, n, 7)
+            self.ruleDownTF = QLineEdit()
+            self.ruleDownTF.setText('2')
+            self.ruleDownTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.ruleDownTF, n, 8)
+            self.ruleDownCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.ruleDownCheckBox, n, 6)
+
             
             n = n+1
 
@@ -2759,6 +2769,7 @@ class pychControlWin(QMainWindow):
                                         self.lapsePriorChooser,
                                         self.psyFunChooser,
                                         self.psyFunPostSummChooser,
+                                        self.swptRuleChooser,
                                         self.stimScalingChooser,
                                         self.slopeSpacingChooser,
                                         self.lapseSpacingChooser]
@@ -2767,6 +2778,7 @@ class pychControlWin(QMainWindow):
                                              self.lapsePriorChooserLabel,
                                              self.psyFunChooserLabel,
                                              self.psyFunPostSummChooserLabel,
+                                             self.swptRuleChooserLabel,
                                              self.stimScalingChooserLabel,
                                              self.slopeSpacingChooserLabel,
                                              self.lapseSpacingChooserLabel]
@@ -2775,6 +2787,7 @@ class pychControlWin(QMainWindow):
                                                priorOptions,
                                                psyFunOptions,
                                                [self.tr("Mean"), self.tr("Mode")],
+                                               [self.tr("Up-Down"), self.tr("Random")],
                                                [self.tr("Linear"), self.tr("Logarithmic")],
                                                [self.tr("Linear"), self.tr("Logarithmic")],
                                                [self.tr("Linear"), self.tr("Logarithmic")]]
@@ -2783,6 +2796,7 @@ class pychControlWin(QMainWindow):
                                                 self.lapsePriorChooserCheckBox,
                                                 self.psyFunCheckBox,
                                                 self.psyFunPostSummCheckBox,
+                                                self.swptRuleChooserCheckBox,
                                                 self.stimScalingCheckBox,
                                                 self.slopeSpacingChooserCheckBox,
                                                 self.lapseSpacingChooserCheckBox]
@@ -2818,6 +2832,7 @@ class pychControlWin(QMainWindow):
             self.onChangeThreshPrior()
             self.onChangeSlopePrior()
             self.onChangeLapsePrior()
+            self.onChangeSwptRule()
 
     def onExperimentChange(self, experimentSelected):
         for i in range(self.paradigmChooser.count()):
@@ -4469,6 +4484,17 @@ class pychControlWin(QMainWindow):
         elif currSpacing == "Logarithmic":
             if self.currLocale.toDouble(self.lapseGridStep.text())[0] <= 1:
                 self.lapseGridStep.setText('1.1')
+
+    def onChangeSwptRule(self):
+        swptRule = self.swptRuleChooser.currentText()
+        if swptRule == "Random":
+            self.ruleDownLabel.hide()
+            self.ruleDownTF.hide()
+            self.ruleDownCheckBox.hide()
+        else:
+            self.ruleDownLabel.show()
+            self.ruleDownTF.show()
+            self.ruleDownCheckBox.show()
 
     def onChooserChange(self, selectedOption):
         self.fieldsToHide = []; self.fieldsToShow = []

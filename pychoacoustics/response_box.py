@@ -924,6 +924,7 @@ class responseBox(QMainWindow):
 
             elif self.prm["paradigm"] == self.tr("UML"):
                 self.prm['psyFunType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Psychometric Function:"))]
+                self.prm['swptRule'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Swpt. Rule:"))]
                 self.prm['psyFunPosteriorSummary'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Posterior Summary:"))]
                 self.prm['nTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Trials"))])
                 self.prm['numberCorrectNeeded'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Rule Down"))])
@@ -3700,6 +3701,7 @@ class responseBox(QMainWindow):
             gammax = 1/self.prm[currBlock]['nAlternatives']
             if self.prm['stimScale'] == "Linear":
                 self.UML = setupUML(model=self.prm['psyFunType'],
+                                    swptRule=self.prm['swptRule'],
                                     nDown=self.prm["numberCorrectNeeded"],
                                     centTend = self.prm["psyFunPosteriorSummary"],
                                     stimScale = self.prm['stimScale'],
@@ -3728,6 +3730,7 @@ class responseBox(QMainWindow):
                                     lambdaSwptPC=self.prm['lambdaSwptPC'])
             elif self.prm['stimScale'] == "Logarithmic":
                 self.UML = setupUML(model=self.prm['psyFunType'],
+                                    swptRule=self.prm['swptRule'],
                                     nDown=self.prm["numberCorrectNeeded"],
                                     centTend = self.prm["psyFunPosteriorSummary"],
                                     stimScale = self.prm['stimScale'],

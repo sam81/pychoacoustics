@@ -359,6 +359,120 @@ General Widgets (right panel)
 Paradigm Widgets
 ^^^^^^^^^^^^^^^^
 
+1-Pair Same/Different Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-  **No. Trials** Set the number of trials to be presented in the
+   current block.
+
+-  **No. Practice Trials** Set the number of practice trials to be
+   presented in the current block. Practice trials are presented at the
+   beginning of the block; the responses to these trials are not included in the statistics.
+
+Constant 1-Interval 2-Alternatives Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-  **No. Trials** Set the number of trials to be presented in the
+   current block.
+
+-  **No. Practice Trials** Set the number of practice trials to be
+   presented in the current block. Practice trials are presented at the
+   beginning of the block; the responses to these trials are not included in the statistics.
+
+Constant m-Intervals n-Alternatives Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-  **No. Trials** Set the number of trials to be presented in the
+   current block.
+
+-  **No. Practice Trials** Set the number of practice trials to be
+   presented in the current block. Practice trials are presented at the
+   beginning of the block; the responses to these trials are not included in the statistics.
+
+Multiple Constants ABX Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-  **No. Trials** Set the number of trials to be presented in the
+   current block.
+
+-  **No. Practice Trials** Set the number of practice trials to be
+   presented in the current block. Practice trials are presented at the
+   beginning of the block; the responses to these trials are not included in the statistics.
+
+-  **No. Differences** Set the number of comparisons to perform.
+
+Multiple Constants 1-Interval 2-Alternatives Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-  **No. Trials** Set the number of trials to be presented in the
+   current block for each condition.
+
+-  **No. Practice Trials** Set the number of practice trials to be
+   presented in the current block for each condition. The responses to
+   these trials are not included in the statistics.
+
+-  **No. Differences** Set the number of conditions to be used in the
+   current block.
+
+
+Multiple Constants m-Intervals n-Alternatives Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-  **No. Trials** Set the number of trials to be presented in the
+   current block for each condition.
+
+-  **No. Practice Trials** Set the number of practice trials to be
+   presented in the current block for each condition. The responses to
+   these trials are not included in the statistics.
+
+-  **No. Differences** Set the number of conditions to be used in the
+   current block.
+
+Odd One Out Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-  **No. Trials** Set the number of trials to be presented in the
+   current block.
+
+-  **No. Practice Trials** Set the number of practice trials to be
+   presented in the current block. Practice trials are presented at the
+   beginning of the block; the responses to these trials are not included in the statistics.
+
+-  **No. Differences** Set the number of comparisons to perform.
+   
+
+PEST Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^^
+
+**WARNING** PEST support is experimental and has received very little testing!
+
+-  **Procedure** If “Arithmetic” the quantity defined by the step size
+   will be added or subtracted to the parameter that is adaptively
+   changing. If “Geometric” the parameter that is adaptively changing
+   will be multiplied or divided by the quantity defined by the step
+   size.
+
+-  **Initial Track Direction** This determines when the first turpoint
+   will be called. If the initial track direction is “Down” the first
+   turnpoint will be called the first time the adaptive track turns
+   upward. If the initial track direction is “Up” the first turnpoint
+   will be called the first time the adaptive track turns downward.
+
+-  **Percent Correct Tracked** Set the percentage correct point on the
+   psychometric function to be tracked by the adaptive procedure. 
+
+-  **Initial Step Size** Set the initial step size.
+
+-  **Minimum Step Size** Set the minimum step size. When the minimum 
+   step size is reached the block is terminated.
+
+-  **Initial Step Size** Set the maximum allowed step size.
+   
+-  **W** Deviation limit of the sequential test (see [TaylorAndCreelman1967]_).
+
+PSI Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^
+
 Transformed Up-Down Paradigm Widgets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -398,45 +512,6 @@ Transformed Up-Down Paradigm Widgets
 
 -  **Step Size 2** Set the step size to be used after the number of
    initial turnpoints has been reached.
-
-Weighted Up-Down Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
--  **Procedure** If “Arithmetic” the quantity defined by the step size
-   will be added or subtracted to the parameter that is adaptively
-   changing. If “Geometric” the parameter that is adaptively changing
-   will be multiplied or divided by the quantity defined by the step
-   size.
-
--  **Initial Track Direction** This determines when the first turpoint
-   will be called. If the initial track direction is “Down” the first
-   turnpoint will be called the first time the adaptive track turns
-   upward. If the initial track direction is “Up” the first turnpoint
-   will be called the first time the adaptive track turns downward.
-
--  **Percent Correct Tracked** Set the percentage correct point on the
-   psychometric function to be tracked by the adaptive procedure. The
-   ratio of the “Up” and “Down” steps is automatically adjusted by the
-   software to satisfy this criterion.
-
--  **Initial Turnpoints** Set the number of initial turnpoints. The
-   initial turnpoints serve to bring quickly the adaptive track towards
-   the listener’s threshold. These turnpoints are not included in the
-   threshold estimate.
-
--  **Total Turnpoints** Set the number of total turnpoints. The number
-   of total turnpoints is equal to the number of initial turnpoints that
-   are not included in the threshold estimate plus the number of
-   turnpoints that you want to use for the threshold estimate.
-
--  **Step Size 1** Set the “Down” step size for the initial turnpoints.
-   The “Up” step size is automatically calculated to satisfy the
-   “Percent Correct Tracked” criterion.
-
--  **Step Size 2** Set the “Down” step size to be used after the number
-   of initial turnpoints has been reached. The “Up” step size is
-   automatically calculated to satisfy the “Percent Correct Tracked”
-   criterion.
 
 Transformed Up-Down Interleaved Paradigm Widgets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -501,6 +576,119 @@ Transformed Up-Down Interleaved Paradigm Widgets
 -  **Step Size 2 Track X** Set the step size to be used after the number
    of initial turnpoints has been reached for track number :math:`X`.
 
+UML Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^
+
+-  **Psychometric Function** The shape of the psychometric function used to fit the
+   responses of the listener.
+
+-  **Posterior Summary** Choose whether to use the mean or the mode for the estimation
+of parameter values from the Bayesian posterior distribution of parameter values.
+
+-  **Plot UML Par. Space** Generate a graphical summary of the parameter space used to
+  initialize the UML procedure.
+
+-  **No. Trials** Set the number of trials to be presented in the
+   current block.
+    
+-  **Swpt. Rule** Choose whether to use an up-down or a random sweetpoint selection rule.
+
+-  **Rule Down** The number of consecutive correct responses necessary to move to the lower sweetpoint.
+    
+-  **Stim. Min** Set the minimum value of the stimulus dimension that is being varied adaptively (e.g. signal level, or frequency difference).
+    
+-  **Stim. Max** Set the maximum value of the stimulus dimension that is being varied adaptively (e.g. signal level, or frequency difference).
+
+-  **Stim. Scaling** Indicate whether the stimulus dimension that is being varied adaptively should be scaled linearly or logarithmically. The 
+
+-  **Suggested Lapse Swpt.** The suggested stimulus value for the lapse rate sweetpoint. This value is used as the lapse rate sweetpoint
+   unless the current estimate of the psychometric function at the probability value ``Pr. Corr. at Est. Lapse Swpt`` (see below) is larger.
+   In the latter case the current estimate of the psychometric function at the probability value ``Pr. Corr. at Est. Lapse Swpt`` is used
+   as the lapse rate sweetpoint, as long as it is smaller than ``Stim. Max``, in which case ``Stim. Max`` will be used as the lapse rate
+   sweet point.
+
+-  **Pr. Corr. at Est. Lapse Swpt.** The proportion correct at the estimated lapse sweet point. If the estimated lapse sweetpoint exceeds the
+   will be used the suggested lapse sweetpoint, the estimated lapse sweetpoint will be used as the lapse rate sweetpoint.
+
+-  **Mid Point Min** The minimum possible value of the midpoint of the psychometric function.
+
+-  **Mid Point Max** The maximum possible value of the midpoint of the psychometric function.
+
+-  **Mid Point Step** The size of the step between successive points in the grid defining the parameter space for the midpoint of the psychometric function.
+
+-  **Mid Point Prior** The shape of the prior distribution for the midpoint of the psychometric function.
+
+-  **Mid Point mu** The mean of the prior distribution for the midpoint of the psychometric function.
+
+-  **Mid Point STD** The standard deviation of the prior distribution for the midpoint of the psychometric function.
+
+-  **Slope Min** The minimum possible value of the slope of the psychometric function.
+
+-  **Slope Max** The maximum possible value of the slope of the psychometric function.
+
+-  **Slope Step** The size of the step between successive points in the grid defining the parameter space for the slope of the psychometric function.
+
+-  **Slope Spacing** Indicate whether the spacing between successive points in the grid defining the parameter space for the slope of the psychometric function should be linear or logarithmic.
+
+-  **Slope Prior** The shape of the prior distribution for the slope of the psychometric function.
+
+-  **Slope mu** The mean of the prior distribution for the slope of the psychometric function.
+
+-  **Slope STD** The standard deviation of the prior distribution for the slope of the psychometric function.
+
+-  **Lapse Min** The minimum possible value of the lapse rate of the psychometric function.
+
+-  **Lapse Max** The maximum possible value of the lapse rate of the psychometric function.
+
+-  **Lapse Step** The size of the step between successive points in the grid defining the parameter space for the lapse rate of the psychometric function.
+
+-  **Lapse Spacing** Indicate whether the spacing between successive points in the grid defining the parameter space for the lapse rate of the psychometric function should be linear or logarithmic.
+
+-  **Lapse Prior** The shape of the prior distribution for the lapse rate of the psychometric function.
+
+-  **Lapse mu** The mean of the prior distribution for the lapse rate of the psychometric function.
+
+-  **Lapse STD** The standard deviation of the prior distribution for the lapse rate of the psychometric function.
+   
+Weighted Up-Down Paradigm Widgets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-  **Procedure** If “Arithmetic” the quantity defined by the step size
+   will be added or subtracted to the parameter that is adaptively
+   changing. If “Geometric” the parameter that is adaptively changing
+   will be multiplied or divided by the quantity defined by the step
+   size.
+
+-  **Initial Track Direction** This determines when the first turpoint
+   will be called. If the initial track direction is “Down” the first
+   turnpoint will be called the first time the adaptive track turns
+   upward. If the initial track direction is “Up” the first turnpoint
+   will be called the first time the adaptive track turns downward.
+
+-  **Percent Correct Tracked** Set the percentage correct point on the
+   psychometric function to be tracked by the adaptive procedure. The
+   ratio of the “Up” and “Down” steps is automatically adjusted by the
+   software to satisfy this criterion.
+
+-  **Initial Turnpoints** Set the number of initial turnpoints. The
+   initial turnpoints serve to bring quickly the adaptive track towards
+   the listener’s threshold. These turnpoints are not included in the
+   threshold estimate.
+
+-  **Total Turnpoints** Set the number of total turnpoints. The number
+   of total turnpoints is equal to the number of initial turnpoints that
+   are not included in the threshold estimate plus the number of
+   turnpoints that you want to use for the threshold estimate.
+
+-  **Step Size 1** Set the “Down” step size for the initial turnpoints.
+   The “Up” step size is automatically calculated to satisfy the
+   “Percent Correct Tracked” criterion.
+
+-  **Step Size 2** Set the “Down” step size to be used after the number
+   of initial turnpoints has been reached. The “Up” step size is
+   automatically calculated to satisfy the “Percent Correct Tracked”
+   criterion.
+
 Weighted Up-Down Interleaved Paradigm Widgets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -561,119 +749,6 @@ Weighted Up-Down Interleaved Paradigm Widgets
    :math:`X`. The “Up” step size is automatically calculated to satisfy
    the “Percent Correct Tracked” criterion.
 
-PEST Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^^
-
-**WARNING** PEST support is experimental and has received very little testing!
-
--  **Procedure** If “Arithmetic” the quantity defined by the step size
-   will be added or subtracted to the parameter that is adaptively
-   changing. If “Geometric” the parameter that is adaptively changing
-   will be multiplied or divided by the quantity defined by the step
-   size.
-
--  **Initial Track Direction** This determines when the first turpoint
-   will be called. If the initial track direction is “Down” the first
-   turnpoint will be called the first time the adaptive track turns
-   upward. If the initial track direction is “Up” the first turnpoint
-   will be called the first time the adaptive track turns downward.
-
--  **Percent Correct Tracked** Set the percentage correct point on the
-   psychometric function to be tracked by the adaptive procedure. 
-
--  **Initial Step Size** Set the initial step size.
-
--  **Minimum Step Size** Set the minimum step size. When the minimum 
-   step size is reached the block is terminated.
-
--  **Initial Step Size** Set the maximum allowed step size.
-
--  **W** Deviation limit of the sequential test (see [TaylorAndCreelman1967]_).
-
-Constant m-Intervals n-Alternatives Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
--  **No. Trials** Set the number of trials to be presented in the
-   current block.
-
--  **No. Practice Trials** Set the number of practice trials to be
-   presented in the current block. Practice trials are presented at the
-   beginning of the block; the responses to these trials are not
-   included in the statistics.
-
-Multiple Constants m-Intervals n-Alternatives Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
--  **No. Trials** Set the number of trials to be presented in the
-   current block for each condition.
-
--  **No. Practice Trials** Set the number of practice trials to be
-   presented in the current block for each condition. The responses to
-   these trials are not included in the statistics.
-
--  **No. Differences** Set the number of conditions to be used in the
-   current block.
-
-Constant 1-Interval 2-Alternatives Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
--  **No. Trials** Set the number of trials to be presented in the
-   current block.
-
--  **No. Practice Trials** Set the number of practice trials to be
-   presented in the current block. Practice trials are presented at the
-   beginning of the block; the responses to these trials are not
-   included in the statistics.
-
-Multiple Constants 1-Interval 2-Alternatives Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
--  **No. Trials** Set the number of trials to be presented in the
-   current block for each condition.
-
--  **No. Practice Trials** Set the number of practice trials to be
-   presented in the current block for each condition. The responses to
-   these trials are not included in the statistics.
-
--  **No. Differences** Set the number of conditions to be used in the
-   current block.
-
-1-Pair Same/Different Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
--  **No. Trials** Set the number of trials to be presented in the
-   current block.
-
--  **No. Practice Trials** Set the number of practice trials to be
-   presented in the current block. Practice trials are presented at the
-   beginning of the block; the responses to these trials are not
-   included in the statistics.
-
-Odd One Out Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
--  **No. Trials** Set the number of trials to be presented in the
-   current block.
-
--  **No. Practice Trials** Set the number of practice trials to be
-   presented in the current block. Practice trials are presented at the
-   beginning of the block; the responses to these trials are not
-   included in the statistics.
-
--  **No. Differences** Set the number of comparisons to perform.
-
-.. todo::
-
-   Describe paradigm widgets for PSI, UML, and ABX paradigms.
-   
-PSI Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^
-   
-UML Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^
-
-Multiple Constants ABX Paradigm Widgets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Menu Bar
 ^^^^^^^^^^^^

@@ -19,7 +19,7 @@
 # - Shen, Y., & Richards, V. (2012). A maximum-likelihood procedure for estimating psychometric functions: Thresholds, slopes, and lapses of attention. The Journal of the Acoustical Society of America, 132, 957–967.
 # - Shen, Y., Dai, W., & Richards, V. M. (2014). A MATLAB toolbox for the efficient estimation of the psychometric function using the updated maximum-likelihood adaptive procedure. Behavior Research Methods, 13–26.
 
-import copy, scipy
+import copy, random, scipy
 import numpy as np
 from numpy import arange, exp, linspace, logspace, log, log10, meshgrid, pi, ravel
 from scipy.stats import lognorm, norm #gamma conflicts with gamma variable
@@ -29,7 +29,7 @@ from .pysdt import*
 from .stats_utils import gammaShRaFromMeanSD, gammaShRaFromModeSD
 
 
-def setupUML(model="Logistic", nDown=2, centTend="Mean", stimScale="Linear", x0=None, xLim=(-10, 10), 
+def setupUML(model="Logistic", swptRule="Up-Down", nDown=2, centTend="Mean", stimScale="Linear", x0=None, xLim=(-10, 10), 
              alphaLim=(-10,10), alphaStep=1, alphaSpacing="Linear", alphaDist="Uniform", alphaMu=0, alphaSTD=20,
              betaLim=(0.1,10), betaStep=0.1, betaSpacing="Linear", betaDist="Uniform", betaMu=1, betaSTD=2,
              gamma=0.5,
@@ -39,6 +39,7 @@ def setupUML(model="Logistic", nDown=2, centTend="Mean", stimScale="Linear", x0=
     
     UML = {}
     UML["par"] = {}
+    UML["par"]["swptRule"] = swptRule
     UML["par"]["nDown"] = nDown
     UML["par"]["method"] = centTend
     UML["par"]["model"] = model
@@ -254,26 +255,29 @@ def UML_update(UML, r):
     UML["swpt"] = swpt
     swpt = np.maximum(np.minimum(swpt[UML["swpts_idx"]], UML["par"]["x"]["limits"][1]), UML["par"]["x"]["limits"][0])#; % limit the sweet points to be within the stimulus space
 
-    UML["rev_flag"] = np.append(UML["rev_flag"], 0)
-    if r >= 0.5:
-        if UML["step_flag"] == UML["par"]["nDown"]-1:
-            UML["current_step"] = np.maximum(UML["current_step"]-1,1)
+    if UML["par"]["swptRule"] == "Up-Down":
+        UML["rev_flag"] = np.append(UML["rev_flag"], 0)
+        if r >= 0.5:
+            if UML["step_flag"] == UML["par"]["nDown"]-1:
+                UML["current_step"] = np.maximum(UML["current_step"]-1,1)
+                newx = swpt[UML["current_step"]-1]
+                UML["step_flag"] = 0
+                if UML["track_direction"] == 1:
+                    UML["rev_flag"] = np.append(UML["rev_flag"], 1)
+                    UML["nrev"] = UML["nrev"] +1
+            elif UML["step_flag"] < UML["par"]["nDown"]-1:
+                newx = swpt[UML["current_step"]-1]
+                UML["step_flag"] = UML["step_flag"]+1
+        elif r <= 0.5:
+            UML["current_step"] = np.minimum(UML["current_step"]+1, UML["nsteps"])
             newx = swpt[UML["current_step"]-1]
             UML["step_flag"] = 0
-            if UML["track_direction"] == 1:
+            if UML["track_direction"] == -1:
                 UML["rev_flag"] = np.append(UML["rev_flag"], 1)
-                UML["nrev"] = UML["nrev"] +1
-        elif UML["step_flag"] < UML["par"]["nDown"]-1:
-            newx = swpt[UML["current_step"]-1]
-            UML["step_flag"] = UML["step_flag"]+1
-    elif r <= 0.5:
-        UML["current_step"] = np.minimum(UML["current_step"]+1, UML["nsteps"])
-        newx = swpt[UML["current_step"]-1]
-        UML["step_flag"] = 0
-        if UML["track_direction"] == -1:
-            UML["rev_flag"] = np.append(UML["rev_flag"], 1)
-            UML["nrev"] = UML["nrev"]+1
-        UML["track_direction"] = 1
+                UML["nrev"] = UML["nrev"]+1
+            UML["track_direction"] = 1
+    elif UML["par"]["swptRule"] == "Random":
+        newx = swpt[random.choice([0,1,2,3])]
 
     if UML["n"] < 2:
         UML["swpts"] = np.array(swpt, ndmin=2)

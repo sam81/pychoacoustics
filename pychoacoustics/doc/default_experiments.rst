@@ -8,19 +8,56 @@ Audiogram
 .. automodule:: pychoacoustics.default_experiments.audiogram
    :members:
 
-Audiogram Multiple Frequencies
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Demo Audiogram Multiple Frequencies
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: pychoacoustics.default_experiments.audiogram_mf
    :members:
 
-Frequency Discrimination Demo
+Demo Frequency Discrimination
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: pychoacoustics.default_experiments.freq
    :members:
+   
+Demo Signal Detection
+^^^^^^^^^^^^^^^^^^^^^
 
+.. automodule:: pychoacoustics.default_experiments.sig_detect
+   :members:
+   
+Dummy Adaptive
+^^^^^^^^^^^^^^
 
-.. todo::
+.. automodule:: pychoacoustics.default_experiments.dummy_adaptive
+   :members:
+      
+F0DL
+^^^^
 
-   Add documentation for the other experiments available.
+.. automodule:: pychoacoustics.default_experiments.F0DL
+   :members:
+
+Level Discrimination
+^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: pychoacoustics.default_experiments.level_discrimination
+   :members:
+
+WAV ABX
+^^^^^^^
+
+.. automodule:: pychoacoustics.default_experiments.wav_ABX
+   :members:
+      
+WAV Comparison
+^^^^^^^^^^^^^^
+
+.. automodule:: pychoacoustics.default_experiments.wav_comparison
+   :members:
+
+WAV Same/Different
+^^^^^^^^^^^^^^^^^^
+
+.. automodule:: pychoacoustics.default_experiments.wav_sameDifferent
+   :members:

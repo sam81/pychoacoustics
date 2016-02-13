@@ -721,7 +721,7 @@ def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, lev
     ----------
     F0 : float
         Tone fundamental frequency in hertz.
-    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder'
+    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder-', 'Schroeder+'
         Phase relationship between the partials of the complex tone.
     lowHarm : int
         Lowest harmonic component number.
@@ -809,9 +809,19 @@ def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, lev
                     tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll)
                 elif channel == "Odd Left" or channel == "Odd Right":
                     toneEven = toneEven + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll)
-    elif harmPhase == "Schroeder":
+    elif harmPhase == "Schroeder-":
         for i in range(lowHarm, highHarm+1):
-            phase = -pi * i * (i - 1) / float(highHarm)
+            phase = -pi*i*(i - 1)/(highHarm-lowHarm+1)
+            if channel == "Right" or channel == "Left" or channel == "Both":
+                tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
+            elif channel == "Odd Left" or channel == "Odd Right":
+                if i%2 > 0: #odd harmonic
+                    toneOdd = toneOdd + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
+                else:
+                    toneEven = toneEven + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
+    elif harmPhase == "Schroeder+":
+        for i in range(lowHarm, highHarm+1):
+            phase = pi*i*(i - 1)/(highHarm-lowHarm+1)
             if channel == "Right" or channel == "Left" or channel == "Both":
                 tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
             elif channel == "Odd Left" or channel == "Odd Right":
@@ -830,7 +840,7 @@ def complexTone(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, lev
                 else:
                     toneEven = toneEven + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
     else:
-        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
+        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', 'Schroeder-', 'Schroeder+', or 'Random'")
 
 
     if channel == "Right":
@@ -882,7 +892,7 @@ def complexToneParallel(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretc
     ----------
     F0 : float
         Tone fundamental frequency in hertz.
-    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder'
+    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder-', 'Schroeder+'
         Phase relationship between the partials of the complex tone.
     lowHarm : int
         Lowest harmonic component number.
@@ -960,12 +970,14 @@ def complexToneParallel(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretc
                 thisPhase = 0
             else:
                 thisPhase = pi/2
-        elif harmPhase == "Schroeder":
-            thisPhase = -pi * i * (i - 1) / highHarm
+        elif harmPhase == "Schroeder-":
+            thisPhase = -pi * i * (i - 1) / (highHarm-lowHarm+1)
+        elif harmPhase == "Schroeder+":
+            thisPhase = pi * i * (i - 1) / (highHarm-lowHarm+1)
         elif harmPhase == "Random":
             thisPhase =  numpy.random.random() * 2 * pi
         else:
-            raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
+            raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', 'Schroeder-', 'Schroeder+', or 'Random'")
                 
         pool.apply_async(pureTone, (F0*i+stretchHz, thisPhase, level, duration, ramp, thisChan, fs, maxLevel), callback=tn.append)
 
@@ -1057,12 +1069,12 @@ def complexToneIPD(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, 
                 toneShift = toneShift + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + IPD)
     elif harmPhase == "Schroeder-":
         for i in range(lowHarm, highHarm+1):
-            phase = -pi * i * (i - 1) / float(highHarm)
+            phase = -pi * i * (i - 1) / (highHarm-lowHarm+1)
             tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
             toneShift = toneShift + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase + IPD)
     elif harmPhase == "Schroeder+":
         for i in range(lowHarm, highHarm+1):
-            phase = pi * i * (i - 1) / float(highHarm)
+            phase = pi * i * (i - 1) / (highHarm-lowHarm+1)
             tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
             toneShift = toneShift + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase + IPD)      
     elif harmPhase == "Random":
@@ -1071,7 +1083,7 @@ def complexToneIPD(F0=220, harmPhase="Sine", lowHarm=1, highHarm=10, stretch=0, 
             tone = tone + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase)
             toneShift = toneShift + sin(2 * pi * ((F0 * i)+stretchHz) * timeAll + phase + IPD)
     else:
-        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
+        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', 'Schroeder-', 'Schroeder+', or 'Random'")
 
     if targetEar == "Right":
         snd[0:nRamp, 0]                     = amp * ((1-cos(pi * timeRamp/nRamp))/2) *  tone[0:nRamp]
@@ -1627,7 +1639,7 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
     ----------
     midF0 : float
         F0 at the FM zero crossing
-    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder'
+    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder-', or 'Schroeder+'
         Phase relationship between the partials of the complex tone.
     lowHarm : int
         Lowest harmonic component number.
@@ -1794,9 +1806,12 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
                     toneEven[fmStartPnt:fmStartPnt+nFMSamples] = toneEven[fmStartPnt:fmStartPnt+nFMSamples] + sin(midF0Rad*i*time2+phaseCorrect1-(i*B*cos(fmRadFreq*fmTime+fmStartPhase)))
                     phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                     toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2)
-    elif harmPhase == "Schroeder":
+    elif harmPhase in ["Schroeder-", "Schroeder+"]:
         for i in range(lowHarm, highHarm+1):
-            phase = -pi * i * (i - 1) / float(highHarm)
+            if harmPhase == "Schroeder-":
+                phase = -pi * i * (i - 1) / (highHarm-lowHarm+1)
+            elif harmPhase == "Schroeder+":
+                phase = pi * i * (i - 1) / (highHarm-lowHarm+1)
             if channel == "Right" or channel == "Left" or channel == "Both":
                 tone[0:fmStartPnt] =  tone[0:fmStartPnt] + sin(startF0Rad*i*time1 + phase)
                 phaseCorrect1 =  (i*startF0Rad*fmStartPnt) - (i*midF0Rad*fmStartPnt) + (i*B*cos(fmStartPhase)) 
@@ -1839,7 +1854,7 @@ def fm_complex1(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
                     phaseCorrect2 = (i*midF0Rad*(fmStartPnt+nFMSamples)) + (phaseCorrect1 - i*B*cos(fmRadFreq*nFMSamples + fmStartPhase)) - (i*endF0Rad*(fmStartPnt+nFMSamples))
                     toneEven[fmStartPnt+nFMSamples:nTot] =  toneEven[fmStartPnt+nFMSamples:nTot] + sin(i*endF0Rad*time3 + phaseCorrect2 + phase)
     else:
-        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
+        raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', 'Schroeder-', 'Schroeder+', or 'Random'")
             
 
     #numpy.savetxt('ptone.txt', tone)
@@ -1903,7 +1918,7 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
     ----------
     midF0 : float
         F0 at the FM zero crossing
-    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder'
+    harmPhase : one of 'Sine', 'Cosine', 'Alternating', 'Random', 'Schroeder-', 'Schroeder+'
         Phase relationship between the partials of the complex tone.
     lowHarm : int
         Lowest harmonic component number.
@@ -2038,8 +2053,18 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
                         tone = tone + sin(ang)
                     elif channel == "Odd Left" or channel == "Odd Right":
                         toneEven = toneEven + sin(ang)
-            elif harmPhase == "Schroeder":
-                phase = -pi * i * (i - 1) / highHarm
+            elif harmPhase == "Schroeder-":
+                phase = -pi * i * (i - 1) / (highHarm-lowHarm+1)
+                ang = cumsum(2*pi*fArr/fs + phase)
+                if channel == "Right" or channel == "Left" or channel == "Both":
+                    tone = tone + sin(ang)
+                elif channel == "Odd Left" or channel == "Odd Right":
+                    if i%2 > 0: #odd harmonic
+                        toneOdd = toneOdd + sin(ang)
+                    else:
+                        toneEven = toneEven + sin(ang)
+            elif harmPhase == "Schroeder+":
+                phase = pi * i * (i - 1) / (highHarm-lowHarm+1)
                 ang = cumsum(2*pi*fArr/fs + phase)
                 if channel == "Right" or channel == "Left" or channel == "Both":
                     tone = tone + sin(ang)
@@ -2059,7 +2084,7 @@ def fm_complex2(midF0=140, harmPhase="Sine", lowHarm=1, highHarm=10, level=60, d
                     else:
                         toneEven = toneEven + sin(ang)
             else:
-                raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', Schroeder, or 'Random'")
+                raise ValueError("Invalid 'harmPhase' argument. 'harmPhase' must be one 'Sine', 'Cosine', 'Alternating', 'Schroeder-', 'Schroeder+', or 'Random'")
 
 
     #level correction --------------
