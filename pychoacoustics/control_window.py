@@ -2081,7 +2081,7 @@ class pychControlWin(QMainWindow):
 
         if self.currParadigm in [self.tr("PSI")]:
             n = 0
-            priorOptions = ["Uniform", "Normal"]
+            priorOptions = ["Uniform", "Normal", "Gamma"]
             psyFunOptions = ["Logistic", "Gaussian", "Gumbel", "Weibull"]
             # n = n+1
             self.psyFunChooserLabel = QLabel(self.tr("Psychometric Function:"), self)
@@ -2471,7 +2471,7 @@ class pychControlWin(QMainWindow):
         # self.responseModeChooser.addItems(self.prm['responseModeChoices'])
         if self.currParadigm in [self.tr("UML")]:
             n = 0
-            priorOptions = [self.tr("Uniform"), self.tr("Normal")]
+            priorOptions = [self.tr("Uniform"), self.tr("Normal"), self.tr("Gamma")]
             psyFunOptions = [self.tr("Logistic"), self.tr("Gaussian"), self.tr("Weibull")]
             # n = n+1
             self.psyFunChooserLabel = QLabel(self.tr("Psychometric Function:"), self)

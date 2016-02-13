@@ -23,7 +23,7 @@ fPaths = ["../dist/pychoacoustics-" + ver + ".tar.gz",
 for fPath in fPaths:
     print("Uploading: " + fPath)
     fHandle = open(fPath, 'rb')
-    session.storbinary("STOR " + fPath.split('/')[2], fHandle)
+    #session.storbinary("STOR " + fPath.split('/')[2], fHandle)
 
 htmlPagePath = "/media/ntfsShared/lin_home/dc/devel/websites/xoom-website/xoom/pychoacoustics/pychoacoustics.html"
 fIn = open(htmlPagePath, "r")

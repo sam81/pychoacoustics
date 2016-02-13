@@ -22,9 +22,11 @@
 import copy, scipy
 import numpy as np
 from numpy import arange, exp, linspace, logspace, log, log10, meshgrid, pi, ravel
-from scipy.stats import lognorm, norm
+from scipy.stats import lognorm, norm #gamma conflicts with gamma variable
+from scipy import stats
 from scipy.special import erf
 from .pysdt import*
+from .stats_utils import gammaShRaFromMeanSD, gammaShRaFromModeSD
 
 
 def setupUML(model="Logistic", nDown=2, centTend="Mean", stimScale="Linear", x0=None, xLim=(-10, 10), 
@@ -156,13 +158,18 @@ def setPrior(phi, s):
             #p0 = lognorm.pdf(phi, scale=exp(s["mu"]), s=s["std"], loc=0)
             #this is the MATLAB equivalent of
             #p0 =  lognpdf(phi, s["mu"], s["std"])
-            m = s["mu"]; st=s["std"]
-            print(s["std"])
+            #m = s["mu"]; st=s["std"]
             #p0 = lognorm.pdf(phi, scale=log(m/sqrt(1+st**2/m**2)), s=sqrt(log(1+st**2/m**2)))
             p0  = norm.pdf(log(phi), loc=log(s["mu"]), scale=log(s["std"]))
     elif s["dist"] == "Uniform":
         p0 = np.ones(phi.shape)
-
+    elif s["dist"] == "Gamma":
+        gShape, gRate = gammaShRaFromModeSD(s["mu"], s["std"])
+        if s["spacing"] == "Linear":
+            p0 = stats.gamma.pdf(phi, gShape, loc=0, scale=1/gRate)
+        elif s["spacing"] == "Logarithmic":
+            p0 = stats.gamma.pdf(log(phi), gShape, loc=0, scale=1/gRate)
+            
     return p0
 
 

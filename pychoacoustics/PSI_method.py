@@ -23,9 +23,10 @@ import copy, scipy
 import numpy as np
 from numpy import arange, exp, linspace, logspace, log, log2, log10, meshgrid, sqrt
 from scipy.stats import lognorm, norm
+from scipy import stats
 from scipy.special import erf
 from .pysdt import*
-
+from .stats_utils import gammaShRaFromMeanSD, gammaShRaFromModeSD
 
 def setupPSI(model="Logistic", stimScale="Linear", x0=None, xLim=(-10, 10),
              xStep=1, alphaLim=(-10,10), alphaStep=1, alphaSpacing="Linear",
@@ -156,6 +157,12 @@ def setPrior(phi, s):
             p0  = norm.pdf(log(phi), loc=log(s["mu"]), scale=log(s["std"]))
     elif s["dist"] == "Uniform":
         p0 = np.ones(phi.shape)
+    elif s["dist"] == "Gamma":
+        gShape, gRate = gammaShRaFromModeSD(s["mu"], s["std"])
+        if s["spacing"] == "Linear":
+            p0 = stats.gamma.pdf(phi, gShape, loc=0, scale=1/gRate)
+        elif s["spacing"] == "Logarithmic":
+            p0 = stats.gamma.pdf(log(phi), gShape, loc=0, scale=1/gRate)
 
     return p0
 
