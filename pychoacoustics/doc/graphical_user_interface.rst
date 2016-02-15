@@ -66,7 +66,9 @@ General Widgets (left panel)
    condition of the current block of trials. It is optional, but it may
    be useful when sorting the experimental results (see
    :ref:`sec-tabular-results-files`).
-
+     
+-  **Task Label** This label will be shown in the response box to tell the listener which task s/he's doing. Useful in case different tasks are mixed within a session.
+	   
 -  **Instructions** This box allows to give task instructions to
    the listener. If the block of trials occurs at a block position in
    which task instructions are set to be shown (see "Show Instructions
@@ -74,7 +76,7 @@ General Widgets (left panel)
    shown to listeners at the beginning of the block of trials (see
    :ref:`sec-task_instructions` for more info).
 
-- **Show Instructions At BP** Indicate the block positions (see
+-  **Show Instructions At BP** Indicate the block positions (see
    :ref:`sec-shuffling` for a definition of block positions)
    at which the instructions should be shown to the listener. The
    block positions have to be indicated by a list of numbers separated
@@ -146,7 +148,7 @@ General Widgets (left panel)
    you have a 24-bit souncard. Please, refere to
    Section :ref:`sec-sound_output` for further information on this issue.
 
--  **Repetitions** Set the number of times the sequence of blocks stored
+-  **No. Repetitions** Set the number of times the sequence of blocks stored
    in memory should be repeated. If the “Shuffle Mode” (see below) is
    set to “auto”, each time a new repetition starts the block positions
    will be shuffled. If the “Shuffle Mode” is set to “Ask”, each time a
@@ -355,6 +357,7 @@ General Widgets (right panel)
 
 -  **Shift Blk. Up** Shift the current block to a higher storage point.
 
+-  **Experiment Doc** Show the available documentation for the current experiment.
 
 Paradigm Widgets
 ^^^^^^^^^^^^^^^^
@@ -898,11 +901,11 @@ General
    the moment and for the foreseeable future only English is supported.
 
 -  **Country (requires restart)** Set the country locale to be used for
-   the application. Some things (e.g. the way dates are written in
-   result files depend on this setting.
+   the application. Some things (for example the way dates are written in
+   result files) depend on this setting.
 
 -  **Response Box Language (requires restart)** Choose the language to
-   be used for the “Response Box”. This set the language to be used for
+   be used for the “Response Box”. This sets the language to be used for
    the button labels and other GUI elements that the experimental
    listener is presented with.
 
@@ -940,6 +943,9 @@ General
    preferences settings file to restore the default max recursion depth
    value.
 
+-  **Execute command at startup** Executes an OS command at startup. May be useful
+   to initialize a soundcard in certain situations.   
+
 .. _sec-edit_pref_dia_sound:
 
 Sound
@@ -974,8 +980,56 @@ Sound
    the Windows operating system that may cut the sound buffer before it
    has ended resulting in audible clicks.
 
+.. _sec-edit_pref_dia_notifications:
 
+Response Box
+^^^^^^^^^^^^
 
+-  **Response Box Button Font** Choose the font for the response box button.
+
+-  **Correct Light Color** Choose the color of the feedback light after a
+   correct response.
+
+-  **Incorrect Light Color** Choose the color of the feedback light after an
+   incorrect response.
+
+-  **Neutral Light Color** Choose the color of the feedback light when
+   specific feedback as to the correctness of the response is not given.
+   A light is instead simply flashed to acknowledge that the response
+   has been recorded.
+
+-  **Off Light Color** Choose the color of the response light when the
+   response light is off (that is when feedback of any kind is not being
+   given.
+
+-  **Response Light Font** Choose the font of used to present text in the
+   response light area when feedback is textual.   
+
+- **Correct Response Text Feedback** Choose the feedback text to show in case of
+  a correct response. If left to ``(Default)``, a default message will be shown
+  in the language chosen for the response box (if available). Applies only if
+  feedback is textual.
+
+- **Incorrect Response Text Feedback** Choose the feedback text to show in case
+  of an incorrect response. If left to ``(Default)``, a default message will be
+  shown in the language chosen for response box (if available). Applies only if
+  feedback is textual.
+
+-  **Neutral Response Text Feedback** Choose the feedback text to show when
+   specific feedback as to the correctness of the response is not given. If
+   left to ``(Default)``, a default message will be shown in the language
+   chosen for response box (if available). Applies only if feedback is textual.
+
+- **Correct Text Color** Choose the color of the feedback text to show in case
+  of a correct response. Applies only if feedback is textual.
+
+- **Incorrect Response Text Feedback** Choose the color of the feedback text to
+  show in case of an incorrect response. Applies only if feedback is textual. 
+
+- **Neutral Response Text Feedback** Choose the color of the feedback text to
+  show when specific feedback as to the correctness of the response is not given.
+  Applies only if feedback is textual.
+   
 .. _sec-edit_pref_dia_notifications:
 
 Notifications

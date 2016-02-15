@@ -1,4 +1,26 @@
 # -*- coding: utf-8 -*-
+
+"""
+Measure d' for the detection of a pure tone in a Yes/No task.
+
+The available fields are:
+
+- Frequency (Hz) :
+    The frequency of the pure tone signal
+- Duration (ms) :
+    Tone duration (excluding ramps), in ms
+- Ramps (ms) :
+    Duration of each ramp, in ms
+- Level (dB SPL):
+    Level of the signal in dB SPL.
+
+The available choosers are:
+
+- Ear: [``Right``, ``Left``, ``Both``]
+    The ear to which the signal will be presented
+
+"""
+
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 #from PyQt4 import QtGui, QtCore
 #from PyQt4.QtGui import QApplication

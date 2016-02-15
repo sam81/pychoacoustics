@@ -130,7 +130,6 @@ def setP0(UML):
     UML["alpha"] = setParSpace(UML["par"]["alpha"])
     UML["beta"] = setParSpace(UML["par"]["beta"])
     UML["lambda"] = setParSpace(UML["par"]["lambda"])
-    #print(UML["alpha"])
 
     (UML["a"], UML["b"], UML["l"]) = meshgrid(UML["alpha"], UML["beta"], UML["lambda"], indexing='ij')
 
