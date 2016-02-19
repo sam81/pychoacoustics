@@ -27,16 +27,17 @@ from scipy import stats
 from scipy.special import erf
 from .pysdt import*
 from .stats_utils import gammaShRaFromMeanSD, gammaShRaFromModeSD
+eps = np.spacing(1) #add eps to avoid taking log of zero
 
-eps = np.spacing(1)
-
-def setupPSI(model="Logistic", stimScale="Linear", x0=None, xLim=(-10, 10),
-             xStep=1, alphaLim=(-10,10), alphaStep=1, alphaSpacing="Linear",
-             alphaDist="Uniform", alphaMu=0, alphaSTD=20, betaLim=(0.1,10),
-             betaStep=0.1, betaSpacing="Linear", betaDist="Uniform", betaMu=1,
-             betaSTD=2, gamma=0.5, lambdaLim=(0,0.2), lambdaStep=0.01,
-             lambdaSpacing="Linear", lambdaDist="Uniform", lambdaMu=0,
-             lambdaSTD=0.1, marginalize = None):
+def setupPSIEstGuessRate(model="Logistic", stimScale="Linear", x0=None, xLim=(-10, 10),
+                         xStep=1, alphaLim=(-10,10), alphaStep=1, alphaSpacing="Linear",
+                         alphaDist="Uniform", alphaMu=0, alphaSTD=20, betaLim=(0.1,10),
+                         betaStep=0.1, betaSpacing="Linear", betaDist="Uniform", betaMu=1,
+                         betaSTD=2, gammaLim=(0,0.3), gammaStep=0.05,
+                         gammaSpacing="Linear", gammaDist="Uniform", gammaMu=0.1,
+                         gammaSTD=0.1, lambdaLim=(0,0.2), lambdaStep=0.01,
+                         lambdaSpacing="Linear", lambdaDist="Uniform", lambdaMu=0,
+                         lambdaSTD=0.1, marginalize = None):
 
     
     PSI = {}
@@ -67,16 +68,22 @@ def setupPSI(model="Logistic", stimScale="Linear", x0=None, xLim=(-10, 10),
     PSI["par"]["beta"]["mu"] = betaMu
     PSI["par"]["beta"]["std"] = betaSTD
 
-    #PSI["par"]["gamma"] = gamma
 
     PSI["par"]["lambda"] = {}
     PSI["par"]["lambda"]["limits"] = lambdaLim
     PSI["par"]["lambda"]["step"] = lambdaStep
-    #PSI["par"]["lambda"]["scale"] = lambdaScale
     PSI["par"]["lambda"]["spacing"] = lambdaSpacing
     PSI["par"]["lambda"]["dist"] = lambdaDist
     PSI["par"]["lambda"]["mu"] = lambdaMu
     PSI["par"]["lambda"]["std"] = lambdaSTD
+
+    PSI["par"]["gamma"] = {}
+    PSI["par"]["gamma"]["limits"] = gammaLim
+    PSI["par"]["gamma"]["step"] = gammaStep
+    PSI["par"]["gamma"]["spacing"] = gammaSpacing
+    PSI["par"]["gamma"]["dist"] = gammaDist
+    PSI["par"]["gamma"]["mu"] = gammaMu
+    PSI["par"]["gamma"]["std"] = gammaSTD
 
     if stimScale == "Logarithmic":
         PSI["par"]["x"]["limits"] = log(xLim)
@@ -94,20 +101,20 @@ def setupPSI(model="Logistic", stimScale="Linear", x0=None, xLim=(-10, 10),
   
     PSI["r"] = np.array([])
     PSI["n"] = 0
-    PSI["gamma"] = gamma
-    PSI["lik_corr"] = np.zeros((len(PSI["stims"]), PSI["p"].shape[0], PSI["p"].shape[1], PSI["p"].shape[2]))
+    #PSI["gamma"] = gamma
+    PSI["lik_corr"] = np.zeros((len(PSI["stims"]), PSI["p"].shape[0], PSI["p"].shape[1], PSI["p"].shape[2], PSI["p"].shape[3]))
     if PSI["par"]["model"] == "Logistic":
         for i in range(len(PSI["stims"])):
-            PSI["lik_corr"][i,:,:,:] = logisticPsy(PSI["stims"][i], PSI["a"], PSI["b"], PSI["gamma"], PSI["l"])
+            PSI["lik_corr"][i,:,:,:] = logisticPsy(PSI["stims"][i], PSI["a"], PSI["b"], PSI["g"], PSI["l"])
     elif PSI["par"]["model"] == "Gaussian":
         for i in range(len(PSI["stims"])):
-            PSI["lik_corr"][i,:,:,:] = gaussianPsy(PSI["stims"][i], PSI["a"], PSI["b"], PSI["gamma"], PSI["l"])
+            PSI["lik_corr"][i,:,:,:] = gaussianPsy(PSI["stims"][i], PSI["a"], PSI["b"], PSI["g"], PSI["l"])
     elif PSI["par"]["model"] == "Weibull":
         for i in range(len(PSI["stims"])):
-            PSI["lik_corr"][i,:,:,:] = weibullPsy(PSI["stims"][i], PSI["a"], PSI["b"], PSI["gamma"], PSI["l"])
+            PSI["lik_corr"][i,:,:,:] = weibullPsy(PSI["stims"][i], PSI["a"], PSI["b"], PSI["g"], PSI["l"])
     elif PSI["par"]["model"] == "Gumbel":
         for i in range(len(PSI["stims"])):
-            PSI["lik_corr"][i,:,:,:] = gumbelPsy(PSI["stims"][i], PSI["a"], PSI["b"], PSI["gamma"], PSI["l"])
+            PSI["lik_corr"][i,:,:,:] = gumbelPsy(PSI["stims"][i], PSI["a"], PSI["b"], PSI["g"], PSI["l"])
     PSI["marginalize"] = marginalize
 
     if x0 == None:
@@ -122,22 +129,24 @@ def setupPSI(model="Logistic", stimScale="Linear", x0=None, xLim=(-10, 10),
 def setP0(PSI):
     PSI["alpha"] = setParSpace(PSI["par"]["alpha"])
     PSI["beta"] = setParSpace(PSI["par"]["beta"])
+    PSI["gamma"] = setParSpace(PSI["par"]["gamma"])
     PSI["lambda"] = setParSpace(PSI["par"]["lambda"])
     PSI["stims"] = setParSpace(PSI["par"]["x"])
 
-    (PSI["a"], PSI["b"], PSI["l"]) = meshgrid(PSI["alpha"], PSI["beta"], PSI["lambda"], indexing='ij')
+    (PSI["a"], PSI["b"], PSI["g"], PSI["l"]) = meshgrid(PSI["alpha"], PSI["beta"], PSI["gamma"], PSI["lambda"], indexing='ij')
 
     A = setPrior(PSI["a"], PSI["par"]["alpha"])
     B = setPrior(PSI["b"], PSI["par"]["beta"])
+    G = setPrior(PSI["g"], PSI["par"]["gamma"])
     L = setPrior(PSI["l"], PSI["par"]["lambda"])
 
-    PSI["p"] = (A*B*L)
+    PSI["p"] = (A*B*G*L)
     PSI["p"]=PSI["p"]/PSI["p"].sum()
 
-    #4-D probability distributions for each stimulus level and psychometric function in case of a correct
+    #5-D probability distributions for each stimulus level and psychometric function in case of a correct
     # and in case of an incorrect response in the next trial
-    PSI["pCorrNextNorm"] = np.zeros((len(PSI["stims"]), PSI["p"].shape[0], PSI["p"].shape[1], PSI["p"].shape[2]))
-    PSI["pIncorrNextNorm"] = np.zeros((len(PSI["stims"]), PSI["p"].shape[0], PSI["p"].shape[1], PSI["p"].shape[2]))
+    PSI["pCorrNextNorm"] = np.zeros((len(PSI["stims"]), PSI["p"].shape[0], PSI["p"].shape[1], PSI["p"].shape[2], PSI["p"].shape[3]))
+    PSI["pIncorrNextNorm"] = np.zeros((len(PSI["stims"]), PSI["p"].shape[0], PSI["p"].shape[1], PSI["p"].shape[2], PSI["p"].shape[3]))
     #probability of a correct and of an incorrect response at each stimulus level across 
     #also serves to scale the pdf to sum to one
     PSI["pCorrNextScaler"] = np.zeros(len(PSI["stims"]))
@@ -181,7 +190,7 @@ def setPrior(phi, s):
     return p0
 
 
-def PSI_update(PSI, r):
+def PSIEstGuessRate_update(PSI, r):
     PSI = PSI_update_posterior(PSI, r)
     PSI = PSI_select_next_stim(PSI)
     return PSI
@@ -193,60 +202,60 @@ def PSI_update_posterior(PSI, r):
 
     if r == 1:
         #PSI["p"] = PSI["p"] * PSI["lik_corr"][np.where(PSI["stims"] == PSI["xnext"])[0][0],:,:,:]
-        PSI["p"] = PSI["p"] * PSI["lik_corr"][np.where(abs(PSI["stims"] - PSI["xnext"]) == min(abs(PSI["stims"] - PSI["xnext"])))[0][0],:,:,:]
+        PSI["p"] = PSI["p"] * PSI["lik_corr"][np.where(abs(PSI["stims"] - PSI["xnext"]) == min(abs(PSI["stims"] - PSI["xnext"])))[0][0],:,:,:,:]
         
     elif r == 0:
         #PSI["p"] = PSI["p"] * (1-PSI["lik_corr"][np.where(PSI["stims"] == PSI["xnext"])[0][0],:,:,:])
-        PSI["p"] = PSI["p"] * (1-PSI["lik_corr"][np.where(abs(PSI["stims"] - PSI["xnext"]) == min(abs(PSI["stims"] - PSI["xnext"])))[0][0],:,:,:])
+        PSI["p"] = PSI["p"] * (1-PSI["lik_corr"][np.where(abs(PSI["stims"] - PSI["xnext"]) == min(abs(PSI["stims"] - PSI["xnext"])))[0][0],:,:,:,:])
     PSI["p"]=PSI["p"]/PSI["p"].sum()
 
     alpha_est = np.sum(PSI["p"]*PSI["a"])
     beta_est = np.sum(PSI["p"]*PSI["b"])
+    gamma_est = np.sum(PSI["p"]*PSI["g"])
     lambda_est = np.sum(PSI["p"]*PSI["l"])
     if PSI["n"] == 1:
-        PSI["phi"] = np.array([alpha_est, beta_est, PSI["gamma"], lambda_est], ndmin=2)
+        PSI["phi"] = np.array([alpha_est, beta_est, gamma_est, lambda_est], ndmin=2)
     else:
-        PSI["phi"] =  np.concatenate((PSI["phi"], np.array([alpha_est, beta_est, PSI["gamma"], lambda_est], ndmin=2)), axis=0)
+        PSI["phi"] =  np.concatenate((PSI["phi"], np.array([alpha_est, beta_est, gamma_est, lambda_est], ndmin=2)), axis=0)
     if PSI["par"]["stimScale"] == "Logarithmic":
         PSI["est_midpoint"] = exp(alpha_est)
     else:
         PSI["est_midpoint"] = alpha_est
     PSI["est_slope"] = beta_est
     PSI["est_lapse"] = lambda_est
+    PSI["est_guess"] = gamma_est
 
     return PSI
 
-#@profile
 def PSI_select_next_stim(PSI):
-    
-    #4-D probability distributions for each stimulus level and psychometric function in case of a correct
+
+    #5-D probability distributions for each stimulus level and psychometric function in case of a correct
     # and in case of an incorrect response in the next trial
-    pCorrNextNorm = PSI["pCorrNextNorm"] 
+    pCorrNextNorm = PSI["pCorrNextNorm"]
     pIncorrNextNorm = PSI["pIncorrNextNorm"]
     #probability of a correct and of an incorrect response at each stimulus level across 
     #also serves to scale the pdf to sum to one
     pCorrNextScaler = PSI["pCorrNextScaler"]
     pIncorrNextScaler = PSI["pIncorrNextScaler"]
     #entropy for each possible stimulus level in case of a correct and an incorrect response
-    entrCorr = PSI["entrCorr"] 
+    entrCorr = PSI["entrCorr"]
     entrIncorr = PSI["entrIncorr"]
-    
     for i in range(len(PSI["stims"])):
-        pCorrNextRaw = (PSI["p"] * PSI["lik_corr"][i,:,:,:])
-        pIncorrNextRaw = (PSI["p"] * (1-PSI["lik_corr"][i,:,:,:]))
+        pCorrNextRaw = (PSI["p"] * PSI["lik_corr"][i,:,:,:,:])
+        pIncorrNextRaw = (PSI["p"] * (1-PSI["lik_corr"][i,:,:,:,:]))
         pCorrNextScaler[i] = pCorrNextRaw.sum()
-        pIncorrNextScaler[i] = pIncorrNextRaw.sum()
-        pCorrNextNorm[i,:,:,:] = pCorrNextRaw / pCorrNextScaler[i]
-        pIncorrNextNorm[i,:,:,:] = pIncorrNextRaw / pIncorrNextScaler[i]
+        pIncorrNextScaler[i]=pIncorrNextRaw.sum()
+        pCorrNextNorm[i,:,:,:,:] = pCorrNextRaw / pCorrNextScaler[i]
+        pIncorrNextNorm[i,:,:,:,:] = pIncorrNextRaw / pIncorrNextScaler[i]
         if PSI["marginalize"] != None:
-            pCorrNextNormMarg = np.sum(pCorrNextNorm[i,:,:,:], axis=PSI["marginalize"])
-            pIncorrNextNormMarg = np.sum(pIncorrNextNorm[i,:,:,:], axis=PSI["marginalize"])
+            pCorrNextNormMarg = np.sum(pCorrNextNorm[i,:,:,:,:], axis=PSI["marginalize"])
+            pIncorrNextNormMarg = np.sum(pIncorrNextNorm[i,:,:,:,:], axis=PSI["marginalize"])
             entrCorr[i] =  -((pCorrNextNormMarg*log2(pCorrNextNormMarg+eps)).sum())
             entrIncorr[i] = -((pIncorrNextNormMarg*log2(pIncorrNextNormMarg+eps)).sum())
         else:
             entrCorr[i] =  -((pCorrNextNorm[i]*log2(pCorrNextNorm[i]+eps)).sum())
             entrIncorr[i] = -((pIncorrNextNorm[i]*log2(pIncorrNextNorm[i]+eps)).sum())
-    #PSI["pCorrNextNorm"] =  pCorrNextNorm
+    PSI["pCorrNextNorm"] =  pCorrNextNorm
     #Estimate the expected entropy for each test intensity x.
     PSI["entrTot"] = entrCorr*pCorrNextScaler + entrIncorr*pIncorrNextScaler
     #Find the test intensity that has the minimum expected entropy
@@ -257,6 +266,12 @@ def PSI_select_next_stim(PSI):
         PSI["xnextLinear"] = exp(PSI["xnext"])
     else:
         PSI["xnextLinear"] = PSI["xnext"]
+
+    print('Est Midpoint: ', PSI["est_midpoint"])
+    print('Est Guess: ', PSI["est_guess"])
+    print('Est Slope: ', PSI["est_slope"])
+    print('Est Lapse: ', PSI["est_lapse"])
+    print('Next level: ', PSI["xnextLinear"])
   
     return PSI
 

@@ -16,6 +16,7 @@ nTrials = 200
 for ruleOpt in range(len(ruleOpts)):
      testN = testN+1
      UML = setupUML(model="Logistic",
+                    swptRule="Up-Down",
                     nDown = ruleOpts[ruleOpt],
                     centTend = "Mean",
                     stimScale="Linear",
@@ -39,7 +40,9 @@ for ruleOpt in range(len(ruleOpts)):
                     lambdaSpacing="Linear",
                     lambdaDist="Uniform",
                     lambdaMu=0,
-                    lambdaSTD=0.1)
+                    lambdaSTD=0.1,
+                    suggestedLambdaSwpt=20,
+                    lambdaSwptPC=0.99)
      resps = np.zeros((nTrials))
      for i in range(nTrials):
           resp = virtualObserver(UML["xnext"], midpoint=0, slope=2, guess=0.5, lapse=0, funType="Logistic", funFit="Linear")
@@ -54,6 +57,7 @@ for ruleOpt in range(len(ruleOpts)):
 for ruleOpt in range(len(ruleOpts)):
      testN = testN+1
      UML = setupUML(model="Logistic",
+                    swptRule="Up-Down",
                     nDown = ruleOpts[ruleOpt],
                     centTend = "Mean",
                     stimScale="Logarithmic",
@@ -77,7 +81,9 @@ for ruleOpt in range(len(ruleOpts)):
                     lambdaSpacing="Linear",
                     lambdaDist="Uniform",
                     lambdaMu=0,
-                    lambdaSTD=0.1)
+                    lambdaSTD=0.1,
+                    suggestedLambdaSwpt=500,
+                    lambdaSwptPC=0.99)
      resps = np.zeros((nTrials))
      for i in range(nTrials):
           resp = virtualObserver(exp(UML["xnext"]), midpoint=log(5), slope=2, guess=0.5, lapse=0, funType="Logistic", funFit="Logarithmic")
@@ -91,8 +97,8 @@ for ruleOpt in range(len(ruleOpts)):
 
 if runChecks == True:
      for i in range(testN):
-          res_pal = np.loadtxt(rootPath+'res_shen_logistic_test'+str(i+1)+'.txt', delimiter=',')
+          res_shen = np.loadtxt(rootPath+'res_shen_logistic_test'+str(i+1)+'.txt', delimiter=',')
           res_pyth = np.loadtxt(rootPath+'res_logistic_test'+str(i+1)+'.txt')
-          np.testing.assert_almost_equal(res_pyth, res_pal, decimal=decimalTol)
+          np.testing.assert_almost_equal(res_pyth, res_shen, decimal=decimalTol)
 
 

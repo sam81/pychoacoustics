@@ -81,7 +81,9 @@ from .sndlib import*
 from .utils_general import*
 from .utils_process_results import*
 from .PSI_method import*
+from .PSI_method_est_guess import setupPSIEstGuessRate, PSIEstGuessRate_update
 from .UML_method import*
+from .UML_method_est_guess import setupUMLEstGuessRate, UMLEstGuessRate_update
 
 
 try:
@@ -447,7 +449,9 @@ class responseBox(QMainWindow):
                                                 "Constant 1-Pair Same/Different",
                                                 "Multiple Constants 1-Pair Same/Different",
                                                 "Constant ABX",
-                                                "Multiple Constants ABX"]:
+                                                "Multiple Constants ABX",
+                                                "UML - Est. Guess Rate",
+                                                "PSI - Est. Guess Rate"]:
                 for i in range(nIntervals):
                     self.intervalLight.append(intervalLight(self))
                     self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
@@ -922,6 +926,52 @@ class responseBox(QMainWindow):
                 self.prm['margThresh'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Marginalize Mid Point:"))]
                 self.prm['startLevelType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Start Level:"))]
 
+            elif self.prm["paradigm"] == self.tr("PSI - Est. Guess Rate"):
+                self.prm['psyFunType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Psychometric Function:"))]
+                self.prm['nTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Trials"))])
+                self.prm['stimScale'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Stim. Scaling:"))]
+
+                self.prm['stimLo'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Stim. Min"))])
+                self.prm['stimHi'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Stim. Max"))])
+                self.prm['stimStep'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Stim. Step"))])
+
+                self.prm['loMidPoint'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point Min"))])
+                self.prm['hiMidPoint'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point Max"))])
+                self.prm['midPointStep'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point Step"))])
+                self.prm['midPointPrior'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Mid Point Prior:"))]
+                self.prm['midPointPriorMu'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point mu"))])
+                self.prm['midPointPriorSTD'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point STD"))])
+
+                self.prm['loGuess'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Guess Min"))])
+                self.prm['hiGuess'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Guess Max"))])
+                self.prm['guessStep'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Guess Step"))])
+                self.prm['guessSpacing'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Guess Spacing:"))]
+                self.prm['guessPrior'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Guess Prior:"))]
+                self.prm['guessPriorMu'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Guess mu"))])
+                self.prm['guessPriorSTD'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Guess STD"))])
+
+                self.prm['loSlope'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope Min"))])
+                self.prm['hiSlope'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope Max"))])
+                self.prm['slopeStep'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope Step"))])
+                self.prm['slopeSpacing'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Slope Spacing:"))]
+                self.prm['slopePrior'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Slope Prior:"))]
+                self.prm['slopePriorMu'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope mu"))])
+                self.prm['slopePriorSTD'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope STD"))])
+
+                self.prm['loLapse'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse Min"))])
+                self.prm['hiLapse'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse Max"))])
+                self.prm['lapseStep'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse Step"))])
+                self.prm['lapseSpacing'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Lapse Spacing:"))]
+                self.prm['lapsePrior'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Lapse Prior:"))]
+                self.prm['lapsePriorMu'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse mu"))])
+                self.prm['lapsePriorSTD'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse STD"))])
+
+                self.prm['margGuess'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Marginalize Guess:"))]
+                self.prm['margLapse'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Marginalize Lapse:"))]
+                self.prm['margSlope'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Marginalize Slope:"))]
+                self.prm['margThresh'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Marginalize Mid Point:"))]
+                self.prm['startLevelType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Start Level:"))]
+
             elif self.prm["paradigm"] == self.tr("UML"):
                 self.prm['psyFunType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Psychometric Function:"))]
                 self.prm['swptRule'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Swpt. Rule:"))]
@@ -941,6 +991,50 @@ class responseBox(QMainWindow):
                 self.prm['midPointPrior'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Mid Point Prior:"))]
                 self.prm['midPointPriorMu'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point mu"))])
                 self.prm['midPointPriorSTD'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point STD"))])
+
+                self.prm['loSlope'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope Min"))])
+                self.prm['hiSlope'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope Max"))])
+                self.prm['slopeStep'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope Step"))])
+                self.prm['slopeSpacing'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Slope Spacing:"))]
+                self.prm['slopePrior'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Slope Prior:"))]
+                self.prm['slopePriorMu'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope mu"))])
+                self.prm['slopePriorSTD'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope STD"))])
+
+                self.prm['loLapse'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse Min"))])
+                self.prm['hiLapse'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse Max"))])
+                self.prm['lapseStep'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse Step"))])
+                self.prm['lapseSpacing'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Lapse Spacing:"))]
+                self.prm['lapsePrior'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Lapse Prior:"))]
+                self.prm['lapsePriorMu'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse mu"))])
+                self.prm['lapsePriorSTD'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse STD"))])
+
+            elif self.prm["paradigm"] == self.tr("UML - Est. Guess Rate"):
+                self.prm['psyFunType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Psychometric Function:"))]
+                self.prm['swptRule'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Swpt. Rule:"))]
+                self.prm['psyFunPosteriorSummary'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Posterior Summary:"))]
+                self.prm['nTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Trials"))])
+                self.prm['numberCorrectNeeded'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Rule Down"))])
+                
+                self.prm['stimScale'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Stim. Scaling:"))]
+                self.prm['stimLo'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Stim. Min"))])
+                self.prm['stimHi'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Stim. Max"))])
+                self.prm['suggestedLambdaSwpt'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Suggested Lapse Swpt."))])
+                self.prm['lambdaSwptPC'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Pr. Corr. at Est. Lapse Swpt."))])
+
+                self.prm['loMidPoint'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point Min"))])
+                self.prm['hiMidPoint'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point Max"))])
+                self.prm['midPointStep'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point Step"))])
+                self.prm['midPointPrior'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Mid Point Prior:"))]
+                self.prm['midPointPriorMu'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point mu"))])
+                self.prm['midPointPriorSTD'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Mid Point STD"))])
+
+                self.prm['loGuess'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Guess Min"))])
+                self.prm['hiGuess'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Guess Max"))])
+                self.prm['guessStep'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Guess Step"))])
+                self.prm['guessSpacing'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Guess Spacing:"))]
+                self.prm['guessPrior'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Guess Prior:"))]
+                self.prm['guessPriorMu'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Guess mu"))])
+                self.prm['guessPriorSTD'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Guess STD"))])
 
                 self.prm['loSlope'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope Min"))])
                 self.prm['hiSlope'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Slope Max"))])
@@ -1042,7 +1136,9 @@ class responseBox(QMainWindow):
                                             self.tr("Weighted Up-Down Interleaved"),
                                             self.tr("PEST"), self.tr("Maximum Likelihood"),
                                             self.tr("PSI"),
-                                            self.tr("UML")]:
+                                            self.tr("UML"),
+                                            self.tr("UML - Est. Guess Rate"),
+                                            self.tr("PSI - Est. Guess Rate")]:
                 ret = QMessageBox.warning(self, self.tr("Warning"),
                                           self.tr("Sorry, psychometric listener not supported by current paradigm. Please, choose another response mode."),
                                           QMessageBox.Ok)
@@ -1221,8 +1317,12 @@ class responseBox(QMainWindow):
             self.sortResponseMaximumLikelihood(buttonClicked)
         elif self.prm['paradigm'] == self.tr("PSI"):
             self.sortResponsePSI(buttonClicked)
+        elif self.prm['paradigm'] == self.tr("PSI - Est. Guess Rate"):
+            self.sortResponsePSIEstGuessRate(buttonClicked)
         elif self.prm['paradigm'] == self.tr("UML"):
             self.sortResponseUML(buttonClicked)
+        elif self.prm['paradigm'] == self.tr("UML - Est. Guess Rate"):
+            self.sortResponseUMLEstGuessRate(buttonClicked)
         elif self.prm['paradigm'] == self.tr("Multiple Constants Odd One Out"):
             self.sortResponseMultipleConstantsOddOneOut(buttonClicked)
         elif self.prm['paradigm'] == self.tr("Adaptive Digit Span"):
@@ -3641,6 +3741,7 @@ class responseBox(QMainWindow):
             resLineToWrite = '{0:5.3f}'.format(self.PSI['est_midpoint']) + self.prm['pref']["general"]["csvSeparator"] + \
                              '{0:5.3f}'.format(self.PSI['est_slope']) + self.prm['pref']["general"]["csvSeparator"] + \
                              '{0:5.3f}'.format(self.PSI['est_lapse']) + self.prm['pref']["general"]["csvSeparator"] + \
+                             '{0:d}'.format(int(self.prm["nTrials"])) + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
@@ -3691,6 +3792,239 @@ class responseBox(QMainWindow):
             # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
             # print(self.PSI["phi"])
             self.doTrial()
+
+    #PSI Est. Guess Rate
+    def sortResponsePSIEstGuessRate(self, buttonClicked):
+        currBlock = 'b' + str(self.prm['currentBlock'])
+        if self.prm['startOfBlock'] == True:
+            self.fullFileLines = []
+            self.fullFileSummLines = []
+            if self.prm['margThresh'] == "Yes" or self.prm['margSlope'] == "Yes" or self.prm['margGuess'] == "Yes" or self.prm['margLapse'] == "Yes":
+                ax = np.array([])
+                if self.prm['margThresh'] == "Yes":
+                    ax = numpy.append(ax, 0)
+                if self.prm['margSlope'] == "Yes":
+                    ax = numpy.append(ax, 1)
+                if self.prm['margGuess'] == "Yes":
+                    ax = numpy.append(ax, 2)
+                if self.prm['margLapse'] == "Yes":
+                    ax = numpy.append(ax, 3)
+                ax = tuple(np.sort(ax))
+            else:
+                ax = None
+                    
+            if self.prm['stimScale'] == "Linear":
+                self.PSI = setupPSIEstGuessRate(model=self.prm['psyFunType'],
+                                                x0=self.prm['adaptiveDifference'],
+                                                xLim=(self.prm['stimLo'], self.prm['stimHi']),
+                                                xStep=self.prm['stimStep'],
+                                                stimScale=self.prm['stimScale'],
+                                                alphaLim=(self.prm['loMidPoint'], self.prm['hiMidPoint']),
+                                                alphaStep=self.prm['midPointStep'],
+                                                alphaSpacing="Linear",
+                                                alphaDist=self.prm['midPointPrior'],
+                                                alphaMu=self.prm['midPointPriorMu'],
+                                                alphaSTD=self.prm['midPointPriorSTD'],
+                                                betaLim=(self.prm['loSlope'],self.prm['hiSlope']),
+                                                betaStep=self.prm['slopeStep'],
+                                                betaSpacing=self.prm['slopeSpacing'],
+                                                betaDist=self.prm['slopePrior'],
+                                                betaMu=self.prm['slopePriorMu'],
+                                                betaSTD=self.prm['slopePriorSTD'],
+                                                gammaLim=(self.prm['loGuess'], self.prm['hiGuess']),
+                                                gammaStep=self.prm['guessStep'],
+                                                gammaSpacing=self.prm['guessSpacing'],
+                                                gammaDist=self.prm['guessPrior'],
+                                                gammaMu=self.prm['guessPriorMu'],
+                                                gammaSTD=self.prm['guessPriorSTD'],
+                                                lambdaLim=(self.prm['loLapse'],self.prm['hiLapse']),
+                                                lambdaStep=self.prm['lapseStep'],
+                                                lambdaSpacing=self.prm['lapseSpacing'],
+                                                lambdaDist=self.prm['lapsePrior'],
+                                                lambdaMu=self.prm['lapsePriorMu'],
+                                                lambdaSTD=self.prm['lapsePriorSTD'],
+                                                marginalize = ax)
+            elif self.prm['stimScale'] == "Logarithmic":
+                self.PSI = setupPSIEstGuessRate(model=self.prm['psyFunType'],
+                                                x0=abs(self.prm['adaptiveDifference']),
+                                                xLim=(abs(self.prm['stimLo']), abs(self.prm['stimHi'])),
+                                                xStep=self.prm['stimStep'],
+                                                stimScale=self.prm['stimScale'],
+                                                alphaLim=(abs(self.prm['loMidPoint']), abs(self.prm['hiMidPoint'])),
+                                                alphaStep=self.prm['midPointStep'],
+                                                alphaSpacing="Linear",
+                                                alphaDist=self.prm['midPointPrior'],
+                                                alphaMu=abs(self.prm['midPointPriorMu']),
+                                                alphaSTD=self.prm['midPointPriorSTD'],
+                                                betaLim=(self.prm['loSlope'],self.prm['hiSlope']),
+                                                betaStep=self.prm['slopeStep'],
+                                                betaSpacing=self.prm['slopeSpacing'],
+                                                betaDist=self.prm['slopePrior'],
+                                                betaMu=self.prm['slopePriorMu'],
+                                                betaSTD=self.prm['slopePriorSTD'],
+                                                gammaLim=(self.prm['loGuess'], self.prm['hiGuess']),
+                                                gammaStep=self.prm['guessStep'],
+                                                gammaSpacing=self.prm['guessSpacing'],
+                                                gammaDist=self.prm['guessPrior'],
+                                                gammaMu=self.prm['guessPriorMu'],
+                                                gammaSTD=self.prm['guessPriorSTD'],
+                                                lambdaLim=(self.prm['loLapse'],self.prm['hiLapse']),
+                                                lambdaStep=self.prm['lapseStep'],
+                                                lambdaSpacing=self.prm['lapseSpacing'],
+                                                lambdaDist=self.prm['lapsePrior'],
+                                                lambdaMu=self.prm['lapsePriorMu'],
+                                                lambdaSTD=self.prm['lapsePriorSTD'],
+                                                marginalize = ax)
+                
+            self.prm['startOfBlock'] = False
+            self.trialCount = 0
+            self.fullFileLines = []
+            self.prm['buttonCounter'] = [0 for i in range(self.prm['nAlternatives'])]
+
+        self.prm['buttonCounter'][buttonClicked-1] = self.prm['buttonCounter'][buttonClicked-1] + 1
+            
+        if buttonClicked == self.correctButton:
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback("correct")
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback("neutral")
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback("off")
+        elif buttonClicked != self.correctButton:
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback("incorrect")
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback("neutral")
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback("off")
+
+        if buttonClicked == self.prm["YesButton"]:
+            response = 1 #here response indicate whether listener said "Yes", or equivalent, not whether the response was correct or not
+        else:
+            response = 0
+
+        self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"]])
+        self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
+        self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+        self.fullFileLog.write(str(response)+'; ')
+        self.fullFileLines.append(str(response)+'; ')
+        self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(response) + self.prm['pref']["general"]["csvSeparator"])
+        if 'additional_parameters_to_write' in self.prm:
+             for p in range(len(self.prm['additional_parameters_to_write'])):
+                 self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                 self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                 self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(self.prm['additional_parameters_to_write'][p]))
+                 self.fullFileLog.write(' ;')
+                 self.fullFileLines.append(' ;')
+                 self.fullFileSummLines[len(self.fullFileSummLines)-1].append(self.prm['pref']["general"]["csvSeparator"])
+        self.fullFileLog.write('\n')
+        self.fullFileLines.append('\n')
+
+        self.trialCount = self.trialCount +1
+
+        self.fullFileLog.flush()
+        pcDone = (self.trialCount / self.prm['nTrials']) * 100
+        bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
+        pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
+        pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
+        self.gauge.setValue(pcTot)
+        
+        if self.trialCount == self.prm['nTrials']:
+            
+            self.writeResultsHeader('standard')
+            self.fullFileLog.write('\n')
+            self.fullFileLines.append('\n')
+            for i in range(len(self.fullFileLines)):
+                self.fullFile.write(self.fullFileLines[i])
+            self.resFile.write('\n\n')
+            self.resFileLog.write('\n\n')
+            self.resFile.write('Midpoint = %5.3f ' %self.PSI['est_midpoint'])
+            self.resFileLog.write('Midpoint = %5.3f ' %self.PSI['est_midpoint'])
+            self.resFile.write('\n')
+            self.resFileLog.write('\n')
+            self.resFile.write('Slope = %5.3f ' %self.PSI['est_slope'])
+            self.resFileLog.write('Slope = %5.3f ' %self.PSI['est_slope'])
+            self.resFile.write('\n')
+            self.resFileLog.write('\n')
+            self.resFile.write('Guess = %5.3f ' %self.PSI['est_guess'])
+            self.resFileLog.write('Guess = %5.3f ' %self.PSI['est_guess'])
+            self.resFile.write('\n')
+            self.resFileLog.write('\n')
+            self.resFile.write('Lapse = %5.3f ' %self.PSI['est_lapse'])
+            self.resFileLog.write('Lapse = %5.3f ' %self.PSI['est_lapse'])
+            self.resFile.write('\n\n')
+            self.resFileLog.write('\n\n')
+  
+
+            for i in range(self.prm['nAlternatives']):
+                self.resFile.write("B{0} = {1}".format(i+1, self.prm['buttonCounter'][i]))
+                self.resFileLog.write("B{0} = {1}".format(i+1, self.prm['buttonCounter'][i]))
+                if i != self.prm['nAlternatives']-1:
+                    self.resFile.write(', ')
+                    self.resFileLog.write(', ')
+            self.resFile.write('\n\n')
+            self.resFile.flush()
+            self.resFileLog.write('\n\n')
+            self.resFileLog.flush()
+            self.getEndTime()
+
+            durString = '{0:5.3f}'.format(self.prm['blockEndTime'] - self.prm['blockStartTime'])
+            resLineToWrite = '{0:5.3f}'.format(self.PSI['est_midpoint']) + self.prm['pref']["general"]["csvSeparator"] + \
+                             '{0:5.3f}'.format(self.PSI['est_guess']) + self.prm['pref']["general"]["csvSeparator"] + \
+                             '{0:5.3f}'.format(self.PSI['est_slope']) + self.prm['pref']["general"]["csvSeparator"] + \
+                             '{0:5.3f}'.format(self.PSI['est_lapse']) + self.prm['pref']["general"]["csvSeparator"] + \
+                             '{0:d}'.format(int(self.prm["nTrials"])) + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             durString + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
+            resLineToWrite = resLineToWrite + '\n'
+            
+            self.writeResultsSummaryLine('PSI - Est. Guess Rate', resLineToWrite)
+
+            resLineToWriteSummFull = ""
+            for i in range(len(self.fullFileSummLines)):
+              resLineToWriteSummFull = resLineToWriteSummFull + " ".join(self.fullFileSummLines[i]) + \
+                             self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             durString + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+             
+              resLineToWriteSummFull = self.getCommonTabFields(resLineToWriteSummFull)
+              resLineToWriteSummFull = resLineToWriteSummFull + '\n'
+            
+            
+            self.writeResultsSummaryFullLine('PSI - Est. Guess Rate', resLineToWriteSummFull)
+
+            del self.PSI #clear memory
+            self.atBlockEnd()
+        else:
+            self.PSI = PSIEstGuessRate_update(self.PSI, response)
+            if self.prm['stimScale'] == "Logarithmic":
+                if self.prm['adaptiveDifference'] >=0:
+                    self.prm['adaptiveDifference'] = self.PSI["xnextLinear"]
+                else:
+                    self.prm['adaptiveDifference'] = -self.PSI["xnextLinear"]
+            else:
+                self.prm['adaptiveDifference'] = self.PSI["xnextLinear"]
+            # print("Est. thresh: " + str(self.PSI['est_midpoint']))  
+            # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
+            # print(self.PSI["phi"])
+            self.doTrial()
+
 
     def sortResponseUML(self, buttonClicked):
         currBlock = 'b' + str(self.prm['currentBlock'])
@@ -3847,6 +4181,7 @@ class responseBox(QMainWindow):
             resLineToWrite = '{0:5.3f}'.format(self.UML['est_midpoint']) + self.prm['pref']["general"]["csvSeparator"] + \
                              '{0:5.3f}'.format(self.UML['est_slope']) + self.prm['pref']["general"]["csvSeparator"] + \
                              '{0:5.3f}'.format(self.UML['est_lapse']) + self.prm['pref']["general"]["csvSeparator"] + \
+                             '{0:d}'.format(int(self.prm["nTrials"])) + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
@@ -3897,6 +4232,233 @@ class responseBox(QMainWindow):
             # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
             # print(self.UML["phi"])
             self.doTrial()
+
+    def sortResponseUMLEstGuessRate(self, buttonClicked):
+        currBlock = 'b' + str(self.prm['currentBlock'])
+        if self.prm['startOfBlock'] == True:
+            self.fullFileLines = []
+            self.fullFileSummLines = []
+
+            if self.prm['stimScale'] == "Linear":
+                self.UML = setupUMLEstGuessRate(model=self.prm['psyFunType'],
+                                                swptRule=self.prm['swptRule'],
+                                                nDown=self.prm["numberCorrectNeeded"],
+                                                centTend = self.prm["psyFunPosteriorSummary"],
+                                                stimScale = self.prm['stimScale'],
+                                                x0=self.prm['adaptiveDifference'],
+                                                xLim=(self.prm['stimLo'], self.prm['stimHi']),
+                                                alphaLim=(self.prm['loMidPoint'], self.prm['hiMidPoint']),
+                                                alphaStep=self.prm['midPointStep'],
+                                                alphaSpacing="Linear",
+                                                alphaDist=self.prm['midPointPrior'],
+                                                alphaMu=self.prm['midPointPriorMu'],
+                                                alphaSTD=self.prm['midPointPriorSTD'],
+                                                betaLim=(self.prm['loSlope'], self.prm['hiSlope']),
+                                                betaStep=self.prm['slopeStep'],
+                                                betaSpacing=self.prm['slopeSpacing'],
+                                                betaDist=self.prm['slopePrior'],
+                                                betaMu=self.prm['slopePriorMu'],
+                                                betaSTD=self.prm['slopePriorSTD'],
+                                                gammaLim=(self.prm['loGuess'], self.prm['hiGuess']),
+                                                gammaStep=self.prm['guessStep'],
+                                                gammaSpacing=self.prm['guessSpacing'],
+                                                gammaDist=self.prm['guessPrior'],
+                                                gammaMu=self.prm['guessPriorMu'],
+                                                gammaSTD=self.prm['guessPriorSTD'],
+                                                lambdaLim=(self.prm['loLapse'], self.prm['hiLapse']),
+                                                lambdaStep=self.prm['lapseStep'],
+                                                lambdaSpacing=self.prm['lapseSpacing'],
+                                                lambdaDist=self.prm['lapsePrior'],
+                                                lambdaMu=self.prm['lapsePriorMu'],
+                                                lambdaSTD=self.prm['lapsePriorSTD'],
+                                                suggestedLambdaSwpt=self.prm['suggestedLambdaSwpt'],
+                                                lambdaSwptPC=self.prm['lambdaSwptPC'])
+            elif self.prm['stimScale'] == "Logarithmic":
+                self.UML = setupUMLEstGuessRate(model=self.prm['psyFunType'],
+                                                swptRule=self.prm['swptRule'],
+                                                nDown=self.prm["numberCorrectNeeded"],
+                                                centTend = self.prm["psyFunPosteriorSummary"],
+                                                stimScale = self.prm['stimScale'],
+                                                x0=abs(self.prm['adaptiveDifference']),
+                                                xLim=(abs(self.prm['stimLo']), abs(self.prm['stimHi'])),
+                                                alphaLim=(abs(self.prm['loMidPoint']), abs(self.prm['hiMidPoint'])),
+                                                alphaStep=abs(self.prm['midPointStep']),
+                                                alphaSpacing="Linear",
+                                                alphaDist=self.prm['midPointPrior'],
+                                                alphaMu=self.prm['midPointPriorMu'],
+                                                alphaSTD=self.prm['midPointPriorSTD'],
+                                                betaLim=(self.prm['loSlope'], self.prm['hiSlope']),
+                                                betaStep=self.prm['slopeStep'],
+                                                betaSpacing=self.prm['slopeSpacing'],
+                                                betaDist=self.prm['slopePrior'],
+                                                betaMu=self.prm['slopePriorMu'],
+                                                betaSTD=self.prm['slopePriorSTD'],
+                                                gammaLim=(self.prm['loGuess'], self.prm['hiGuess']),
+                                                gammaStep=self.prm['guessStep'],
+                                                gammaSpacing=self.prm['guessSpacing'],
+                                                gammaDist=self.prm['guessPrior'],
+                                                gammaMu=self.prm['guessPriorMu'],
+                                                gammaSTD=self.prm['guessPriorSTD'],
+                                                lambdaLim=(self.prm['loLapse'], self.prm['hiLapse']),
+                                                lambdaStep=self.prm['lapseStep'],
+                                                lambdaSpacing=self.prm['lapseSpacing'],
+                                                lambdaDist=self.prm['lapsePrior'],
+                                                lambdaMu=self.prm['lapsePriorMu'],
+                                                lambdaSTD=self.prm['lapsePriorSTD'],
+                                                suggestedLambdaSwpt=abs(self.prm['suggestedLambdaSwpt']),
+                                                lambdaSwptPC=self.prm['lambdaSwptPC'])
+
+            self.prm['startOfBlock'] = False
+            self.trialCount = 0
+            self.fullFileLines = []
+            self.prm['buttonCounter'] = [0 for i in range(self.prm['nAlternatives'])]
+
+        self.prm['buttonCounter'][buttonClicked-1] = self.prm['buttonCounter'][buttonClicked-1] + 1
+            
+        if buttonClicked == self.correctButton:
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback("correct")
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback("neutral")
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback("off")
+        elif buttonClicked != self.correctButton:
+            response = 0
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback("incorrect")
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback("neutral")
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback("off")
+
+        if buttonClicked == self.prm["YesButton"]:
+            response = 1 #here response indicate whether listener said "Yes", or equivalent, not whether the response was correct or not
+        else:
+            response = 0
+            
+        self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"]])
+        self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
+        self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+        self.fullFileLog.write(str(response)+'; ')
+        self.fullFileLines.append(str(response)+'; ')
+        self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(response) + self.prm['pref']["general"]["csvSeparator"])
+        if 'additional_parameters_to_write' in self.prm:
+             for p in range(len(self.prm['additional_parameters_to_write'])):
+                 self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                 self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                 self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(self.prm['additional_parameters_to_write'][p]))
+                 self.fullFileLog.write(' ;')
+                 self.fullFileLines.append(' ;')
+                 self.fullFileSummLines[len(self.fullFileSummLines)-1].append(self.prm['pref']["general"]["csvSeparator"])
+        self.fullFileLog.write('\n')
+        self.fullFileLines.append('\n')
+
+        self.trialCount = self.trialCount +1
+
+        self.fullFileLog.flush()
+        pcDone = (self.trialCount / self.prm['nTrials']) * 100
+        bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
+        pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
+        pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
+        self.gauge.setValue(pcTot)
+        
+        if self.trialCount == self.prm['nTrials']:
+            
+            self.writeResultsHeader('standard')
+            self.fullFileLog.write('\n')
+            self.fullFileLines.append('\n')
+            for i in range(len(self.fullFileLines)):
+                self.fullFile.write(self.fullFileLines[i])
+            self.resFile.write('\n\n')
+            self.resFileLog.write('\n\n')
+            self.resFile.write('Midpoint = %5.3f ' %self.UML['est_midpoint'])
+            self.resFileLog.write('Midpoint = %5.3f ' %self.UML['est_midpoint'])
+            self.resFile.write('\n')
+            self.resFileLog.write('\n')
+            self.resFile.write('Guess = %5.3f ' %self.UML['est_guess'])
+            self.resFileLog.write('Guess = %5.3f ' %self.UML['est_guess'])
+            self.resFile.write('\n')
+            self.resFileLog.write('\n')
+            self.resFile.write('Slope = %5.3f ' %self.UML['est_slope'])
+            self.resFileLog.write('Slope = %5.3f ' %self.UML['est_slope'])
+            self.resFile.write('\n')
+            self.resFileLog.write('\n')
+            self.resFile.write('Lapse = %5.3f ' %self.UML['est_lapse'])
+            self.resFileLog.write('Lapse = %5.3f ' %self.UML['est_lapse'])
+            self.resFile.write('\n\n')
+            self.resFileLog.write('\n\n')
+  
+
+            for i in range(self.prm['nAlternatives']):
+                self.resFile.write("B{0} = {1}".format(i+1, self.prm['buttonCounter'][i]))
+                self.resFileLog.write("B{0} = {1}".format(i+1, self.prm['buttonCounter'][i]))
+                if i != self.prm['nAlternatives']-1:
+                    self.resFile.write(', ')
+                    self.resFileLog.write(', ')
+            self.resFile.write('\n\n')
+            self.resFile.flush()
+            self.resFileLog.write('\n\n')
+            self.resFileLog.flush()
+            self.getEndTime()
+
+            durString = '{0:5.3f}'.format(self.prm['blockEndTime'] - self.prm['blockStartTime'])
+            resLineToWrite = '{0:5.3f}'.format(self.UML['est_midpoint']) + self.prm['pref']["general"]["csvSeparator"] + \
+                             '{0:5.3f}'.format(self.UML['est_guess']) + self.prm['pref']["general"]["csvSeparator"] + \
+                             '{0:5.3f}'.format(self.UML['est_slope']) + self.prm['pref']["general"]["csvSeparator"] + \
+                             '{0:5.3f}'.format(self.UML['est_lapse']) + self.prm['pref']["general"]["csvSeparator"] + \
+                             '{0:d}'.format(int(self.prm['nTrials'])) + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             durString + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
+            resLineToWrite = resLineToWrite + '\n'
+            
+            self.writeResultsSummaryLine('UML - Est. Guess Rate', resLineToWrite)
+
+            resLineToWriteSummFull = ""
+            for i in range(len(self.fullFileSummLines)):
+              resLineToWriteSummFull = resLineToWriteSummFull + " ".join(self.fullFileSummLines[i]) + \
+                             self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             durString + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
+                             self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+             
+              resLineToWriteSummFull = self.getCommonTabFields(resLineToWriteSummFull)
+              resLineToWriteSummFull = resLineToWriteSummFull + '\n'
+            
+            
+            self.writeResultsSummaryFullLine('UML - Est. Guess Rate', resLineToWriteSummFull)
+
+            del self.UML #clear memory
+            self.atBlockEnd()
+        else:
+            self.UML = UMLEstGuessRate_update(self.UML, response)
+            if self.prm['stimScale'] == "Logarithmic":
+                if self.prm['adaptiveDifference'] >=0:
+                    self.prm['adaptiveDifference'] = self.UML["xnextLinear"]
+                else:
+                    self.prm['adaptiveDifference'] = -self.UML["xnextLinear"]
+            else:
+                self.prm['adaptiveDifference'] = self.UML["xnextLinear"]
+            # print("Est. thresh: " + str(self.UML['est_midpoint']))  
+            # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
+            # print(self.UML["phi"])
+            self.doTrial()
+            
+
             
     def sortResponseMultipleConstantsOddOneOut(self, buttonClicked):
         if self.prm['startOfBlock'] == True: #Initialize counts and data structures
@@ -4593,6 +5155,23 @@ class responseBox(QMainWindow):
             headerToWrite = 'threshold' +  self.prm['pref']["general"]["csvSeparator"] + \
                             'slope' +  self.prm['pref']["general"]["csvSeparator"] + \
                             'lapse' +  self.prm['pref']["general"]["csvSeparator"] + \
+                            'nTrials' +  self.prm['pref']["general"]["csvSeparator"] + \
+                            'condition' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
+        elif paradigm in ['PSI - Est. Guess Rate', 'UML - Est. Guess Rate']:
+            headerToWrite = 'threshold' +  self.prm['pref']["general"]["csvSeparator"] + \
+                            'guess' +  self.prm['pref']["general"]["csvSeparator"] + \
+                            'slope' +  self.prm['pref']["general"]["csvSeparator"] + \
+                            'lapse' +  self.prm['pref']["general"]["csvSeparator"] + \
+                            'nTrials' +  self.prm['pref']["general"]["csvSeparator"] + \
                             'condition' + self.prm['pref']["general"]["csvSeparator"] + \
                             'listener' + self.prm['pref']["general"]["csvSeparator"] + \
                             'session'+ self.prm['pref']["general"]["csvSeparator"] + \
@@ -4717,7 +5296,7 @@ class responseBox(QMainWindow):
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
                             'paradigm' + self.prm['pref']["general"]["csvSeparator"] 
      
-        if paradigm in ['PSI', 'UML']:
+        if paradigm in ['PSI', 'UML', "PSI - Est. Guess Rate", "UML - Est. Guess Rate"]:
             headerToWrite = 'adaptive_difference' + self.prm['pref']["general"]["csvSeparator"] + \
                             'response' + self.prm['pref']["general"]["csvSeparator"]
             if 'additional_parameters_to_write' in self.prm:

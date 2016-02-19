@@ -88,8 +88,8 @@ if publish == 1 or publish == "y":
     fIn.close()
 
     for i in range(len(lns)):
-        if lns[i][0:73] == '<li> <a href="https://bintray.com/artifact/download/sam81/hearinglab-win/':
-            lns[i] = '<li> <a href="https://bintray.com/artifact/download/sam81/hearinglab-win/pychoacoustics_'+ver+'/pychoacoustics_'+ver+'-setup.exe">pychoacoustics_'+ver+'-setup.exe</a> Windows installer (experimental) </li>'
+        if lns[i][0:75] == '  <li> <a href="https://bintray.com/artifact/download/sam81/hearinglab-win/':
+            lns[i] = '  <li> <a href="https://bintray.com/artifact/download/sam81/hearinglab-win/pychoacoustics_'+ver+'/pychoacoustics_'+ver+'-setup.exe">pychoacoustics_'+ver+'-setup.exe</a> Windows installer (experimental) </li>'
 
     fOut = open(htmlPagePath, 'w')
     fOut.writelines(lns)

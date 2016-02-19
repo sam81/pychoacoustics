@@ -79,8 +79,10 @@ from .pysdt import*
 
 if matplotlib_available == True:
     from .win_psychometric_listener_plot import*
-    from .win_UML_parspace_plot import*
-    from .win_PSI_parspace_plot import*
+    from .win_UML_parspace_plot import UMLParSpacePlot
+    from .win_PSI_parspace_plot import PSIParSpacePlot
+    from .win_UML_est_guess_parspace_plot import UMLEstGuessRateParSpacePlot
+    from .win_PSI_est_guess_parspace_plot import PSIEstGuessRateParSpacePlot
 
 
 #from redirect_out import*
@@ -1148,7 +1150,7 @@ class pychControlWin(QMainWindow):
                 self.paradigmFieldLabelList[i].setParent(None)
                 self.paradigm_widg_sizer.removeWidget(self.paradigmFieldCheckBoxList[i])
                 self.paradigmFieldCheckBoxList[i].setParent(None)
-            if prevParadigm in ["UML", "PSI"]:
+            if prevParadigm in ["UML", "PSI", "UML - Est. Guess Rate", "PSI - Est. Guess Rate"]:
                 for i in range(len(self.paradigmButtonList)):
                     self.paradigm_widg_sizer.removeWidget(self.paradigmButtonList[i])
                     self.paradigmButtonList[i].setParent(None)
@@ -2834,6 +2836,927 @@ class pychControlWin(QMainWindow):
             self.onChangeLapsePrior()
             self.onChangeSwptRule()
 
+        #PSI guess
+        if self.currParadigm in [self.tr("PSI - Est. Guess Rate")]:
+            n = 0
+            priorOptions = ["Uniform", "Normal", "Gamma"]
+            psyFunOptions = ["Logistic", "Gaussian", "Gumbel", "Weibull"]
+            # n = n+1
+            self.psyFunChooserLabel = QLabel(self.tr("Psychometric Function:"), self)
+            self.paradigm_widg_sizer.addWidget(self.psyFunChooserLabel, n, 1)
+            self.psyFunChooser = QComboBox()
+            self.psyFunChooser.addItems(psyFunOptions)
+            self.paradigm_widg_sizer.addWidget(self.psyFunChooser, n, 2)
+            self.psyFunCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.psyFunCheckBox, n, 0)
+
+            self.stimScalingChooserLabel = QLabel(self.tr("Stim. Scaling:"), self)
+            self.paradigm_widg_sizer.addWidget(self.stimScalingChooserLabel, n, 4)
+            self.stimScalingChooser = QComboBox()
+            self.stimScalingChooser.addItems(["Linear", "Logarithmic"])
+            self.paradigm_widg_sizer.addWidget(self.stimScalingChooser, n, 5)
+            self.stimScalingCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.stimScalingCheckBox, n, 3)
+            self.stimScalingChooser.activated[str].connect(self.onStimScalingChooserChange)
+
+            self.nTrialsLabel = QLabel(self.tr("No. Trials"), self)
+            self.paradigm_widg_sizer.addWidget(self.nTrialsLabel, n, 7)
+            self.nTrialsTF = QLineEdit()
+            self.nTrialsTF.setText("100")
+            self.nTrialsTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.nTrialsTF, n, 8)
+            self.nTrialsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.nTrialsCheckBox, n, 6)
+
+            n = n+1
+
+            #min midpoint
+            self.loStimLabel = QLabel(self.tr("Stim. Min"), self)
+            self.paradigm_widg_sizer.addWidget(self.loStimLabel, n, 1)
+            self.loStim = QLineEdit()
+            self.loStim.setText('0.5')
+            self.loStim.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.loStim, n, 2)
+            self.loStimCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.loStimCheckBox, n, 0)
+            #n = n+1
+            #max midpoint
+            self.hiStimLabel = QLabel(self.tr("Stim. Max"), self)
+            self.paradigm_widg_sizer.addWidget(self.hiStimLabel, n, 4)
+            self.hiStim = QLineEdit()
+            self.hiStim.setText('40')
+            self.hiStim.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.hiStim, n, 5)
+            self.hiStimCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.hiStimCheckBox, n, 3)
+            # midpoint step
+            self.stimGridStepLabel = QLabel(self.tr("Stim. Step"), self)
+            self.paradigm_widg_sizer.addWidget(self.stimGridStepLabel, n, 7)
+            self.stimGridStep = QLineEdit()
+            self.stimGridStep.setText('0.5')
+            self.stimGridStep.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.stimGridStep, n, 8)
+            self.stimGridStepCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.stimGridStepCheckBox, n, 6)
+            n = n+1
+            #min midpoint
+            self.loMidPointLabel = QLabel(self.tr("Mid Point Min"), self)
+            self.paradigm_widg_sizer.addWidget(self.loMidPointLabel, n, 1)
+            self.loMidPoint = QLineEdit()
+            self.loMidPoint.setText('2')
+            self.loMidPoint.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.loMidPoint, n, 2)
+            self.loMidPointCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.loMidPointCheckBox, n, 0)
+            #n = n+1
+            #max midpoint
+            self.hiMidPointLabel = QLabel(self.tr("Mid Point Max"), self)
+            self.paradigm_widg_sizer.addWidget(self.hiMidPointLabel, n, 4)
+            self.hiMidPoint = QLineEdit()
+            self.hiMidPoint.setText('20')
+            self.hiMidPoint.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.hiMidPoint, n, 5)
+            self.hiMidPointCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.hiMidPointCheckBox, n, 3)
+            # midpoint step
+            self.threshGridStepLabel = QLabel(self.tr("Mid Point Step"), self)
+            self.paradigm_widg_sizer.addWidget(self.threshGridStepLabel, n, 7)
+            self.threshGridStep = QLineEdit()
+            self.threshGridStep.setText('0.5')
+            self.threshGridStep.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.threshGridStep, n, 8)
+            self.threshGridStepCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.threshGridStepCheckBox, n, 6)
+            n = n+1
+            # thresh prior
+            self.threshPriorChooserLabel = QLabel(self.tr("Mid Point Prior:"), self)
+            self.paradigm_widg_sizer.addWidget(self.threshPriorChooserLabel, n, 1)
+            self.threshPriorChooser = QComboBox()
+            self.threshPriorChooser.addItems(priorOptions)
+            self.paradigm_widg_sizer.addWidget(self.threshPriorChooser, n, 2)
+            self.threshPriorChooser.activated[str].connect(self.onChangeThreshPrior)
+            self.threshPriorChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.threshPriorChooserCheckBox, n, 0)
+            # thres priro mu
+            self.threshPriorMuLabel = QLabel(self.tr("Mid Point mu"), self)
+            self.paradigm_widg_sizer.addWidget(self.threshPriorMuLabel, n, 4)
+            self.threshPriorMu = QLineEdit()
+            self.threshPriorMu.setText('0.001')
+            self.threshPriorMu.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.threshPriorMu, n, 5)
+            self.threshPriorMuCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.threshPriorMuCheckBox, n, 3)
+            # thresh prior sd
+            self.threshPriorSTDLabel = QLabel(self.tr("Mid Point STD"), self)
+            self.paradigm_widg_sizer.addWidget(self.threshPriorSTDLabel, n, 7)
+            self.threshPriorSTD = QLineEdit()
+            self.threshPriorSTD.setText('1.1')
+            self.threshPriorSTD.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.threshPriorSTD, n, 8)
+            self.threshPriorSTDCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.threshPriorSTDCheckBox, n, 6)
+            n = n+1
+
+            #start guess
+            #min guess
+            self.loGuessLabel = QLabel(self.tr("Guess Min"), self)
+            self.paradigm_widg_sizer.addWidget(self.loGuessLabel, n, 1)
+            self.loGuess = QLineEdit()
+            self.loGuess.setText('0.0')
+            self.loGuess.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.loGuess, n, 2)
+            self.loGuessCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.loGuessCheckBox, n, 0)
+            #guess max
+            self.hiGuessLabel = QLabel(self.tr("Guess Max"), self)
+            self.paradigm_widg_sizer.addWidget(self.hiGuessLabel, n, 4)
+            self.hiGuess = QLineEdit()
+            self.hiGuess.setText('0.4')
+            self.hiGuess.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.hiGuess, n, 5)
+            self.hiGuessCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.hiGuessCheckBox, n, 3)
+            #guess step
+            self.guessGridStepLabel = QLabel(self.tr("Guess Step"), self)
+            self.paradigm_widg_sizer.addWidget(self.guessGridStepLabel, n, 7)
+            self.guessGridStep = QLineEdit()
+            self.guessGridStep.setText('0.01')
+            self.guessGridStep.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.guessGridStep, n, 8)
+            self.guessGridStepCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.guessGridStepCheckBox, n, 6)
+            n = n+1
+            self.guessSpacingChooserLabel = QLabel(self.tr("Guess Spacing:"), self)
+            self.paradigm_widg_sizer.addWidget(self.guessSpacingChooserLabel, n, 1)
+            self.guessSpacingChooser = QComboBox()
+            self.guessSpacingChooser.addItems(["Linear", "Logarithmic"])
+            self.paradigm_widg_sizer.addWidget(self.guessSpacingChooser, n, 2)
+            self.guessSpacingChooser.activated[str].connect(self.onGuessSpacingChooserChange)
+            self.guessSpacingChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.guessSpacingChooserCheckBox, n, 0)
+
+            n = n+1
+            # guess prior
+            self.guessPriorChooserLabel = QLabel(self.tr("Guess Prior:"), self)
+            self.paradigm_widg_sizer.addWidget(self.guessPriorChooserLabel, n, 1)
+            self.guessPriorChooser = QComboBox()
+            self.guessPriorChooser.addItems(priorOptions)
+            self.paradigm_widg_sizer.addWidget(self.guessPriorChooser, n, 2)
+            self.guessPriorChooser.activated[str].connect(self.onChangeGuessPrior)
+            self.guessPriorChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.guessPriorChooserCheckBox, n, 0)
+            # guess prior mu
+            self.guessPriorMuLabel = QLabel(self.tr("Guess mu"), self)
+            self.paradigm_widg_sizer.addWidget(self.guessPriorMuLabel, n, 4)
+            self.guessPriorMu = QLineEdit()
+            self.guessPriorMu.setText('1.1')
+            self.guessPriorMu.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.guessPriorMu, n, 5)
+            self.guessPriorMuCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.guessPriorMuCheckBox, n, 3)
+            # guess prior sd
+            self.guessPriorSTDLabel = QLabel(self.tr("Guess STD"), self)
+            self.paradigm_widg_sizer.addWidget(self.guessPriorSTDLabel, n, 7)
+            self.guessPriorSTD = QLineEdit()
+            self.guessPriorSTD.setText('1.1')
+            self.guessPriorSTD.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.guessPriorSTD, n, 8)
+            self.guessPriorSTDCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.guessPriorSTDCheckBox, n, 6)
+            n = n+1
+            #end guess
+            
+            #min slope
+            self.loSlopeLabel = QLabel(self.tr("Slope Min"), self)
+            self.paradigm_widg_sizer.addWidget(self.loSlopeLabel, n, 1)
+            self.loSlope = QLineEdit()
+            self.loSlope.setText('0.1')
+            self.loSlope.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.loSlope, n, 2)
+            self.loSlopeCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.loSlopeCheckBox, n, 0)
+            #slope max
+            self.hiSlopeLabel = QLabel(self.tr("Slope Max"), self)
+            self.paradigm_widg_sizer.addWidget(self.hiSlopeLabel, n, 4)
+            self.hiSlope = QLineEdit()
+            self.hiSlope.setText('10')
+            self.hiSlope.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.hiSlope, n, 5)
+            self.hiSlopeCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.hiSlopeCheckBox, n, 3)
+            #slope step
+            self.slopeGridStepLabel = QLabel(self.tr("Slope Step"), self)
+            self.paradigm_widg_sizer.addWidget(self.slopeGridStepLabel, n, 7)
+            self.slopeGridStep = QLineEdit()
+            self.slopeGridStep.setText('0.1')
+            self.slopeGridStep.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.slopeGridStep, n, 8)
+            self.slopeGridStepCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.slopeGridStepCheckBox, n, 6)
+            n = n+1
+            self.slopeSpacingChooserLabel = QLabel(self.tr("Slope Spacing:"), self)
+            self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooserLabel, n, 1)
+            self.slopeSpacingChooser = QComboBox()
+            self.slopeSpacingChooser.addItems(["Linear", "Logarithmic"])
+            self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooser, n, 2)
+            self.slopeSpacingChooser.activated[str].connect(self.onSlopeSpacingChooserChange)
+            self.slopeSpacingChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooserCheckBox, n, 0)
+
+            n = n+1
+            # slope prior
+            self.slopePriorChooserLabel = QLabel(self.tr("Slope Prior:"), self)
+            self.paradigm_widg_sizer.addWidget(self.slopePriorChooserLabel, n, 1)
+            self.slopePriorChooser = QComboBox()
+            self.slopePriorChooser.addItems(priorOptions)
+            self.paradigm_widg_sizer.addWidget(self.slopePriorChooser, n, 2)
+            self.slopePriorChooser.activated[str].connect(self.onChangeSlopePrior)
+            self.slopePriorChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.slopePriorChooserCheckBox, n, 0)
+            # thres priro mu
+            self.slopePriorMuLabel = QLabel(self.tr("Slope mu"), self)
+            self.paradigm_widg_sizer.addWidget(self.slopePriorMuLabel, n, 4)
+            self.slopePriorMu = QLineEdit()
+            self.slopePriorMu.setText('1.1')
+            self.slopePriorMu.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.slopePriorMu, n, 5)
+            self.slopePriorMuCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.slopePriorMuCheckBox, n, 3)
+            # slope prior sd
+            self.slopePriorSTDLabel = QLabel(self.tr("Slope STD"), self)
+            self.paradigm_widg_sizer.addWidget(self.slopePriorSTDLabel, n, 7)
+            self.slopePriorSTD = QLineEdit()
+            self.slopePriorSTD.setText('1.1')
+            self.slopePriorSTD.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.slopePriorSTD, n, 8)
+            self.slopePriorSTDCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.slopePriorSTDCheckBox, n, 6)
+            n = n+1
+
+            #min lapse
+            self.loLapseLabel = QLabel(self.tr("Lapse Min"), self)
+            self.paradigm_widg_sizer.addWidget(self.loLapseLabel, n, 1)
+            self.loLapse = QLineEdit()
+            self.loLapse.setText('0')
+            self.loLapse.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.loLapse, n, 2)
+            self.loLapseCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.loLapseCheckBox, n, 0)
+            #max lapse
+            self.hiLapseLabel = QLabel(self.tr("Lapse Max"), self)
+            self.paradigm_widg_sizer.addWidget(self.hiLapseLabel, n, 4)
+            self.hiLapse = QLineEdit()
+            self.hiLapse.setText('0.2')
+            self.hiLapse.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.hiLapse, n, 5)
+            self.hiLapseCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.hiLapseCheckBox, n, 3)
+            #lapse step
+            self.lapseGridStepLabel = QLabel(self.tr("Lapse Step"), self)
+            self.paradigm_widg_sizer.addWidget(self.lapseGridStepLabel, n, 7)
+            self.lapseGridStep = QLineEdit()
+            self.lapseGridStep.setText('0.01')
+            self.lapseGridStep.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.lapseGridStep, n, 8)
+            self.lapseGridStepCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.lapseGridStepCheckBox, n, 6)
+            n = n+1
+            self.lapseSpacingChooserLabel = QLabel(self.tr("Lapse Spacing:"), self)
+            self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooserLabel, n, 1)
+            self.lapseSpacingChooser = QComboBox()
+            self.lapseSpacingChooser.addItems(["Linear", "Logarithmic"])
+            self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooser, n, 2)
+            self.lapseSpacingChooser.activated[str].connect(self.onLapseSpacingChooserChange)
+            self.lapseSpacingChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooserCheckBox, n, 0)
+            n = n+1
+            # lapse prior
+            self.lapsePriorChooserLabel = QLabel(self.tr("Lapse Prior:"), self)
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorChooserLabel, n, 1)
+            self.lapsePriorChooser = QComboBox()
+            self.lapsePriorChooser.addItems(priorOptions)
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorChooser, n, 2)
+            self.lapsePriorChooser.activated[str].connect(self.onChangeLapsePrior)
+            self.lapsePriorChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorChooserCheckBox, n, 0)
+            # lapse priro mu
+            self.lapsePriorMuLabel = QLabel(self.tr("Lapse mu"), self)
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorMuLabel, n, 4)
+            self.lapsePriorMu = QLineEdit()
+            self.lapsePriorMu.setText('0.01')
+            self.lapsePriorMu.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorMu, n, 5)
+            self.lapsePriorMuCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorMuCheckBox, n, 3)
+            # lapse prior sd
+            self.lapsePriorSTDLabel = QLabel(self.tr("Lapse STD"), self)
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorSTDLabel, n, 7)
+            self.lapsePriorSTD = QLineEdit()
+            self.lapsePriorSTD.setText('1.1')
+            self.lapsePriorSTD.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorSTD, n, 8)
+            self.lapsePriorSTDCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorSTDCheckBox, n, 6)
+            n = n+1
+         
+
+            self.margLapseChooserLabel = QLabel(self.tr("Marginalize Lapse:"), self)
+            self.paradigm_widg_sizer.addWidget(self.margLapseChooserLabel, n, 1)
+            self.margLapseChooser = QComboBox()
+            self.margLapseChooser.addItems(["No", "Yes"])
+            self.paradigm_widg_sizer.addWidget(self.margLapseChooser, n, 2)
+            self.margLapseChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.margLapseChooserCheckBox, n, 0)
+
+            self.startLevelChooserLabel = QLabel(self.tr("Start Level:"), self)
+            self.paradigm_widg_sizer.addWidget(self.startLevelChooserLabel, n, 4)
+            self.startLevelChooser = QComboBox()
+            self.startLevelChooser.addItems(["Auto", "Suggested"])
+            self.paradigm_widg_sizer.addWidget(self.startLevelChooser, n, 5)
+            self.startLevelChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.startLevelChooserCheckBox, n, 3)
+            self.startLevelChooserLabel.hide()
+            self.startLevelChooser.hide()
+            self.startLevelChooserCheckBox.hide()
+
+            self.PSIParSpacePlotButton = QPushButton(self.tr("Plot PSI Par. Space"))
+            self.PSIParSpacePlotButton.clicked.connect(self.onClickPSIEstGuessRateParSpacePlotButton)
+            self.PSIParSpacePlotButton.setIcon(QIcon.fromTheme("office-chart-line-stacked", QIcon(":/office-chart-line_stacked")))
+            #self.PSIParSpacePlotButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
+            self.PSIParSpacePlotButton.setToolTip(self.tr("Plot PSI parameter space"))
+            self.paradigm_widg_sizer.addWidget(self.PSIParSpacePlotButton, n, 8)
+            if matplotlib_available == False:
+                self.PSIParSpacePlotButton.hide()
+
+            n = n+1
+            self.margGuessChooserLabel = QLabel(self.tr("Marginalize Guess:"), self)
+            self.paradigm_widg_sizer.addWidget(self.margGuessChooserLabel, n, 1)
+            self.margGuessChooser = QComboBox()
+            self.margGuessChooser.addItems(["No", "Yes"])
+            self.paradigm_widg_sizer.addWidget(self.margGuessChooser, n, 2)
+            self.margGuessChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.margGuessChooserCheckBox, n, 0)
+            n = n+1
+            self.margSlopeChooserLabel = QLabel(self.tr("Marginalize Slope:"), self)
+            self.paradigm_widg_sizer.addWidget(self.margSlopeChooserLabel, n, 1)
+            self.margSlopeChooser = QComboBox()
+            self.margSlopeChooser.addItems(["No", "Yes"])
+            self.paradigm_widg_sizer.addWidget(self.margSlopeChooser, n, 2)
+            self.margSlopeChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.margSlopeChooserCheckBox, n, 0)
+            n = n+1
+            self.margThreshChooserLabel = QLabel(self.tr("Marginalize Mid Point:"), self)
+            self.paradigm_widg_sizer.addWidget(self.margThreshChooserLabel, n, 1)
+            self.margThreshChooser = QComboBox()
+            self.margThreshChooser.addItems(["No", "Yes"])
+            self.paradigm_widg_sizer.addWidget(self.margThreshChooser, n, 2)
+            self.margThreshChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.margThreshChooserCheckBox, n, 0)
+            n = n+1
+            
+          
+            self.paradigmChooserList = [self.threshPriorChooser,
+                                        self.guessPriorChooser,
+                                        self.slopePriorChooser,
+                                        self.lapsePriorChooser,
+                                        self.psyFunChooser,
+                                        self.stimScalingChooser,
+                                        self.margLapseChooser,
+                                        self.margGuessChooser,
+                                        self.margSlopeChooser,
+                                        self.margThreshChooser,
+                                        self.startLevelChooser,
+                                        self.guessSpacingChooser,
+                                        self.slopeSpacingChooser,
+                                        self.lapseSpacingChooser]
+            self.paradigmChooserLabelList = [self.threshPriorChooserLabel,
+                                             self.guessPriorChooserLabel,
+                                             self.slopePriorChooserLabel,
+                                             self.lapsePriorChooserLabel,
+                                             self.psyFunChooserLabel,
+                                             self.stimScalingChooserLabel,
+                                             self.margLapseChooserLabel,
+                                             self.margGuessChooserLabel,
+                                             self.margSlopeChooserLabel,
+                                             self.margThreshChooserLabel,
+                                             self.startLevelChooserLabel,
+                                             self.guessSpacingChooserLabel,
+                                             self.slopeSpacingChooserLabel,
+                                             self.lapseSpacingChooserLabel]
+            self.paradigmChooserOptionsList = [priorOptions,
+                                               priorOptions,
+                                               priorOptions,
+                                               priorOptions,
+                                               psyFunOptions,
+                                               ["Linear", "Logarithmic"],
+                                               ["No", "Yes"],
+                                               ["No", "Yes"],
+                                               ["No", "Yes"],
+                                               ["No", "Yes"],
+                                               ["Auto", "Suggested"],
+                                               ["Linear", "Logarithmic"],
+                                               ["Linear", "Logarithmic"],
+                                               ["Linear", "Logarithmic"]]
+            self.paradigmChooserCheckBoxList = [self.threshPriorChooserCheckBox,
+                                                self.guessPriorChooserCheckBox,
+                                                self.slopePriorChooserCheckBox,
+                                                self.lapsePriorChooserCheckBox,
+                                                self.psyFunCheckBox,
+                                                self.stimScalingCheckBox,
+                                                self.margLapseChooserCheckBox,
+                                                self.margGuessChooserCheckBox,
+                                                self.margSlopeChooserCheckBox,
+                                                self.margThreshChooserCheckBox,
+                                                self.startLevelChooserCheckBox,
+                                                self.guessSpacingChooserCheckBox,
+                                                self.slopeSpacingChooserCheckBox,
+                                                self.lapseSpacingChooserCheckBox]
+
+            self.paradigmFieldList = [self.loStim, self.hiStim, self.stimGridStep,
+                                      self.loMidPoint, self.hiMidPoint, self.threshGridStep,
+                                      self.loGuess, self.hiGuess, self.guessGridStep,
+                                      self.loSlope, self.hiSlope, self.slopeGridStep,
+                                      self.loLapse, self.hiLapse, self.lapseGridStep,
+                                      self.threshPriorMu, self.threshPriorSTD,
+                                      self.guessPriorMu, self.guessPriorSTD,
+                                      self.slopePriorMu, self.slopePriorSTD,
+                                      self.lapsePriorMu, self.lapsePriorSTD,
+                                      self.nTrialsTF]
+            self.paradigmFieldLabelList = [self.loStimLabel, self.hiStimLabel, self.stimGridStepLabel,
+                                           self.loMidPointLabel, self.hiMidPointLabel, self.threshGridStepLabel,
+                                           self.loGuessLabel, self.hiGuessLabel, self.guessGridStepLabel,
+                                           self.loSlopeLabel, self.hiSlopeLabel, self.slopeGridStepLabel,
+                                           self.loLapseLabel, self.hiLapseLabel, self.lapseGridStepLabel,
+                                           self.threshPriorMuLabel, self.threshPriorSTDLabel,
+                                           self.guessPriorMuLabel, self.guessPriorSTDLabel,
+                                           self.slopePriorMuLabel, self.slopePriorSTDLabel,
+                                           self.lapsePriorMuLabel, self.lapsePriorSTDLabel,
+                                           self.nTrialsLabel]
+            self.paradigmFieldCheckBoxList = [self.loStimCheckBox, self.hiStimCheckBox, self.stimGridStepCheckBox,
+                                              self.loMidPointCheckBox, self.hiMidPointCheckBox, self.threshGridStepCheckBox,
+                                              self.loGuessCheckBox, self.hiGuessCheckBox, self.guessGridStepCheckBox,
+                                              self.loSlopeCheckBox, self.hiSlopeCheckBox, self.slopeGridStepCheckBox,
+                                              self.loLapseCheckBox, self.hiLapseCheckBox, self.lapseGridStepCheckBox,
+                                              self.threshPriorMuCheckBox, self.threshPriorSTDCheckBox,
+                                              self.guessPriorMuCheckBox, self.guessPriorSTDCheckBox,
+                                              self.slopePriorMuCheckBox, self.slopePriorSTDCheckBox,
+                                              self.lapsePriorMuCheckBox, self.lapsePriorSTDCheckBox,
+                                              self.nTrialsCheckBox]
+            self.paradigmButtonList = [self.PSIParSpacePlotButton]
+            
+            self.onChangeThreshPrior()
+            self.onChangeGuessPrior()
+            self.onChangeSlopePrior()
+            self.onChangeLapsePrior()
+
+        #######
+        #UML - Est. Guess Rate
+        if self.currParadigm in [self.tr("UML - Est. Guess Rate")]:
+            n = 0
+            priorOptions = [self.tr("Uniform"), self.tr("Normal"), self.tr("Gamma")]
+            psyFunOptions = [self.tr("Logistic"), self.tr("Gaussian"), self.tr("Weibull")]
+            # n = n+1
+            self.psyFunChooserLabel = QLabel(self.tr("Psychometric Function:"), self)
+            self.paradigm_widg_sizer.addWidget(self.psyFunChooserLabel, n, 1)
+            self.psyFunChooser = QComboBox()
+            self.psyFunChooser.addItems(psyFunOptions)
+            self.paradigm_widg_sizer.addWidget(self.psyFunChooser, n, 2)
+            self.psyFunCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.psyFunCheckBox, n, 0)
+
+            self.psyFunPostSummChooserLabel = QLabel(self.tr("Posterior Summary:"), self)
+            self.paradigm_widg_sizer.addWidget(self.psyFunPostSummChooserLabel, n, 4)
+            self.psyFunPostSummChooser = QComboBox()
+            self.psyFunPostSummChooser.addItems(["Mean", "Mode"])
+            self.paradigm_widg_sizer.addWidget(self.psyFunPostSummChooser, n, 5)
+            self.psyFunPostSummCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.psyFunPostSummCheckBox, n, 3)
+
+            self.UMLParSpacePlotButton = QPushButton(self.tr("Plot UML Par. Space"))
+            self.UMLParSpacePlotButton.clicked.connect(self.onClickUMLEstGuessRateParSpacePlotButton)
+            self.UMLParSpacePlotButton.setIcon(QIcon.fromTheme("office-chart-line-stacked", QIcon(":/office-chart-line_stacked")))
+            #self.UMLParSpacePlotButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
+            self.UMLParSpacePlotButton.setToolTip(self.tr("Plot UML parameter space"))
+            self.paradigm_widg_sizer.addWidget(self.UMLParSpacePlotButton, n, 8)
+            if matplotlib_available == False:
+                self.UMLParSpacePlotButton.hide()
+
+            n = n+1
+
+            self.nTrialsLabel = QLabel(self.tr("No. Trials"), self)
+            self.paradigm_widg_sizer.addWidget(self.nTrialsLabel, n, 1)
+            self.nTrialsTF = QLineEdit()
+            self.nTrialsTF.setText("100")
+            self.nTrialsTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.nTrialsTF, n, 2)
+            self.nTrialsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.nTrialsCheckBox, n, 0)
+
+            self.swptRuleChooserLabel = QLabel(self.tr("Swpt. Rule:"), self)
+            self.paradigm_widg_sizer.addWidget(self.swptRuleChooserLabel, n, 4)
+            self.swptRuleChooser = QComboBox()
+            self.swptRuleChooser.addItems(["Up-Down", "Random"])
+            self.paradigm_widg_sizer.addWidget(self.swptRuleChooser, n, 5)
+            self.swptRuleChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.swptRuleChooserCheckBox, n, 3)
+            self.swptRuleChooser.activated[str].connect(self.onChangeSwptRule)
+            
+            self.ruleDownLabel = QLabel(self.tr("Rule Down"), self)
+            self.paradigm_widg_sizer.addWidget(self.ruleDownLabel, n, 7)
+            self.ruleDownTF = QLineEdit()
+            self.ruleDownTF.setText('2')
+            self.ruleDownTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.ruleDownTF, n, 8)
+            self.ruleDownCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.ruleDownCheckBox, n, 6)
+
+            
+            n = n+1
+
+            #min stim
+            self.loStimLabel = QLabel(self.tr("Stim. Min"), self)
+            self.paradigm_widg_sizer.addWidget(self.loStimLabel, n, 1)
+            self.loStim = QLineEdit()
+            self.loStim.setText('0.5')
+            self.loStim.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.loStim, n, 2)
+            self.loStimCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.loStimCheckBox, n, 0)
+            #n = n+1
+            #max stim
+            self.hiStimLabel = QLabel(self.tr("Stim. Max"), self)
+            self.paradigm_widg_sizer.addWidget(self.hiStimLabel, n, 4)
+            self.hiStim = QLineEdit()
+            self.hiStim.setText('40')
+            self.hiStim.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.hiStim, n, 5)
+            self.hiStimCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.hiStimCheckBox, n, 3)
+
+            self.stimScalingChooserLabel = QLabel(self.tr("Stim. Scaling:"), self)
+            self.paradigm_widg_sizer.addWidget(self.stimScalingChooserLabel, n, 7)
+            self.stimScalingChooser = QComboBox()
+            self.stimScalingChooser.addItems(["Linear", "Logarithmic"])
+            self.paradigm_widg_sizer.addWidget(self.stimScalingChooser, n, 8)
+            self.stimScalingCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.stimScalingCheckBox, n, 6)
+            self.stimScalingChooser.activated[str].connect(self.onStimScalingChooserChange)
+            n = n+1
+            self.suggestedLambdaSwptLabel = QLabel(self.tr("Suggested Lapse Swpt."))
+            self.suggestedLambdaSwpt = QLineEdit("40")
+            self.suggestedLambdaSwptCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.suggestedLambdaSwptLabel, n, 1)
+            self.paradigm_widg_sizer.addWidget(self.suggestedLambdaSwpt, n, 2)
+            self.paradigm_widg_sizer.addWidget(self.suggestedLambdaSwptCheckBox, n, 0)
+            n = n+1
+            self.lambdaSwptPCLabel = QLabel(self.tr("Pr. Corr. at Est. Lapse Swpt."))
+            self.lambdaSwptPC = QLineEdit("0.99")
+            self.lambdaSwptPCCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.lambdaSwptPCLabel, n, 1)
+            self.paradigm_widg_sizer.addWidget(self.lambdaSwptPC, n, 2)
+            self.paradigm_widg_sizer.addWidget(self.lambdaSwptPCCheckBox, n, 0)
+            n = n+1
+            #min midpoint
+            self.loMidPointLabel = QLabel(self.tr("Mid Point Min"), self)
+            self.paradigm_widg_sizer.addWidget(self.loMidPointLabel, n, 1)
+            self.loMidPoint = QLineEdit()
+            self.loMidPoint.setText('2')
+            self.loMidPoint.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.loMidPoint, n, 2)
+            self.loMidPointCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.loMidPointCheckBox, n, 0)
+            #n = n+1
+            #max midpoint
+            self.hiMidPointLabel = QLabel(self.tr("Mid Point Max"), self)
+            self.paradigm_widg_sizer.addWidget(self.hiMidPointLabel, n, 4)
+            self.hiMidPoint = QLineEdit()
+            self.hiMidPoint.setText('20')
+            self.hiMidPoint.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.hiMidPoint, n, 5)
+            self.hiMidPointCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.hiMidPointCheckBox, n, 3)
+            # midpoint step
+            self.threshGridStepLabel = QLabel(self.tr("Mid Point Step"), self)
+            self.paradigm_widg_sizer.addWidget(self.threshGridStepLabel, n, 7)
+            self.threshGridStep = QLineEdit()
+            self.threshGridStep.setText('0.5')
+            self.threshGridStep.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.threshGridStep, n, 8)
+            self.threshGridStepCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.threshGridStepCheckBox, n, 6)
+            n = n+1
+            # thresh prior
+            self.threshPriorChooserLabel = QLabel(self.tr("Mid Point Prior:"), self)
+            self.paradigm_widg_sizer.addWidget(self.threshPriorChooserLabel, n, 1)
+            self.threshPriorChooser = QComboBox()
+            self.threshPriorChooser.addItems(priorOptions)
+            self.paradigm_widg_sizer.addWidget(self.threshPriorChooser, n, 2)
+            self.threshPriorChooser.activated[str].connect(self.onChangeThreshPrior)
+            self.threshPriorChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.threshPriorChooserCheckBox, n, 0)
+            # thresh prior mu
+            self.threshPriorMuLabel = QLabel(self.tr("Mid Point mu"), self)
+            self.paradigm_widg_sizer.addWidget(self.threshPriorMuLabel, n, 4)
+            self.threshPriorMu = QLineEdit()
+            self.threshPriorMu.setText('0.001')
+            self.threshPriorMu.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.threshPriorMu, n, 5)
+            self.threshPriorMuCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.threshPriorMuCheckBox, n, 3)
+            # thresh prior sd
+            self.threshPriorSTDLabel = QLabel(self.tr("Mid Point STD"), self)
+            self.paradigm_widg_sizer.addWidget(self.threshPriorSTDLabel, n, 7)
+            self.threshPriorSTD = QLineEdit()
+            self.threshPriorSTD.setText('1.1')
+            self.threshPriorSTD.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.threshPriorSTD, n, 8)
+            self.threshPriorSTDCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.threshPriorSTDCheckBox, n, 6)
+            n = n+1
+
+            #min guess
+            self.loGuessLabel = QLabel(self.tr("Guess Min"), self)
+            self.paradigm_widg_sizer.addWidget(self.loGuessLabel, n, 1)
+            self.loGuess = QLineEdit()
+            self.loGuess.setText('0.0')
+            self.loGuess.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.loGuess, n, 2)
+            self.loGuessCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.loGuessCheckBox, n, 0)
+            #guess max
+            self.hiGuessLabel = QLabel(self.tr("Guess Max"), self)
+            self.paradigm_widg_sizer.addWidget(self.hiGuessLabel, n, 4)
+            self.hiGuess = QLineEdit()
+            self.hiGuess.setText('0.4')
+            self.hiGuess.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.hiGuess, n, 5)
+            self.hiGuessCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.hiGuessCheckBox, n, 3)
+            #guess step
+            self.guessGridStepLabel = QLabel(self.tr("Guess Step"), self)
+            self.paradigm_widg_sizer.addWidget(self.guessGridStepLabel, n, 7)
+            self.guessGridStep = QLineEdit()
+            self.guessGridStep.setText('0.01')
+            self.guessGridStep.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.guessGridStep, n, 8)
+            self.guessGridStepCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.guessGridStepCheckBox, n, 6)
+            n = n+1
+            self.guessSpacingChooserLabel = QLabel(self.tr("Guess Spacing:"), self)
+            self.paradigm_widg_sizer.addWidget(self.guessSpacingChooserLabel, n, 1)
+            self.guessSpacingChooser = QComboBox()
+            self.guessSpacingChooser.addItems(["Linear", "Logarithmic"])
+            self.paradigm_widg_sizer.addWidget(self.guessSpacingChooser, n, 2)
+            self.guessSpacingChooser.activated[str].connect(self.onGuessSpacingChooserChange)
+            self.guessSpacingChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.guessSpacingChooserCheckBox, n, 0)
+            n = n+1
+            # guess prior
+            self.guessPriorChooserLabel = QLabel(self.tr("Guess Prior:"), self)
+            self.paradigm_widg_sizer.addWidget(self.guessPriorChooserLabel, n, 1)
+            self.guessPriorChooser = QComboBox()
+            self.guessPriorChooser.addItems(priorOptions)
+            self.paradigm_widg_sizer.addWidget(self.guessPriorChooser, n, 2)
+            self.guessPriorChooser.activated[str].connect(self.onChangeGuessPrior)
+            self.guessPriorChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.guessPriorChooserCheckBox, n, 0)
+            # guess prior mu
+            self.guessPriorMuLabel = QLabel(self.tr("Guess mu"), self)
+            self.paradigm_widg_sizer.addWidget(self.guessPriorMuLabel, n, 4)
+            self.guessPriorMu = QLineEdit()
+            self.guessPriorMu.setText('1.1')
+            self.guessPriorMu.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.guessPriorMu, n, 5)
+            self.guessPriorMuCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.guessPriorMuCheckBox, n, 3)
+            # guess prior sd
+            self.guessPriorSTDLabel = QLabel(self.tr("Guess STD"), self)
+            self.paradigm_widg_sizer.addWidget(self.guessPriorSTDLabel, n, 7)
+            self.guessPriorSTD = QLineEdit()
+            self.guessPriorSTD.setText('1.1')
+            self.guessPriorSTD.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.guessPriorSTD, n, 8)
+            self.guessPriorSTDCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.guessPriorSTDCheckBox, n, 6)
+            n = n+1
+            
+            #min slope
+            self.loSlopeLabel = QLabel(self.tr("Slope Min"), self)
+            self.paradigm_widg_sizer.addWidget(self.loSlopeLabel, n, 1)
+            self.loSlope = QLineEdit()
+            self.loSlope.setText('0.1')
+            self.loSlope.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.loSlope, n, 2)
+            self.loSlopeCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.loSlopeCheckBox, n, 0)
+            #slope max
+            self.hiSlopeLabel = QLabel(self.tr("Slope Max"), self)
+            self.paradigm_widg_sizer.addWidget(self.hiSlopeLabel, n, 4)
+            self.hiSlope = QLineEdit()
+            self.hiSlope.setText('10')
+            self.hiSlope.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.hiSlope, n, 5)
+            self.hiSlopeCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.hiSlopeCheckBox, n, 3)
+            #slope step
+            self.slopeGridStepLabel = QLabel(self.tr("Slope Step"), self)
+            self.paradigm_widg_sizer.addWidget(self.slopeGridStepLabel, n, 7)
+            self.slopeGridStep = QLineEdit()
+            self.slopeGridStep.setText('0.1')
+            self.slopeGridStep.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.slopeGridStep, n, 8)
+            self.slopeGridStepCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.slopeGridStepCheckBox, n, 6)
+            n = n+1
+            self.slopeSpacingChooserLabel = QLabel(self.tr("Slope Spacing:"), self)
+            self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooserLabel, n, 1)
+            self.slopeSpacingChooser = QComboBox()
+            self.slopeSpacingChooser.addItems(["Linear", "Logarithmic"])
+            self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooser, n, 2)
+            self.slopeSpacingChooser.activated[str].connect(self.onSlopeSpacingChooserChange)
+            self.slopeSpacingChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooserCheckBox, n, 0)
+            n = n+1
+            # slope prior
+            self.slopePriorChooserLabel = QLabel(self.tr("Slope Prior:"), self)
+            self.paradigm_widg_sizer.addWidget(self.slopePriorChooserLabel, n, 1)
+            self.slopePriorChooser = QComboBox()
+            self.slopePriorChooser.addItems(priorOptions)
+            self.paradigm_widg_sizer.addWidget(self.slopePriorChooser, n, 2)
+            self.slopePriorChooser.activated[str].connect(self.onChangeSlopePrior)
+            self.slopePriorChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.slopePriorChooserCheckBox, n, 0)
+            # thres priro mu
+            self.slopePriorMuLabel = QLabel(self.tr("Slope mu"), self)
+            self.paradigm_widg_sizer.addWidget(self.slopePriorMuLabel, n, 4)
+            self.slopePriorMu = QLineEdit()
+            self.slopePriorMu.setText('1.1')
+            self.slopePriorMu.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.slopePriorMu, n, 5)
+            self.slopePriorMuCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.slopePriorMuCheckBox, n, 3)
+            # slope prior sd
+            self.slopePriorSTDLabel = QLabel(self.tr("Slope STD"), self)
+            self.paradigm_widg_sizer.addWidget(self.slopePriorSTDLabel, n, 7)
+            self.slopePriorSTD = QLineEdit()
+            self.slopePriorSTD.setText('1.1')
+            self.slopePriorSTD.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.slopePriorSTD, n, 8)
+            self.slopePriorSTDCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.slopePriorSTDCheckBox, n, 6)
+            n = n+1
+
+            #min lapse
+            self.loLapseLabel = QLabel(self.tr("Lapse Min"), self)
+            self.paradigm_widg_sizer.addWidget(self.loLapseLabel, n, 1)
+            self.loLapse = QLineEdit()
+            self.loLapse.setText('0')
+            self.loLapse.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.loLapse, n, 2)
+            self.loLapseCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.loLapseCheckBox, n, 0)
+            #max lapse
+            self.hiLapseLabel = QLabel(self.tr("Lapse Max"), self)
+            self.paradigm_widg_sizer.addWidget(self.hiLapseLabel, n, 4)
+            self.hiLapse = QLineEdit()
+            self.hiLapse.setText('0.2')
+            self.hiLapse.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.hiLapse, n, 5)
+            self.hiLapseCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.hiLapseCheckBox, n, 3)
+            #lapse step
+            self.lapseGridStepLabel = QLabel(self.tr("Lapse Step"), self)
+            self.paradigm_widg_sizer.addWidget(self.lapseGridStepLabel, n, 7)
+            self.lapseGridStep = QLineEdit()
+            self.lapseGridStep.setText('0.01')
+            self.lapseGridStep.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.lapseGridStep, n, 8)
+            self.lapseGridStepCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.lapseGridStepCheckBox, n, 6)
+            n = n+1
+            self.lapseSpacingChooserLabel = QLabel(self.tr("Lapse Spacing:"), self)
+            self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooserLabel, n, 1)
+            self.lapseSpacingChooser = QComboBox()
+            self.lapseSpacingChooser.addItems(["Linear", "Logarithmic"])
+            self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooser, n, 2)
+            self.lapseSpacingChooser.activated[str].connect(self.onLapseSpacingChooserChange)
+            self.lapseSpacingChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooserCheckBox, n, 0)
+            n = n+1
+            # lapse prior
+            self.lapsePriorChooserLabel = QLabel(self.tr("Lapse Prior:"), self)
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorChooserLabel, n, 1)
+            self.lapsePriorChooser = QComboBox()
+            self.lapsePriorChooser.addItems(priorOptions)
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorChooser, n, 2)
+            self.lapsePriorChooser.activated[str].connect(self.onChangeLapsePrior)
+            self.lapsePriorChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorChooserCheckBox, n, 0)
+            # lapse priro mu
+            self.lapsePriorMuLabel = QLabel(self.tr("Lapse mu"), self)
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorMuLabel, n, 4)
+            self.lapsePriorMu = QLineEdit()
+            self.lapsePriorMu.setText('0.01')
+            self.lapsePriorMu.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorMu, n, 5)
+            self.lapsePriorMuCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorMuCheckBox, n, 3)
+            # lapse prior sd
+            self.lapsePriorSTDLabel = QLabel(self.tr("Lapse STD"), self)
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorSTDLabel, n, 7)
+            self.lapsePriorSTD = QLineEdit()
+            self.lapsePriorSTD.setText('1.1')
+            self.lapsePriorSTD.setValidator(QDoubleValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorSTD, n, 8)
+            self.lapsePriorSTDCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.lapsePriorSTDCheckBox, n, 6)
+            #n = n+1
+
+            self.paradigmChooserList = [self.threshPriorChooser,
+                                        self.guessPriorChooser,
+                                        self.slopePriorChooser,
+                                        self.lapsePriorChooser,
+                                        self.psyFunChooser,
+                                        self.psyFunPostSummChooser,
+                                        self.swptRuleChooser,
+                                        self.stimScalingChooser,
+                                        self.guessSpacingChooser,
+                                        self.slopeSpacingChooser,
+                                        self.lapseSpacingChooser]
+            self.paradigmChooserLabelList = [self.threshPriorChooserLabel,
+                                             self.guessPriorChooserLabel,
+                                             self.slopePriorChooserLabel,
+                                             self.lapsePriorChooserLabel,
+                                             self.psyFunChooserLabel,
+                                             self.psyFunPostSummChooserLabel,
+                                             self.swptRuleChooserLabel,
+                                             self.stimScalingChooserLabel,
+                                             self.guessSpacingChooserLabel,
+                                             self.slopeSpacingChooserLabel,
+                                             self.lapseSpacingChooserLabel]
+            self.paradigmChooserOptionsList = [priorOptions,
+                                               priorOptions,
+                                               priorOptions,
+                                               priorOptions,
+                                               psyFunOptions,
+                                               [self.tr("Mean"), self.tr("Mode")],
+                                               [self.tr("Up-Down"), self.tr("Random")],
+                                               [self.tr("Linear"), self.tr("Logarithmic")],
+                                               [self.tr("Linear"), self.tr("Logarithmic")],
+                                               [self.tr("Linear"), self.tr("Logarithmic")],
+                                               [self.tr("Linear"), self.tr("Logarithmic")]]
+            self.paradigmChooserCheckBoxList = [self.threshPriorChooserCheckBox,
+                                                self.guessPriorChooserCheckBox,
+                                                self.slopePriorChooserCheckBox,
+                                                self.lapsePriorChooserCheckBox,
+                                                self.psyFunCheckBox,
+                                                self.psyFunPostSummCheckBox,
+                                                self.swptRuleChooserCheckBox,
+                                                self.stimScalingCheckBox,
+                                                self.guessSpacingChooserCheckBox,
+                                                self.slopeSpacingChooserCheckBox,
+                                                self.lapseSpacingChooserCheckBox]
+
+            self.paradigmFieldList = [self.loStim, self.hiStim, self.suggestedLambdaSwpt,
+                                      self.lambdaSwptPC, self.ruleDownTF,
+                                      self.loMidPoint, self.hiMidPoint, self.threshGridStep,
+                                      self.loGuess, self.hiGuess, self.guessGridStep,
+                                      self.loSlope, self.hiSlope, self.slopeGridStep,
+                                      self.loLapse, self.hiLapse, self.lapseGridStep,
+                                      self.threshPriorMu, self.threshPriorSTD,
+                                      self.guessPriorMu, self.guessPriorSTD,
+                                      self.slopePriorMu, self.slopePriorSTD,
+                                      self.lapsePriorMu, self.lapsePriorSTD,
+                                      self.nTrialsTF]
+            self.paradigmFieldLabelList = [self.loStimLabel, self.hiStimLabel, self.suggestedLambdaSwptLabel,
+                                           self.lambdaSwptPCLabel, self.ruleDownLabel,
+                                           self.loMidPointLabel, self.hiMidPointLabel, self.threshGridStepLabel,
+                                           self.loGuessLabel, self.hiGuessLabel, self.guessGridStepLabel,
+                                           self.loSlopeLabel, self.hiSlopeLabel, self.slopeGridStepLabel,
+                                           self.loLapseLabel, self.hiLapseLabel, self.lapseGridStepLabel,
+                                           self.threshPriorMuLabel, self.threshPriorSTDLabel,
+                                           self.guessPriorMuLabel, self.guessPriorSTDLabel,
+                                           self.slopePriorMuLabel, self.slopePriorSTDLabel,
+                                           self.lapsePriorMuLabel, self.lapsePriorSTDLabel,
+                                           self.nTrialsLabel]
+            self.paradigmFieldCheckBoxList = [self.loStimCheckBox, self.hiStimCheckBox, self.suggestedLambdaSwptCheckBox,
+                                              self.lambdaSwptPCCheckBox, self.ruleDownCheckBox,
+                                              self.loMidPointCheckBox, self.hiMidPointCheckBox, self.threshGridStepCheckBox,
+                                              self.loGuessCheckBox, self.hiGuessCheckBox, self.guessGridStepCheckBox,
+                                              self.loSlopeCheckBox, self.hiSlopeCheckBox, self.slopeGridStepCheckBox,
+                                              self.loLapseCheckBox, self.hiLapseCheckBox, self.lapseGridStepCheckBox,
+                                              self.threshPriorMuCheckBox, self.threshPriorSTDCheckBox,
+                                              self.guessPriorMuCheckBox, self.guessPriorSTDCheckBox,
+                                              self.slopePriorMuCheckBox, self.slopePriorSTDCheckBox,
+                                              self.lapsePriorMuCheckBox, self.lapsePriorSTDCheckBox,
+                                              self.nTrialsCheckBox]
+            self.paradigmButtonList = [self.UMLParSpacePlotButton]
+            self.onChangeThreshPrior()
+            self.onChangeSlopePrior()
+            self.onChangeLapsePrior()
+            self.onChangeSwptRule()
+
+
     def onExperimentChange(self, experimentSelected):
         for i in range(self.paradigmChooser.count()):
             self.paradigmChooser.removeItem(0)
@@ -3540,6 +4463,12 @@ class pychControlWin(QMainWindow):
 
     def onClickPSIParSpacePlotButton(self):
         PSIParSpacePlot(self)
+
+    def onClickUMLEstGuessRateParSpacePlotButton(self):
+        UMLEstGuessRateParSpacePlot(self)
+
+    def onClickPSIEstGuessRateParSpacePlotButton(self):
+        PSIEstGuessRateParSpacePlot(self)
         
     def compareGuiStoredParameters(self):
         tmpPrm = copy.copy(self.prm)
@@ -4441,6 +5370,23 @@ class pychControlWin(QMainWindow):
             self.slopePriorSTDLabel.show()
             self.slopePriorSTDCheckBox.show()
 
+    def onChangeGuessPrior(self):
+        prior = self.guessPriorChooser.currentText()
+        if prior == "Uniform":
+            self.guessPriorMu.hide()
+            self.guessPriorMuLabel.hide()
+            self.guessPriorMuCheckBox.hide()
+            self.guessPriorSTD.hide()
+            self.guessPriorSTDLabel.hide()
+            self.guessPriorSTDCheckBox.hide()
+        else:
+            self.guessPriorMu.show()
+            self.guessPriorMuLabel.show()
+            self.guessPriorMuCheckBox.show()
+            self.guessPriorSTD.show()
+            self.guessPriorSTDLabel.show()
+            self.guessPriorSTDCheckBox.show()
+
     def onChangeLapsePrior(self):
         prior = self.lapsePriorChooser.currentText()
         if prior == "Uniform":
@@ -4468,6 +5414,14 @@ class pychControlWin(QMainWindow):
                     self.stimGridStep.setText('1.1')
                 except:
                     pass
+
+    def onGuessSpacingChooserChange(self):
+        currSpacing = self.guessSpacingChooser.currentText()
+        if currSpacing == "Linear":
+            pass
+        elif currSpacing == "Logarithmic":
+            if self.currLocale.toDouble(self.guessGridStep.text())[0] <= 1:
+                self.guessGridStep.setText('1.1')
 
     def onSlopeSpacingChooserChange(self):
         currSpacing = self.slopeSpacingChooser.currentText()

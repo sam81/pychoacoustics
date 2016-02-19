@@ -64,7 +64,7 @@ import matplotlib as mpl
 import matplotlib.font_manager as fm
 
 from .pysdt import*
-from .PSI_method import*
+from .UML_method_est_guess import*
 
 #mpl.rcParams['font.family'] = 'sans-serif'
 
@@ -87,7 +87,7 @@ def nextPow10Down(val):
     p = int(floor(log10(val)))
     return p
 
-class PSIParSpacePlot(QMainWindow):
+class UMLEstGuessRateParSpacePlot(QMainWindow):
     def __init__(self, parent):
         QMainWindow.__init__(self, parent)
         
@@ -116,21 +116,23 @@ class PSIParSpacePlot(QMainWindow):
         self.mw = QWidget(self)
         self.vbl = QVBoxLayout(self.mw)
         self.fig = Figure(figsize=(8,8))#facecolor=self.canvasColor, dpi=self.dpi)
-        self.ax4 = self.fig.add_subplot(221) #stimulus
-        self.ax1 = self.fig.add_subplot(222) #midpoint
-        self.ax2 = self.fig.add_subplot(223) #slope
-        self.ax3 = self.fig.add_subplot(224) #lapse
-
+        self.ax1 = self.fig.add_subplot(221)
+        self.ax2 = self.fig.add_subplot(222)
+        self.ax3 = self.fig.add_subplot(223)
+        self.ax4 = self.fig.add_subplot(224)
         self.canvas = FigureCanvas(self.fig)
         self.canvas.setParent(self.mw)
         self.ntb = NavigationToolbar(self.canvas, self.mw)
       
 
-        self.logAxisMidpoint = QCheckBox(self.tr("Stim./Midpoint Log Axis"))
+        self.logAxisMidpoint = QCheckBox(self.tr("Midpoint Log Axis"))
         self.logAxisMidpoint.stateChanged[int].connect(self.toggleMidpointLogAxis)
 
         self.logAxisSlope = QCheckBox(self.tr("Slope Log Axis"))
         self.logAxisSlope.stateChanged[int].connect(self.toggleSlopeLogAxis)
+
+        self.logAxisGuess = QCheckBox(self.tr("Guess Log Axis"))
+        self.logAxisGuess.stateChanged[int].connect(self.toggleGuessLogAxis)
 
         self.logAxisLapse = QCheckBox(self.tr("Lapse Log Axis"))
         self.logAxisLapse.stateChanged[int].connect(self.toggleLapseLogAxis)
@@ -143,6 +145,7 @@ class PSIParSpacePlot(QMainWindow):
         self.ntbBox.addWidget(self.ntb)
         self.ntbBox.addWidget(self.logAxisMidpoint)
         self.ntbBox.addWidget(self.logAxisSlope)
+        self.ntbBox.addWidget(self.logAxisGuess)
         self.ntbBox.addWidget(self.logAxisLapse)
         self.ntbBox.addWidget(self.updateButton)
         self.vbl.addWidget(self.canvas)
@@ -150,15 +153,13 @@ class PSIParSpacePlot(QMainWindow):
         self.mw.setFocus()
         self.setCentralWidget(self.mw)
 
-        self.getPSIPars()
+        self.getUMLPars()
         if self.stimScaling == "Linear":
             self.logAxisMidpoint.setChecked(False)
             self.plotDataMidpoint()
-            self.plotDataStimulus()
         elif self.stimScaling == "Logarithmic":
             self.logAxisMidpoint.setChecked(True)
             self.plotDataMidpointLogAxis()
-            self.plotDataStimulusLogAxis()
 
         if self.slopeSpacing == "Linear":
             self.logAxisSlope.setChecked(False)
@@ -167,6 +168,13 @@ class PSIParSpacePlot(QMainWindow):
             self.logAxisSlope.setChecked(True)
             self.plotDataSlopeLogAxis()
 
+        if self.guessSpacing == "Linear":
+            self.logAxisGuess.setChecked(False)
+            self.plotDataGuess()
+        elif self.guessSpacing == "Logarithmic":
+            self.logAxisGuess.setChecked(True)
+            self.plotDataGuessLogAxis()
+
         if self.lapseSpacing == "Linear":
             self.logAxisLapse.setChecked(False)
             self.plotDataLapse()
@@ -174,16 +182,14 @@ class PSIParSpacePlot(QMainWindow):
             self.logAxisLapse.setChecked(True)
             self.plotDataLapseLogAxis()
 
-        self.fig.suptitle(self.tr("PSI Parameter Space"))
+        self.fig.suptitle(self.tr("UML Parameter Space"))
         self.show()
         self.canvas.draw()
 
-    def getPSIPars(self):
-
+    def getUMLPars(self):
         self.psyFun = self.parent().psyFunChooser.currentText()
         self.loStim = self.parent().currLocale.toDouble(self.parent().loStim.text())[0]
         self.hiStim = self.parent().currLocale.toDouble(self.parent().hiStim.text())[0]
-        self.stimGridStep = self.parent().currLocale.toDouble(self.parent().stimGridStep.text())[0]
         self.stimScaling = self.parent().stimScalingChooser.currentText()
         self.loMidPoint = self.parent().currLocale.toDouble(self.parent().loMidPoint.text())[0]
         self.hiMidPoint = self.parent().currLocale.toDouble(self.parent().hiMidPoint.text())[0]
@@ -198,6 +204,15 @@ class PSIParSpacePlot(QMainWindow):
         self.slopePrior = self.parent().slopePriorChooser.currentText()
         self.slopePriorMu = self.parent().currLocale.toDouble(self.parent().slopePriorMu.text())[0]
         self.slopePriorSTD = self.parent().currLocale.toDouble(self.parent().slopePriorSTD.text())[0]
+
+        self.loGuess = self.parent().currLocale.toDouble(self.parent().loGuess.text())[0]
+        self.hiGuess = self.parent().currLocale.toDouble(self.parent().hiGuess.text())[0]
+        self.guessGridStep =  self.parent().currLocale.toDouble(self.parent().guessGridStep.text())[0]
+        self.guessSpacing = self.parent().guessSpacingChooser.currentText()
+        self.guessPrior = self.parent().guessPriorChooser.currentText()
+        self.guessPriorMu = self.parent().currLocale.toDouble(self.parent().guessPriorMu.text())[0]
+        self.guessPriorSTD = self.parent().currLocale.toDouble(self.parent().guessPriorSTD.text())[0]
+        
         self.loLapse = self.parent().currLocale.toDouble(self.parent().loLapse.text())[0]
         self.hiLapse = self.parent().currLocale.toDouble(self.parent().hiLapse.text())[0]
         self.lapseGridStep =  self.parent().currLocale.toDouble(self.parent().lapseGridStep.text())[0]
@@ -207,28 +222,14 @@ class PSIParSpacePlot(QMainWindow):
         self.lapsePriorSTD = self.parent().currLocale.toDouble(self.parent().lapsePriorSTD.text())[0]
         self.nAlternatives = int(self.parent().nAlternativesChooser.currentText())
 
-        self.margLapse = self.parent().margLapseChooser.currentText()
-        self.margSlope = self.parent().margSlopeChooser.currentText()
-        self.margThresh = self.parent().margThreshChooser.currentText()
-
-        if self.margThresh == "Yes" or self.margSlope == "Yes" or self.margLapse == "Yes":
-            ax = np.array([])
-            if self.margThresh == "Yes":
-                ax = numpy.append(ax, 0)
-            if self.margSlope == "Yes":
-                ax = numpy.append(ax, 1)
-            if self.margLapse == "Yes":
-                ax = numpy.append(ax, 2)
-            ax = tuple(np.sort(ax))
-        else:
-            ax = None
-
         if self.stimScaling == "Linear":
-            self.PSI = setupPSI(model=self.psyFun,
+            self.UML = setupUMLEstGuessRate(model=self.psyFun,
+                                swptRule="Up-Down",
+                                nDown=2,
+                                centTend = "Mean",
+                                stimScale = self.stimScaling,
                                 x0=1,
                                 xLim=(self.loStim, self.hiStim),
-                                xStep=self.stimGridStep,
-                                stimScale=self.stimScaling,
                                 alphaLim=(self.loMidPoint, self.hiMidPoint),
                                 alphaStep=self.threshGridStep,
                                 alphaSpacing="Linear",
@@ -241,20 +242,26 @@ class PSIParSpacePlot(QMainWindow):
                                 betaDist=self.slopePrior,
                                 betaMu=self.slopePriorMu,
                                 betaSTD=self.slopePriorSTD,
-                                gamma=1/self.nAlternatives,
+                                gammaLim=(self.loGuess, self.hiGuess),
+                                gammaStep=self.guessGridStep,
+                                gammaSpacing=self.guessSpacing,
+                                gammaDist=self.guessPrior,
+                                gammaMu=self.guessPriorMu,
+                                gammaSTD=self.guessPriorSTD,
                                 lambdaLim=(self.loLapse, self.hiLapse),
                                 lambdaStep=self.lapseGridStep,
                                 lambdaSpacing=self.lapseSpacing,
                                 lambdaDist=self.lapsePrior,
                                 lambdaMu=self.lapsePriorMu,
-                                lambdaSTD=self.lapsePriorSTD,
-                                marginalize = ax)
+                                lambdaSTD=self.lapsePriorSTD)
         elif self.stimScaling == "Logarithmic":
-            self.PSI = setupPSI(model=self.psyFun,
+            self.UML = setupUMLEstGuessRate(model=self.psyFun,
+                                swptRule="Up-Down",
+                                nDown=2,
+                                centTend = "Mean",
+                                stimScale = self.stimScaling,
                                 x0=1,
                                 xLim=(abs(self.loStim), abs(self.hiStim)),
-                                xStep=self.stimGridStep,
-                                stimScale=self.stimScaling,
                                 alphaLim=(abs(self.loMidPoint), abs(self.hiMidPoint)),
                                 alphaStep=self.threshGridStep,
                                 alphaSpacing="Linear",
@@ -267,71 +274,68 @@ class PSIParSpacePlot(QMainWindow):
                                 betaDist=self.slopePrior,
                                 betaMu=self.slopePriorMu,
                                 betaSTD=self.slopePriorSTD,
-                                gamma=1/self.nAlternatives,
+                                gammaLim=(self.loGuess, self.hiGuess),
+                                gammaStep=self.guessGridStep,
+                                gammaSpacing=self.guessSpacing,
+                                gammaDist=self.guessPrior,
+                                gammaMu=self.guessPriorMu,
+                                gammaSTD=self.guessPriorSTD,
                                 lambdaLim=(self.loLapse, self.hiLapse),
                                 lambdaStep=self.lapseGridStep,
                                 lambdaSpacing=self.lapseSpacing,
                                 lambdaDist=self.lapsePrior,
                                 lambdaMu=self.lapsePriorMu,
-                                lambdaSTD=self.lapsePriorSTD,
-                                marginalize = ax)
-
-    
+                                lambdaSTD=self.lapsePriorSTD)
+        
     def plotDataMidpoint(self):
         self.ax1.clear()
-        self.A = setPrior(self.PSI["a"], self.PSI["par"]["alpha"])
+        self.A = setPrior(self.UML["a"], self.UML["par"]["alpha"])
         
         if self.stimScaling == "Linear":
-            markerline, stemlines, baseline = self.ax1.stem(self.PSI["alpha"], self.A[:,0,0], 'k')
+            markerline, stemlines, baseline = self.ax1.stem(self.UML["alpha"], self.A[:,0,0,0], 'k')
         elif self.stimScaling == "Logarithmic":
-            markerline, stemlines, baseline = self.ax1.stem(exp(self.PSI["alpha"]), self.A[:,0,0], 'k')
+            markerline, stemlines, baseline = self.ax1.stem(exp(self.UML["alpha"]), self.A[:,0,0,0], 'k')
             if self.loStim < 0:
                 self.ax1.set_xticklabels(list(map(str, -self.ax1.get_xticks())))
-                
+            
         plt.setp(markerline, 'markerfacecolor', 'k')
         nAlpha = len(self.A[:,0,0])
         self.ax1.set_title("Midpoint, #Points " + str(nAlpha))
 
     def plotDataSlope(self):
         self.ax2.clear()
-        self.B = setPrior(self.PSI["b"], self.PSI["par"]["beta"])
-        markerline, stemlines, baseline = self.ax2.stem(self.PSI["beta"], self.B[0,:,0], 'k')
+        self.B = setPrior(self.UML["b"], self.UML["par"]["beta"])
+        markerline, stemlines, baseline = self.ax2.stem(self.UML["beta"], self.B[0,:,0,0], 'k')
         plt.setp(markerline, 'markerfacecolor', 'k')
-        nBeta = len(self.B[0,:,0])
+        nBeta = len(self.B[0,:,0,0])
         self.ax2.set_title("Slope, #Points " + str(nBeta))
+
+    def plotDataGuess(self):
+        self.ax4.clear()
+        self.G = setPrior(self.UML["g"], self.UML["par"]["gamma"])
+        markerline, stemlines, baseline = self.ax4.stem(self.UML["gamma"], self.G[0,0,:,0], 'k')
+        plt.setp(markerline, 'markerfacecolor', 'k')
+        nGamma = len(self.G[0,0,:,0])
+        self.ax4.set_title("Guess, #Points " + str(nGamma))
 
     def plotDataLapse(self):
         self.ax3.clear()
-        L = setPrior(self.PSI["l"], self.PSI["par"]["lambda"])
-        markerline, stemlines, baseline = self.ax3.stem(self.PSI["lambda"], L[0,0,:], 'k')
+        L = setPrior(self.UML["l"], self.UML["par"]["lambda"])
+        markerline, stemlines, baseline = self.ax3.stem(self.UML["lambda"], L[0,0,0,:], 'k')
         plt.setp(markerline, 'markerfacecolor', 'k')
-        nLambda = len(L[0,0,:])
+        nLambda = len(L[0,0,0,:])
         self.ax3.set_title("Lapse, #Points " + str(nLambda))
-
-    def plotDataStimulus(self):
-        self.ax4.clear()
-
-        nStim = len(self.PSI["stims"])
-        if self.stimScaling == "Linear":
-            markerline, stemlines, baseline = self.ax4.stem(self.PSI["stims"], np.ones(nStim), 'k')
-        elif self.stimScaling == "Logarithmic":
-            markerline, stemlines, baseline = self.ax4.stem(exp(self.PSI["stims"]), np.ones(nStim), 'k')
-            if self.loStim < 0:
-                self.ax4.set_xticklabels(list(map(str, -self.ax4.get_xticks())))
-            
-        plt.setp(markerline, 'markerfacecolor', 'k')
-        self.ax4.set_title("Stimulus, #Points " + str(nStim))
 
 
     def plotDataMidpointLogAxis(self):
         self.ax1.clear()
-        self.A = setPrior(self.PSI["a"], self.PSI["par"]["alpha"])
+        self.A = setPrior(self.UML["a"], self.UML["par"]["alpha"])
         
         if self.stimScaling == "Linear":
-            x = self.PSI["alpha"]
+            x = self.UML["alpha"]
         elif self.stimScaling == "Logarithmic":
-            x = exp(self.PSI["alpha"])
-        markerline, stemlines, baseline = self.ax1.stem(log10(x), self.A[:,0,0], 'k')
+            x = exp(self.UML["alpha"])
+        markerline, stemlines, baseline = self.ax1.stem(log10(x), self.A[:,0,0,0], 'k')
 
         powd = nextPow10Down(10**(self.ax1.get_xlim()[0]))
         powup = nextPow10Up(10**(self.ax1.get_xlim()[1]))
@@ -350,13 +354,16 @@ class PSIParSpacePlot(QMainWindow):
         self.ax1.set_xticks(minTicks, minor=True)
             
         plt.setp(markerline, 'markerfacecolor', 'k')
-        nAlpha = len(self.A[:,0,0])
+        nAlpha = len(self.A[:,0,0,0])
         self.ax1.set_title("Midpoint, #Points " + str(nAlpha))
 
+        # if self.stimScaling == "Logarithmic":
+        #     if self.loStim < 0:
+        #         self.ax1.set_xlim(self.ax1.get_xlim()[::-1])
     def plotDataSlopeLogAxis(self):
         self.ax2.clear()
-        self.B = setPrior(self.PSI["b"], self.PSI["par"]["beta"])
-        markerline, stemlines, baseline = self.ax2.stem(log10(self.PSI["beta"]), self.B[0,:,0], 'k')
+        self.B = setPrior(self.UML["b"], self.UML["par"]["beta"])
+        markerline, stemlines, baseline = self.ax2.stem(log10(self.UML["beta"]), self.B[0,:,0,0], 'k')
         plt.setp(markerline, 'markerfacecolor', 'k')
 
         powd = nextPow10Down(10**(self.ax2.get_xlim()[0]))
@@ -372,13 +379,35 @@ class PSIParSpacePlot(QMainWindow):
             minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
         self.ax2.set_xticks(minTicks, minor=True)
         
-        nBeta = len(self.B[0,:,0])
+        nBeta = len(self.B[0,:,0,0])
         self.ax2.set_title("Slope, #Points " + str(nBeta))
+
+    def plotDataGuessLogAxis(self):
+        self.ax4.clear()
+        self.G = setPrior(self.UML["g"], self.UML["par"]["gamma"])
+        markerline, stemlines, baseline = self.ax4.stem(log10(self.UML["gamma"]), self.G[0,0,:,0], 'k')
+        plt.setp(markerline, 'markerfacecolor', 'k')
+
+        powd = nextPow10Down(10**(self.ax4.get_xlim()[0]))
+        powup = nextPow10Up(10**(self.ax4.get_xlim()[1]))
+        majTicks = arange(powd, powup+1)
+        self.ax2.set_xticks(majTicks)
+        xTickLabels = []
+        for tick in majTicks:
+            xTickLabels.append(str(10**tick))
+        self.ax4.set_xticklabels(xTickLabels)
+        minTicks = []
+        for i in range(len(majTicks)-1):
+            minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
+        self.ax4.set_xticks(minTicks, minor=True)
+        
+        nGamma = len(self.G[0,0,:,0])
+        self.ax4.set_title("Guess, #Points " + str(nGamma))
 
     def plotDataLapseLogAxis(self):
         self.ax3.clear()
-        L = setPrior(self.PSI["l"], self.PSI["par"]["lambda"])
-        markerline, stemlines, baseline = self.ax3.stem(log10(self.PSI["lambda"]), L[0,0,:], 'k')
+        L = setPrior(self.UML["l"], self.UML["par"]["lambda"])
+        markerline, stemlines, baseline = self.ax3.stem(log10(self.UML["lambda"]), L[0,0,0,:], 'k')
         plt.setp(markerline, 'markerfacecolor', 'k')
 
         powd = nextPow10Down(10**(self.ax3.get_xlim()[0]))
@@ -394,52 +423,26 @@ class PSIParSpacePlot(QMainWindow):
             minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
         self.ax3.set_xticks(minTicks, minor=True)
         
-        nLambda = len(L[0,0,:])
+        nLambda = len(L[0,0,0,:])
         self.ax3.set_title("Lapse, #Points " + str(nLambda))
 
-    def plotDataStimulusLogAxis(self):
-        self.ax4.clear()
-
-        nStim = len(self.PSI["stims"])
-        if self.stimScaling == "Linear":
-            x = self.PSI["stims"]
-        elif self.stimScaling == "Logarithmic":
-            x = exp(self.PSI["stims"])
-            
-        markerline, stemlines, baseline = self.ax4.stem(log10(x), np.ones(nStim), 'k')
-        plt.setp(markerline, 'markerfacecolor', 'k')
-        powd = nextPow10Down(10**(self.ax4.get_xlim()[0]))
-        powup = nextPow10Up(10**(self.ax4.get_xlim()[1]))
-        majTicks = arange(powd, powup+1)
-        self.ax4.set_xticks(majTicks)
-        xTickLabels = []
-        for tick in majTicks:
-            if self.stimScaling == "Logarithmic" and self.loStim < 0:
-                xTickLabels.append(str(-10**tick))
-            else:
-                xTickLabels.append(str(10**tick))
-        self.ax4.set_xticklabels(xTickLabels)
-        minTicks = []
-        for i in range(len(majTicks)-1):
-            minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
-        self.ax4.set_xticks(minTicks, minor=True)
-        
-        self.ax4.set_title("Stimulus, #Points " + str(nStim))
-
     def onClickUpdateButton(self):
-        self.getPSIPars()
+        self.getUMLPars()
         
         if self.logAxisMidpoint.isChecked() == False:
             self.plotDataMidpoint()
-            self.plotDataStimulus()
         else:
             self.plotDataMidpointLogAxis()
-            self.plotDataStimulusLogAxis()
 
         if self.logAxisSlope.isChecked() == False:
             self.plotDataSlope()
         else:
             self.plotDataSlopeLogAxis()
+
+        if self.logAxisGuess.isChecked() == False:
+            self.plotDataGuess()
+        else:
+            self.plotDataGuessLogAxis()
 
         if self.logAxisLapse.isChecked() == False:
             self.plotDataLapse()
@@ -451,10 +454,8 @@ class PSIParSpacePlot(QMainWindow):
     def toggleMidpointLogAxis(self):
         if self.logAxisMidpoint.isChecked() == True:
             self.plotDataMidpointLogAxis()
-            self.plotDataStimulusLogAxis()
         else:
             self.plotDataMidpoint()
-            self.plotDataStimulus()
         self.canvas.draw()
 
     def toggleSlopeLogAxis(self):
@@ -462,6 +463,13 @@ class PSIParSpacePlot(QMainWindow):
             self.plotDataSlopeLogAxis()
         else:
             self.plotDataSlope()
+        self.canvas.draw()
+
+    def toggleGuessLogAxis(self):
+        if self.logAxisGuess.isChecked() == True:
+            self.plotDataGuessLogAxis()
+        else:
+            self.plotDataGuess()
         self.canvas.draw()
 
     def toggleLapseLogAxis(self):
