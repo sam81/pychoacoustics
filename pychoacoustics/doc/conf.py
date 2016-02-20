@@ -32,10 +32,10 @@ class Mock(object):
         else:
             return Mock()
 
-MOCK_MODULES = ['PyQt4.QtGui', 'PyQt4',
-                'PyQt5','PyQt5.QtWidgets',
-                'PySide', 'PySide.QtGui']
-MOCK_MODULES = ['PyQt5','PyQt5.QtWidgets']
+# MOCK_MODULES = ['PyQt4.QtGui', 'PyQt4',
+#                 'PyQt5','PyQt5.QtWidgets',
+#                 'PySide', 'PySide.QtGui']
+MOCK_MODULES = ['PyQt4','PyQt4.QtGui']
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
