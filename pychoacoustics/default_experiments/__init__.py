@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__all__ = ["audiogram"]# ,
+__all__ = ["sig_detect"]# ,
            # "audiogram_mf",
            # "freq",
            # "sig_detect",
