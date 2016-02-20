@@ -165,7 +165,7 @@ there are both "plain text" and "tabular" versions of result files. The plain te
 generally stores along with the results each parameter that was used during the experiment. The tabular result files
 on the other hand store a smaller number of parameters, although additional parameters can be stored if the
 experimenter wishes to do so (see :ref:`sec-tabular-results-files`). An important advantage of
-tabular result files is that they are easy to import in other software (e.g. R, Libreoffice) for data analysis.
+tabular result files is that they are easy to import in other software (e.g. R, Libreoffice Calc) for data analysis.
    
 The “block summary” and "tabular block summary" result files contain summaries 
 for each experimental block that was run. The “full” and "tabular full" result 
@@ -213,11 +213,11 @@ for each paradigm is given in Table :ref:`tab-proc_res`
   Multiple Constants Odd One Out                      No         No                 No
   PEST                                                Yes        Yes                Yes
   PSI                                                 No         No                 No
-  Transformed Up/Down                                 Yes        Yes                Yes
-  Transformed Up/Down Interleaved                     Yes        Yes                Yes
+  Transformed Up-Down                                 Yes        Yes                Yes
+  Transformed Up-Down Interleaved                     Yes        Yes                Yes
   UML                                                 No         No                 No
-  Weighted Up/Down                                    Yes        Yes                Yes
-  Weighted Up/Down Interleaved                        Yes        Yes                Yes
+  Weighted Up-Down                                    Yes        Yes                Yes
+  Weighted Up-Down Interleaved                        Yes        Yes                Yes
   ==================================================  ========== ================== =======
 
 .. _sec-tabular-results-files:
@@ -225,7 +225,7 @@ for each paradigm is given in Table :ref:`tab-proc_res`
 Tabular Results Files
 ---------------------
 
-The tabular results files are comma separated value (csv) text files
+The tabular results files are comma separated value (CSV) text files
 that can be opened in a text file editor or a spreadsheet application.
 The separator used by default is the semicolon “;”, but another
 separator can be specified in the ``pychoacoustics`` preferences window.
@@ -235,7 +235,7 @@ used in the file.
 
 The tabular result files contain a number of default columns that are specific 
 to the paradigm used in the experiment (e.g., threshold, number of trials etc…). 
-These result files also contain a "condition" column, where the "Condition Label"
+These result files also contain a "condition" column, where the "condition label"
 is written (see :ref:`sec-gui_left_panel`). It is a good practice to assign 
 a condition label as it makes it easy to sort the results as a function of the 
 experimental condition.
@@ -275,13 +275,49 @@ Not all is lost because the “level” parameter will be nonetheless
 stored in the “block summary” plain text file, but you will need more work before
 you can process your results with a statistical software package.
 
-.. todo::
+Figure :ref:`fig-up_down_res_tab` shows a table block summary result
+file from a transformed up-down procedure opened in Libreoffice Calc.
 
-    Add some info on tabular full files
-    
+.. _fig-up_down_res_tab:
+
+.. figure:: Figures/up_down_res_tab.png
+   :scale: 50%
+   :alt: Transformed up-down table block summary result file
+
+   Transformed up-down table block summary result file
+
+the first two columns ("threshold geometric", and "SD") are specific
+to the transformed up-down procedure. Columns three to twelve
+("condition", "listener", etc...) are present for all paradigms. These
+are explained below:
+
+- **condition** the the "condition label" for the block (see :ref:`sec-gui_left_panel`)
+- **listener** the listener identifier (see :ref:`sec-gui_left_panel`)
+- **session** the session identifier (see :ref:`sec-gui_left_panel`)
+- **experimentLabel** the label assigned to the current experiment
+  (see :ref:`sec-gui_left_panel`)
+- **date** the date (DD/MM/YYYY) at which the block started
+- **time** the time at which the block started
+- **duration** how long it took for the listener to complete the
+  block, in seconds
+- **block** the block presentation position
+- **experiment** the name of the experiment that was run
+- **paradigm** the paradigm with which the experiment was run
+
+
+The tabular full result files contain information on each single trial. For example 
+for the transformed up-down paradigm they record the response (1 for correct, 0 for incorrect), and
+the value of the adaptive difference (the variable that is being varied adaptively to find its threshold).
+This trial by trial information can be used for various purposes, for example, it can be used to fit
+psychometric functions from the results of adaptive procedures. Like the tabular block summary files, all
+tabular full result files contain a set of columns which are common to all paradigms ("condition", "listener",
+etc...), a set of columns specific to each paradigm, and a set of columns that is dependent on the variables
+that the user has chosen to store through the ``inSummary`` check boxes.
+
+.. _sec-plain-text-results-files:
 
 Plain Text Result Files
--------------------------
+-----------------------
 
 The "block summary" result files, as well as the "full" result files
 have a header for each experimental block. The start of the header
@@ -351,8 +387,36 @@ condition is presented, followed by a summary statistic for all the blocks.
 Transformed Up-Down, Weighted Up-Down, and PEST Result Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Block Summary
-"""""""""""""
+Tabular Block Summary Result Files
+""""""""""""""""""""""""""""""""""
+
+Figure :ref:`fig-up_down_res_tab` shows a table block summary result
+file from a transformed up-down procedure opened in Libreoffice Calc.  
+The first two columns of a transformed up-down, weighted up-down or PEST
+block summary table result file contain the threshold estimate for each block of trials,
+and its standard deviation. The header of the column with the threshold
+estimate is ``threshold_arithmetic`` if the procedure was arithmetic,
+and ``threshold_geometric`` if the procedure was geometric. 
+
+Tabular Session Summary Result Files
+""""""""""""""""""""""""""""""""""""
+
+The first two columns of a transformed up-down, weighted up-down or PEST
+session summary table result file contain the across-blocks mean threshold estimate for each 
+experimental condition, and its standard error. The header of the column with the threshold
+estimate is ``threshold_arithmetic`` if the procedure was arithmetic,
+and ``threshold_geometric`` if the procedure was geometric.
+
+Tabular Full Result Files
+"""""""""""""""""""""""""
+
+The first column of a transformed up-down, weighted up-down or PEST tabular full result file
+contains the value of the adaptive difference (the variable that is being varied adaptively to find its threshold),
+at each trial. The second column contains the response given by the listener (1 if s/he chose the correct interval,
+0 otherwise).
+
+Plain Text Block Summary Files
+""""""""""""""""""""""""""""""
 
 The results section of a transformed up-down procedure are shown below
 (weighted up-down and PEST result files have the same structure):
@@ -383,8 +447,8 @@ the second line of the results section labels the threshold estimate as
    B1 = 22, B2 = 40
 
 
-Full Result Files
-"""""""""""""""""
+Plain Text Full Result Files
+""""""""""""""""""""""""""""
 
 A snippet from a transformed up-down ``full`` result file is shown
 below:
@@ -438,23 +502,31 @@ list the threshold estimate for each of these blocks. The following
 lines present the mean and the stadandard error of these threshold
 estimates.
 
-Table Block Summary Result Files
-""""""""""""""""""""""""""""""""
 
-The first two columns of a transformed up-down, weighted up-down or PEST
-block summary table result file contain the threshold estimate for each block of trials,
-and its standard deviation. The header of the column with the threshold
-estimate is ``threshold_arithmetic`` if the procedure was arithmetic,
-and ``threshold_geometric`` if the procedure was geometric.
+UML and PSI Result Files
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-Table Session Summary Result Files
+Tabular Block Summary Result Files
 """"""""""""""""""""""""""""""""""
 
-The first two columns of a transformed up-down, weighted up-down or PEST
-session summary table result file contain the across-blocks mean threshold estimate for each 
-experimental condition, and its standard error. The header of the column with the threshold
-estimate is ``threshold_arithmetic`` if the procedure was arithmetic,
-and ``threshold_geometric`` if the procedure was geometric.
+The UML and PSI tabular block summary result files have three
+paradigm specific columns:
+
+- **threshold** the estimate of the threshold, or the midpoint of the psychometric function
+- **slope** the estimate of the slope of the psychometric function
+- **lapse** the estimate of the lapse rate, which determines the upper asymptote of the psychometric function
+
+Tabular Full Result Files
+"""""""""""""""""""""""""
+
+The UML and PSI tabular block summary result files have two
+paradigm specific columns:
+
+- **adaptive_difference** the value at each trial of the parameter that is 
+adaptively varied to find the psychometric function
+
+- **response** the response of the listener, 1 if s/he chose the correct
+interval, 0 otherwise
 
 
 Transformed Up-Down, and Weighted Up-Down Interleaved Result Files
