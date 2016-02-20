@@ -323,22 +323,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_comparison.py" line="22"/>
+        <location filename="../pychoacoustics/default_experiments/wav_comparison.py" line="27"/>
         <source>WAV Comparison</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="22"/>
+        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="27"/>
         <source>WAV Same/Different</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="25"/>
+        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="30"/>
         <source>Multiple Constants 1-Pair Same/Different</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_comparison.py" line="25"/>
+        <location filename="../pychoacoustics/default_experiments/wav_comparison.py" line="30"/>
         <source>Multiple Constants Odd One Out</source>
         <translation type="unfinished"></translation>
     </message>
@@ -503,37 +503,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="93"/>
+        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="98"/>
         <source>Level (dB SPL)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="52"/>
+        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="57"/>
         <source>Original</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="50"/>
+        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="55"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="50"/>
+        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="55"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="94"/>
+        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="99"/>
         <source>Ear:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_comparison.py" line="101"/>
+        <location filename="../pychoacoustics/default_experiments/wav_comparison.py" line="106"/>
         <source>Comparison</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="99"/>
+        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="104"/>
         <source>Pair </source>
         <translation type="unfinished"></translation>
     </message>
@@ -2924,17 +2924,17 @@
         <translation type="obsolete">Down</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_comparison.py" line="29"/>
+        <location filename="../pychoacoustics/default_experiments/wav_comparison.py" line="34"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_comparison.py" line="29"/>
+        <location filename="../pychoacoustics/default_experiments/wav_comparison.py" line="34"/>
         <source>2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/wav_comparison.py" line="29"/>
+        <location filename="../pychoacoustics/default_experiments/wav_comparison.py" line="34"/>
         <source>3</source>
         <translation type="unfinished"></translation>
     </message>
