@@ -1,4 +1,9 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
+
+"""
+ABX task for WAV files.
+
+"""
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from ..pyqtver import*
@@ -17,7 +22,6 @@ from pychoacoustics.sndlib import*
 import random
 
 
-                                                                                         
 def initialize_wav_ABX(prm):
     exp_name = QApplication.translate("","WAV ABX","")
     prm["experimentsChoices"].append(exp_name)

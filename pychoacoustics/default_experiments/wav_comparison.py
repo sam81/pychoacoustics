@@ -1,4 +1,9 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
+
+"""
+Odd-one-out task for WAV files.
+
+"""
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from ..pyqtver import*
