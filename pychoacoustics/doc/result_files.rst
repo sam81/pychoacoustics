@@ -283,15 +283,12 @@ Result Files by Paradigm
 In this section the fields of result files that are specific to each
 paradigm will be described.
 
-.. todo::
-   
-   Complete the description of result files for the various paradigms.
 
 Transformed Up-Down and Weighted Up-Down
 ----------------------------------------
 
-Tabular Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Block-Summary Result Files (Transformed Up-Down and Weighted Up-Down)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The transformed up-down and weighted up-down tabular block-summary result files have two
 paradigm-specific columns:
@@ -307,8 +304,8 @@ paradigm-specific columns:
   is calculated.
 
 
-Tabular Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Trial-Summary Result Files (Transformed Up-Down and Weighted Up-Down)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The transformed up-down and weighted up-down tabular trial-summary result files have two
 paradigm-specific columns:
@@ -317,8 +314,8 @@ paradigm-specific columns:
 - **response** 1 if the response was correct, 0 otherwise
  
 
-Tabular Session-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Session-Summary Result Files (Transformed Up-Down and Weighted Up-Down)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The transformed up-down and weighted up-down tabular session-summary result files have two
 paradigm-specific columns:
@@ -328,8 +325,8 @@ paradigm-specific columns:
 - **SE** the arithmetic or geometric standard error of the  threshold estimates obtained in each block
     
 
-Plain-Text Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Block-Summary Result Files (Transformed Up-Down and Weighted Up-Down)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The results section of a transformed up-down procedure are shown below
 (weighted up-down result files have the same structure):
@@ -362,10 +359,10 @@ the second line of the results section labels the threshold estimate as
 
 and the threshold and standard deviation values are computed as geometric mean, and geometric standard deviation, respectively.
 
-Plain-Text Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Trial-Summary Result Files (Transformed Up-Down and Weighted Up-Down)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A snippet from a transformed up-down ``trial-summary`` result file is shown
+A snippet from a transformed up-down trial-summary result file is shown
 below:
 
 ::
@@ -398,8 +395,8 @@ below:
    1.25; 1; 456.6493420827598 ;
    1.25; 1; 406.34270314673716 ;
 
-Plain-Text Session-Summary Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Session-Summary Files (Transformed Up-Down and Weighted Up-Down)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The result section of a session-summary result file for a transformed up-down procedure is shown
 below:
@@ -420,82 +417,11 @@ are calculated as the arithmetic meand and the arithmetic standard error.
 If the procedure is geometric, the mean and the standard error
 are calculated as the geometric meand and the geometric standard error.
 
-
-UML and PSI Result Files
-------------------------
-
-Tabular Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The UML and PSI tabular block-summary result files have three
-paradigm-specific columns:
-
-- **threshold** the estimate of the threshold, or the midpoint of the psychometric function
-- **slope** the estimate of the slope of the psychometric function
-- **lapse** the estimate of the lapse rate, which determines the upper asymptote of the psychometric function
-
-Tabular Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The UML and PSI tabular block-summary result files have two
-paradigm-specific columns:
-
-- **adaptive_difference** the value at each trial of the parameter that is 
-  adaptively varied to find the psychometric function
-- **response** the response of the listener, 1 if s/he chose the correct
-  interval, 0 otherwise
-
-Tabular Session-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Not currently implemented. Probably this will be never implemented
-because it makes more sense to obtain session estimates by fitting psychometric functions to the
-responses across all the session than to average the estimates from
-the tabular block-summary result files.
-
-Plain-Text Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The results section of a UML procedure is shown below
-(the structure for the PSI procedure is the same):
-
-::
-     
-   Midpoint = 0.046 
-   Slope = 1.299 
-   Lapse = 0.061 
-
-   B1 = 51, B2 = 49
-
-the first line shows the estimated midpoint of the psychometric function (the threshold),
-the second line shows the estimated slope of the psychometric function, and the third line
-shows the estimated lapse rate which determines the upper asymptote of the psychometric function.
-
-
-Plain-Text Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The result section of the UML and PSI tabular trial-summary files has two paradigm-specific columns. The first column
-shows the value of the adaptive difference (the parameter that is 
-adaptively varied to find the psychometric function) for each trial. The second column
-shows the response (1 for correct, 0 otherwise) given by the listener
-on each trial.
-
-Plain-Text Session-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Not currently implemented. Probably this will be never implemented
-because it makes more sense to obtain session estimates by fitting psychometric functions to the
-responses across all the session than to average the estimates from
-the plain-text block-summary result files.
-
-
-   
-Transformed Up-Down, and Weighted Up-Down Interleaved Result Files
+Transformed Up-Down and Weighted Up-Down Interleaved Result Files
 ------------------------------------------------------------------
 
-Tabular Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Block-Summary Result Files (Transformed Up-Down and Weighted Up-Down Interleaved)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For each adaptive track, the transformed up-down and weighted up-down interleaved tabular block-summary result files have two
 paradigm-specific columns:
@@ -511,13 +437,13 @@ paradigm-specific columns:
   is geometric the geometric standard deviation is calculated, otherwise the arithmetic standard deviation
   is calculated.
 
-Tabular Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Trial-Summary Result Files (Transformed Up-Down and Weighted Up-Down Interleaved)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Not currently implemented.
 
-Tabular Session-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Session-Summary Result Files (Transformed Up-Down and Weighted Up-Down Interleaved)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For each adaptive track, the transformed up-down and weighted up-down
 interleaved tabular session-summary result files have two
@@ -529,8 +455,8 @@ paradigm-specific columns:
 - **SE_trackX** the arithmetic or geometric standard error of the
   threshold estimates obtained in each block for the track number *X*
 
-Plain-Text Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Block-Summary Result Files (Transformed Up-Down and Weighted Up-Down Interleaved)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The result section of a plain-text block-summary file with a
 transformed up-down interleaved paradigm is shown below:
@@ -561,8 +487,8 @@ the second line of the results section labels the threshold estimate as
 ``geometric turnpointMean``, and the threshold and standard deviation
 values are computed as geometric mean, and geometric standard deviation, respectively.
 
-Plain-Text Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Trial-Summary Result Files (Transformed Up-Down and Weighted Up-Down Interleaved)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A snippet from the he results section of a plain-text trial-summary file for a
 transformed up-down interleaved paradigm is shown below:
@@ -579,8 +505,8 @@ a signal detection task), the second column shows the track number,
 and the third column indicates whether the response was correct (``1``), or incorrect (``0``)
 
 
-Plain-Text Session-Summary Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Session-Summary Files (Transformed Up-Down and Weighted Up-Down Interleaved)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The results section of a plain-text session-summary file for a
 transformed up-down interleaved paradigm is shown below:
@@ -609,11 +535,101 @@ each block is printed. Then the geometric or arithmetic (depending on
 the procedure) mean and standard deviation are shown.
 
 
+UML and PSI Result Files
+------------------------
+
+Tabular Block-Summary Result Files (UML and PSI)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The UML and PSI tabular block-summary result files have three
+paradigm-specific columns:
+
+- **threshold** the estimate of the threshold, or the midpoint of the psychometric function
+- **slope** the estimate of the slope of the psychometric function
+- **lapse** the estimate of the lapse rate, which determines the upper asymptote of the psychometric function
+
+Tabular Trial-Summary Result Files (UML and PSI)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The UML and PSI tabular block-summary result files have two
+paradigm-specific columns:
+
+- **adaptive_difference** the value at each trial of the parameter that is 
+  adaptively varied to find the psychometric function
+- **response** the response of the listener, 1 if s/he chose the correct
+  interval, 0 otherwise
+
+Tabular Session-Summary Result Files (UML and PSI)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Not currently implemented. Probably this will be never implemented
+because it makes more sense to obtain session estimates by fitting psychometric functions to the
+responses across all the session than to average the estimates from
+the tabular block-summary result files.
+
+Plain-Text Block-Summary Result Files (UML and PSI)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The results section of a UML procedure is shown below
+(the structure for the PSI procedure is the same):
+
+::
+     
+   Midpoint = 0.046 
+   Slope = 1.299 
+   Lapse = 0.061 
+
+   B1 = 51, B2 = 49
+
+the first line shows the estimated midpoint of the psychometric function (the threshold),
+the second line shows the estimated slope of the psychometric function, and the third line
+shows the estimated lapse rate which determines the upper asymptote of the psychometric function.
+
+
+Plain-Text Trial-Summary Result Files (UML and PSI)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The result section of the UML and PSI tabular trial-summary files has two paradigm-specific columns. The first column
+shows the value of the adaptive difference (the parameter that is 
+adaptively varied to find the psychometric function) for each trial. The second column
+shows the response (1 for correct, 0 otherwise) given by the listener
+on each trial.
+
+Plain-Text Session-Summary Result Files (UML and PSI)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Not currently implemented. Probably this will be never implemented
+because it makes more sense to obtain session estimates by fitting psychometric functions to the
+responses across all the session than to average the estimates from
+the plain-text block-summary result files.
+
+PEST Result Files
+-----------------
+
+Tabular Block-Summary Result Files (PEST)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Tabular Trial-Summary Result Files (PEST)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Tabular Session-Summary Result Files (PEST)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Plain-Text Block-Summary Result Files (PEST)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Plain-Text Trial-Summary Result Files (PEST)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Plain-Text Session-Summary Files (PEST)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
 Constant m-Intervals n-Alternatives Result Files
 ------------------------------------------------
 
-Tabular Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Block-Summary Result Files (Constant m-Intervals n-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The constant m-intervals n-alternatives tabular block-summary result files have four
 paradigm-specific columns:
@@ -623,13 +639,13 @@ paradigm-specific columns:
 - **n_corr** the number of correct responses
 - **n_trials** the total number of trials
 
-Tabular Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Trial-Summary Result Files (Constant m-Intervals n-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Not currently available
 
-Tabular Session-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Session-Summary Result Files (Constant m-Intervals n-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The constant m-intervals n-alternatives tabular session-summary result files have four
 paradigm-specific columns:
@@ -639,8 +655,8 @@ paradigm-specific columns:
 - **n_corr** the number of correct responses
 - **n_trials** the total number of trials
 
-Plain-Text Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Block-Summary Result Files (Constant m-Intervals n-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The result section of a plain-text block-summary result file obtained
 with a constant m-intervals n-alternatives procedure is shown below:
@@ -656,8 +672,8 @@ the first row shows the number of correct responses, the second row
 shows the total number of trials, the third row shows the percentage
 of correct responses, while the last row shows the d' value.
    
-Plain-Text Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Trial-Summary Result Files (Constant m-Intervals n-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A snippet from a plain-text  trial-summary result file obtained
 with a constant m-intervals n-alternatives procedure is shown below:
@@ -673,8 +689,8 @@ with a constant m-intervals n-alternatives procedure is shown below:
 the first and only column shows the response of the listenr (1 for
 correct, 0 otherwise).
 
-Plain-Text Session-Summary Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Session-Summary Files (Constant m-Intervals n-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
    
@@ -690,8 +706,8 @@ Plain-Text Session-Summary Files
 Multiple Constants m-Intervals n-Alternatives Result Files
 ----------------------------------------------------------
 
-Tabular Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Block-Summary Result Files (Multiple Constants m-Intervals n-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The multiple constants m-intervals n-alternatives tabular block-summary result files have four
 paradigm-specific columns:
@@ -701,13 +717,13 @@ paradigm-specific columns:
 - **n_corr_subcX** the number of correct responses for sub-condition *X*
 - **n_trials_subcX** the total number of trials for sub-condition *X*
 
-Tabular Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Trial-Summary Result Files (Multiple Constants m-Intervals n-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Not currently implemented.
 
-Tabular Session-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Session-Summary Result Files (Multiple Constants m-Intervals n-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The multiple constants m-intervals n-alternatives tabular
 session-summary result files have the following
@@ -726,8 +742,8 @@ then for each sub-condition:
 - **n_trials_subcX** the total number of trials for sub-condition *X*
   
 
-Plain-Text Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Block-Summary Result Files (Multiple Constants m-Intervals n-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The result section of a plain-text block-summary result file obtained
 with a multiple constants m-intervals n-alternatives procedure is shown below:
@@ -758,8 +774,8 @@ percent of correct responses, and d' are show in successive lines. Then
 the same information is shown for the data pooled across sub-conditions.
 
 
-Plain-Text Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Trial-Summary Result Files (Multiple Constants m-Intervals n-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A snippet from a plain-text trial-summary result file obtained
 with a multiple constants m-intervals n-alternatives procedure is
@@ -778,8 +794,8 @@ the first column shows the sub-condition label for each trial, the second
 column shows the response of the listener (1 for correct, 0
 otherwise).
 
-Plain-Text Session-Summary Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Session-Summary Files (Multiple Constants m-Intervals n-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The result section of a plain-text session-summary result file obtained
 with a multiple constants m-intervals n-alternatives procedure is shown below:
@@ -826,8 +842,8 @@ for the data pooled across sub-conditions ("CONDITION ALL").
 Constant 1-Intervals 2-Alternatives Result Files
 ------------------------------------------------
 
-Tabular Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Block-Summary Result Files (Constant 1-Intervals 2-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The constant 1-interval 2-alternatives tabular block-summary result files have six
 paradigm-specific columns:
@@ -842,13 +858,13 @@ paradigm-specific columns:
 - **nTotalB** the total number of *B* (signal absent) trials
 
 
-Tabular Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Trial-Summary Result Files (Constant 1-Intervals 2-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Not currently implemented.
 
-Tabular Session-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Session-Summary Result Files (Constant 1-Intervals 2-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The constant 1-interval 2-alternatives tabular session-summary result files have six
 paradigm-specific columns:
@@ -865,8 +881,8 @@ paradigm-specific columns:
   absent) trials
 
 
-Plain-Text Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Block-Summary Result Files (Constant 1-Intervals 2-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The result section of a plain-text block-summary result file obtained
 with a constant 1-interval 2-alternatives procedure is
@@ -896,8 +912,8 @@ names of the condition of the experiment that was ran. In other
 experiments the names of the conditions will differ.
 
 
-Plain-Text Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Trial-Summary Result Files (Constant 1-Intervals 2-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A snippet from a plain-text trial-summary result file obtained
 with a constant 1-interval 2-alternatives procedure is
@@ -921,8 +937,8 @@ for signal present, and "No" for signal absent). The second column
 indicates  whether the response of the listener was correct or not (1 for correct, 0 otherwise).
 
 
-Plain-Text Session-Summary Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Session-Summary Files (Constant 1-Intervals 2-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The result section of a plain-text session-summary result file obtained
 with a constant 1-interval 2-alternatives procedure is
@@ -957,8 +973,8 @@ responses separately for "A" (signal present), and "B" (signal absent) trials.
 Multiple Constants 1-Intervals 2-Alternatives Result Files
 ----------------------------------------------------------
 
-Tabular Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Block-Summary Result Files (Multiple Constants 1-Intervals 2-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The multiple constants 1-interval 2-alternatives tabular block-summary
 result files have the following paradigm-specific columns:
@@ -984,13 +1000,13 @@ then for each sub-condition:
   absent) trials for sub-condition *X*
 - **nTotalB_subcX** the total number of *B* (signal absent) trials for sub-condition *X*
 
-Tabular Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Trial-Summary Result Files (Multiple Constants 1-Intervals 2-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Not currently implemented.
 
-Tabular Session-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Session-Summary Result Files (Multiple Constants 1-Intervals 2-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The multiple constants 1-interval 2-alternatives tabular session-summary
 result files have the following paradigm-specific columns:
@@ -1016,8 +1032,8 @@ then for each sub-condition:
   absent) trials for sub-condition *X*
 - **nTotalB_subcX** the total number of *B* (signal absent) trials for sub-condition *X*
 
-Plain-Text Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Block-Summary Result Files (Multiple Constants 1-Intervals 2-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The result section of a plain-text block-summary result file obtained
 with a multiple constants 1-interval 2-alternatives procedure is shown below:
@@ -1077,8 +1093,8 @@ responses, and the percentage of correct responses are shown for each
 sub-sub-condition within a sub-condition. This same information is
 then shown for the data pooled across all sub-condition.
 
-Plain-Text Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Trial-Summary Result Files (Multiple Constants 1-Intervals 2-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A snippet from a plain-text trial-summary result file obtained
 with a multiple constants 1-interval 2-alternatives procedure is shown below:
@@ -1096,8 +1112,8 @@ whether the listener's response was correct or not (1 for a correct
 response, 0 otherwise).
 
 
-Plain-Text Session-Summary Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Session-Summary Files (Multiple Constants 1-Intervals 2-Alternatives)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The result section of a plain-text session-summary result file obtained
 with a multiple constants 1-interval 2-alternatives procedure is shown below:
@@ -1168,12 +1184,11 @@ of correct responses are shown for each trial type ("A" for signal
 present, "B" for signal absent) within a sub-condition. This same information is
 then shown for the data pooled across all sub-condition.
 
-
 Constant 1-Pair Same/Different Result Files
 -------------------------------------------
 
-Tabular Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Block-Summary Result Files (Constant 1-Pair Same/Different)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The constant 1-pair same/different tabular block-summary result files have seven
 paradigm-specific columns:
@@ -1187,8 +1202,8 @@ paradigm-specific columns:
 - **nTotal_different** the total number of "different" trials     
 
 
-Tabular Session-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Session-Summary Result Files (Constant 1-Pair Same/Different)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The constant 1-pair same/different tabular session-summary result files have seven
 paradigm-specific columns:
@@ -1201,8 +1216,8 @@ paradigm-specific columns:
 - **nCorrect_different** the number of correct response for "different" trials
 - **nTotal_different** the total number of "different" trials    
 
-Plain-Text Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Block-Summary Result Files (Constant 1-Pair Same/Different)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The results section for a  constant 1-pair same/different is shown below:
 
@@ -1225,8 +1240,8 @@ the first line shows the total number of correct responses. The second
 line shows the total number of trials. The third line shows the percentage
 of correct responses. The fourth line shows the  estimated d' for a listener using the independent observations strategy. The fifth line shows the estimated d' for a listener using the differencing strategy. The following lines show the number of correct responses, the total number of trials, and the percentage of correct responses, separately for "same", and "different" trials.
    
-Plain-Text Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Trial-Summary Result Files (Constant 1-Pair Same/Different)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A snippet from the result section of a 1-pair same/different file is shown below:
 
@@ -1242,8 +1257,8 @@ the first column indicates whether the trial was a "same", or "different" trial.
 The second column
 shows the response (1 for correct, 0 otherwise) given by the listener on each trial.
 
-Plain-Text Session-Summary Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Session-Summary Files (Constant 1-Pair Same/Different)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The result section for a 1-pair same/different paradigm session is shown below:
 
@@ -1275,12 +1290,222 @@ observation and differencing strategy) across all the blocks of trials in the se
 The last paragraph shows summary statistics for "same", and "different" trials separately ("A"
 refers to "same" trials, and "B" refers to "different" trials.
 
+Multiple Constants 1-Pair Same-Different Result Files
+-----------------------------------------------------
+
+Tabular Block-Summary Result Files (Multiple Constants 1-Pair Same-Different)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The multiple constants 1-pair same/different tabular block-summary result files have seven paradigm-specific columns for each pair of stimuli that are tested:
+
+- **dprime_IO_pairX** the estimated d' for a listener using the independent observations strategy for the stimulus pair number *X*
+- **dprime_diff_pairX** the estimated d' for a listener using the differencing strategy for the stimulus pair number *X*
+- **nTotal_pairX** the total number of trials for the stimulus pair number *X*
+- **nCorrect_same_pairX** the number of correct response for "same" trials for the stimulus pair number *X*
+- **nTotal_same_pairX** the total number of "same" trials for the stimulus pair number *X*
+- **nCorrect_different_pairX** the number of correct response for "different" trials for the stimulus pair number *X*
+- **nTotal_different_pairX** the total number of "different" trials for the stimulus pair number *X*
+
+Tabular Trial-Summary Result Files (Multiple Constants 1-Pair Same-Different)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The multiple constants 1-pair same/different tabular trial-summary result files have six
+paradigm-specific columns:
+
+- **pair** the stimulus pair tested in the given trial
+- **stim1** the label of the stimulus that was presented in the first
+  interval  
+- **stim2** the label of the stimulus that was presented in the second
+    interval 
+- **case** whether the trial was a "same" or a "different" trial
+- **response** 1 for a correct response, 0 otherwise
+
+Tabular Session-Summary Result Files (Multiple Constants 1-Pair Same-Different)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The multiple constants 1-pair same/different tabular session-summary result files have seven paradigm-specific columns for each pair of stimuli that are tested:
+
+- **dprime_IO_pairX** the estimated d' for a listener using the independent observations strategy for the stimulus pair number *X*
+- **dprime_diff_pairX** the estimated d' for a listener using the differencing strategy for the stimulus pair number *X*
+- **nTotal_pairX** the total number of trials for the stimulus pair number *X*
+- **nCorrect_same_pairX** the number of correct response for "same" trials for the stimulus pair number *X*
+- **nTotal_same_pairX** the total number of "same" trials for the stimulus pair number *X*
+- **nCorrect_different_pairX** the number of correct response for "different" trials for the stimulus pair number *X*
+- **nTotal_different_pairX** the total number of "different" trials for the stimulus pair number *X*
+    
+
+Plain-Text Block-Summary Result Files (Multiple Constants 1-Pair Same-Different)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The result section of a plain-text block-summary file obtained with the multiple constants 1-pair same/different paradigm is shown below:
+
+::
+   
+   DIFFERENCE: Pair1
+   No. Correct = 21
+   No. Total = 25
+   Percent Correct = 84.00 
+   d-prime IO = 2.698 
+   d-prime diff = 3.397 
+
+   No. Correct Condition same = 12
+   No. Total Condition same = 14 
+   Percent Correct Condition same = 85.71 
+   No. Correct Condition different = 9
+   No. Total Condition different = 11 
+   Percent Correct Condition different = 81.82 
+
+
+   DIFFERENCE: Pair2
+   No. Correct = 19
+   No. Total = 25
+   Percent Correct = 76.00 
+   d-prime IO = 2.216 
+   d-prime diff = 2.756 
+   
+   No. Correct Condition same = 8
+   No. Total Condition same = 10 
+   Percent Correct Condition same = 80.00 
+   No. Correct Condition different = 11
+   No. Total Condition different = 15 
+   Percent Correct Condition different = 73.33
+
+the result section is composed of two parts for each pair of stimuli tested. The first part
+lists first the pair number, and then gives summary statistics for that pair (number of
+correct responses, total number of trials, percent correct, d' for the independent observations
+strategy, d' for the differencing strategy). The second part gives summary statistics separately
+for "same" and "different" trials.
+
+Plain-Text Trial-Summary Result Files (Multiple Constants 1-Pair Same-Different)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A snippet from a plain-text trial-summary result file for the multiple constants 1-pair same/different paradigm is shown below:
+
+::
+
+   Pair2_WAV2-WAV1_different; 0; 
+   Pair1_WAV2-WAV1_different; 1; 
+   Pair2_WAV1-WAV2_different; 1; 
+   Pair1_WAV2-WAV2_same; 0; 
+   Pair2_WAV1-WAV2_different; 1; 
+   Pair2_WAV2-WAV1_different; 1; 
+   Pair1_WAV2-WAV2_same; 1;
+
+
+the first column tells the stimulus pair that was tested in each trial, as well as the 
+sequence of stimuli that was played, and whether the trial was a "same", or a "different" trial. The second column shows the response (1 for correct, 0 otherwise).
+
+Plain-Text Session-Summary Files (Multiple Constants 1-Pair Same-Different)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Not currently implemented.
+
+
+Multiple Constants ABX Result Files
+-----------------------------------
+
+Tabular Block-Summary Result Files (Multiple Constants ABX)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The multiple constants ABX tabular block-summary result files have seven
+paradigm-specific columns for each pair of stimuli that are tested:
+
+- **dprime_IO_pairZ** the estimated d' for a listener using the independent observations strategy for the stimulus pair number *Z*
+- **dprime_diff_pairZ** the estimated d' for a listener using the differencing strategy for the stimulus pair number *Z*
+- **nTotal_pairZ** the total number of trials for the stimulus pair number *Z*
+- **nCorrect_A_pairZ** the number of correct response for "A" trials for the stimulus pair number *Z*
+- **nTotal_A_pairZ** the total number of "A" trials for the stimulus pair number *Z*
+- **nCorrect_B_pairZ** the number of correct response for "B" trials for the stimulus pair number *Z*
+- **nTotal_B_pairZ** the total number of "B" trials for the stimulus pair number *Z*
+
+Tabular Trial-Summary Result Files (Multiple Constants ABX)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The multiple constants ABX tabular trial-summary result files have six
+paradigm-specific columns:
+
+- **pair** the stimulus pair tested in the given trial
+- **A** the label of the stimulus that was presented in interval *A*
+- **B** the label of the stimulus that was presented in interval *B*
+- **X** the label of the stimulus that was presented in interval *X*
+- **case** whethe the *X* stimulus is the same as the one presented in interval *A* or *B*
+- **response** 1 for a correct response, 0 otherwise
+
+Tabular Session-Summary Result Files (Multiple Constants ABX)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The multiple constants ABX tabular session-summary result files have seven
+paradigm-specific columns for each pair of stimuli that are tested:
+
+- **dprime_IO_pairZ** the estimated d' for a listener using the independent observations strategy for the stimulus pair number *Z*
+- **dprime_diff_pairZ** the estimated d' for a listener using the differencing strategy for the stimulus pair number *Z*
+- **nTotal_pairZ** the total number of trials for the stimulus pair number *Z*
+- **nCorrect_A_pairZ** the number of correct response for "A" trials for the stimulus pair number *Z*
+- **nTotal_A_pairZ** the total number of "A" trials for the stimulus pair number *Z*
+- **nCorrect_B_pairZ** the number of correct response for "B" trials for the stimulus pair number *Z*
+- **nTotal_B_pairZ** the total number of "B" trials for the stimulus pair number *Z*
+
+Plain-Text Block-Summary Result Files (Multiple Constants ABX)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The result section of a plain-text block-summary file for the multiple constants ABX paradigm is
+shown below:
+
+::
+   
+   DIFFERENCE: Pair1
+   No. Correct = 17
+   No. Total = 25
+   Percent Correct = 68.00 
+   d-prime IO = 1.313 
+   d-prime diff = 1.468 
+
+   No. Correct Condition A = 12
+   No. Total Condition A = 16 
+   Percent Correct Condition A = 75.00 
+   No. Correct Condition B = 5
+   No. Total Condition B = 9 
+   Percent Correct Condition B = 55.56 
+
+the result section is composed of two parts for each pair of stimuli tested. The first part
+lists first the pair number, and then gives summary statistics for that pair (number of
+correct responses, total number of trials, percent correct, d' for the independent observations
+strategy, d' for the differencing strategy). The second part gives summary statistics separately
+for trials in which stimulus *X* was presented in interval *A* and for trials in which it was
+presented in interval *B*.
+
+
+Plain-Text Trial-Summary Result Files (Multiple Constants ABX)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A snippet from a plain-text trial-summary result file for the multiple constants ABX paradigm
+is shown below:
+
+::
+   
+   Pair2_WAV1-WAV2_WAV1_A; 1; 
+   Pair2_WAV1-WAV2_WAV1_A; 0; 
+   Pair2_WAV2-WAV1_WAV2_A; 1; 
+   Pair2_WAV1-WAV2_WAV2_B; 0; 
+   Pair2_WAV1-WAV2_WAV2_B; 1; 
+   Pair1_WAV2-WAV1_WAV2_A; 1; 
+   Pair2_WAV1-WAV2_WAV2_B; 1;
+
+the first column tells the stimulus pair that was tested in each trial, as well as the 
+sequence of stimuli that was played, and whether stimulus *X* was presented in interval *A*
+or in interval *B*. The second column shows the response (1 for correct, 0 otherwise).
+
+Plain-Text Session-Summary Files (Multiple Constants ABX)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Not currently implemented.
+
 
 Multiple Constants Odd One Out Result Files
 -------------------------------------------
 
-Tabular Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Block-Summary Result Files (Odd One Out)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The multiple constants odd one out tabular block-summary result files have the following paradigm-specific columns:
 
@@ -1296,18 +1521,18 @@ then, for each condition:
 - **cndX_stim3_percent** the percent of times stimulus 3 was chosen as the odd one in condition *X*
 
   
-Tabular Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Trial-Summary Result Files (Odd One Out)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Not currently implemented.
 
-Tabular Session-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Session-Summary Result Files (Odd One Out)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Not currently implemented.
 
-Plain-Text Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Block-Summary Result Files (Odd One Out)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The result section of an odd-one-out plain-text block-summary result
 file is shown below:
@@ -1338,8 +1563,8 @@ button was pressed.
 
 
 
-Plain-Text Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Trial-Summary Result Files (Odd One Out)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A snippet from the result section of an odd-one-out plain-text trial-summary result
 file is shown below:
@@ -1353,131 +1578,13 @@ file is shown below:
 the first column shows the condition tested on each trial. The second
 column shows the alternative chosen.
 
-Plain-Text Session-Summary Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Session-Summary Files (Odd One Out)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Not currently implemented.
 
 
-Multiple Constants ABX Result Files
------------------------------------
 
-Tabular Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The multiple constants ABX tabular block-summary result files have seven
-paradigm-specific columns for each pair of stimuli that are tested:
-
-- **dprime_IO_pairZ** the estimated d' for a listener using the independent observations strategy for the stimulus pair number *Z*
-- **dprime_diff_pairZ** the estimated d' for a listener using the differencing strategy for the stimulus pair number *Z*
-- **nTotal_pairZ** the total number of trials for the stimulus pair number *Z*
-- **nCorrect_A_pairZ** the number of correct response for "A" trials for the stimulus pair number *Z*
-- **nTotal_A_pairZ** the total number of "A" trials for the stimulus pair number *Z*
-- **nCorrect_B_pairZ** the number of correct response for "B" trials for the stimulus pair number *Z*
-- **nTotal_B_pairZ** the total number of "B" trials for the stimulus pair number *Z*
-
-Tabular Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The multiple constants ABX tabular trial-summary result files have six
-paradigm-specific columns:
-
-- **pair** the stimulus pair tested in the given trial
-- **A** the label of the stimulus that was presented in interval *A*
-- **B** the label of the stimulus that was presented in interval *B*
-- **X** the label of the stimulus that was presented in interval *X*
-- **case** whethe the *X* stimulus is the same as the one presented in interval *A* or *B*
-- **response** 1 for a correct response, 0 otherwise
-
-Tabular Session-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The multiple constants ABX tabular session-summary result files have seven
-paradigm-specific columns for each pair of stimuli that are tested:
-
-- **dprime_IO_pairZ** the estimated d' for a listener using the independent observations strategy for the stimulus pair number *Z*
-- **dprime_diff_pairZ** the estimated d' for a listener using the differencing strategy for the stimulus pair number *Z*
-- **nTotal_pairZ** the total number of trials for the stimulus pair number *Z*
-- **nCorrect_A_pairZ** the number of correct response for "A" trials for the stimulus pair number *Z*
-- **nTotal_A_pairZ** the total number of "A" trials for the stimulus pair number *Z*
-- **nCorrect_B_pairZ** the number of correct response for "B" trials for the stimulus pair number *Z*
-- **nTotal_B_pairZ** the total number of "B" trials for the stimulus pair number *Z*
-
-Plain-Text Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The result section of a plain-text block-summary file for the multiple constants ABX paradigm is
-shown below:
-
-::
-   
-   DIFFERENCE: Pair1
-   No. Correct = 17
-   No. Total = 25
-   Percent Correct = 68.00 
-   d-prime IO = 1.313 
-   d-prime diff = 1.468 
-
-   No. Correct Condition A = 12
-   No. Total Condition A = 16 
-   Percent Correct Condition A = 75.00 
-   No. Correct Condition B = 5
-   No. Total Condition B = 9 
-   Percent Correct Condition B = 55.56 
-
-the result section is composed of two parts for each pair of stimuli tested. The first part
-lists first the pair number, and then gives summary statistics for that pair (number of
-correct responses, total number of trials, percent correct, d' for the independent observations
-strategy, d' for the differencing strategy). The second part gives summary statistics separately
-for trials in which stimulus *X* was presented in interval *A* and for trials in which it was
-presented in interval *B*.
-
-
-Plain-Text Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-A snippet from a plain-text trial-summary result file for the multiple constants ABX paradigm
-is shown below:
-
-::
-   
-   Pair2_WAV1-WAV2_WAV1_A; 1; 
-   Pair2_WAV1-WAV2_WAV1_A; 0; 
-   Pair2_WAV2-WAV1_WAV2_A; 1; 
-   Pair2_WAV1-WAV2_WAV2_B; 0; 
-   Pair2_WAV1-WAV2_WAV2_B; 1; 
-   Pair1_WAV2-WAV1_WAV2_A; 1; 
-   Pair2_WAV1-WAV2_WAV2_B; 1;
-
-the first column tells the stimulus pair that was tested in each trial, as well as the 
-sequence of stimuli that was played, and whether stimulus *X* was presented in interval *A*
-or in interval *B*. The second column shows the response (1 for correct, 0 otherwise).
-
-Plain-Text Session-Summary Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Not currently implemented.
-
-PEST Result Files
------------------
-
-Tabular Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Tabular Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Tabular Session-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Plain-Text Block-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Plain-Text Trial-Summary Result Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Plain-Text Session-Summary Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 .. _sec-log_results_files: 

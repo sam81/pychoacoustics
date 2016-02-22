@@ -4,7 +4,7 @@
 import os
 
 def removePreviousResFiles(fName):
-    suffixes = ['.txt', '_res.txt', '_full.txt', '_table.csv', '_table_full.csv', '_table_processed.csv']
+    suffixes = ['.txt', '_sess.txt', '_trial.txt', '_table.csv', '_table_trial.csv', '_table_sess.csv']
     for s in suffixes:
         toRemove = fName + s
         if os.path.exists(toRemove):
