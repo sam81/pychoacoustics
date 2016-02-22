@@ -95,7 +95,7 @@ class processResultsDialog(QDialog):
             self.paradigm = "constant1PairSD"
         elif paradigm == self.tr("Multiple Constants 1-Pair Same/Different"):
             self.paradigm = "multipleConstants1PairSD"
-        elif paradigm == self.tr("Multiple Constants ABX"):
+        elif paradigm == self.tr("Multiple Constants ABX") and self.resformat == "table": #currently supports only tabular
             self.paradigm = "multipleConstantsABX"
 
         else:
@@ -247,9 +247,9 @@ class processResultsDialog(QDialog):
         if self.outfileTF.text() == '': #no output file has been chosen
             if len(fList) == 1: #there is only one file to process, choose name automatically
                 if self.resformat == 'linear':
-                    self.foutName = fList[0].split('.txt')[0]+'_res.txt'
+                    self.foutName = fList[0].split('.txt')[0] + self.prm['pref']["general"]["sessSummResFileSuffix"] + ".txt"
                 elif self.resformat == 'table':
-                    self.foutName = fList[0].split('.csv')[0]+'_processed.csv'
+                    self.foutName = fList[0].split('.csv')[0] + self.prm['pref']["general"]["sessSummResFileSuffix"] + '.csv'
             else: #there is more than one file to be processed, ask user the output file name
                 self.onClickChooseOutFileButton()
             #self.outfileTF.setText(self.foutName)

@@ -30,7 +30,8 @@ Contents:
    installation
    graphical_user_interface
    commandline_user_interface
-   psychophysics
+   paradigms
+   result_files
    default_experiments
    engine
    adding_experiments

@@ -285,8 +285,8 @@ def def_pref(prm):
     prm['pref']["general"]['resFileFormat'] = 'fixed'
     prm['pref']["general"]['resFileFixedString'] = 'test.txt'
     prm['pref']["general"]["csvSeparator"] = ';'
-    prm['pref']["general"]["fullFileSuffix"] = '_full'
-    prm['pref']["general"]["resFileSuffix"] = '_res'
+    prm['pref']["general"]["fullFileSuffix"] = '_trial'
+    prm['pref']["general"]["sessSummResFileSuffix"] = '_sess'
     prm['pref']["general"]["resTableFileSuffix"] = '_table'
     prm['pref']["general"]["automaticFileExtension"] = True
     prm["pref"]["general"]["nBlocksCustomCommand"] = ""

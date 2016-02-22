@@ -1,8 +1,8 @@
 .. _sec-psychophysics:
 
-**************
-Psychophysics
-**************
+*********
+Paradigms
+*********
 
 .. todo::
 

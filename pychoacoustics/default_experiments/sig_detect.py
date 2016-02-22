@@ -89,18 +89,13 @@ def doTrial_sig_detect(parent):
   
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
-        # parent.prm['additional_parameters_to_write'] = {}
-        # parent.prm['additional_parameters_to_write'][0] = [] #chord frequencies
-        # parent.prm['additional_parameters_to_write'][1] = 0  #chord component number
-        # parent.prm['additional_parameters_to_write'][2] = 0 #probeFreq 
-        # parent.prm['additional_parameters_to_write'][3] = []##phases
         parent.writeResultsHeader('log')
-        parent.prm['conditions'] = ["Yes","No"]
+        parent.prm['conditions'] = ["signal_present","signal_absent"]
 
     parent.currentCondition = random.choice(parent.prm['conditions'])
-    if parent.currentCondition == 'Yes':
+    if parent.currentCondition == 'signal_present':
         parent.correctButton = 1
-    elif parent.currentCondition == 'No':
+    elif parent.currentCondition == 'signal_absent':
         parent.correctButton = 2
 
 
@@ -112,7 +107,7 @@ def doTrial_sig_detect(parent):
     channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Channel:"))]
    
 
-    if parent.currentCondition == 'No':
+    if parent.currentCondition == 'signal_absent':
         lev = -200
     sig = pureTone(freq, phase, lev, dur, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
 

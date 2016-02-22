@@ -187,7 +187,7 @@ def procResTableAdaptive(fName, fout=None, separator=';', last=None, block_range
     fldict = readTableFiles(fName, separator)
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
     
@@ -250,7 +250,7 @@ def procResTableAdaptiveInterleaved(fName, fout=None, separator=';', last=None, 
     fldict = readTableFiles(fName, separator)
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
     
@@ -328,7 +328,7 @@ def procResTableConstantMIntNAlt(fName, fout=None, separator=';', last=None, blo
     fldict = readTableFiles(fName, separator)
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
     
@@ -391,7 +391,7 @@ def procResTableMultipleConstantsMIntNAlt(fName, fout=None, separator=';', last=
     fldict = readTableFiles(fName, separator)
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
     
@@ -488,7 +488,7 @@ def procResTableConstant1Int2Alt(fName, fout=None, separator=';', last=None, blo
     fldict = readTableFiles(fName, separator)
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
     
@@ -563,7 +563,7 @@ def procResTableMultipleConstants1Int2Alt(fName, fout=None, separator=';', last=
     fldict = readTableFiles(fName, separator)
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
     
@@ -693,7 +693,7 @@ def procResTableConstant1PairSameDifferent(fName, fout=None, separator=';', last
     fldict = readTableFiles(fName, separator)
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
     
@@ -769,7 +769,7 @@ def procResTableMultipleConstants1PairSameDifferent(fName, fout=None, separator=
     fldict = readTableFiles(fName, separator)
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
     
@@ -864,7 +864,7 @@ def procResTableMultipleConstantsABX(fName, fout=None, separator=';', last=None,
     fldict = readTableFiles(fName, separator)
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
     
@@ -958,7 +958,7 @@ def procResTableMultipleConstantsABX(fName, fout=None, separator=';', last=None,
     
 def processResultsAdaptive(fName, fout=None, last=None, block_range=None):
     if fout == None:
-        foutPath = fName[0].split('.txt')[0] + '_res.txt'
+        foutPath = fName[0].split('.txt')[0] + '_sess.txt'
     else:
         foutPath = fout
         
@@ -1045,7 +1045,7 @@ def processResultsAdaptive(fName, fout=None, last=None, block_range=None):
 def processResultsAdaptiveInterleaved(fName, fout=None, last=None, block_range=None):
 
     if fout == None:
-        foutPath = fName[0].split('.txt')[0] + '_res.txt'
+        foutPath = fName[0].split('.txt')[0] + '_sess.txt'
     else:
         foutPath = fout
         
@@ -1118,7 +1118,7 @@ def processResultsAdaptiveInterleaved(fName, fout=None, last=None, block_range=N
     
     cndM = []
     cndSe = []
-    #foutPath = fName.split('.txt')[0] + '_res.txt'
+
     fout = open(foutPath, 'w')
     for i in range(len(conditions)):
         start, stop = getBlockRangeToProcess(last, block_range, conditionMeans[i][0])
@@ -1156,7 +1156,7 @@ def processResultsAdaptiveInterleaved(fName, fout=None, last=None, block_range=N
 def processResultsConstantMIntervalsNAlternatives(fName, fout=None, last=None, block_range=None):
 
     if fout == None:
-        foutPath = fName[0].split('.txt')[0] + '_res.txt'
+        foutPath = fName[0].split('.txt')[0] + '_sess.txt'
     else:
         foutPath = fout
         
@@ -1226,7 +1226,6 @@ def processResultsConstantMIntervalsNAlternatives(fName, fout=None, last=None, b
     cndCorrect = []
     cndTotal = []
     cndPropCorrect = []
-    #foutPath = fName.split('.txt')[0] + '_res.txt'
     fout = open(foutPath, 'w')
     for i in range(len(conditions)):
         start, stop = getBlockRangeToProcess(last, block_range, correctList[i])
@@ -1255,7 +1254,7 @@ def processResultsConstantMIntervalsNAlternatives(fName, fout=None, last=None, b
 def processResultsMultipleConstantsMIntervalsNAlternatives(fName, fout=None, last=None, block_range=None):
 
     if fout == None:
-        foutPath = fName[0].split('.txt')[0] + '_res.txt'
+        foutPath = fName[0].split('.txt')[0] + '_sess.txt'
     else:
         foutPath = fout
         
@@ -1340,7 +1339,6 @@ def processResultsMultipleConstantsMIntervalsNAlternatives(fName, fout=None, las
         if readParameters == True:
             parameters.append(allLines[i])
 
-    #foutPath = fName.split('.txt')[0] + '_res.txt'
     fout = open(foutPath, 'w')
     cndCorrect = []
     cndTotal = []
@@ -1386,7 +1384,7 @@ def processResultsMultipleConstantsMIntervalsNAlternatives(fName, fout=None, las
 def processResultsConstant1Interval2Alternatives(fName, fout=None, last=None, block_range=None, dprimeCorrection=True):
 
     if fout == None:
-        foutPath = fName[0].split('.txt')[0] + '_res.txt'
+        foutPath = fName[0].split('.txt')[0] + '_sess.txt'
     else:
         foutPath = fout
         
@@ -1465,7 +1463,6 @@ def processResultsConstant1Interval2Alternatives(fName, fout=None, last=None, bl
     start = []
     stop = []
 
-    #foutPath = fName.split('.txt')[0] + '_res.txt'
     fout = open(foutPath, 'w')
 
     for i in range(len(conditions)):
@@ -1509,7 +1506,7 @@ def processResultsConstant1Interval2Alternatives(fName, fout=None, last=None, bl
 def processResultsMultipleConstants1Interval2Alternatives(fName, fout=None, last=None, block_range=None, dprimeCorrection=True):
 
     if fout == None:
-        foutPath = fName[0].split('.txt')[0] + '_res.txt'
+        foutPath = fName[0].split('.txt')[0] + '_sess.txt'
     else:
         foutPath = fout
         
@@ -1607,7 +1604,6 @@ def processResultsMultipleConstants1Interval2Alternatives(fName, fout=None, last
     start = []
     stop = []
 
-    #foutPath = fName.split('.txt')[0] + '_res.txt'
     fout = open(foutPath, 'w')
 
     for i in range(len(conditions)):
@@ -1660,7 +1656,7 @@ def processResultsMultipleConstants1Interval2Alternatives(fName, fout=None, last
 def processResultsConstant1PairSameDifferent(fName, fout=None, last=None, block_range=None, dprimeCorrection=True):
 
     if fout == None:
-        foutPath = fName[0].split('.txt')[0] + '_res.txt'
+        foutPath = fName[0].split('.txt')[0] + '_sess.txt'
     else:
         foutPath = fout
         
@@ -1739,7 +1735,6 @@ def processResultsConstant1PairSameDifferent(fName, fout=None, last=None, block_
     start = []
     stop = []
 
-    #foutPath = fName.split('.txt')[0] + '_res.txt'
     fout = open(foutPath, 'w')
 
     for i in range(len(conditions)):
@@ -1799,7 +1794,7 @@ def processResultsTableAdaptive(fName, fout=None, separator=';', last=None, bloc
 
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
         
@@ -1938,7 +1933,7 @@ def processResultsTableAdaptiveInterleaved(fName, fout=None, separator=';', last
 
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
         
@@ -2086,7 +2081,7 @@ def processResultsTableAdaptiveInterleaved(fName, fout=None, separator=';', last
 def processResultsTableConstantMIntNAlt(fName, fout=None, separator=';', last=None, block_range=None):    
     
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
         
@@ -2231,7 +2226,7 @@ def processResultsTableConstantMIntNAlt(fName, fout=None, separator=';', last=No
 def processResultsTableMultipleConstantsMIntNAlt(fName, fout=None, separator=';', last=None, block_range=None):
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
         
@@ -2420,7 +2415,7 @@ def processResultsTableMultipleConstantsMIntNAlt(fName, fout=None, separator=';'
 def processResultsTableConstant1Int2Alt(fName, fout=None, separator=';', last=None, block_range=None, dprimeCorrection=True):
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
         
@@ -2566,7 +2561,7 @@ def processResultsTableConstant1Int2Alt(fName, fout=None, separator=';', last=No
 def processResultsTableMultipleConstants1Int2Alt(fName, fout=None, separator=';', last=None, block_range=None, dprimeCorrection=True):
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
         
@@ -2775,7 +2770,7 @@ def processResultsTableConstant1PairSameDifferent(fName, fout=None, separator=';
     
 
     if fout == None:
-        fNameOut = fName[0].split('.csv')[0] + '_processed.csv'
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
     else:
         fNameOut = fout
         
