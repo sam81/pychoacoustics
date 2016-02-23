@@ -609,20 +609,78 @@ PEST Result Files
 Tabular Block-Summary Result Files (PEST)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The PEST tabular block-summary result files have a single paradigm
+specific column:
+
+- **threshold_arithmetic** or **threshold_geometric** the threshold estimate. Whether the column is labelled "threshold_arithmetic", or "threshold_geometric" depends on whether an arithmetic, or a geometric procedure was used to vary the adaptive difference (the variable that is being varied adaptively to find its threshold).
+
+
 Tabular Trial-Summary Result Files (PEST)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Not currently implemented.
 
 Tabular Session-Summary Result Files (PEST)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The PEST tabular session-summary result files have two paradigm
+specific columns:
+
+- **threshold_arithmetic** or **threshold_geometric** the threshold estimated by averaging across trial blocks. Whether the column is labelled "threshold_arithmetic", or "threshold_geometric" depends on whether an arithmetic, or a geometric procedure was used to vary the adaptive difference (the variable that is being varied adaptively to find its threshold). For "threshold_arithmetic" the threshold estimate is obtained by the arithmetic mean of the threshold estimates in each block. For "threshold_geometric" the threshold estimate is obtained by the geometric mean of the threshold estimates in each block. 
+- **SE** the standard error of the mean threshold obtained by averaging across blocks. For "threshold_arithmetic" the standard error is obtained by the arithmetic standard error of the threshold estimates in each block. For "threshold_geometric" the standard error is obtained by the geometric standard error of the threshold estimates in each block. 
+
 Plain-Text Block-Summary Result Files (PEST)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The result section of a plain-text block-summary result file obtained with the PEST paradigm is shown below:
+
+::
+
+   Threshold =  0.62 
+   B1 = 179, B2 = 160
+
+the first line shows the threshold estimate. The second line shows how many times the listener pressed each button. This may be useful to detect any biases in the choice of interval.
 
 Plain-Text Trial-Summary Result Files (PEST)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+A snippet from a plain-text trial-summary result file obtained
+with the PEST paradigm is shown below:
+
+::
+
+   50.0; 1; 
+   50.0; 1; 
+   50.0; 1; 
+   50.0; 1; 
+   50.0; 1; 
+   50.0; 1; 
+   50.0; 1; 
+   45.0; 1; 
+   40.0; 1; 
+   30.0; 1; 
+   30.0; 1; 
+   30.0; 1;
+
+the first column shows the value of the adaptive difference that was tested in
+each trial. The second column indicates whether the listener's response was correct
+or not (1 for correct, 0 otherwise).
+   
 Plain-Text Session-Summary Files (PEST)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The result section of a plain-text session-summary result file obtained with the PEST paradigm is shown below:
+
+::
+
+    0.62
+    -0.62
+
+    Mean =  0.00 
+    SE =  0.62
+   
+the section starts with a listing of the threshold estimates obtained in each block.
+After this listing the mean and standard error (arithmetic, or geometric, depending on the procedure used) of these threshold estimates are shown.
 
 
 Constant m-Intervals n-Alternatives Result Files

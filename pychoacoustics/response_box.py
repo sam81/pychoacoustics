@@ -3247,13 +3247,13 @@ class responseBox(QMainWindow):
             self.doTrial()
 
     def sortResponsePEST(self, buttonClicked):
-        #PEST SUPPORT IS EXPERIMENTAL AND VERY LITTLE TESTED!
+        #PEST SUPPORT IS EXPERIMENTAL, THE PROCEDURE IS VERY LITTLE TESTED!
         if self.prm['startOfBlock'] == True:
             self.prm['correctCount'] = 0
             self.prm['startOfBlock'] = False
             self.prm['currStepSize'] = copy.copy(self.prm['initialStepSize'])
-            self.prm['nTrialsCurrStepSize'] = 0
-            self.prm['nSteps'] = 0
+            self.prm['nTrialsCurrLev'] = 0
+            self.prm['nSteps'] = 0 
             self.prm['lastStepDoubled'] = False
             self.prm['stepBeforeLastReversalDoubled'] = False
             
@@ -3262,7 +3262,7 @@ class responseBox(QMainWindow):
         self.prm['buttonCounter'][buttonClicked-1] = self.prm['buttonCounter'][buttonClicked-1] + 1
 
         #increment number of trials
-        self.prm['nTrialsCurrStepSize'] = self.prm['nTrialsCurrStepSize'] +1
+        self.prm['nTrialsCurrLev'] = self.prm['nTrialsCurrLev'] +1
             
         if buttonClicked == self.correctButton:
             if self.prm["responseLight"] == self.tr("Feedback"):
@@ -3308,21 +3308,37 @@ class responseBox(QMainWindow):
             
 
         #perform test
-        expectedNCorrect = self.prm['percentCorrectTracked']/100*self.prm['nTrialsCurrStepSize']
+        # the expected number of correct responses at threshold is Pt*N
+        #where Pt is the proportion correct tracked (e.g. 0.75), and N is the
+        #number of trials run at the given level. If the number of correct
+        #responses obtained is decidedly larger than the number of expected
+        #correct responses at threshold then the track goes down. If the
+        # number of correct responses obtained is decidedly smaller than
+        #the number of expected correct responses at threshold then the
+        #track goes up. But how much larger/smaller should the number of correct
+        #responses be to be considered decidedly larger or smaller than the
+        #expected proportion? This is governed by the parameter W, which defines
+        #tolerance limits on the expecetd number of correct responses at threshold.
+        #If W is small, the tolerance limits are small, and the track moves quickly to
+        #another value. If W is large, the tolerance limits are large, and more evidence
+        #needs to be collected before moving the track to a different value.
+
+        expectedNCorrect = self.prm['percentCorrectTracked']/100*self.prm['nTrialsCurrLev']
         print('Correct count: ', self.prm['correctCount'])
         print('ExpectedNCorrect: ', expectedNCorrect)
+
         newStepSize = copy.copy(self.prm['currStepSize'])#temporary, it will be changed later if necessary
-        if self.prm['correctCount'] > expectedNCorrect + self.prm['W']:
-            print("self.prm['correctCount'] > expectedNCorrect + self.prm['W']")
+
+        if self.prm['correctCount'] >= expectedNCorrect + self.prm['W']:
+            print("self.prm['correctCount'] >= expectedNCorrect + self.prm['W']")
+
             if self.prm['trackDir'] == self.tr('Up'): #CALL REVERSAL
                 self.prm['trackDir'] = self.tr('Down')
-                #halve step size at reversal
-                newStepSize = self.prm['currStepSize']/2
-                #reset counters
-                if self.prm['lastStepDoubled'] == True:
+                newStepSize = self.prm['currStepSize']/2 #halve step size at reversal (Rule 1)
+                if self.prm['lastStepDoubled'] == True: #(see Rule 3)
                     self.prm['stepBeforeLastReversalDoubled'] = True
-                lastStepDoubled = False
-                self.prm['nSteps'] = 0
+                self.prm['lastStepDoubled'] = False #we just reversed so we didn't double step
+                self.prm['nSteps'] = 1 #re-initialize step counter. Should this be 1?
             elif self.prm['trackDir'] == self.tr('Down'):
                 self.prm['nSteps'] = self.prm['nSteps'] + 1
                 if self.prm['nSteps'] < 3:
@@ -3340,32 +3356,30 @@ class responseBox(QMainWindow):
             #limit maximum step size
             if newStepSize > self.prm['maxStepSize']:
                 newStepSize = self.prm['maxStepSize']
-            #only reset nTrials counter if step size has really changed
-            if self.prm['currStepSize'] != newStepSize:
-                self.prm['nTrialsCurrStepSize'] = 0
-                self.prm['correctCount'] = 0
-            self.prm['currStepSize'] = newStepSize
 
+            self.prm['nTrialsCurrLev'] = 0
+            self.prm['correctCount'] = 0
+            self.prm['currStepSize'] = newStepSize
+                
             if self.prm['adaptiveType'] == self.tr("Arithmetic"):
                 self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] - self.prm['currStepSize']
             elif self.prm['adaptiveType'] == self.tr("Geometric"):
                 self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] / self.prm['currStepSize']
+                
+        elif self.prm['correctCount'] <= expectedNCorrect - self.prm['W']:
+            print("self.prm['correctCount'] <= expectedNCorrect - self.prm['W']")
 
-        elif self.prm['correctCount'] < expectedNCorrect - self.prm['W']:
-            print("self.prm['correctCount'] < expectedNCorrect - self.prm['W']")
-            if self.prm['trackDir'] == self.tr('Down'): #call for reversal
+            if self.prm['trackDir'] == self.tr('Down'): #CALL REVERSAL
                 self.prm['trackDir'] = self.tr('Up')
-                #halve step size at reversal
-                newStepSize = self.prm['currStepSize']/2
-                #reset counters
+                newStepSize = self.prm['currStepSize']/2 #halve step size at reversal
                 if self.prm['lastStepDoubled'] == True:
                     self.prm['stepBeforeLastReversalDoubled'] = True
-                self.prm['nSteps'] = 0
+                self.prm['lastStepDoubled'] = False
+                self.prm['nSteps'] = 1 #re-initialize counter. Should this be 1?
             elif self.prm['trackDir'] == self.tr('Up'):
                 self.prm['nSteps'] = self.prm['nSteps'] + 1
                 if self.prm['nSteps'] < 3:
                     self.prm['lastStepDoubled'] = False
-                    newStepSize = copy.copy(self.prm['currStepSize'])
                 elif self.prm['nSteps'] == 3:
                     if self.prm['stepBeforeLastReversalDoubled'] == False:
                         newStepSize = self.prm['currStepSize']*2
@@ -3379,19 +3393,23 @@ class responseBox(QMainWindow):
             #limit maximum step size
             if newStepSize > self.prm['maxStepSize']:
                 newStepSize = self.prm['maxStepSize']
-            #only reset nTrials counter if step size has really changed
-            if self.prm['currStepSize'] != newStepSize:
-                self.prm['nTrialsCurrStepSize'] = 0
-                self.prm['correctCount'] = 0
+
+            self.prm['nTrialsCurrLev'] = 0
+            self.prm['correctCount'] = 0
             self.prm['currStepSize'] = newStepSize
-       
-            
+                
             if self.prm['adaptiveType'] == self.tr("Arithmetic"):
                 self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + self.prm['currStepSize']
             elif self.prm['adaptiveType'] == self.tr("Geometric"):
                 self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * self.prm['currStepSize']
-                
+ 
 
+        print("Adaptive Difference")
+        print(self.prm['adaptiveDifference'])
+        print("Current step: ")
+        print(self.prm['currStepSize'])
+        print("nSteps")
+        print(self.prm['nSteps'])
         self.fullFileLog.flush()
         pcDone = 0#(self.prm['nTurnpoints'] / self.prm['totalTurnpoints']) * 100
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
