@@ -455,11 +455,15 @@ PEST Paradigm Widgets
    will be multiplied or divided by the quantity defined by the step
    size.
 
--  **Initial Track Direction** This determines when the first turpoint
-   will be called. If the initial track direction is “Down” the first
-   turnpoint will be called the first time the adaptive track turns
-   upward. If the initial track direction is “Up” the first turnpoint
-   will be called the first time the adaptive track turns downward.
+-  **Corr. Resp. Move Track** This determines whether correct responses
+   move the adaptive track down, or up. Choose down if you want the adaptive
+   difference to *decrease* as a consequence of correct
+   responses. Choose up if you want the adaptive difference to *increase*
+   as a consequence of correct responses. For example, in a singal detection
+   task in which the signal level is varied you should choose down (signal level
+   decreases as a consequence of correct responses). On the other hand, in a
+   signal detection task in which the noise level is varied you should choose up
+   (noise level increases as a consequence of correct responses).
 
 -  **Percent Correct Tracked** Set the percentage correct point on the
    psychometric function to be tracked by the adaptive procedure. 
@@ -469,7 +473,7 @@ PEST Paradigm Widgets
 -  **Minimum Step Size** Set the minimum step size. When the minimum 
    step size is reached the block is terminated.
 
--  **Initial Step Size** Set the maximum allowed step size.
+-  **Maximum Step Size** Set the maximum allowed step size.
    
 -  **W** Deviation limit of the sequential test (see [TaylorAndCreelman1967]_).
 

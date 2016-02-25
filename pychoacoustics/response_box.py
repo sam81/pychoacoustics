@@ -782,7 +782,6 @@ class responseBox(QMainWindow):
                 else:
                     self.prm['maxConsecutiveTrials'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Max. Consecutive Trials x Track:"))]
            
-
             if self.prm['paradigm'] in [self.tr("Transformed Up-Down"), self.tr("Transformed Up-Down Limited")]:
                 self.prm['numberCorrectNeeded'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Rule Down"))])
                 self.prm['numberIncorrectNeeded'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Rule Up"))])
@@ -791,7 +790,7 @@ class responseBox(QMainWindow):
                 self.prm['adaptiveStepSize1'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Step Size 1"))]
                 self.prm['adaptiveStepSize2'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Step Size 2"))]
                 self.prm['adaptiveType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Procedure:"))]
-                self.prm['trackDir'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Initial Track Direction:"))]
+                self.prm['corrTrackDir'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Corr. Resp. Move Track:"))]
             elif self.prm['paradigm'] in [self.tr("Transformed Up-Down (Fixed No. Trials)")]:
                 self.prm['numberCorrectNeeded'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Rule Down"))])
                 self.prm['numberIncorrectNeeded'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Rule Up"))])
@@ -830,7 +829,7 @@ class responseBox(QMainWindow):
                 self.prm['adaptiveStepSize1'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Step Size 1"))]
                 self.prm['adaptiveStepSize2'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Step Size 2"))]
                 self.prm['adaptiveType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Procedure:"))]
-                self.prm['trackDir'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Initial Track Direction:"))]
+                self.prm['corrTrackDir'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Corr. Resp. Move Track:"))]
                 self.prm['numberCorrectNeeded'] = 1
                 self.prm['numberIncorrectNeeded'] = 1
 
@@ -872,7 +871,7 @@ class responseBox(QMainWindow):
                 if self.prm['startOfBlock'] == True:
                     self.prm['currentDifference'] = numpy.random.randint(self.prm['nDifferences'])
             elif self.prm['paradigm'] == self.tr("PEST"):
-                self.prm['trackDir'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Initial Track Direction:"))]
+                self.prm['corrTrackDir'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Corr. Resp. Move Track:"))]
                 self.prm['adaptiveType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Procedure:"))]
                 self.prm['initialStepSize'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Initial Step Size"))])
                 self.prm['minStepSize'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Minimum Step Size"))])
@@ -1332,6 +1331,7 @@ class responseBox(QMainWindow):
             self.sortResponseAdaptiveDigitSpan(buttonClicked)
         self.prm['sortingResponse'] = False
             
+
     def sortResponseAdaptive(self, buttonClicked, method):
         if self.prm['startOfBlock'] == True:
             self.prm['correctCount'] = 0
@@ -1339,31 +1339,42 @@ class responseBox(QMainWindow):
             self.prm['nTurnpoints'] = 0
             self.prm['startOfBlock'] = False
             self.prm['turnpointVal'] = []
+            self.prm['trackDir'] = copy.copy(self.prm['corrTrackDir'])
+            if self.prm['corrTrackDir'] == self.tr("Down"):
+                self.prm['corrTrackSign'] = -1
+                self.prm['incorrTrackSign'] = 1
+                self.prm['incorrTrackDir'] = self.tr("Up")
+            else:
+                self.prm['corrTrackSign'] = 1
+                self.prm['incorrTrackSign'] = -1
+                self.prm['incorrTrackDir'] = self.tr("Down")
             self.fullFileLines = []
             self.fullFileSummLines = []
             self.prm['buttonCounter'] = [0 for i in range(self.prm['nAlternatives'])]
         self.prm['buttonCounter'][buttonClicked-1] = self.prm['buttonCounter'][buttonClicked-1] + 1
 
+        stepSize = {}
         if method == 'transformedUpDown':
             if self.prm['nTurnpoints'] < self.prm['initialTurnpoints']:
-                stepSizeDown = self.prm['adaptiveStepSize1']
-                stepSizeUp   = self.prm['adaptiveStepSize1']
+                stepSize[self.tr("Down")] = self.prm['adaptiveStepSize1']
+                stepSize[self.tr("Up")]   = self.prm['adaptiveStepSize1']
             else:
-                stepSizeDown = self.prm['adaptiveStepSize2']
-                stepSizeUp   = self.prm['adaptiveStepSize2']
+                stepSize[self.tr("Down")] = self.prm['adaptiveStepSize2']
+                stepSize[self.tr("Up")]   = self.prm['adaptiveStepSize2']
         elif method == 'weightedUpDown':
             if self.prm['nTurnpoints'] < self.prm['initialTurnpoints']:
-                stepSizeDown = self.prm['adaptiveStepSize1']
+                stepSize[self.prm['corrTrackDir']] = self.prm['adaptiveStepSize1']
+
                 if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                    stepSizeUp = self.prm['adaptiveStepSize1'] * (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
+                    stepSize[self.prm['incorrTrackDir']] = self.prm['adaptiveStepSize1'] * (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
                 elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                    stepSizeUp = self.prm['adaptiveStepSize1'] ** (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
+                    stepSize[self.prm['incorrTrackDir']] = self.prm['adaptiveStepSize1'] ** (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
             else:
-                stepSizeDown = self.prm['adaptiveStepSize2']
+                stepSize[self.prm['corrTrackDir']] = self.prm['adaptiveStepSize2']
                 if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                    stepSizeUp = self.prm['adaptiveStepSize2'] * (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
+                    stepSize[self.prm['incorrTrackDir']] = self.prm['adaptiveStepSize2'] * (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
                 elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                    stepSizeUp = self.prm['adaptiveStepSize2'] ** (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
+                    stepSize[self.prm['incorrTrackDir']] = self.prm['adaptiveStepSize2'] ** (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
             
         if buttonClicked == self.correctButton:
             if self.prm["responseLight"] == self.tr("Feedback"):
@@ -1394,15 +1405,15 @@ class responseBox(QMainWindow):
 
             if self.prm['correctCount'] == self.prm['numberCorrectNeeded']:
                 self.prm['correctCount'] = 0
-                if self.prm['trackDir'] == self.tr('Up'):
+                if self.prm['trackDir'] == self.prm['incorrTrackDir']:
                     self.prm['turnpointVal'].append(self.prm['adaptiveDifference'])
                     self.prm['nTurnpoints'] = self.prm['nTurnpoints'] +1
-                    self.prm['trackDir'] = self.tr('Down')
+                    self.prm['trackDir'] = copy.copy(self.prm['corrTrackDir'])
                         
                 if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] - stepSizeDown
+                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + (stepSize[self.prm['corrTrackDir']]*self.prm['corrTrackSign'])
                 elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] / stepSizeDown
+                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * (stepSize[self.prm['corrTrackDir']]**self.prm['corrTrackSign'])
                 
         elif buttonClicked != self.correctButton:
             if self.prm["responseLight"] == self.tr("Feedback"):
@@ -1434,15 +1445,16 @@ class responseBox(QMainWindow):
 
             if self.prm['incorrectCount'] == self.prm['numberIncorrectNeeded']:
                 self.prm['incorrectCount'] = 0
-                if self.prm['trackDir'] == self.tr('Down'):
+                if self.prm['trackDir'] == self.prm['corrTrackDir']:#self.tr('Down'):
                     self.prm['turnpointVal'].append(self.prm['adaptiveDifference'])
                     self.prm['nTurnpoints'] = self.prm['nTurnpoints'] +1
-                    self.prm['trackDir'] = self.tr('Up')
+                    self.prm['trackDir'] = copy.copy(self.prm['incorrTrackDir'])#self.tr('Up')
                     
                 if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + stepSizeUp
+                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + (stepSize[self.prm['incorrTrackDir']]*self.prm['incorrTrackSign'])
                 elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * stepSizeUp
+                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * (stepSize[self.prm['incorrTrackDir']]**self.prm['incorrTrackSign'])
+                                                     
 
         self.fullFileLog.flush()
         pcDone = (self.prm['nTurnpoints'] / self.prm['totalTurnpoints']) * 100
@@ -3256,6 +3268,15 @@ class responseBox(QMainWindow):
             self.prm['nSteps'] = 0 
             self.prm['lastStepDoubled'] = False
             self.prm['stepBeforeLastReversalDoubled'] = False
+            self.prm['trackDir'] = copy.copy(self.prm['corrTrackDir'])
+            if self.prm['corrTrackDir'] == self.tr("Down"):
+                self.prm['corrTrackSign'] = -1
+                self.prm['incorrTrackSign'] = 1
+                self.prm['incorrTrackDir'] = self.tr("Up")
+            else:
+                self.prm['corrTrackSign'] = 1
+                self.prm['incorrTrackSign'] = -1
+                self.prm['incorrTrackDir'] = self.tr("Down")
             
             self.fullFileLines = []
             self.prm['buttonCounter'] = [0 for i in range(self.prm['nAlternatives'])]
@@ -3332,14 +3353,14 @@ class responseBox(QMainWindow):
         if self.prm['correctCount'] >= expectedNCorrect + self.prm['W']:
             print("self.prm['correctCount'] >= expectedNCorrect + self.prm['W']")
 
-            if self.prm['trackDir'] == self.tr('Up'): #CALL REVERSAL
-                self.prm['trackDir'] = self.tr('Down')
+            if self.prm['trackDir'] == self.prm['incorrTrackDir']: #CALL REVERSAL
+                self.prm['trackDir'] = copy.copy(self.prm['corrTrackDir'])
                 newStepSize = self.prm['currStepSize']/2 #halve step size at reversal (Rule 1)
                 if self.prm['lastStepDoubled'] == True: #(see Rule 3)
                     self.prm['stepBeforeLastReversalDoubled'] = True
                 self.prm['lastStepDoubled'] = False #we just reversed so we didn't double step
                 self.prm['nSteps'] = 1 #re-initialize step counter. Should this be 1?
-            elif self.prm['trackDir'] == self.tr('Down'):
+            elif self.prm['trackDir'] == self.prm['corrTrackDir']:
                 self.prm['nSteps'] = self.prm['nSteps'] + 1
                 if self.prm['nSteps'] < 3:
                     self.prm['lastStepDoubled'] = False
@@ -3360,23 +3381,35 @@ class responseBox(QMainWindow):
             self.prm['nTrialsCurrLev'] = 0
             self.prm['correctCount'] = 0
             self.prm['currStepSize'] = newStepSize
-                
+
+            # if self.prm['corrTrackDir'] == self.tr("Down"):
+            #     if self.prm['adaptiveType'] == self.tr("Arithmetic"):
+            #         self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] - self.prm['currStepSize']
+            #     elif self.prm['adaptiveType'] == self.tr("Geometric"):
+            #         self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] / self.prm['currStepSize']
+            # elif self.prm['corrTrackDir'] == self.tr("Up"):
+            #     if self.prm['adaptiveType'] == self.tr("Arithmetic"):
+            #         self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + self.prm['currStepSize']
+            #     elif self.prm['adaptiveType'] == self.tr("Geometric"):
+            #         self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * self.prm['currStepSize']
+
+        
             if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] - self.prm['currStepSize']
+                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + (self.prm['currStepSize']*self.prm['corrTrackSign'])
             elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] / self.prm['currStepSize']
+                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * (self.prm['currStepSize']**self.prm['corrTrackSign'])
                 
         elif self.prm['correctCount'] <= expectedNCorrect - self.prm['W']:
             print("self.prm['correctCount'] <= expectedNCorrect - self.prm['W']")
 
-            if self.prm['trackDir'] == self.tr('Down'): #CALL REVERSAL
-                self.prm['trackDir'] = self.tr('Up')
+            if self.prm['trackDir'] == self.prm['corrTrackDir']: #CALL REVERSAL
+                self.prm['trackDir'] = copy.copy(self.prm['incorrTrackDir'])
                 newStepSize = self.prm['currStepSize']/2 #halve step size at reversal
                 if self.prm['lastStepDoubled'] == True:
                     self.prm['stepBeforeLastReversalDoubled'] = True
                 self.prm['lastStepDoubled'] = False
                 self.prm['nSteps'] = 1 #re-initialize counter. Should this be 1?
-            elif self.prm['trackDir'] == self.tr('Up'):
+            elif self.prm['trackDir'] == self.prm['incorrTrackDir']:
                 self.prm['nSteps'] = self.prm['nSteps'] + 1
                 if self.prm['nSteps'] < 3:
                     self.prm['lastStepDoubled'] = False
@@ -3397,11 +3430,13 @@ class responseBox(QMainWindow):
             self.prm['nTrialsCurrLev'] = 0
             self.prm['correctCount'] = 0
             self.prm['currStepSize'] = newStepSize
-                
+
             if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + self.prm['currStepSize']
+                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + (self.prm['currStepSize']*self.prm['incorrTrackSign'])
             elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * self.prm['currStepSize']
+                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * (self.prm['currStepSize']**self.prm['incorrTrackSign'])
+         
+          
  
 
         print("Adaptive Difference")

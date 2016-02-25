@@ -19,8 +19,8 @@ class TestTransformedUpDown(unittest.TestCase):
         numpy.testing.assert_array_equal(currRes["threshold_geometric"], storedRes["threshold_geometric"])
         numpy.testing.assert_array_equal(currRes["SD"], storedRes["SD"])
 
-        storedResProc = pd.read_csv(rootPath + "transformed_up-down/results/res_geometric_table_processed.csv", sep=";")
-        currResProc = pd.read_csv(rootPath + "transformed_up-down/res_geometric_table_processed.csv", sep=";")
+        storedResProc = pd.read_csv(rootPath + "transformed_up-down/results/res_geometric_table_sess.csv", sep=";")
+        currResProc = pd.read_csv(rootPath + "transformed_up-down/res_geometric_table_sess.csv", sep=";")
 
         numpy.testing.assert_array_equal(currResProc["threshold_geometric"], storedResProc["threshold_geometric"])
         numpy.testing.assert_array_equal(currResProc["SE"], storedResProc["SE"])
@@ -37,8 +37,8 @@ class TestTransformedUpDown(unittest.TestCase):
         numpy.testing.assert_array_equal(currRes["threshold_arithmetic"], storedRes["threshold_arithmetic"])
         numpy.testing.assert_array_equal(currRes["SD"], storedRes["SD"])
 
-        storedResProc = pd.read_csv(rootPath + "transformed_up-down/results/res_arithmetic_table_processed.csv", sep=";")
-        currResProc = pd.read_csv(rootPath + "transformed_up-down/res_arithmetic_table_processed.csv", sep=";")
+        storedResProc = pd.read_csv(rootPath + "transformed_up-down/results/res_arithmetic_table_sess.csv", sep=";")
+        currResProc = pd.read_csv(rootPath + "transformed_up-down/res_arithmetic_table_sess.csv", sep=";")
 
         numpy.testing.assert_array_equal(currResProc["threshold_arithmetic"], storedResProc["threshold_arithmetic"])
         numpy.testing.assert_array_equal(currResProc["SE"], storedResProc["SE"])

@@ -1157,7 +1157,7 @@ class pychControlWin(QMainWindow):
 
          
         #------------------------------------
-        #ADAPTIVE PARADIGM WIDGETS
+        #TRANSFORMED UP-DOWN PARADIGM WIDGETS
         if self.currParadigm in [self.tr("Transformed Up-Down"), self.tr("Transformed Up-Down Limited")]:
             n = 0
             self.adaptiveTypeChooserLabel = QLabel(self.tr("Procedure:"), self)
@@ -1173,14 +1173,14 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeCheckBox, n, 0)
 
             n = n+1
-            self.initialTrackDirChooserLabel = QLabel(self.tr("Initial Track Direction:"), self)
-            self.paradigm_widg_sizer.addWidget(self.initialTrackDirChooserLabel, n, 1)
-            self.initialTrackDirChooser = QComboBox()
-            self.initialTrackDirChooser.addItems([self.tr("Up"), self.tr("Down")])
-            self.initialTrackDirChooser.setCurrentIndex(1)
-            self.paradigm_widg_sizer.addWidget(self.initialTrackDirChooser, n, 2)
-            self.initialTrackDirCheckBox = QCheckBox()
-            self.paradigm_widg_sizer.addWidget(self.initialTrackDirCheckBox, n, 0)
+            self.corrTrackDirChooserLabel = QLabel(self.tr("Corr. Resp. Move Track:"), self)
+            self.paradigm_widg_sizer.addWidget(self.corrTrackDirChooserLabel, n, 1)
+            self.corrTrackDirChooser = QComboBox()
+            self.corrTrackDirChooser.addItems([self.tr("Up"), self.tr("Down")])
+            self.corrTrackDirChooser.setCurrentIndex(1)
+            self.paradigm_widg_sizer.addWidget(self.corrTrackDirChooser, n, 2)
+            self.corrTrackDirCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.corrTrackDirCheckBox, n, 0)
 
             n = n+1
             self.ruleDownLabel = QLabel(self.tr("Rule Down"), self)
@@ -1237,10 +1237,10 @@ class pychControlWin(QMainWindow):
             self.stepSize2CheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.stepSize2CheckBox, n, 3)
 
-            self.paradigmChooserList = [self.adaptiveTypeChooser, self.initialTrackDirChooser]
-            self.paradigmChooserLabelList = [self.adaptiveTypeChooserLabel, self.initialTrackDirChooserLabel]
+            self.paradigmChooserList = [self.adaptiveTypeChooser, self.corrTrackDirChooser]
+            self.paradigmChooserLabelList = [self.adaptiveTypeChooserLabel, self.corrTrackDirChooserLabel]
             self.paradigmChooserOptionsList = [self.prm["adaptiveTypeChoices"], [self.tr("Up"), self.tr("Down")]]
-            self.paradigmChooserCheckBoxList = [self.adaptiveTypeCheckBox, self.initialTrackDirCheckBox]
+            self.paradigmChooserCheckBoxList = [self.adaptiveTypeCheckBox, self.corrTrackDirCheckBox]
 
             self.paradigmFieldList = [self.ruleDownTF, self.ruleUpTF, self.initialTurnpointsTF, self.totalTurnpointsTF, self.stepSize1TF, self.stepSize2TF]
             self.paradigmFieldLabelList = [self.ruleDownLabel, self.ruleUpLabel, self.initialTurnpointsLabel, self.totalTurnpointsLabel, self.stepSize1Label, self.stepSize2Label]
@@ -1352,14 +1352,14 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeCheckBox, n, 0)
 
             n = n+1
-            self.initialTrackDirChooserLabel = QLabel(self.tr("Initial Track Direction:"), self)
-            self.paradigm_widg_sizer.addWidget(self.initialTrackDirChooserLabel, n, 1)
-            self.initialTrackDirChooser = QComboBox()
-            self.initialTrackDirChooser.addItems([self.tr("Up"), self.tr("Down")])
-            self.initialTrackDirChooser.setCurrentIndex(1)
-            self.paradigm_widg_sizer.addWidget(self.initialTrackDirChooser, n, 2)
-            self.initialTrackDirCheckBox = QCheckBox()
-            self.paradigm_widg_sizer.addWidget(self.initialTrackDirCheckBox, n, 0)
+            self.corrTrackDirChooserLabel = QLabel(self.tr("Corr. Resp. Move Track:"), self)
+            self.paradigm_widg_sizer.addWidget(self.corrTrackDirChooserLabel, n, 1)
+            self.corrTrackDirChooser = QComboBox()
+            self.corrTrackDirChooser.addItems([self.tr("Up"), self.tr("Down")])
+            self.corrTrackDirChooser.setCurrentIndex(1)
+            self.paradigm_widg_sizer.addWidget(self.corrTrackDirChooser, n, 2)
+            self.corrTrackDirCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.corrTrackDirCheckBox, n, 0)
             n = n+1
             self.pcTrackedLabel = QLabel(self.tr("Percent Correct Tracked"), self)
             self.paradigm_widg_sizer.addWidget(self.pcTrackedLabel, n, 1)
@@ -1403,10 +1403,10 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.stepSize2CheckBox, n, 3)
             n = n+1
             
-            self.paradigmChooserList = [self.adaptiveTypeChooser, self.initialTrackDirChooser]
-            self.paradigmChooserLabelList = [self.adaptiveTypeChooserLabel, self.initialTrackDirChooserLabel]
+            self.paradigmChooserList = [self.adaptiveTypeChooser, self.corrTrackDirChooser]
+            self.paradigmChooserLabelList = [self.adaptiveTypeChooserLabel, self.corrTrackDirChooserLabel]
             self.paradigmChooserOptionsList = [self.prm["adaptiveTypeChoices"], [self.tr("Up"), self.tr("Down")]]
-            self.paradigmChooserCheckBoxList = [self.adaptiveTypeCheckBox, self.initialTrackDirCheckBox]
+            self.paradigmChooserCheckBoxList = [self.adaptiveTypeCheckBox, self.corrTrackDirCheckBox]
 
             self.paradigmFieldList = [self.pcTrackedTF, self.initialTurnpointsTF, self.totalTurnpointsTF, self.stepSize1TF, self.stepSize2TF]
             self.paradigmFieldLabelList = [self.pcTrackedLabel, self.initialTurnpointsLabel, self.totalTurnpointsLabel, self.stepSize1Label, self.stepSize2Label]
@@ -1897,14 +1897,14 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.adaptiveTypeCheckBox, n, 0)
 
             n = n+1
-            self.initialTrackDirChooserLabel = QLabel(self.tr("Initial Track Direction:"), self)
-            self.paradigm_widg_sizer.addWidget(self.initialTrackDirChooserLabel, n, 1)
-            self.initialTrackDirChooser = QComboBox()
-            self.initialTrackDirChooser.addItems([self.tr("Up"), self.tr("Down")])
-            self.initialTrackDirChooser.setCurrentIndex(1)
-            self.paradigm_widg_sizer.addWidget(self.initialTrackDirChooser, n, 2)
-            self.initialTrackDirCheckBox = QCheckBox()
-            self.paradigm_widg_sizer.addWidget(self.initialTrackDirCheckBox, n, 0)
+            self.trackDirChooserLabel = QLabel(self.tr("Corr. Resp. Move Track:"), self)
+            self.paradigm_widg_sizer.addWidget(self.trackDirChooserLabel, n, 1)
+            self.trackDirChooser = QComboBox()
+            self.trackDirChooser.addItems([self.tr("Up"), self.tr("Down")])
+            self.trackDirChooser.setCurrentIndex(1)
+            self.paradigm_widg_sizer.addWidget(self.trackDirChooser, n, 2)
+            self.trackDirCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.trackDirCheckBox, n, 0)
 
             n = n+1
             self.pcTrackedLabel = QLabel(self.tr("Percent Correct Tracked"), self)
@@ -1956,10 +1956,10 @@ class pychControlWin(QMainWindow):
             self.WCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.WCheckBox, n, 0)
 
-            self.paradigmChooserList = [self.adaptiveTypeChooser, self.initialTrackDirChooser]
-            self.paradigmChooserLabelList = [self.adaptiveTypeChooserLabel, self.initialTrackDirChooserLabel]
+            self.paradigmChooserList = [self.adaptiveTypeChooser, self.trackDirChooser]
+            self.paradigmChooserLabelList = [self.adaptiveTypeChooserLabel, self.trackDirChooserLabel]
             self.paradigmChooserOptionsList = [self.prm["adaptiveTypeChoices"], [self.tr("Up"), self.tr("Down")]]
-            self.paradigmChooserCheckBoxList = [self.adaptiveTypeCheckBox, self.initialTrackDirCheckBox]
+            self.paradigmChooserCheckBoxList = [self.adaptiveTypeCheckBox, self.trackDirCheckBox]
 
             self.paradigmFieldList = [self.initialStepSizeTF, self.minStepSizeTF, self.maxStepSizeTF,
                                       self.WTF, self.pcTrackedTF]
@@ -4157,6 +4157,16 @@ class pychControlWin(QMainWindow):
             self.paradigmChooserList[c].setCurrentIndex(self.paradigmChooserList[c].findText(self.prm[block]['paradigmChooser'][c]))
             self.paradigmChooserCheckBoxList[c].setChecked(self.prm[block]['paradigmChooserCheckBox'][c])
 
+        if paradigm in ["UML", "PSI"]:
+            self.onChangeThreshPrior()
+            self.onChangeSlopePrior()
+            self.onChangeLapsePrior()
+        elif paradigm in ["UML - Est. Guess Rate", "PSI - Est. Guess Rate"]:
+            self.onChangeThreshPrior()
+            self.onChangeSlopePrior()
+            self.onChangeLapsePrior()    
+            self.onChangeSwptRule()
+
         self.preTrialSilenceTF.setText(self.currLocale.toString(self.prm[block]['preTrialSilence']))
         self.warningIntervalChooser.setCurrentIndex(self.warningIntervalChooser.findText(self.prm[block]['warningInterval']))
         self.onWarningIntervalChange()
@@ -5338,6 +5348,7 @@ class pychControlWin(QMainWindow):
 
     def onChangeThreshPrior(self):
         prior = self.threshPriorChooser.currentText()
+        print(prior)
         if prior == "Uniform":
             self.threshPriorMu.hide()
             self.threshPriorMuLabel.hide()
