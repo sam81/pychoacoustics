@@ -44,7 +44,6 @@ def initialize_freq(prm):
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
     prm[exp_name]["paradigmChoices"] = ["Transformed Up-Down",
-                                        "Transformed Up-Down (Fixed No. Trials)",
                                         "Weighted Up-Down",
                                         "Constant m-Intervals n-Alternatives",
                                         "PEST",

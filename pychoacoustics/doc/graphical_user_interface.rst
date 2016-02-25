@@ -457,12 +457,12 @@ PEST Paradigm Widgets
 
 -  **Corr. Resp. Move Track** This determines whether correct responses
    move the adaptive track down, or up. Choose down if you want the adaptive
-   difference to *decrease* as a consequence of correct
-   responses. Choose up if you want the adaptive difference to *increase*
-   as a consequence of correct responses. For example, in a singal detection
-   task in which the signal level is varied you should choose down (signal level
+   parameter to *decrease* as a consequence of correct
+   responses. Choose up if you want the adaptive parameter to *increase*
+   as a consequence of correct responses. For example, in a signal detection
+   task in which the signal level is varied you should choose ``Down`` (signal level
    decreases as a consequence of correct responses). On the other hand, in a
-   signal detection task in which the noise level is varied you should choose up
+   signal detection task in which the noise level is varied you should choose ``Up``
    (noise level increases as a consequence of correct responses).
 
 -  **Percent Correct Tracked** Set the percentage correct point on the
@@ -483,27 +483,26 @@ PSI Paradigm Widgets
 Transformed Up-Down Paradigm Widgets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
--  **Procedure** If “Arithmetic” the quantity defined by the step size
+-  **Procedure** If ``Arithmetic`` the step size
    will be added or subtracted to the parameter that is adaptively
-   changing. If “Geometric” the parameter that is adaptively changing
-   will be multiplied or divided by the quantity defined by the step
-   size.
+   varied. If ``Geometric`` the parameter that is adaptively varied
+   will be multiplied or divided by the step size.
 
--  **Initial Track Direction** This determines when the first turpoint
-   will be called. If the initial track direction is “Down” the first
-   turnpoint will be called the first time the adaptive track turns
-   upward. If the initial track direction is “Up” the first turnpoint
-   will be called the first time the adaptive track turns downward.
+-  **Corr. Resp. Move Track** This determines whether correct responses
+   move the adaptive track down, or up. Choose down if you want the adaptive
+   parameter to *decrease* as a consequence of correct
+   responses. Choose up if you want the adaptive parameter to *increase*
+   as a consequence of correct responses. For example, in a signal detection
+   task in which the signal level is varied you should choose ``Down`` (signal level
+   decreases as a consequence of correct responses). On the other hand, in a
+   signal detection task in which the noise level is varied you should choose ``Up``
+   (noise level increases as a consequence of correct responses).
 
--  **Rule Down** Set the number of consecutive correct responses needed
-   to subtract the current step size from the adaptive parameter (for
-   arithmetic procedures) or divide the adaptive parameter by the
-   current step size (for geometric procedures).
+-  **Rule Down** Set the number of consecutive correct, or incorrect responses,
+   depending on which type of responses move the track down, needed to make a step down.
 
--  **Rule Up** Set the number of consecutive incorrect responses needed
-   to add the current step size to the adaptive parameter (for
-   arithmetic procedures) or multiply the adaptive parameter by the
-   current step size (for geometric procedures).
+-  **Rule Up** Set the number of consecutive correct, or incorrect responses,
+   depending on which type of responses move the track up, needed to make a step up.
 
 -  **Initial Turnpoints** Set the number of initial turnpoints. The
    initial turnpoints serve to bring quickly the adaptive track towards
@@ -547,12 +546,15 @@ Transformed Up-Down Interleaved Paradigm Widgets
    will be estimated using only the last :math:`N` turnpoints, where
    :math:`N` equals the number of requested turnpoints.
 
--  **Initial Track X Direction** This determines when the first turpoint
-   will be called for track number :math:`X`. If the initial track
-   direction is “Down” the first turnpoint will be called the first time
-   the adaptive track turns upward. If the initial track direction is
-   “Up” the first turnpoint will be called the first time the adaptive
-   track turns downward.
+-  **Corr. Resp. Move Track X** This determines whether correct responses
+   move the adaptive track down, or up. Choose ``Down`` if you want the adaptive
+   parameter to *decrease* as a consequence of correct
+   responses. Choose ``Up`` if you want the adaptive parameter to *increase*
+   as a consequence of correct responses. For example, in a signal detection
+   task in which the signal level is varied you should choose ``Down`` (signal level
+   decreases as a consequence of correct responses). On the other hand, in a
+   signal detection task in which the noise level is varied you should choose ``Up``
+   (noise level increases as a consequence of correct responses).
 
 -  **Rule Down Track X** Set the number of consecutive correct responses
    needed to subtract the current step size from the adaptive parameter
@@ -560,16 +562,13 @@ Transformed Up-Down Interleaved Paradigm Widgets
    current step size (for geometric procedures) for track number
    :math:`X`.
 
--  **Rule Up Track X** Set the number of consecutive incorrect responses
-   needed to add the current step size to the adaptive parameter (for
-   arithmetic procedures) or multiply the adaptive parameter by the
-   current step size (for geometric procedures) for track number
-   :math:`X`.
+-  **Rule Up Track X** Set the number of consecutive correct, or incorrect responses,
+   depending on which type of responses move track *X* down, needed to make a step down
+   for track *X*.
 
--  **Initial Turnpoints Track X** Set the number of initial turnpoints
-   for track number :math:`X`. The initial turnpoints serve to bring
-   quickly the adaptive track towards the listener’s threshold. These
-   turnpoints are not included in the threshold estimate.
+-  **Initial Turnpoints Track X** Set the number of consecutive correct, or incorrect responses,
+   depending on which type of responses move track *X* up, needed to make a step up
+   for track *X*.
 
 -  **Total Turnpoints Track X** Set the number of total turnpoints for
    track number :math:`X`. The number of total turnpoints is equal to
@@ -666,11 +665,15 @@ Weighted Up-Down Paradigm Widgets
    will be multiplied or divided by the quantity defined by the step
    size.
 
--  **Initial Track Direction** This determines when the first turpoint
-   will be called. If the initial track direction is “Down” the first
-   turnpoint will be called the first time the adaptive track turns
-   upward. If the initial track direction is “Up” the first turnpoint
-   will be called the first time the adaptive track turns downward.
+-  **Corr. Resp. Move Track** This determines whether correct responses
+   move the adaptive track down, or up. Choose down if you want the adaptive
+   parameter to *decrease* as a consequence of correct
+   responses. Choose up if you want the adaptive parameter to *increase*
+   as a consequence of correct responses. For example, in a signal detection
+   task in which the signal level is varied you should choose ``Down`` (signal level
+   decreases as a consequence of correct responses). On the other hand, in a
+   signal detection task in which the noise level is varied you should choose ``Up``
+   (noise level increases as a consequence of correct responses).
 
 -  **Percent Correct Tracked** Set the percentage correct point on the
    psychometric function to be tracked by the adaptive procedure. The
@@ -723,12 +726,15 @@ Weighted Up-Down Interleaved Paradigm Widgets
    will be estimated using only the last :math:`N` turnpoints, where
    :math:`N` equals the number of requested turnpoints.
 
--  **Initial Track X Direction** This determines when the first turpoint
-   will be called for track number :math:`X`. If the initial track
-   direction is “Down” the first turnpoint will be called the first time
-   the adaptive track turns upward. If the initial track direction is
-   “Up” the first turnpoint will be called the first time the adaptive
-   track turns downward.
+-  **Corr. Resp. Move Track X** This determines whether correct responses
+   move the adaptive track number *X* down, or up. Choose ``Down`` if you want the adaptive
+   parameter to *decrease* as a consequence of correct
+   responses. Choose ``Up`` if you want the adaptive parameter to *increase*
+   as a consequence of correct responses. For example, in a signal detection
+   task in which the signal level is varied you should choose ``Down`` (signal level
+   decreases as a consequence of correct responses). On the other hand, in a
+   signal detection task in which the noise level is varied you should choose ``Up``
+   (noise level increases as a consequence of correct responses).
 
 -  **Percent Correct Tracked** Set the percentage correct point on the
    psychometric function to be tracked by the adaptive procedure for

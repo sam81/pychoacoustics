@@ -12,7 +12,9 @@ from sndlib_unittest import*
 ###########################
 # paradigm tests
 from test_transformed_up_down import*
+from test_transformed_up_down_interleaved import*
 from test_weighted_up_down import*
+from test_weighted_up_down_interleaved import*
 from test_PSI import*
 from test_UML import*
 
