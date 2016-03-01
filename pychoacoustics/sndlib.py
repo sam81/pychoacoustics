@@ -3800,7 +3800,7 @@ def pureTone(frequency=1000, phase=0, level=60, duration=980, ramp=10, channel="
     
     """
     
-    amp = 10**((level - maxLevel) / 20.)
+    amp = 10**((level - maxLevel) / 20)
     duration = duration / 1000 #convert from ms to sec
     ramp = ramp / 1000
 

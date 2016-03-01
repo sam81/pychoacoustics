@@ -1832,7 +1832,7 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.initialStepSizeLabel, n, 4)
             self.initialStepSizeTF = QLineEdit()
             self.initialStepSizeTF.setText('5')
-            self.initialStepSizeTF.setValidator(QIntValidator(self))
+            self.initialStepSizeTF.setValidator(QDoubleValidator(self))
             self.paradigm_widg_sizer.addWidget(self.initialStepSizeTF, n, 5)
             self.initialStepSizeCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.initialStepSizeCheckBox, n, 3)

@@ -3122,6 +3122,7 @@ class responseBox(QMainWindow):
                 self.prm['incorrTrackDir'] = self.tr("Down")
             
             self.fullFileLines = []
+            self.fullFileSummLines = []
             self.prm['buttonCounter'] = [0 for i in range(self.prm['nAlternatives'])]
         self.prm['buttonCounter'][buttonClicked-1] = self.prm['buttonCounter'][buttonClicked-1] + 1
 
@@ -3138,14 +3139,18 @@ class responseBox(QMainWindow):
             
             self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
             self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm["pref"]["general"]["csvSeparator"]])
             self.fullFileLog.write('1; ')
             self.fullFileLines.append('1; ')
+            self.fullFileSummLines[len(self.fullFileSummLines)-1].append('1' + self.prm["pref"]["general"]["csvSeparator"])
             if 'additional_parameters_to_write' in self.prm:
                 for p in range(len(self.prm['additional_parameters_to_write'])):
                     self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
                     self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(self.prm['additional_parameters_to_write'][p]))
                     self.fullFileLog.write(' ;')
                     self.fullFileLines.append(' ;')
+                    self.fullFileSummLines[len(self.fullFileSummLines)-1].append(self.prm["pref"]["general"]["csvSeparator"])
             self.fullFileLog.write('\n')
             self.fullFileLines.append('\n')
             self.prm['correctCount'] = self.prm['correctCount'] + 1
@@ -3159,14 +3164,18 @@ class responseBox(QMainWindow):
                                
             self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
             self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm["pref"]["general"]["csvSeparator"]])
             self.fullFileLog.write('0; ')
             self.fullFileLines.append('0; ')
+            self.fullFileSummLines[len(self.fullFileSummLines)-1].append('0' + self.prm["pref"]["general"]["csvSeparator"])
             if 'additional_parameters_to_write' in self.prm:
                 for p in range(len(self.prm['additional_parameters_to_write'])):
                     self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
                     self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                    self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(self.prm['additional_parameters_to_write'][p]))
                     self.fullFileLog.write('; ')
                     self.fullFileLines.append('; ')
+                    self.fullFileSummLines[len(self.fullFileSummLines)-1].append(self.prm["pref"]["general"]["csvSeparator"])
             self.fullFileLog.write('\n')
             self.fullFileLines.append('\n')
             
@@ -3224,17 +3233,6 @@ class responseBox(QMainWindow):
             self.prm['nTrialsCurrLev'] = 0
             self.prm['correctCount'] = 0
             self.prm['currStepSize'] = newStepSize
-
-            # if self.prm['corrTrackDir'] == self.tr("Down"):
-            #     if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-            #         self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] - self.prm['currStepSize']
-            #     elif self.prm['adaptiveType'] == self.tr("Geometric"):
-            #         self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] / self.prm['currStepSize']
-            # elif self.prm['corrTrackDir'] == self.tr("Up"):
-            #     if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-            #         self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + self.prm['currStepSize']
-            #     elif self.prm['adaptiveType'] == self.tr("Geometric"):
-            #         self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * self.prm['currStepSize']
 
         
             if self.prm['adaptiveType'] == self.tr("Arithmetic"):
@@ -3341,6 +3339,28 @@ class responseBox(QMainWindow):
             resLineToWrite = resLineToWrite + '\n'
 
             self.writeResultsSummaryLine('PEST', resLineToWrite)
+
+
+            resLineToWriteSummFull = ""
+            for i in range(len(self.fullFileSummLines)):
+              resLineToWriteSummFull = resLineToWriteSummFull + " ".join(self.fullFileSummLines[i]) + \
+                             self.prm[currBlock]['conditionLabel'] + self.prm["pref"]["general"]["csvSeparator"] + \
+                             self.prm['listener'] + self.prm["pref"]["general"]["csvSeparator"] + \
+                             self.prm['sessionLabel'] + self.prm["pref"]["general"]["csvSeparator"] + \
+                             self.prm['allBlocks']['experimentLabel'] + self.prm["pref"]["general"]["csvSeparator"] +\
+                             self.prm['blockEndDateString'] + self.prm["pref"]["general"]["csvSeparator"] + \
+                             self.prm['blockEndTimeString'] + self.prm["pref"]["general"]["csvSeparator"] + \
+                             durString + self.prm["pref"]["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['blockPosition'] + self.prm["pref"]["general"]["csvSeparator"] + \
+                             self.prm[currBlock]['experiment'] + self.prm["pref"]["general"]["csvSeparator"] +\
+                             self.prm[currBlock]['paradigm'] + self.prm["pref"]["general"]["csvSeparator"]
+             
+              resLineToWriteSummFull = self.getCommonTabFields(resLineToWriteSummFull)
+              resLineToWriteSummFull = resLineToWriteSummFull + '\n'
+            
+            
+            self.writeResultsSummaryFullLine('PEST', resLineToWriteSummFull)
+
 
             self.atBlockEnd()
             
@@ -5178,7 +5198,7 @@ class responseBox(QMainWindow):
             self.resFileSummary.close()
 
     def writeResultsSummaryFullLine(self, paradigm, resultsLine):
-        if paradigm in ['Transformed Up-Down', 'Transformed Up-Down Limited', 'Weighted Up-Down', 'Weighted Up-Down Limited']:
+        if paradigm in ['Transformed Up-Down', 'Transformed Up-Down Limited', 'Weighted Up-Down', 'Weighted Up-Down Limited', 'PEST']:
             headerToWrite = 'adaptive_difference' + self.prm['pref']["general"]["csvSeparator"] + \
                             'response' + self.prm['pref']["general"]["csvSeparator"]
             if 'additional_parameters_to_write' in self.prm:

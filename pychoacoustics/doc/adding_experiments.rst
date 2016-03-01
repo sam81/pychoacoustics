@@ -66,7 +66,7 @@ called:
     select_default_parameters_lev()
     doTrial_lev()
 
-we’ll look at each function in details shortly. Briefly, the
+we’ll look at each function in detail shortly. Briefly, the
 ``initialize_`` function is used to set some general parameters and
 options for our experiment; the ``select_default_parameters_`` function
 lists all the widgets (text fields and choosers) of our experiment and
@@ -88,7 +88,9 @@ experiment is shown below:
       prm["experimentsChoices"].append(exp_name)
       prm[exp_name] = {}
       prm[exp_name]["paradigmChoices"] = ["Transformed Up-Down",
-                                          "Weighted Up-Down"]
+                                          "Weighted Up-Down",
+                                          "UML",
+                                          "PSI"]
     
       prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", 
                                "hasFeedback"]
@@ -111,15 +113,16 @@ we give a label to the experiment, this can be anything we
 want, except the label of an experiment already existing. On line 3
 we add this experiment label to the list of “experimentsChoices”.
 On line 4 we create a new sub-dictionary that has as a key the
-experiment label. Next we list the paradims that our experiment
+experiment label. Next we list the paradigms that our experiment
 supports by creating a ``paradigmChoices`` key and giving the names of
-the supported paradigms as a list. The paradims listed here must be
-within the set of paradims  supported by ``pychoacoustics`` (see
+the supported paradigms as a list. The paradigms listed here must be
+within the set of paradigms  supported by ``pychoacoustics`` (see
 Section :ref:`sec-paradigms` for a description of the paradigms currently
 supported). In the next line we set an ``opts`` key containing a list
 of options. The full list of options that can be set here is described
 in details in Section :ref:`sec-experiment_opts`. In brief, for our
-experiment we want to have a widget to set the ISI between presentation
+experiment we want to have a widget to set the silent interval (ISI)
+between presentation
 intervals (``hasISIBox``), a widget to choose the number of response
 alternatives (``hasAlternativesChooser``), and a widget to set the feedback
 on or off for a given block of trials (``hasFeedback``).
@@ -319,8 +322,8 @@ and we can test it on ``pychoacoustics``.
 Adding support for the Constant Paradigm
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-So far our frequency discrimination experiment supports only two paradigms:
-the "Transformed Up-Down", and the "Weighted Up-Down" paradigm.
+So far our frequency discrimination experiment supports only adaptive paradigms.
+
 Adding support for the constant paradigm, in which the frequency difference 
 between the standard and comparison stimuli is fixed across a block of trials 
 is easy. All we need to do is add "Constant m-Intervals n-Alternatives" to the 
@@ -330,6 +333,8 @@ list of paradigms supported paradims in the ``initialize_`` function:
 
    prm[exp_name]["paradigmChoices"] = ["Transformed Up-Down",
                                        "Weighted Up-Down",
+                                       "UML",
+                                       "PSI"
                                        "Constant m-Intervals n-Alternatives"]
 
 Now our frequency discrimination task supports also the constant paradigm.
