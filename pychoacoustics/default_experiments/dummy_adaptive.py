@@ -63,7 +63,7 @@ def select_default_parameters_dummy_adaptive(parent, par):
 def doTrial_dummy_adaptive(parent):
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
-        parent.prm['adaptiveDifference'] = \
+        parent.prm['adaptiveParam'] = \
           parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference")]
         parent.writeResultsHeader('log')
 

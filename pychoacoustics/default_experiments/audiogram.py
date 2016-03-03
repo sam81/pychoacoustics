@@ -120,15 +120,15 @@ def doTrial_audiogram(parent):
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
         parent.prm['additional_parameters_to_write'] = {}
-        parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Level (dB SPL)",""))]
-        parent.prm['conditions'] = [str(parent.prm['adaptiveDifference'])]
+        parent.prm['adaptiveParam'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Level (dB SPL)",""))]
+        parent.prm['conditions'] = [str(parent.prm['adaptiveParam'])]
 
         parent.writeResultsHeader('log')
     parent.currentCondition = parent.prm['conditions'][0]
     frequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Frequency (Hz)",""))] 
     bandwidth = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)",""))] 
     phase = 0
-    correctLevel = parent.prm['adaptiveDifference']
+    correctLevel = parent.prm['adaptiveParam']
     incorrectLevel = -200
     duration = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Duration (ms)",""))] 
     ramps = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Ramps (ms)",""))] 

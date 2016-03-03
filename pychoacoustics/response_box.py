@@ -1141,43 +1141,43 @@ class responseBox(QMainWindow):
             self.prm['responseModeChoices'] = ["Real Listener", "Automatic", "Simulated Listener", "Psychometric"]
             if self.prm[currBlock]['psyListFun'] == "Logistic":
                 if self.prm[currBlock]['psyListFunFit'] == "Linear":
-                    probCorr = logisticPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
+                    probCorr = logisticPsy(self.prm['adaptiveParam'], self.prm[currBlock]['psyListMidpoint'],
                                            self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                            self.prm[currBlock]['psyListLapse'])
                 elif self.prm[currBlock]['psyListFunFit'] == "Logarithmic":
-                    # print(self.prm['adaptiveDifference'])
+                    # print(self.prm['adaptiveParam'])
                     # print(self.prm[currBlock]['psyListMidpoint'])
                     # print(self.prm[currBlock]['psyListSlope'])
                     # print(1/self.prm[currBlock]['nAlternatives'])
                     # print(self.prm[currBlock]['psyListLapse'])
-                    probCorr = logisticPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
+                    probCorr = logisticPsy(np.log(self.prm['adaptiveParam']), np.log(self.prm[currBlock]['psyListMidpoint']),
                                            self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                            self.prm[currBlock]['psyListLapse'])
             elif self.prm[currBlock]['psyListFun'] == "Gaussian":
                 if self.prm[currBlock]['psyListFunFit'] == "Linear":
-                    probCorr = gaussianPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
+                    probCorr = gaussianPsy(self.prm['adaptiveParam'], self.prm[currBlock]['psyListMidpoint'],
                                            self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                            self.prm[currBlock]['psyListLapse'])
                 elif self.prm[currBlock]['psyListFunFit'] == "Logarithmic":
-                    probCorr = gaussianPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
+                    probCorr = gaussianPsy(np.log(self.prm['adaptiveParam']), np.log(self.prm[currBlock]['psyListMidpoint']),
                                            self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                            self.prm[currBlock]['psyListLapse'])
             elif self.prm[currBlock]['psyListFun'] == "Gumbel":
                 if self.prm[currBlock]['psyListFunFit'] == "Linear":
-                    probCorr = gumbelPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
+                    probCorr = gumbelPsy(self.prm['adaptiveParam'], self.prm[currBlock]['psyListMidpoint'],
                                          self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                          self.prm[currBlock]['psyListLapse'])
                 elif self.prm[currBlock]['psyListFunFit'] == "Logarithmic":
-                    probCorr = gumbelPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
+                    probCorr = gumbelPsy(np.log(self.prm['adaptiveParam']), np.log(self.prm[currBlock]['psyListMidpoint']),
                                          self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                          self.prm[currBlock]['psyListLapse'])
             elif self.prm[currBlock]['psyListFun'] == "Weibull":
                 if self.prm[currBlock]['psyListFunFit'] == "Linear":
-                    probCorr = weibullPsy(self.prm['adaptiveDifference'], self.prm[currBlock]['psyListMidpoint'],
+                    probCorr = weibullPsy(self.prm['adaptiveParam'], self.prm[currBlock]['psyListMidpoint'],
                                           self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                           self.prm[currBlock]['psyListLapse'])
                 elif self.prm[currBlock]['psyListFunFit'] == "Logarithmic":
-                    probCorr = weibullPsy(np.log(self.prm['adaptiveDifference']), np.log(self.prm[currBlock]['psyListMidpoint']),
+                    probCorr = weibullPsy(np.log(self.prm['adaptiveParam']), np.log(self.prm[currBlock]['psyListMidpoint']),
                                           self.prm[currBlock]['psyListSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                           self.prm[currBlock]['psyListLapse'])
             resp = np.random.binomial(1, probCorr, 1)[0]
@@ -1374,9 +1374,9 @@ class responseBox(QMainWindow):
             elif self.prm["responseLight"] == self.tr("None"):
                 self.responseLight.giveFeedback("off")
             
-            self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm["pref"]["general"]["csvSeparator"]])
+            self.fullFileLog.write(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveParam']) + self.prm["pref"]["general"]["csvSeparator"]])
             self.fullFileLog.write('1; ')
             self.fullFileLines.append('1; ')
             self.fullFileSummLines[len(self.fullFileSummLines)-1].append('1' + self.prm["pref"]["general"]["csvSeparator"])
@@ -1396,14 +1396,14 @@ class responseBox(QMainWindow):
             if self.prm['correctCount'] == self.prm['numberCorrectNeeded']:
                 self.prm['correctCount'] = 0
                 if self.prm['trackDir'] == self.prm['incorrTrackDir']:
-                    self.prm['turnpointVal'].append(self.prm['adaptiveDifference'])
+                    self.prm['turnpointVal'].append(self.prm['adaptiveParam'])
                     self.prm['nTurnpoints'] = self.prm['nTurnpoints'] +1
                     self.prm['trackDir'] = copy.copy(self.prm['corrTrackDir'])
                         
                 if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + (stepSize[self.prm['corrTrackDir']]*self.prm['corrTrackSign'])
+                    self.prm['adaptiveParam'] = self.prm['adaptiveParam'] + (stepSize[self.prm['corrTrackDir']]*self.prm['corrTrackSign'])
                 elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * (stepSize[self.prm['corrTrackDir']]**self.prm['corrTrackSign'])
+                    self.prm['adaptiveParam'] = self.prm['adaptiveParam'] * (stepSize[self.prm['corrTrackDir']]**self.prm['corrTrackSign'])
                 
         elif buttonClicked != self.correctButton:
             if self.prm["responseLight"] == self.tr("Feedback"):
@@ -1413,9 +1413,9 @@ class responseBox(QMainWindow):
             elif self.prm["responseLight"] == self.tr("None"):
                 self.responseLight.giveFeedback("off")
                 
-            self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm["pref"]["general"]["csvSeparator"]])
+            self.fullFileLog.write(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveParam']) + self.prm["pref"]["general"]["csvSeparator"]])
             self.fullFileLog.write('0; ')
             self.fullFileLines.append('0; ')
             self.fullFileSummLines[len(self.fullFileSummLines)-1].append('0' + self.prm["pref"]["general"]["csvSeparator"])
@@ -1436,14 +1436,14 @@ class responseBox(QMainWindow):
             if self.prm['incorrectCount'] == self.prm['numberIncorrectNeeded']:
                 self.prm['incorrectCount'] = 0
                 if self.prm['trackDir'] == self.prm['corrTrackDir']:#self.tr('Down'):
-                    self.prm['turnpointVal'].append(self.prm['adaptiveDifference'])
+                    self.prm['turnpointVal'].append(self.prm['adaptiveParam'])
                     self.prm['nTurnpoints'] = self.prm['nTurnpoints'] +1
                     self.prm['trackDir'] = copy.copy(self.prm['incorrTrackDir'])#self.tr('Up')
                     
                 if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + (stepSize[self.prm['incorrTrackDir']]*self.prm['incorrTrackSign'])
+                    self.prm['adaptiveParam'] = self.prm['adaptiveParam'] + (stepSize[self.prm['incorrTrackDir']]*self.prm['incorrTrackSign'])
                 elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * (stepSize[self.prm['incorrTrackDir']]**self.prm['incorrTrackSign'])
+                    self.prm['adaptiveParam'] = self.prm['adaptiveParam'] * (stepSize[self.prm['incorrTrackDir']]**self.prm['incorrTrackSign'])
                                                      
 
         self.fullFileLog.flush()
@@ -1550,7 +1550,7 @@ class responseBox(QMainWindow):
         #I used this procedure a long time ago for an experiment in which participants were stuck at the maximum
         #adaptive difference and the block took too long to complete. To speed up things this procedure will call
         #a turnpoint not only when the track is going from the "incorrect" direction to the "correct" direction,
-        # but also when self.prm['adaptiveDifference'] == self.prm['adaptiveMaxLimit'].
+        # but also when self.prm['adaptiveParam'] == self.prm['adaptiveMaxLimit'].
         #This was done only to speed things up, and in retrospect it was not the most elegant solution.
         #I do not recommend using this procedure in general. It is here mainly for historical purposes.
         if self.prm['startOfBlock'] == True:
@@ -1604,9 +1604,9 @@ class responseBox(QMainWindow):
             elif self.prm["responseLight"] == self.tr("None"):
                 self.responseLight.giveFeedback("off")
             
-            self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm["pref"]["general"]["csvSeparator"]])
+            self.fullFileLog.write(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveParam']) + self.prm["pref"]["general"]["csvSeparator"]])
             self.fullFileLog.write('1; ')
             self.fullFileLines.append('1; ')
             self.fullFileSummLines[len(self.fullFileSummLines)-1].append('1' + self.prm["pref"]["general"]["csvSeparator"])
@@ -1626,14 +1626,14 @@ class responseBox(QMainWindow):
             if self.prm['correctCount'] == self.prm['numberCorrectNeeded']:
                 self.prm['correctCount'] = 0
                 if self.prm['trackDir'] == self.prm['incorrTrackDir']:
-                    self.prm['turnpointVal'].append(self.prm['adaptiveDifference'])
+                    self.prm['turnpointVal'].append(self.prm['adaptiveParam'])
                     self.prm['nTurnpoints'] = self.prm['nTurnpoints'] +1
                     self.prm['trackDir'] = copy.copy(self.prm['corrTrackDir'])
                         
                 if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + (stepSize[self.prm['corrTrackDir']]*self.prm['corrTrackSign'])
+                    self.prm['adaptiveParam'] = self.prm['adaptiveParam'] + (stepSize[self.prm['corrTrackDir']]*self.prm['corrTrackSign'])
                 elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * (stepSize[self.prm['corrTrackDir']]**self.prm['corrTrackSign'])
+                    self.prm['adaptiveParam'] = self.prm['adaptiveParam'] * (stepSize[self.prm['corrTrackDir']]**self.prm['corrTrackSign'])
                 
         elif buttonClicked != self.correctButton:
             if self.prm["responseLight"] == self.tr("Feedback"):
@@ -1643,9 +1643,9 @@ class responseBox(QMainWindow):
             elif self.prm["responseLight"] == self.tr("None"):
                 self.responseLight.giveFeedback("off")
                 
-            self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm["pref"]["general"]["csvSeparator"]])
+            self.fullFileLog.write(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveParam']) + self.prm["pref"]["general"]["csvSeparator"]])
             self.fullFileLog.write('0; ')
             self.fullFileLines.append('0; ')
             self.fullFileSummLines[len(self.fullFileSummLines)-1].append('0' + self.prm["pref"]["general"]["csvSeparator"])
@@ -1665,15 +1665,15 @@ class responseBox(QMainWindow):
 
             if self.prm['incorrectCount'] == self.prm['numberIncorrectNeeded']:
                 self.prm['incorrectCount'] = 0
-                if self.prm['trackDir'] == self.prm['corrTrackDir'] or self.prm['adaptiveDifference'] == self.prm['adaptiveMaxLimit']:
-                    self.prm['turnpointVal'].append(self.prm['adaptiveDifference'])
+                if self.prm['trackDir'] == self.prm['corrTrackDir'] or self.prm['adaptiveParam'] == self.prm['adaptiveMaxLimit']:
+                    self.prm['turnpointVal'].append(self.prm['adaptiveParam'])
                     self.prm['nTurnpoints'] = self.prm['nTurnpoints'] +1
                     self.prm['trackDir'] = copy.copy(self.prm['incorrTrackDir'])
                     
                 if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + (stepSize[self.prm['incorrTrackDir']]*self.prm['incorrTrackSign'])
+                    self.prm['adaptiveParam'] = self.prm['adaptiveParam'] + (stepSize[self.prm['incorrTrackDir']]*self.prm['incorrTrackSign'])
                 elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                    self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * (stepSize[self.prm['incorrTrackDir']]**self.prm['incorrTrackSign'])
+                    self.prm['adaptiveParam'] = self.prm['adaptiveParam'] * (stepSize[self.prm['incorrTrackDir']]**self.prm['incorrTrackSign'])
                                                      
 
         self.fullFileLog.flush()
@@ -1837,8 +1837,8 @@ class responseBox(QMainWindow):
             elif self.prm["responseLight"] == self.tr("None"):
                 self.responseLight.giveFeedback('off')
             
-            self.fullFileLog.write(str(self.prm['adaptiveDifference'][trackNumber]) + '; ')
-            self.fullFileLines.append(str(self.prm['adaptiveDifference'][trackNumber]) + '; ')
+            self.fullFileLog.write(str(self.prm['adaptiveParam'][trackNumber]) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveParam'][trackNumber]) + '; ')
             self.fullFileLog.write('TRACK %d; 1; ' %(trackNumber+1))
             self.fullFileLines.append('TRACK %d; 1; ' %(trackNumber+1))
             if 'additional_parameters_to_write' in self.prm:
@@ -1855,14 +1855,14 @@ class responseBox(QMainWindow):
             if self.prm['correctCount'][trackNumber] == self.prm['numberCorrectNeeded'][trackNumber]:
                 self.prm['correctCount'][trackNumber] = 0
                 if self.prm['trackDir'][trackNumber] == self.prm['incorrTrackDir'][trackNumber]:
-                    self.prm['turnpointVal'][trackNumber].append(self.prm['adaptiveDifference'][trackNumber])
+                    self.prm['turnpointVal'][trackNumber].append(self.prm['adaptiveParam'][trackNumber])
                     self.prm['nTurnpoints'][trackNumber] = self.prm['nTurnpoints'][trackNumber] +1
                     self.prm['trackDir'][trackNumber] = copy.copy(self.prm['corrTrackDir'][trackNumber])
 
                 if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                    self.prm['adaptiveDifference'][trackNumber] = self.prm['adaptiveDifference'][trackNumber] + (stepSize[self.prm['corrTrackDir'][trackNumber]]*self.prm['corrTrackSign'][trackNumber])
+                    self.prm['adaptiveParam'][trackNumber] = self.prm['adaptiveParam'][trackNumber] + (stepSize[self.prm['corrTrackDir'][trackNumber]]*self.prm['corrTrackSign'][trackNumber])
                 elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                    self.prm['adaptiveDifference'][trackNumber] = self.prm['adaptiveDifference'][trackNumber] * (stepSize[self.prm['corrTrackDir'][trackNumber]]**self.prm['corrTrackSign'][trackNumber])
+                    self.prm['adaptiveParam'][trackNumber] = self.prm['adaptiveParam'][trackNumber] * (stepSize[self.prm['corrTrackDir'][trackNumber]]**self.prm['corrTrackSign'][trackNumber])
                 
         elif buttonClicked != self.correctButton:
             if self.prm["responseLight"] == self.tr("Feedback"):
@@ -1872,8 +1872,8 @@ class responseBox(QMainWindow):
             elif self.prm["responseLight"] == self.tr("None"):
                 self.responseLight.giveFeedback('off')
                 
-            self.fullFileLog.write(str(self.prm['adaptiveDifference'][trackNumber]) + '; ')
-            self.fullFileLines.append(str(self.prm['adaptiveDifference'][trackNumber]) + '; ')
+            self.fullFileLog.write(str(self.prm['adaptiveParam'][trackNumber]) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveParam'][trackNumber]) + '; ')
             self.fullFileLog.write('TRACK %d; 0; ' %(trackNumber+1))
             self.fullFileLines.append('TRACK %d; 0; ' %(trackNumber+1))
             if 'additional_parameters_to_write' in self.prm:
@@ -1891,14 +1891,14 @@ class responseBox(QMainWindow):
             if self.prm['incorrectCount'][trackNumber] == self.prm['numberIncorrectNeeded'][trackNumber]:
                 self.prm['incorrectCount'][trackNumber] = 0
                 if self.prm['trackDir'][trackNumber] == self.prm['corrTrackDir'][trackNumber]:
-                    self.prm['turnpointVal'][trackNumber].append(self.prm['adaptiveDifference'][trackNumber])
+                    self.prm['turnpointVal'][trackNumber].append(self.prm['adaptiveParam'][trackNumber])
                     self.prm['nTurnpoints'][trackNumber] = self.prm['nTurnpoints'][trackNumber] +1
                     self.prm['trackDir'][trackNumber] = copy.copy(self.prm['incorrTrackDir'][trackNumber])
 
                 if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                    self.prm['adaptiveDifference'][trackNumber] = self.prm['adaptiveDifference'][trackNumber] + (stepSize[self.prm['incorrTrackDir'][trackNumber]]*self.prm['incorrTrackSign'][trackNumber])
+                    self.prm['adaptiveParam'][trackNumber] = self.prm['adaptiveParam'][trackNumber] + (stepSize[self.prm['incorrTrackDir'][trackNumber]]*self.prm['incorrTrackSign'][trackNumber])
                 elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                    self.prm['adaptiveDifference'][trackNumber] = self.prm['adaptiveDifference'][trackNumber] * (stepSize[self.prm['incorrTrackDir'][trackNumber]]**self.prm['incorrTrackSign'][trackNumber])
+                    self.prm['adaptiveParam'][trackNumber] = self.prm['adaptiveParam'][trackNumber] * (stepSize[self.prm['incorrTrackDir'][trackNumber]]**self.prm['incorrTrackSign'][trackNumber])
       
         self.fullFileLog.flush()
         currNTurnpoints = 0
@@ -3140,9 +3140,9 @@ class responseBox(QMainWindow):
             elif self.prm["responseLight"] == self.tr("None"):
                 self.responseLight.giveFeedback("off")
             
-            self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm["pref"]["general"]["csvSeparator"]])
+            self.fullFileLog.write(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveParam']) + self.prm["pref"]["general"]["csvSeparator"]])
             self.fullFileLog.write('1; ')
             self.fullFileLines.append('1; ')
             self.fullFileSummLines[len(self.fullFileSummLines)-1].append('1' + self.prm["pref"]["general"]["csvSeparator"])
@@ -3165,9 +3165,9 @@ class responseBox(QMainWindow):
             elif self.prm["responseLight"] == self.tr("None"):
                 self.responseLight.giveFeedback("off")
                                
-            self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm["pref"]["general"]["csvSeparator"]])
+            self.fullFileLog.write(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveParam']) + self.prm["pref"]["general"]["csvSeparator"]])
             self.fullFileLog.write('0; ')
             self.fullFileLines.append('0; ')
             self.fullFileSummLines[len(self.fullFileSummLines)-1].append('0' + self.prm["pref"]["general"]["csvSeparator"])
@@ -3239,9 +3239,9 @@ class responseBox(QMainWindow):
 
         
             if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + (self.prm['currStepSize']*self.prm['corrTrackSign'])
+                self.prm['adaptiveParam'] = self.prm['adaptiveParam'] + (self.prm['currStepSize']*self.prm['corrTrackSign'])
             elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * (self.prm['currStepSize']**self.prm['corrTrackSign'])
+                self.prm['adaptiveParam'] = self.prm['adaptiveParam'] * (self.prm['currStepSize']**self.prm['corrTrackSign'])
                 
         elif self.prm['correctCount'] <= expectedNCorrect - self.prm['W']:
             print("self.prm['correctCount'] <= expectedNCorrect - self.prm['W']")
@@ -3276,15 +3276,15 @@ class responseBox(QMainWindow):
             self.prm['currStepSize'] = newStepSize
 
             if self.prm['adaptiveType'] == self.tr("Arithmetic"):
-                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] + (self.prm['currStepSize']*self.prm['incorrTrackSign'])
+                self.prm['adaptiveParam'] = self.prm['adaptiveParam'] + (self.prm['currStepSize']*self.prm['incorrTrackSign'])
             elif self.prm['adaptiveType'] == self.tr("Geometric"):
-                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference'] * (self.prm['currStepSize']**self.prm['incorrTrackSign'])
+                self.prm['adaptiveParam'] = self.prm['adaptiveParam'] * (self.prm['currStepSize']**self.prm['incorrTrackSign'])
          
           
  
 
         print("Adaptive Difference")
-        print(self.prm['adaptiveDifference'])
+        print(self.prm['adaptiveParam'])
         print("Current step: ")
         print(self.prm['currStepSize'])
         print("nSteps")
@@ -3304,14 +3304,14 @@ class responseBox(QMainWindow):
                 self.fullFile.write(self.fullFileLines[i])
             if self.prm['adaptiveType'] == self.tr("Arithmetic"):
                 self.resFile.write('\n\n')
-                self.resFile.write('Threshold = %5.2f \n' %(self.prm['adaptiveDifference']))
+                self.resFile.write('Threshold = %5.2f \n' %(self.prm['adaptiveParam']))
                 self.resFileLog.write('\n\n')
-                self.resFileLog.write('Threshold = %5.2f \n' %(self.prm['adaptiveDifference']))
+                self.resFileLog.write('Threshold = %5.2f \n' %(self.prm['adaptiveParam']))
             elif self.prm['adaptiveType'] == self.tr("Geometric"):
                 self.resFile.write('\n\n')
-                self.resFile.write('Geometric Threshold = %5.2f \n' %(self.prm['adaptiveDifference']))
+                self.resFile.write('Geometric Threshold = %5.2f \n' %(self.prm['adaptiveParam']))
                 self.resFileLog.write('\n\n')
-                self.resFileLog.write('Geometric Threshold = %5.2f \n' %(self.prm['adaptiveDifference']))
+                self.resFileLog.write('Geometric Threshold = %5.2f \n' %(self.prm['adaptiveParam']))
 
             for i in range(self.prm['nAlternatives']):
                 self.resFile.write("B{0} = {1}".format(i+1, self.prm['buttonCounter'][i]))
@@ -3327,7 +3327,7 @@ class responseBox(QMainWindow):
 
             currBlock = 'b' + str(self.prm['currentBlock'])
             durString = '{0:5.3f}'.format(self.prm['blockEndTime'] - self.prm['blockStartTime'])
-            resLineToWrite = '{0:5.3f}'.format(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"] + \
+            resLineToWrite = '{0:5.3f}'.format(self.prm['adaptiveParam']) + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
@@ -3407,8 +3407,8 @@ class responseBox(QMainWindow):
             elif self.prm["responseLight"] == self.tr("None"):
                 self.responseLight.giveFeedback("off")
             
-        self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
-        self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+        self.fullFileLog.write(str(self.prm['adaptiveParam']) + '; ')
+        self.fullFileLines.append(str(self.prm['adaptiveParam']) + '; ')
         self.fullFileLog.write(str(response)+'; ')
         self.fullFileLines.append(str(response)+'; ')
         if 'additional_parameters_to_write' in self.prm:
@@ -3419,30 +3419,30 @@ class responseBox(QMainWindow):
                 self.fullFileLines.append(' ;')
         self.fullFileLog.write('\n')
         self.fullFileLines.append('\n')
-        self.prm['MLStimLevels'].append(self.prm['adaptiveDifference'])
+        self.prm['MLStimLevels'].append(self.prm['adaptiveParam'])
         if self.prm['psyFunLogScale'] == "No":
-            ll = logisticLikelihood(self.prm['adaptiveDifference'], response, self.prm['MLMidPointGrid'],
+            ll = logisticLikelihood(self.prm['adaptiveParam'], response, self.prm['MLMidPointGrid'],
                                     self.prm['psyFunSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                     self.prm['psyFunLapseRate'])
             self.prm['MLLikelihood'] = self.prm['MLLikelihood'] + ll
             mlIdx = numpy.where( self.prm['MLLikelihood']==max(self.prm['MLLikelihood']))[0]
-            self.prm['adaptiveDifference'] = invLogistic(self.prm['percentCorrectTracked']/100,
+            self.prm['adaptiveParam'] = invLogistic(self.prm['percentCorrectTracked']/100,
                                                          self.prm['MLMidPointGrid'][mlIdx],
                                                          self.prm['psyFunSlope'], 1/self.prm[currBlock]['nAlternatives'],
                                                          self.prm['psyFunLapseRate'])[0]
         elif self.prm['psyFunLogScale'] == "Yes":
-            ll = logisticLikelihood(log(self.prm['adaptiveDifference']), response, log(self.prm['MLMidPointGrid']),
+            ll = logisticLikelihood(log(self.prm['adaptiveParam']), response, log(self.prm['MLMidPointGrid']),
                                     exp(self.prm['psyFunSlope']), 1/self.prm[currBlock]['nAlternatives'],
                                     self.prm['psyFunLapseRate'])
             self.prm['MLLikelihood'] = self.prm['MLLikelihood'] + ll
             mlIdx = numpy.where( self.prm['MLLikelihood']==max(self.prm['MLLikelihood']))[0]
-            self.prm['adaptiveDifference'] = exp(invLogistic(self.prm['percentCorrectTracked']/100,
+            self.prm['adaptiveParam'] = exp(invLogistic(self.prm['percentCorrectTracked']/100,
                                                              log(self.prm['MLMidPointGrid'][mlIdx]),
                                                              exp(self.prm['psyFunSlope']),
                                                              1/self.prm[currBlock]['nAlternatives'],
                                                              self.prm['psyFunLapseRate'])[0])
             
-        #print(self.prm['adaptiveDifference'])
+        #print(self.prm['adaptiveParam'])
         self.trialCount = self.trialCount +1
 
         self.fullFileLog.flush()
@@ -3523,7 +3523,7 @@ class responseBox(QMainWindow):
             gammax = 1/self.prm[currBlock]['nAlternatives']
             if self.prm['stimScale'] == "Linear":
                 self.PSI = setupPSI(model=self.prm['psyFunType'],
-                                    x0=self.prm['adaptiveDifference'],
+                                    x0=self.prm['adaptiveParam'],
                                     xLim=(self.prm['stimLo'], self.prm['stimHi']),
                                     xStep=self.prm['stimStep'],
                                     stimScale=self.prm['stimScale'],
@@ -3549,7 +3549,7 @@ class responseBox(QMainWindow):
                                     marginalize = ax)
             elif self.prm['stimScale'] == "Logarithmic":
                 self.PSI = setupPSI(model=self.prm['psyFunType'],
-                                    x0=abs(self.prm['adaptiveDifference']),
+                                    x0=abs(self.prm['adaptiveParam']),
                                     xLim=(abs(self.prm['stimLo']), abs(self.prm['stimHi'])),
                                     xStep=self.prm['stimStep'],
                                     stimScale=self.prm['stimScale'],
@@ -3598,9 +3598,9 @@ class responseBox(QMainWindow):
             elif self.prm["responseLight"] == self.tr("None"):
                 self.responseLight.giveFeedback("off")
 
-        self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"]])
-        self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
-        self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+        self.fullFileSummLines.append([str(self.prm['adaptiveParam']) + self.prm['pref']["general"]["csvSeparator"]])
+        self.fullFileLog.write(str(self.prm['adaptiveParam']) + '; ')
+        self.fullFileLines.append(str(self.prm['adaptiveParam']) + '; ')
         self.fullFileLog.write(str(response)+'; ')
         self.fullFileLines.append(str(response)+'; ')
         self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(response) + self.prm['pref']["general"]["csvSeparator"])
@@ -3704,14 +3704,14 @@ class responseBox(QMainWindow):
         else:
             self.PSI = PSI_update(self.PSI, response)
             if self.prm['stimScale'] == "Logarithmic":
-                if self.prm['adaptiveDifference'] >=0:
-                    self.prm['adaptiveDifference'] = self.PSI["xnextLinear"]
+                if self.prm['adaptiveParam'] >=0:
+                    self.prm['adaptiveParam'] = self.PSI["xnextLinear"]
                 else:
-                    self.prm['adaptiveDifference'] = -self.PSI["xnextLinear"]
+                    self.prm['adaptiveParam'] = -self.PSI["xnextLinear"]
             else:
-                self.prm['adaptiveDifference'] = self.PSI["xnextLinear"]
+                self.prm['adaptiveParam'] = self.PSI["xnextLinear"]
             # print("Est. thresh: " + str(self.PSI['est_midpoint']))  
-            # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
+            # print('Next Stim: ' + str(self.prm['adaptiveParam']))
             # print(self.PSI["phi"])
             self.doTrial()
 
@@ -3737,7 +3737,7 @@ class responseBox(QMainWindow):
                     
             if self.prm['stimScale'] == "Linear":
                 self.PSI = setupPSIEstGuessRate(model=self.prm['psyFunType'],
-                                                x0=self.prm['adaptiveDifference'],
+                                                x0=self.prm['adaptiveParam'],
                                                 xLim=(self.prm['stimLo'], self.prm['stimHi']),
                                                 xStep=self.prm['stimStep'],
                                                 stimScale=self.prm['stimScale'],
@@ -3768,7 +3768,7 @@ class responseBox(QMainWindow):
                                                 marginalize = ax)
             elif self.prm['stimScale'] == "Logarithmic":
                 self.PSI = setupPSIEstGuessRate(model=self.prm['psyFunType'],
-                                                x0=abs(self.prm['adaptiveDifference']),
+                                                x0=abs(self.prm['adaptiveParam']),
                                                 xLim=(abs(self.prm['stimLo']), abs(self.prm['stimHi'])),
                                                 xStep=self.prm['stimStep'],
                                                 stimScale=self.prm['stimScale'],
@@ -3825,9 +3825,9 @@ class responseBox(QMainWindow):
         else:
             response = 0
 
-        self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"]])
-        self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
-        self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+        self.fullFileSummLines.append([str(self.prm['adaptiveParam']) + self.prm['pref']["general"]["csvSeparator"]])
+        self.fullFileLog.write(str(self.prm['adaptiveParam']) + '; ')
+        self.fullFileLines.append(str(self.prm['adaptiveParam']) + '; ')
         self.fullFileLog.write(str(response)+'; ')
         self.fullFileLines.append(str(response)+'; ')
         self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(response) + self.prm['pref']["general"]["csvSeparator"])
@@ -3936,14 +3936,14 @@ class responseBox(QMainWindow):
         else:
             self.PSI = PSIEstGuessRate_update(self.PSI, response)
             if self.prm['stimScale'] == "Logarithmic":
-                if self.prm['adaptiveDifference'] >=0:
-                    self.prm['adaptiveDifference'] = self.PSI["xnextLinear"]
+                if self.prm['adaptiveParam'] >=0:
+                    self.prm['adaptiveParam'] = self.PSI["xnextLinear"]
                 else:
-                    self.prm['adaptiveDifference'] = -self.PSI["xnextLinear"]
+                    self.prm['adaptiveParam'] = -self.PSI["xnextLinear"]
             else:
-                self.prm['adaptiveDifference'] = self.PSI["xnextLinear"]
+                self.prm['adaptiveParam'] = self.PSI["xnextLinear"]
             # print("Est. thresh: " + str(self.PSI['est_midpoint']))  
-            # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
+            # print('Next Stim: ' + str(self.prm['adaptiveParam']))
             # print(self.PSI["phi"])
             self.doTrial()
 
@@ -3961,7 +3961,7 @@ class responseBox(QMainWindow):
                                     nDown=self.prm["numberCorrectNeeded"],
                                     centTend = self.prm["psyFunPosteriorSummary"],
                                     stimScale = self.prm['stimScale'],
-                                    x0=self.prm['adaptiveDifference'],
+                                    x0=self.prm['adaptiveParam'],
                                     xLim=(self.prm['stimLo'], self.prm['stimHi']),
                                     alphaLim=(self.prm['loMidPoint'], self.prm['hiMidPoint']),
                                     alphaStep=self.prm['midPointStep'],
@@ -3990,7 +3990,7 @@ class responseBox(QMainWindow):
                                     nDown=self.prm["numberCorrectNeeded"],
                                     centTend = self.prm["psyFunPosteriorSummary"],
                                     stimScale = self.prm['stimScale'],
-                                    x0=abs(self.prm['adaptiveDifference']),
+                                    x0=abs(self.prm['adaptiveParam']),
                                     xLim=(abs(self.prm['stimLo']), abs(self.prm['stimHi'])),
                                     alphaLim=(abs(self.prm['loMidPoint']), abs(self.prm['hiMidPoint'])),
                                     alphaStep=abs(self.prm['midPointStep']),
@@ -4038,9 +4038,9 @@ class responseBox(QMainWindow):
             elif self.prm["responseLight"] == self.tr("None"):
                 self.responseLight.giveFeedback("off")
 
-        self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"]])
-        self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
-        self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+        self.fullFileSummLines.append([str(self.prm['adaptiveParam']) + self.prm['pref']["general"]["csvSeparator"]])
+        self.fullFileLog.write(str(self.prm['adaptiveParam']) + '; ')
+        self.fullFileLines.append(str(self.prm['adaptiveParam']) + '; ')
         self.fullFileLog.write(str(response)+'; ')
         self.fullFileLines.append(str(response)+'; ')
         self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(response) + self.prm['pref']["general"]["csvSeparator"])
@@ -4144,14 +4144,14 @@ class responseBox(QMainWindow):
         else:
             self.UML = UML_update(self.UML, response)
             if self.prm['stimScale'] == "Logarithmic":
-                if self.prm['adaptiveDifference'] >=0:
-                    self.prm['adaptiveDifference'] = self.UML["xnextLinear"]
+                if self.prm['adaptiveParam'] >=0:
+                    self.prm['adaptiveParam'] = self.UML["xnextLinear"]
                 else:
-                    self.prm['adaptiveDifference'] = -self.UML["xnextLinear"]
+                    self.prm['adaptiveParam'] = -self.UML["xnextLinear"]
             else:
-                self.prm['adaptiveDifference'] = self.UML["xnextLinear"]
+                self.prm['adaptiveParam'] = self.UML["xnextLinear"]
             # print("Est. thresh: " + str(self.UML['est_midpoint']))  
-            # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
+            # print('Next Stim: ' + str(self.prm['adaptiveParam']))
             # print(self.UML["phi"])
             self.doTrial()
 
@@ -4167,7 +4167,7 @@ class responseBox(QMainWindow):
                                                 nDown=self.prm["numberCorrectNeeded"],
                                                 centTend = self.prm["psyFunPosteriorSummary"],
                                                 stimScale = self.prm['stimScale'],
-                                                x0=self.prm['adaptiveDifference'],
+                                                x0=self.prm['adaptiveParam'],
                                                 xLim=(self.prm['stimLo'], self.prm['stimHi']),
                                                 alphaLim=(self.prm['loMidPoint'], self.prm['hiMidPoint']),
                                                 alphaStep=self.prm['midPointStep'],
@@ -4201,7 +4201,7 @@ class responseBox(QMainWindow):
                                                 nDown=self.prm["numberCorrectNeeded"],
                                                 centTend = self.prm["psyFunPosteriorSummary"],
                                                 stimScale = self.prm['stimScale'],
-                                                x0=abs(self.prm['adaptiveDifference']),
+                                                x0=abs(self.prm['adaptiveParam']),
                                                 xLim=(abs(self.prm['stimLo']), abs(self.prm['stimHi'])),
                                                 alphaLim=(abs(self.prm['loMidPoint']), abs(self.prm['hiMidPoint'])),
                                                 alphaStep=abs(self.prm['midPointStep']),
@@ -4258,9 +4258,9 @@ class responseBox(QMainWindow):
         else:
             response = 0
             
-        self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"]])
-        self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
-        self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
+        self.fullFileSummLines.append([str(self.prm['adaptiveParam']) + self.prm['pref']["general"]["csvSeparator"]])
+        self.fullFileLog.write(str(self.prm['adaptiveParam']) + '; ')
+        self.fullFileLines.append(str(self.prm['adaptiveParam']) + '; ')
         self.fullFileLog.write(str(response)+'; ')
         self.fullFileLines.append(str(response)+'; ')
         self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(response) + self.prm['pref']["general"]["csvSeparator"])
@@ -4369,14 +4369,14 @@ class responseBox(QMainWindow):
         else:
             self.UML = UMLEstGuessRate_update(self.UML, response)
             if self.prm['stimScale'] == "Logarithmic":
-                if self.prm['adaptiveDifference'] >=0:
-                    self.prm['adaptiveDifference'] = self.UML["xnextLinear"]
+                if self.prm['adaptiveParam'] >=0:
+                    self.prm['adaptiveParam'] = self.UML["xnextLinear"]
                 else:
-                    self.prm['adaptiveDifference'] = -self.UML["xnextLinear"]
+                    self.prm['adaptiveParam'] = -self.UML["xnextLinear"]
             else:
-                self.prm['adaptiveDifference'] = self.UML["xnextLinear"]
+                self.prm['adaptiveParam'] = self.UML["xnextLinear"]
             # print("Est. thresh: " + str(self.UML['est_midpoint']))  
-            # print('Next Stim: ' + str(self.prm['adaptiveDifference']))
+            # print('Next Stim: ' + str(self.prm['adaptiveParam']))
             # print(self.UML["phi"])
             self.doTrial()
             
@@ -4507,7 +4507,7 @@ class responseBox(QMainWindow):
             self.fullFileSummLines = []
 
         self.prm['nTrialsSequence'] = self.prm['nTrialsSequence'] +1
-        self.prm['sequenceLength'].append(self.prm['adaptiveDifference'])
+        self.prm['sequenceLength'].append(self.prm['adaptiveParam'])
         if buttonClicked == self.correctButton:
             if self.prm["responseLight"] == self.tr("Feedback"):
                 self.responseLight.giveFeedback("correct")
@@ -4516,9 +4516,9 @@ class responseBox(QMainWindow):
             elif self.prm["responseLight"] == self.tr("None"):
                 self.responseLight.giveFeedback("off")
             
-            self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"]])
+            self.fullFileLog.write(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveParam']) + self.prm['pref']["general"]["csvSeparator"]])
             self.fullFileLog.write('1; ')
             self.fullFileLines.append('1; ')
             self.fullFileSummLines[len(self.fullFileSummLines)-1].append('1' + self.prm['pref']["general"]["csvSeparator"])
@@ -4531,7 +4531,7 @@ class responseBox(QMainWindow):
                     self.fullFileLines.append(' ;')
                     self.fullFileSummLines[len(self.fullFileSummLines)-1].append(self.prm['pref']["general"]["csvSeparator"])
             self.prm['correct'].append(1)
-            #self.prm['adaptiveDifference'] = self.prm['adaptiveDifference']+1
+            #self.prm['adaptiveParam'] = self.prm['adaptiveParam']+1
             #self.runAnotherTrial = True
                 
         elif buttonClicked != self.correctButton:
@@ -4542,9 +4542,9 @@ class responseBox(QMainWindow):
             elif self.prm["responseLight"] == self.tr("None"):
                 self.responseLight.giveFeedback("off")
                 
-            self.fullFileLog.write(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileLines.append(str(self.prm['adaptiveDifference']) + '; ')
-            self.fullFileSummLines.append([str(self.prm['adaptiveDifference']) + self.prm['pref']["general"]["csvSeparator"]])
+            self.fullFileLog.write(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileLines.append(str(self.prm['adaptiveParam']) + '; ')
+            self.fullFileSummLines.append([str(self.prm['adaptiveParam']) + self.prm['pref']["general"]["csvSeparator"]])
             self.fullFileLog.write('0; ')
             self.fullFileLines.append('0; ')
             self.fullFileSummLines[len(self.fullFileSummLines)-1].append('0' + self.prm['pref']["general"]["csvSeparator"])
@@ -4579,7 +4579,7 @@ class responseBox(QMainWindow):
         if self.prm['nTrialsSequence'] == 2:
             if self.prm['correct'][len(self.prm['correct'])-1] == 1 or self.prm['correct'][len(self.prm['correct'])-2] == 1:
                 keepGoing = True
-                self.prm['adaptiveDifference'] = self.prm['adaptiveDifference']+1
+                self.prm['adaptiveParam'] = self.prm['adaptiveParam']+1
                 self.prm['nTrialsSequence'] = 0
             else:
                 keepGoing = False
@@ -4591,7 +4591,7 @@ class responseBox(QMainWindow):
             self.writeResultsHeader('standard')
             self.fullFileLog.write('\n')
             self.fullFileLines.append('\n')
-            digitSpan = int(self.prm['adaptiveDifference'] -1)
+            digitSpan = int(self.prm['adaptiveParam'] -1)
             digitSpanScore = np.sum(np.array(self.prm['correct']))
             for i in range(len(self.fullFileLines)):
                 self.fullFile.write(self.fullFileLines[i])

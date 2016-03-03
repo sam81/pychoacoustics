@@ -172,10 +172,10 @@ def doTrial_level_discrimination(parent):
     if parent.prm['startOfBlock'] == True:
         parent.prm['additional_parameters_to_write'] = {}
         if parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("JND:"))] == parent.tr("Delta L"):
-            parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Delta L (dB)"))]
+            parent.prm['adaptiveParam'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Delta L (dB)"))]
         elif parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("JND:"))] == parent.tr("Weber Fraction"):
-            parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Weber Fraction (dB)"))]
-        parent.prm['conditions'] = [str(parent.prm['adaptiveDifference'])]
+            parent.prm['adaptiveParam'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(parent.tr("Weber Fraction (dB)"))]
+        parent.prm['conditions'] = [str(parent.prm['adaptiveParam'])]
 
         parent.writeResultsHeader('log')
     parent.currentCondition = parent.prm['conditions'][0]
@@ -214,14 +214,14 @@ def doTrial_level_discrimination(parent):
 
  
     if parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("JND:"))] == parent.tr("Delta L"):
-        if parent.prm['adaptiveDifference'] < -deltaLLimit:
-            parent.prm['adaptiveDifference'] = -deltaLLimit
-        elif  parent.prm['adaptiveDifference'] > deltaLLimit:
-            parent.prm['adaptiveDifference'] = deltaLLimit
-        correctLevel = incorrectLevel + parent.prm['adaptiveDifference']
+        if parent.prm['adaptiveParam'] < -deltaLLimit:
+            parent.prm['adaptiveParam'] = -deltaLLimit
+        elif  parent.prm['adaptiveParam'] > deltaLLimit:
+            parent.prm['adaptiveParam'] = deltaLLimit
+        correctLevel = incorrectLevel + parent.prm['adaptiveParam']
     if parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("JND:"))] == parent.tr("Weber Fraction"):
-        if  parent.prm['adaptiveDifference'] > weberFractionLimit:
-            parent.prm['adaptiveDifference'] = weberFractionLimit
+        if  parent.prm['adaptiveParam'] > weberFractionLimit:
+            parent.prm['adaptiveParam'] = weberFractionLimit
         # correct level computation for Weber:
         # L = level
         # I = 10*(L/10)
@@ -231,7 +231,7 @@ def doTrial_level_discrimination(parent):
         # I + DI = 10^(L/10) + 10^(L/10) * 10^(DW/10) = 10^(L/10) * (1 + 10^(DW/10))
         #and the level of the comparison
         # 10*log10(I+DI) = 10*log10(10^(L/10) * (1 + 10^(DW/10)))
-        correctLevel = 10*log10(10**(incorrectLevel/10) * (1 + 10**(parent.prm['adaptiveDifference']/10)))
+        correctLevel = 10*log10(10**(incorrectLevel/10) * (1 + 10**(parent.prm['adaptiveParam']/10)))
        
     if altReps == 0:
         nCorrectTones = 1

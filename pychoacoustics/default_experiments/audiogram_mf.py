@@ -124,10 +124,10 @@ def doTrial_audiogram_mf(parent):
     if parent.prm['startOfBlock'] == True:
         parent.prm['additional_parameters_to_write'] = {}
         parent.prm['conditions'] = []
-        parent.prm['adaptiveDifference'] = []
+        parent.prm['adaptiveParam'] = []
         for i in range(nDifferences):
             parent.prm['conditions'].append(str(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Frequency (Hz) " + str(i+1),""))]))
-            parent.prm['adaptiveDifference'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Level (dB SPL) " + str(i+1),""))])
+            parent.prm['adaptiveParam'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Level (dB SPL) " + str(i+1),""))])
         parent.writeResultsHeader('log')
 
     for i in range(nDifferences):
@@ -135,7 +135,7 @@ def doTrial_audiogram_mf(parent):
 
     #these fields are necessary for the two procedures (multiple constants, adaptive interleaved)
     parent.currentCondition = parent.prm['conditions'][parent.prm['currentDifference']] #this is necessary for counting correct/total trials
-    correctLevel = parent.prm['adaptiveDifference'][parent.prm['currentDifference']]
+    correctLevel = parent.prm['adaptiveParam'][parent.prm['currentDifference']]
     
     currentFrequency = frequency[parent.prm['currentDifference']]
     bandwidth = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)",""))] 

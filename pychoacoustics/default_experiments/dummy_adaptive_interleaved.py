@@ -63,9 +63,9 @@ def doTrial_dummy_adaptive_interleaved(parent):
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
         nDifferences = parent.prm['nDifferences']
-        parent.prm['adaptiveDifference'] = []
+        parent.prm['adaptiveParam'] = []
         for i in range(nDifferences):
-            parent.prm['adaptiveDifference'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference " + str(i+1))])
+            parent.prm['adaptiveParam'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference " + str(i+1))])
             parent.writeResultsHeader('log')
 
 

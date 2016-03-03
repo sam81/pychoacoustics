@@ -501,8 +501,8 @@ def doTrial_F0DL(parent):
     if parent.prm['startOfBlock'] == True:
         parent.prm['additional_parameters_to_write'] = {}
         parent.prm['additional_parameters_to_write_labels'] = ["current_F0"]
-        parent.prm['adaptiveDifference'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Starting Difference (%)",""))] 
-        parent.prm['conditions'] = [str(parent.prm['adaptiveDifference'])]
+        parent.prm['adaptiveParam'] = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Starting Difference (%)",""))] 
+        parent.prm['conditions'] = [str(parent.prm['adaptiveParam'])]
         parent.writeResultsHeader('log')
 
     parent.currentCondition = parent.prm['conditions'][0] #this is necessary for constant m-intervals n-alternatives procedure
@@ -569,10 +569,10 @@ def doTrial_F0DL(parent):
         stretch = 0
 
     # limit F0% difference
-    if parent.prm['adaptiveDifference'] < -deltaF0Limit:
-        parent.prm['adaptiveDifference'] = -deltaF0Limit
-    elif  parent.prm['adaptiveDifference'] > deltaF0Limit:
-        parent.prm['adaptiveDifference'] = deltaF0Limit
+    if parent.prm['adaptiveParam'] < -deltaF0Limit:
+        parent.prm['adaptiveParam'] = -deltaF0Limit
+    elif  parent.prm['adaptiveParam'] > deltaF0Limit:
+        parent.prm['adaptiveParam'] = deltaF0Limit
 
     if roving == parent.tr("Yes - Log"):
         dist = numpy.random.uniform(0, log2(F0Higher/F0Lower))
@@ -581,7 +581,7 @@ def doTrial_F0DL(parent):
         F0 = numpy.random.uniform(F0Lower, F0Higher)
     parent.currF0 = F0
 
-    corrF0 = F0 + (F0 * parent.prm['adaptiveDifference']) / 100
+    corrF0 = F0 + (F0 * parent.prm['adaptiveParam']) / 100
     stretchHz = (corrF0*stretch)/100
 
     if fixSpectrumLevel == parent.tr("Yes") and harmType in [parent.tr("Sinusoid"), parent.tr("Narrowband Noise")]:

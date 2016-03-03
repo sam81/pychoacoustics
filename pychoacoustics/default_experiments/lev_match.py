@@ -82,9 +82,9 @@ def select_default_parameters_lev_match(parent, par):
 def doTrial_lev_match(parent):
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
-        parent.prm['adaptiveDifference'] = []
-        parent.prm['adaptiveDifference'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Starting Level Track 1 (dB SPL)")])
-        parent.prm['adaptiveDifference'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Starting Level Track 2 (dB SPL)")])
+        parent.prm['adaptiveParam'] = []
+        parent.prm['adaptiveParam'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Starting Level Track 1 (dB SPL)")])
+        parent.prm['adaptiveParam'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Starting Level Track 2 (dB SPL)")])
         parent.writeResultsHeader('log')
 
 
@@ -97,7 +97,7 @@ def doTrial_lev_match(parent):
     phase = 0
     channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
 
-    comparisonLevel = parent.prm['adaptiveDifference'][parent.prm['currentDifference']]
+    comparisonLevel = parent.prm['adaptiveParam'][parent.prm['currentDifference']]
 
     comparisonTone = pureTone(comparisonFrequency, phase, comparisonLevel, duration, ramps,
                                channel, parent.prm['sampRate'], parent.prm['maxLevel'])

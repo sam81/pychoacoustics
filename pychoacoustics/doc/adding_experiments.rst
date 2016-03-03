@@ -231,7 +231,7 @@ experiment is shown below:
 
       currBlock = 'b'+ str(parent.prm['currentBlock'])
        if parent.prm['startOfBlock'] == True:
-           parent.prm['adaptiveDifference'] = \
+           parent.prm['adaptiveParam'] = \
              parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference (%)")]
            parent.writeResultsHeader('log')
 
@@ -247,7 +247,7 @@ experiment is shown below:
          parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
        phase = 0
 
-       correctFrequency = frequency + (frequency*parent.prm['adaptiveDifference'])/100
+       correctFrequency = frequency + (frequency*parent.prm['adaptiveParam'])/100
        stimulusCorrect = pureTone(correctFrequency, phase, level, duration, 
                                   ramps, channel, parent.prm['sampRate'], 
                                   parent.prm['maxLevel'])
@@ -271,7 +271,7 @@ for the third stored block. The current block number is stored in
 key for the current block. On line 4 we start an ``if`` block that is executed 
 only at the first trial of each block. In this block we retrieve the % frequency 
 difference between the standard and the comparison stimuli for the first trial, 
-and we store it in the ``parent.prm['adaptiveDifference']`` variable. 
+and we store it in the ``parent.prm['adaptiveParam']`` variable. 
 Since we're using an adaptive procedure, this variable will be automatically 
 increased or decreased by ``pychoacoustics`` on successive trials on the bases 
 of the responses given by the listener. On line 7 we tell ``pychoacoustics`` 
@@ -299,7 +299,7 @@ For this reason we will store the standard stimuli in a list
 called ``stimulusIncorrect = []``. The comparison stimulus will be instead stored 
 in a variable called ``stimulusCorrect``. The frequency of the comparison 
 stimulus, which can vary from trial to trial, depending on the current value
-of ``parent.prm['adaptiveDifference']`` is computed on line 21. On lines 22-24  we 
+of ``parent.prm['adaptiveParam']`` is computed on line 21. On lines 22-24  we 
 generate the stimulus using the ``pureTone`` function that is available 
 in the ``sndlib`` module. Note that in order to access this function you need
 to import it by adding the following line at the top of the ``freq.py`` file 
@@ -439,7 +439,7 @@ The new function is shown below:
    def doTrial_freq2(parent):
       currBlock = 'b'+ str(parent.prm['currentBlock'])
       if parent.prm['startOfBlock'] == True:
-         parent.prm['adaptiveDifference'] = \
+         parent.prm['adaptiveParam'] = \
            parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference (%)")]
          parent.writeResultsHeader('log')
 
@@ -463,7 +463,7 @@ The new function is shown below:
 
       if stdFreq == "Roved":
          frequency = random.uniform(minFrequency, maxFrequency)
-      correctFrequency = frequency + (frequency*parent.prm['adaptiveDifference'])/100
+      correctFrequency = frequency + (frequency*parent.prm['adaptiveParam'])/100
       stimulusCorrect = pureTone(correctFrequency, phase, level, duration, 
                                  ramps, channel, parent.prm['sampRate'], 
                                  parent.prm['maxLevel'])
@@ -791,9 +791,9 @@ The ``doTrial_`` function for the level matching experiment is shown below:
    def doTrial_lev_match(parent):
       currBlock = 'b'+ str(parent.prm['currentBlock'])
       if parent.prm['startOfBlock'] == True:
-         parent.prm['adaptiveDifference'] = []
-         parent.prm['adaptiveDifference'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Starting Level Track 1 (dB SPL)")])
-         parent.prm['adaptiveDifference'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Starting Level Track 2 (dB SPL)")])
+         parent.prm['adaptiveParam'] = []
+         parent.prm['adaptiveParam'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Starting Level Track 1 (dB SPL)")])
+         parent.prm['adaptiveParam'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Starting Level Track 2 (dB SPL)")])
          parent.writeResultsHeader('log')
 
 
@@ -806,7 +806,7 @@ The ``doTrial_`` function for the level matching experiment is shown below:
      phase = 0
      channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
 
-     comparisonLevel = parent.prm['adaptiveDifference'][parent.prm['currentDifference']]
+     comparisonLevel = parent.prm['adaptiveParam'][parent.prm['currentDifference']]
 
      comparisonTone = pureTone(comparisonFrequency, phase, comparisonLevel, duration, ramps,
                                channel, parent.prm['sampRate'], parent.prm['maxLevel'])

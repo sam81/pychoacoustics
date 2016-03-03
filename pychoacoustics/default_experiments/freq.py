@@ -104,7 +104,7 @@ def select_default_parameters_freq(parent, par):
 def doTrial_freq(parent):
     currBlock = 'b'+ str(parent.prm['currentBlock'])
     if parent.prm['startOfBlock'] == True:
-        parent.prm['adaptiveDifference'] = \
+        parent.prm['adaptiveParam'] = \
           parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference (%)")]
         parent.writeResultsHeader('log')
 
@@ -115,7 +115,7 @@ def doTrial_freq(parent):
     phase = 0
     channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
     
-    correctFrequency = frequency + (frequency*parent.prm['adaptiveDifference'])/100
+    correctFrequency = frequency + (frequency*parent.prm['adaptiveParam'])/100
     stimulusCorrect = pureTone(correctFrequency, phase, level, duration, ramps,
                                channel, parent.prm['sampRate'], parent.prm['maxLevel'])
 
