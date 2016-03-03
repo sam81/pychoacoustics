@@ -13,7 +13,8 @@ The available fields are:
     signal type is Narrowband Noise)
 - Level (dB SPL) :
     Signal level (for constant procedures), or starting signal level
-    (for adaptive procedures), in dB SPL
+    (for adaptive procedures), in dB SPL. If the signal type is narrowband noise
+    the level if the total level, not the spectrum level.
 - Duration (ms) :
     Signal duration (excluding ramps), in ms
 - Ramps (ms) :

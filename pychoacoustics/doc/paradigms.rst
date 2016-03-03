@@ -11,7 +11,8 @@ Paradigms
 .. _sec-paradigms:
 
 Available Paradigms
--------------------
+===================
+
 
 Transformed Up-Down
 ^^^^^^^^^^^^^^^^^^^
@@ -68,13 +69,13 @@ This paradigm implements a constant difference method for
 “same/different” tasks with a single pair of stimuli to compare.
 
 Multiple Constants 1-Pair Same/Different
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This paradigm implements a constant difference method for
 “same/different” tasks with multiple pairs of stimuli to compare.
 
 Multiple Constants ABX
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 This paradigm implements a constant difference method for
 “ABX” tasks with multiple pairs of stimuli to compare.
@@ -94,13 +95,13 @@ this procedure in ``pychoacoustics`` is very experimental.
 Its implementation has received very little testing.
 
 PSI
-^^^^
+^^^
 
 This paradigm implements the PSI+ and PSI-marginal adaptive procedures described
 by [Prins2013]_. 
 
 UML
-^^^^
+^^^
 
 This paradigm implements the updated maximum likelihood (UML) adaptive procedure described
 by [ShenAndRichards2012]_. 

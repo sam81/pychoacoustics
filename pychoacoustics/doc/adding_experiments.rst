@@ -1,6 +1,6 @@
-*****************************
+****************************
 Writing your own Experiments
-*****************************
+****************************
 
 First Steps
 ===========
@@ -71,7 +71,10 @@ we’ll look at each function in detail shortly. Briefly, the
 options for our experiment; the ``select_default_parameters_`` function
 lists all the widgets (text fields and choosers) of our experiment and
 their default values; finally, the ``doTrial_`` function contains the code that
-generates the sounds and plays them during the experiment. 
+generates the sounds and plays them during the experiment.
+
+Anatomy of a ``pychoacoustics`` experiment file
+-----------------------------------------------
 
 The ``initialize_`` function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -320,7 +323,7 @@ the incorrect stimuli. That's it, our frequency discrimination experiment is rea
 and we can test it on ``pychoacoustics``.
 
 Adding support for the Constant Paradigm
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 So far our frequency discrimination experiment supports only adaptive paradigms.
 
@@ -340,7 +343,7 @@ list of paradigms supported paradims in the ``initialize_`` function:
 Now our frequency discrimination task supports also the constant paradigm.
 
 Showing/Hiding Widgets Dynamically
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Often you may want to write a single experiment that can handle a number 
 of different experimental conditions. This usually leads to a growing number 
@@ -673,6 +676,199 @@ Writing an adaptive-paradigm experiment with multiple interleaved tracks
    Describe of to write experiments for the "Transformed Up-Down Interleaved" and
    "Weighted Up-Down Interleaved" paradigms.
 
+
+
+Writing a matching experiment using interleaved adaptive tracks
+---------------------------------------------------------------
+
+The transformed up-down and weighted up-down interleaved procedures can be used
+to write matching experiments. As described by [Jesteadt1980]_, two interleaved
+adaptive tracks can be used to target points on the psychometric function that
+are symmetric around the 50% point (e.g. 71% and 29%), and then average the
+threshold in each track in order to estimate the point of subjective equality.
+For example, in a level-matching experiment one track could target the point
+at which the listener judges the comparison tone to be louder than the standard
+tone 71% of the time, while the other track targets the point at which the listener
+judges the comparison tone to be louder than the standard 29% of the time (or equivalently,
+softer than the standard 71% of the time).
+
+In this section we'll show how to write in ``pychoacoustics`` a level-matching
+experiment similar to the one described by [Jesteadt1980]_. This experiment is
+one of the default experiments available in ``pychoacoustics``, and is called
+``Demo Level Matching``.
+
+The ``initialize_`` function of the experiment is shown in the code block below.
+
+.. code-block:: python
+   :linenos:
+
+   def initialize_lev_match(prm):
+      exp_name = "Demo Level Matching"
+      prm["experimentsChoices"].append(exp_name)
+      prm[exp_name] = {}
+      prm[exp_name]["paradigmChoices"] = ["Transformed Up-Down Interleaved",
+                                          "Weighted Up-Down Interleaved"]
+
+      prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser"]
+      prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Arithmetic","")
+      prm[exp_name]['defaultNIntervals'] = 2
+      prm[exp_name]['defaultNAlternatives'] = 2
+      prm[exp_name]['defaultNTracks'] = 2
+      prm[exp_name]["execString"] = "lev_match"
+
+among the ``paradigmChoices`` we include the "Transformed Up-Down Interleaved",
+and the "Weighted Up-Down Interleaved". The experiment has just two experiment ``opts``:
+one to add an ISI box, the other one to add an alternatives chooser (we'll probably want to
+run this experiment only with two intervals, and two alternatives, so in principle we could
+do without the alternative chooser, but currently, for technical reasons the ``hasAlternativesChooser``
+option has to be added with the "Transformed Up-Down Interleaved", and the "Weighted Up-Down Interleaved"
+paradigms). Besides specifying the default number of intervals and alternatives,
+we also specify the default number of interleaved tracks using the ``defaultNTracks`` key. Because we
+have not added a ``hasNTracksChooser`` in the experiment the default number of tracks specified here
+will be the default and only possible number of tracks in the experiment.
+
+The ``select_default_parameters_`` function is shown below:
+
+.. code-block:: python
+   :linenos:
+      
+   def select_default_parameters_lev_match(parent, par):
+   
+      field = []
+      fieldLabel = []
+      chooser = []
+      chooserLabel = []
+      chooserOptions = []
+
+      fieldLabel.append("Starting Level Track 1 (dB SPL)")
+      field.append(75)
+
+      fieldLabel.append("Starting Level Track 2 (dB SPL)")
+      field.append(55)
+
+      fieldLabel.append(parent.tr("Frequency Standard Tone (Hz)"))
+      field.append(1000)
+
+      fieldLabel.append(parent.tr("Frequency Comparison Tone (Hz)"))
+      field.append(250)
+
+      fieldLabel.append(parent.tr("Level Standard Tone (dB SPL)"))
+      field.append(65)
+
+      fieldLabel.append(parent.tr("Duration (ms)"))
+      field.append(180)
+    
+      fieldLabel.append(parent.tr("Ramps (ms)"))
+      field.append(10)
+
+      chooserOptions.append(["Right", "Left", "Both"])
+      chooserLabel.append(QApplication.translate("","Ear:",""))
+      chooser.append(QApplication.translate("","Both",""))
+
+    
+      prm = {}
+      prm['field'] = field
+      prm['fieldLabel'] = fieldLabel
+      prm['chooser'] = chooser
+      prm['chooserLabel'] = chooserLabel
+      prm['chooserOptions'] =  chooserOptions
+
+      return prm
+
+the first two fields will be used to set the starting level of the comparison tone in each track.
+The next two fields will be used to set the frequencies of the standard and comparison tone. The
+next field will be used to set the level of the standard tone which will be fixed throughout a block
+of trials. The last two fields will be used to set the duration of the tone (excluding the ramps),
+and the duration of its onset and offset ramps. The only chooser will be used to set the ear to
+which the tones will be presented.
+
+
+The ``doTrial_`` function for the level matching experiment is shown below:
+
+.. code-block:: python
+   :linenos:
+
+   def doTrial_lev_match(parent):
+      currBlock = 'b'+ str(parent.prm['currentBlock'])
+      if parent.prm['startOfBlock'] == True:
+         parent.prm['adaptiveDifference'] = []
+         parent.prm['adaptiveDifference'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Starting Level Track 1 (dB SPL)")])
+         parent.prm['adaptiveDifference'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Starting Level Track 2 (dB SPL)")])
+         parent.writeResultsHeader('log')
+
+
+  
+     standardFrequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Frequency Standard Tone (Hz)")]
+     comparisonFrequency = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Frequency Comparison Tone (Hz)")]
+     standardLevel = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Level Standard Tone (dB SPL)")]
+     duration = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Duration (ms)")] 
+     ramps = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Ramps (ms)")]
+     phase = 0
+     channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
+
+     comparisonLevel = parent.prm['adaptiveDifference'][parent.prm['currentDifference']]
+
+     comparisonTone = pureTone(comparisonFrequency, phase, comparisonLevel, duration, ramps,
+                               channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+
+     standardToneList = []
+     for i in range((parent.prm['nIntervals']-1)):
+        thisSnd = pureTone(standardFrequency, phase, standardLevel, duration, ramps, channel,
+                           parent.prm['sampRate'], parent.prm['maxLevel'])
+        standardToneList.append(thisSnd)
+     parent.playRandomisedIntervals(comparisonTone, standardToneList)
+
+The adaptive parameter for an experiment with interleaved tracks is not a single number, but a list
+containing the values of the adaptive parameter for each track. Therefore,
+on line 4 we create the list, and on lines 5 and 6 we populate
+this list with the initial values of each of the adaptive tracks.
+
+From lines 11 to 17 we retrieve the values of all the fields and choosers. Nothing new here.
+On line 19 we retrieve the value of the adaptive parameter (which in this case is the level
+of the comparison tone) for the current trial. To do this, we refer to a key in the ``parent.prm``
+dictionary called ``currentDifference``. This key holds the index of the track which
+has been randomly selected by ``pychoacoustics`` for the current trial.
+
+From line 21 to 28 we prepare the stimuli to be presented in the standard and comparison intervals.
+We then pass these stimuli as arguments to the ``playRandomisedIntervals`` functions. This experiment is ready to be run.
+
+The up-down rules of the two adaptive tracks need to be set up
+appropriately to run the matching experiment. Let's,
+take as an example the experiment described in [Jesteadt1980]_ in
+which we wish to determine the intensity of a 250-Hz tone required
+to match the loudness of a 1000-Hz tone presented at 40 dB SPL.
+In the ``pychoacoustics`` control window, after having selected
+the ``Demo Level Matching`` experiment, we set the frequency of
+the standard tone to 1000 Hz, and the frequency of the comparison
+tone to 250 Hz. We also set the level of the standard tone to 40 dB SPL.
+We then set the upper, and lower tracks to 60 and 30 dB SPL, two values
+that should bracket the point of subjective equality.
+
+The task for the
+listener is an objective one: s/he will have to tell on each trial
+which tone was louder. For track 1, we set the rule down to 2, and the
+rule up to 1. For track 2 instead, we set the rule down to 1, and the
+rule up to 2. In this way, track 1 will target the point in the
+psychometric function at which the listener judges the comparison
+tone to be louder than the standard 70.7% of the time. Track 2 will
+target instead the point in the psychometric function at which the
+listener judges the comparison tone to be louder than the standard
+29.3% of the time. For track 1, when the listener chooses the *comparison*
+interval twice in a row the level of the 250-Hz tone (the comparison tone)
+is decreased, while each time s/he chooses the standard interval the level of the
+250-Hz tone is increased.
+For track 2, when the listener chooses the *standard*
+interval twice in a row the level of the 250-Hz tone is increased, while each
+time the listener chooses the level of the 250-Hz tone is decreased.
+For both tracks "correct" responses move the track down. There are no
+correct or incorrect responses in a subjective task like this. The ``Corr. Resp. Move Track X`` (down or up) choosers are not named appropriately for this task.
+They should be named something like "when the comparison interval is chosen
+track X moves" down or up. However, since the underlying code for adaptive
+interleaved paradigms is the same for objective and subjective tasks,
+for simplicity and ease of maintenance of the underlying code they are called
+``Corr. Resp. Move Track X`` (down or up). 
+.
+
 Writing a "Constant 1-Pair Same/Different" Paradigm Experiment
 ==============================================================
 
@@ -691,7 +887,7 @@ Writing an "Odd One Out" Paradigm Experiment
 .. _sec-experiment_opts: 
 
 The Experiment “opts”
-^^^^^^^^^^^^^^^^^^^^^
+=====================
 
 -  **``hasAlternativesChooser``** This option adds two chooser widgets, one to dynamically
    change the number of observation intervals (labelled "Intervals"), and one to dinamically 
@@ -784,7 +980,7 @@ The Experiment “opts”
 .. _sec-par:
 
 Using ``par``
-^^^^^^^^^^^^^
+=============
 
 .. todo::
   
@@ -794,7 +990,7 @@ Using ``par``
 
 
 The Play Sound Functions
-^^^^^^^^^^^^^^^^^^^^^^^^
+========================
 
 .. todo::
   
@@ -804,7 +1000,7 @@ The Play Sound Functions
 
 
 Simulations
-=============
+===========
 
  ``pychoacoustics`` is not designed to run simulations in itself, however it provides a hook to redirect the control flow to an auditory model that you need to specify yourself in the experiment file.  You can retrieve the current response mode from the experiment file with:
 

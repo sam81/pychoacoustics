@@ -10,14 +10,14 @@ provided below.
     
 
 Installation on Linux
----------------------
+=====================
 
 For Debian and Ubuntu LTS releases there are apt repositories that can be used
 to install and update ``pychoacoustics``. For other Linux distributions
 ``pychoacoustics`` has to be installed from source (see Section :ref:`sec-install_from_source`).
 
 Installation on Debian
-^^^^^^^^^^^^^^^^^^^^^^
+----------------------
 
 Binary packages for the Debian amd64 architecture are hosted on
 `bintray <https://bintray.com/sam81/hearinglab>`_.
@@ -55,7 +55,7 @@ Refresh the package database and install the package:
    sudo apt-get install pychoacoustics
 
 Installation on Ubuntu LTS Releases
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------------------
 
 Binary packages for Ubuntu Long Term Support (LTS) releases are hosted on
 `Launchpad <https://launchpad.net/~samuele-carcagno/+archive/ubuntu/hearinglab>`_.
@@ -153,7 +153,7 @@ launcher wherever you want, for example on your ``Desktop`` folder.
 Simply double click on it, and ``pychoacoustics`` should start.
 
 "Manual" Installation from Source
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------
 
 ``pychoacoustics`` depends on the installation of a
 handful of other Python modules:

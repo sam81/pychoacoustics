@@ -1800,10 +1800,13 @@ class responseBox(QMainWindow):
                     self.prm['corrTrackSign'].append(1)
                     self.prm['incorrTrackSign'].append(-1)
                     self.prm['incorrTrackDir'].append(self.tr("Down"))
-           
+                    
+        if buttonClicked == self.correctButton:
+            print("Correct Button Clicked")
+        else:
+            print("Incorrect Button Clicked")
         trackNumber = self.prm['currentDifference']
         self.prm['buttonCounter'][trackNumber][buttonClicked-1] = self.prm['buttonCounter'][trackNumber][buttonClicked-1] + 1
-
         stepSize = {}
         if method == 'weightedUpDown':
             if self.prm['nTurnpoints'][trackNumber] < self.prm['initialTurnpoints'][trackNumber]:

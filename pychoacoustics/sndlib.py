@@ -424,16 +424,15 @@ def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel="Both", fs=4
     
     """
     """ Comments:.
-    The intensity spectrum level in dB is SL
-    The peak amplitude A to achieve a desired SL is
-    SL = 10*log10(RMS^2/NHz) that is the total RMS^2 divided by the freq band
-    SL/10 = log10(RMS^2/NHz)
-    10^(SL/10) = RMS^2/NHz
-    RMS^2 = 10^(SL/10) * NHz
-    RMS = 10^(SL/20) * sqrt(NHz)
+    The intensity spectrum level in dB is ISL
+    The peak amplitude A to achieve a desired ISL is
+    ISL = 10*log10(A^2/NHz) that is the total intensity (A^2) divided by the freq band
+    ISL/10 = log10(A^2/NHz)
+    10^(ISL/10) = A^2/NHz
+    A^2 = 10^(ISL/10) * NHz
+    A = 10^(ISL/20) * sqrt(NHz)
     NHz = sampRate / 2 (Nyquist)
     
-
     """
     amp = sqrt(fs/2)*(10**((spectrumLevel - maxLevel) / 20))
     duration = duration / 1000 #convert from ms to sec
@@ -451,8 +450,8 @@ def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel="Both", fs=4
     #random is a numpy module
     noise = (numpy.random.random(nTot) + numpy.random.random(nTot)) - (numpy.random.random(nTot) + numpy.random.random(nTot))
     RMS = sqrt(mean(noise*noise))
-    #scale the noise so that the maxAmplitude goes from -1 to 1
-    #since A = RMS*sqrt(2)
+    #noise/RMS would scale the noise so that its RMS = 1
+    #noise/(RMS*sqrt(2)) scales the noise so that its RMS equals the RMS of a sinusoid with peak amplitude 1 (that is 1/sqrt(2))
     scaled_noise = noise / (RMS * sqrt(2))
 
     snd_mono[0:nRamp] = amp * ((1-cos(pi * timeRamp/nRamp))/2) * scaled_noise[0:nRamp]
@@ -463,7 +462,7 @@ def broadbandNoise(spectrumLevel=25, duration=980, ramp=10, channel="Both", fs=4
         snd_mono2 = zeros(nTot)
         noise2 = (numpy.random.random(nTot) + numpy.random.random(nTot)) - (numpy.random.random(nTot) + numpy.random.random(nTot))
         RMS = sqrt(mean(noise2*noise2))
-        #scale the noise so that the maxAmplitude goes from -1 to 1
+        #scale the noise so that its RMS = 1
         #since A = RMS*sqrt(2)
         scaled_noise2 = noise2 / (RMS * sqrt(2))
 
@@ -3911,12 +3910,7 @@ def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, 
     nTot = nSamples + (nRamp * 2)
 
     spacing = 1 / totDur
-    components = 1 + floor((frequency2 - frequency1) / spacing)
-    # SL = 10*log10(A^2/NHz) 
-    # SL/10 = log10(A^2/NHz)
-    # 10^(SL/10) = A^2/NHz
-    # A^2 = 10^(SL/10) * NHz
-    # RMS = 10^(SL/20) * sqrt(NHz) where NHz is the spacing between harmonics
+    components = 1 + floor((frequency2 - frequency1) / spacing) 
     amp =  10**((level - maxLevel) / 20) * sqrt((frequency2 - frequency1) / components)
     
     timeAll = arange(0, nTot) / fs

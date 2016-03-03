@@ -3975,8 +3975,8 @@ class pychControlWin(QMainWindow):
             except:
                 self.adaptiveTypeChooser.setCurrentIndex(0)
 
-        self.prm['nIntervals'] = self.prm[self.currExp]['defaultNIntervals']  #tmp['nIntervals']
-        self.prm['nAlternatives'] = self.prm[self.currExp]['defaultNAlternatives']#tmp['nAlternatives']
+        self.prm['nIntervals'] = self.prm[self.currExp]['defaultNIntervals']  
+        self.prm['nAlternatives'] = self.prm[self.currExp]['defaultNAlternatives']
         self.setAdditionalWidgets(self.currExp, self.prevExp)
         
         self.onChooserChange(None)

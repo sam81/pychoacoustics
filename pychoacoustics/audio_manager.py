@@ -20,6 +20,7 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from tempfile import mkstemp
 import platform, os, subprocess 
 from numpy import ceil, concatenate, floor, float32, int16, int32, mean, sqrt, transpose, zeros
+import numpy as np
 from .multirate import resample
 from .pyqtver import*
 if pyqtversion == 4:
@@ -297,6 +298,8 @@ class audioManager():
 
 
     def scipy_wavwrite(self, fname, fs, nbits, data):
+        if np.max(data) > 1 or np.min(data) < -1:
+            print("Warning: clipping")
         if nbits == 16:
             data = data*(2.**15)
             data = data.astype(int16)
