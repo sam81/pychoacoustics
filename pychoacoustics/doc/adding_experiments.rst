@@ -66,12 +66,13 @@ called:
     select_default_parameters_lev()
     doTrial_lev()
 
-we’ll look at each function in detail shortly. Briefly, the
+we’ll look at each function in detail in the next section. Briefly, the
 ``initialize_`` function is used to set some general parameters and
 options for our experiment; the ``select_default_parameters_`` function
 lists all the widgets (text fields and choosers) of our experiment and
 their default values; finally, the ``doTrial_`` function contains the code that
 generates the sounds and plays them during the experiment.
+
 
 Anatomy of a ``pychoacoustics`` experiment file
 -----------------------------------------------
@@ -147,6 +148,24 @@ Finally, we give our experiment a version label. This is optional, but it can
 be very useful as this version label will be stored in the result files when
 the experiment is run. This makes it possible to track which version of the
 experiment was used in a given session.
+
+Before we proceed, a note on the use of a function called ``QApplication.translate``
+is necessary. You may occasionally see this function in ``pychoacoustics`` experiment
+files and in this manual. This function serves to translate strings from one language
+to another. For the moment it doesn't really do much in ``pychoacoustics`` because
+string translation is not currently functional for the control window, it is only functional for the
+response box. This function takes three string arguments, and the text to be translated
+is the middle argument. For example, in the ``initialize_`` function above, we could have
+written ``QApplication.translate("", "Transformed Up-Down", "")`` instead of ``Transformed Up-Down``.
+You don't need to use this function in your experiments. If you do, you need to import the ``QApplication``.
+How to do this depends on which version of ``PyQt`` you're using, as shown below:
+
+.. code-block:: python
+		
+   from PyQt4.QtGui import QApplication #if you're using PyQt4
+   from PySide.QtGui import QApplication #if you're using PySide
+   from PyQt5.QtWidgets import QApplication #if you're using PyQt5
+		
 
 The ``select_default_parameters_`` function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -668,13 +687,175 @@ sound to insert in the list. More details on the ``playSequentialIntervals``
 function are provided in Section :ref:`sec-play_sound_functions`.
 
 
-Writing an adaptive-paradigm experiment with multiple interleaved tracks
-========================================================================
+Writing an experiment for the Transformed Up-Down Interleaved, Weighted Up-Down Interleaved, and Multiple Constants m-Intervals n-Alternatives Paradigms
+========================================================================================================================================================
 
-.. todo::
-  
-   Describe of to write experiments for the "Transformed Up-Down Interleaved" and
-   "Weighted Up-Down Interleaved" paradigms.
+This section will walk you through an example of an experiment that can be
+used with the transformed up-down interleaved and weighted up-down interleaved
+paradigms. These paradigms are simple extensions of the transformed up-down and
+weighted up-down paradigms in which multiple independent adaptive tracks are
+run simultaneously and are randomly interleaved in a single block of trials.
+
+Because experiments that support
+the transformed up-down interleaved and weighted up-down interleaved
+paradigms can be easily modified to support also the multiple constants m-intervals n-alternatives
+paradigm, this paradigm will be also added in our example experiment. This paradigm is a simple
+extension of the constant m-intervals n-alternatives paradigm, in which rather than having a single
+constant difference between the standard and comparison tones, multiple constant differences are
+tested in a single block of trials.
+
+The example experiment that we'll look at is a simple signal detection in quiet experiment, that could be used
+to measure an audiogram. For this reason it is called "Demo Audiogram Multiple Frequencies" (it can be
+found in the file ``audiogram_mf.py`` in the ``default_experiments`` folder). The experiment can
+be used to setup a virtually unlimited number of adaptive tracks, and each track can be used to track the signal-detection
+threshold for a specific frequency.
+
+As for the multiple constants procedure, the experiment could be similarly used to measure percent correct performance
+for tones of different frequencies presented at the same level. However, a more interesting possibility is to use the
+experiment to measure percent correct performance for the same frequency at different fixed levels. This could then be
+used to derive a psychometric function relating percent correct performance to signal level.
+
+The ``initialize_`` function of the experiment is shown below:
+
+.. code-block:: python
+   :linenos:
+   
+   def initialize_audiogram_mf(prm):
+      exp_name = QApplication.translate("","Demo Audiogram Multiple Frequencies","")
+      prm["experimentsChoices"].append(exp_name)
+      prm[exp_name] = {}
+      prm[exp_name]["paradigmChoices"] = [QApplication.translate("","Transformed Up-Down Interleaved",""),
+                                        QApplication.translate("","Weighted Up-Down Interleaved",""),
+                                        QApplication.translate("","Multiple Constants m-Intervals n-Alternatives","")]
+                                                                                                   
+                                                                                                   
+      prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
+                             "hasNTracksChooser"]
+      prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Arithmetic","")
+      prm[exp_name]['defaultNIntervals'] = 2
+      prm[exp_name]['defaultNAlternatives'] = 2
+      prm[exp_name]['defaultNTracks'] = 4
+    
+      prm[exp_name]["execString"] = "audiogram_mf"
+      prm[exp_name]["version"] = "1"
+    
+    return prm
+   
+the first part of the function doesn't need much explanation if you've follwed the previous examples.
+The experiments ``opts`` has a new item ``hasNTracksChooser``. This option allows the user to dynamically
+change the number of adaptive tracks to be used (or the number of constant differences to measure for the
+multiple constants paradigm). Besides this, the only new thing compared to previous examples is that
+we also specify the default number of tracks with ``prm[exp_name]['defaultNTracks'] = 4``.
+
+The ``select_default_parameters_`` for the "Demo Audiogram Multiple Frequencies" experiment is shown
+below:
+    
+.. code-block:: python
+   :linenos:
+      
+   def select_default_parameters_audiogram_mf(parent, par):
+   
+      nDifferences = par['nDifferences']
+   
+      field = []
+      fieldLabel = []
+      chooser = []
+      chooserLabel = []
+      chooserOptions = []
+
+      for i in range(nDifferences):
+         fieldLabel.append(parent.tr("Frequency (Hz) " + str(i+1)))
+         field.append(1000+1000*i)
+         fieldLabel.append(QApplication.translate("","Level (dB SPL) " + str(i+1),""))
+         field.append(50)
+    
+      fieldLabel.append(QApplication.translate("","Bandwidth (Hz)",""))
+      field.append(10)
+    
+      fieldLabel.append(QApplication.translate("","Duration (ms)",""))
+      field.append(180)
+    
+      fieldLabel.append(QApplication.translate("","Ramps (ms)",""))
+      field.append(10)
+
+    
+      chooserOptions.append([QApplication.translate("","Right",""),
+                           QApplication.translate("","Left",""),
+                           QApplication.translate("","Both","")])
+      chooserLabel.append(QApplication.translate("","Ear:",""))
+      chooser.append(QApplication.translate("","Right",""))
+      chooserOptions.append([QApplication.translate("","Sinusoid",""),
+                           QApplication.translate("","Narrowband Noise","")])
+      chooserLabel.append(QApplication.translate("","Type:",""))
+      chooser.append(QApplication.translate("","Sinusoid",""))
+
+      prm = {}
+      prm['field'] = field
+      prm['fieldLabel'] = fieldLabel
+      prm['chooser'] = chooser
+      prm['chooserLabel'] = chooserLabel
+      prm['chooserOptions'] =  chooserOptions
+
+      return prm
+
+
+.. code-block:: python
+   :linenos:
+      
+   def get_fields_to_hide_audiogram_mf(parent):
+      if parent.chooser[parent.prm['chooserLabel'].index(QApplication.translate("","Type:",""))].currentText() == QApplication.translate("","Sinusoid",""):
+         parent.fieldsToHide = [parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)",""))]
+      else:
+         parent.fieldsToShow = [parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)",""))]
+
+.. code-block:: python
+   :linenos:
+   
+   def doTrial_audiogram_mf(parent):
+      currBlock = 'b'+ str(parent.prm['currentBlock'])
+      nDifferences = parent.prm['nDifferences']
+      frequency = []
+      if parent.prm['startOfBlock'] == True:
+         parent.prm['additional_parameters_to_write'] = {}
+         parent.prm['conditions'] = []
+         parent.prm['adaptiveParam'] = []
+         for i in range(nDifferences):
+            parent.prm['conditions'].append(str(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Frequency (Hz) " + str(i+1),""))]))
+            parent.prm['adaptiveParam'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Level (dB SPL) " + str(i+1),""))])
+         parent.writeResultsHeader('log')
+
+      for i in range(nDifferences):
+         frequency.append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Frequency (Hz) " + str(i+1),""))])
+
+      #these fields are necessary for the two procedures (multiple constants, adaptive interleaved)
+      parent.currentCondition = parent.prm['conditions'][parent.prm['currentDifference']] #this is necessary for counting correct/total trials
+      correctLevel = parent.prm['adaptiveParam'][parent.prm['currentDifference']]
+    
+      currentFrequency = frequency[parent.prm['currentDifference']]
+      bandwidth = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)",""))] 
+      phase = 0
+    
+      incorrectLevel = -200
+      duration = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Duration (ms)",""))] 
+      ramps = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Ramps (ms)",""))] 
+      channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(QApplication.translate("","Ear:",""))]
+      sndType = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(QApplication.translate("","Type:",""))]
+
+      if sndType == QApplication.translate("","Narrowband Noise",""):
+         if bandwidth > 0:
+            parent.stimulusCorrect = steepNoise(currentFrequency-(bandwidth/2), currentFrequency+(bandwidth/2), correctLevel - (10*log10(bandwidth)),
+                                                duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+         else:
+            parent.stimulusCorrect = pureTone(currentFrequency, phase, correctLevel, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+      elif sndType == QApplication.translate("","Sinusoid",""):
+         parent.stimulusCorrect = pureTone(currentFrequency, phase, correctLevel, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+      
+            
+      parent.stimulusIncorrect = []
+      for i in range((parent.prm['nIntervals']-1)):
+         thisSnd = pureTone(currentFrequency, phase, incorrectLevel, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+         parent.stimulusIncorrect.append(thisSnd)
+      parent.playRandomisedIntervals(parent.stimulusCorrect, parent.stimulusIncorrect)
 
 
 

@@ -13,9 +13,9 @@ The available fields are:
     The bandwidth of the signal in Hz (only applicable
     if signal type is Narrowband Noise)
 - Level (dB SPL) :
-    Aignal level (for constant procedures), or starting signal level (for adaptive procedures), in dB SPL
+    Signal level (for constant procedures), or starting signal level (for adaptive procedures), in dB SPL
 - Duration (ms) :
-    Aignal duration (excluding ramps), in ms
+    Signal duration (excluding ramps), in ms
 - Ramps (ms) :
     Duration of each ramp, in ms
 
@@ -56,10 +56,11 @@ def initialize_audiogram_mf(prm):
                                                                                                    
                                                                                                    
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback",
-                             "hasNTracksChooser", "hasNDifferencesChooser"]
+                             "hasNTracksChooser"]
     prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Arithmetic","")
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2
+    prm[exp_name]['defaultNTracks'] = 4
     
     prm[exp_name]["execString"] = "audiogram_mf"
     prm[exp_name]["version"] = __name__ + ' ' + pychoacoustics_version + ' ' + pychoacoustics_builddate
