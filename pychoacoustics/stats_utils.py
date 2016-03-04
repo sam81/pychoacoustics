@@ -90,3 +90,16 @@ def gammaShRaFromModeSD(mode, sd):
     shape = 1 + mode * rate
 
     return shape, rate
+
+def betaABfromMeanSD(mean, sd):
+  if mean <=0 or mean >= 1:
+       raise ValueError("must have 0 < mean < 1")
+  if sd <= 0:
+       raise ValueError("sd must be > 0")
+  kappa = mean*(1-mean)/sd**2 - 1
+  if kappa <= 0:
+       raise ValueError("invalid combination of mean and sd")
+  a = mean * kappa
+  b = (1.0 - mean) * kappa
+
+  return a, b

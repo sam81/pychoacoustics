@@ -169,6 +169,11 @@ def setPrior(phi, s):
             p0 = stats.gamma.pdf(phi, gShape, loc=0, scale=1/gRate)
         elif s["spacing"] == "Logarithmic":
             p0 = stats.gamma.pdf(log(phi), gShape, loc=0, scale=1/gRate)
+    elif s["dist"] == "t":
+        if s["spacing"] == "Linear":
+            p0  = stats.t.pdf(phi, loc=s["mu"], scale=s["std"], df=1)
+        elif s["spacing"] == "Logarithmic":
+            p0  = stats.t.pdf(log(phi), loc=log(s["mu"]), scale=log(s["std"]), df=1)
             
     return p0
 
