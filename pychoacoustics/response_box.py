@@ -1000,6 +1000,11 @@ class responseBox(QMainWindow):
                 self.prm['lapsePriorMu'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse mu"))])
                 self.prm['lapsePriorSTD'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Lapse STD"))])
 
+                if self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Load UML state from prev. blocks:"))] == "Yes":
+                    self.prm["saveUMLState"] = True
+                else:
+                    self.prm["saveUMLState"] = False
+
             elif self.prm["paradigm"] == self.tr("UML - Est. Guess Rate"):
                 self.prm['psyFunType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Psychometric Function:"))]
                 self.prm['swptRule'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Swpt. Rule:"))]
@@ -4013,7 +4018,14 @@ class responseBox(QMainWindow):
                                     lambdaSTD=self.prm['lapsePriorSTD'],
                                     suggestedLambdaSwpt=abs(self.prm['suggestedLambdaSwpt']),
                                     lambdaSwptPC=self.prm['lambdaSwptPC'])
-
+            
+            if self.prm["saveUMLState"] == True:
+                try:
+                    self.UML["p"] = np.load(os.path.dirname(self.prm['resultsFile'])+self.prm[currBlock]['conditionLabel']+".npy")
+                    print("Previous block state loaded")
+                except:
+                    print("Previous block state could not be loaded")
+                    pass
             self.prm['startOfBlock'] = False
             self.trialCount = 0
             self.fullFileLines = []
@@ -4138,7 +4150,8 @@ class responseBox(QMainWindow):
             
             
             self.writeResultsSummaryFullLine('UML', resLineToWriteSummFull)
-
+            if self.prm["saveUMLState"] == True:
+                np.save(os.path.dirname(self.prm['resultsFile'])+self.prm[currBlock]['conditionLabel']+".npy", self.UML["p"], allow_pickle=False, fix_imports=False)
             del self.UML #clear memory
             self.atBlockEnd()
         else:

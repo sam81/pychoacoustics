@@ -2385,6 +2385,7 @@ class pychControlWin(QMainWindow):
         if self.currParadigm in [self.tr("UML")]:
             n = 0
             priorOptions = [self.tr("Uniform"), self.tr("Normal"), self.tr("Gamma")]
+            lambdaPriorOptions = [self.tr("Uniform"), self.tr("Normal"), self.tr("Gamma"), self.tr("Beta"), self.tr("Generalized Beta")]
             psyFunOptions = [self.tr("Logistic"), self.tr("Gaussian"), self.tr("Weibull")]
             # n = n+1
             self.psyFunChooserLabel = QLabel(self.tr("Psychometric Function:"), self)
@@ -2652,7 +2653,7 @@ class pychControlWin(QMainWindow):
             self.lapsePriorChooserLabel = QLabel(self.tr("Lapse Prior:"), self)
             self.paradigm_widg_sizer.addWidget(self.lapsePriorChooserLabel, n, 1)
             self.lapsePriorChooser = QComboBox()
-            self.lapsePriorChooser.addItems(priorOptions)
+            self.lapsePriorChooser.addItems(lambdaPriorOptions)
             self.paradigm_widg_sizer.addWidget(self.lapsePriorChooser, n, 2)
             self.lapsePriorChooser.activated[str].connect(self.onChangeLapsePrior)
             self.lapsePriorChooserCheckBox = QCheckBox()
@@ -2675,8 +2676,16 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.lapsePriorSTD, n, 8)
             self.lapsePriorSTDCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.lapsePriorSTDCheckBox, n, 6)
-            #n = n+1
-
+            n = n+1
+            # load state
+            self.loadStateChooserLabel = QLabel(self.tr("Load UML state from prev. blocks:"), self)
+            self.paradigm_widg_sizer.addWidget(self.loadStateChooserLabel, n, 1)
+            self.loadStateChooser = QComboBox()
+            self.loadStateChooser.addItems(["Yes", "No"])
+            self.paradigm_widg_sizer.addWidget(self.loadStateChooser, n, 2)
+            self.loadStateChooserCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.loadStateChooserCheckBox, n, 0)
+            
             self.paradigmChooserList = [self.threshPriorChooser,
                                         self.slopePriorChooser,
                                         self.lapsePriorChooser,
@@ -2685,7 +2694,8 @@ class pychControlWin(QMainWindow):
                                         self.swptRuleChooser,
                                         self.stimScalingChooser,
                                         self.slopeSpacingChooser,
-                                        self.lapseSpacingChooser]
+                                        self.lapseSpacingChooser,
+                                        self.loadStateChooser]
             self.paradigmChooserLabelList = [self.threshPriorChooserLabel,
                                              self.slopePriorChooserLabel,
                                              self.lapsePriorChooserLabel,
@@ -2694,16 +2704,18 @@ class pychControlWin(QMainWindow):
                                              self.swptRuleChooserLabel,
                                              self.stimScalingChooserLabel,
                                              self.slopeSpacingChooserLabel,
-                                             self.lapseSpacingChooserLabel]
+                                             self.lapseSpacingChooserLabel,
+                                             self.loadStateChooserLabel]
             self.paradigmChooserOptionsList = [priorOptions,
                                                priorOptions,
-                                               priorOptions,
+                                               lambdaPriorOptions,
                                                psyFunOptions,
                                                [self.tr("Mean"), self.tr("Mode")],
                                                [self.tr("Up-Down"), self.tr("Random")],
                                                [self.tr("Linear"), self.tr("Logarithmic")],
                                                [self.tr("Linear"), self.tr("Logarithmic")],
-                                               [self.tr("Linear"), self.tr("Logarithmic")]]
+                                               [self.tr("Linear"), self.tr("Logarithmic")],
+                                               ["Yes", "No"]]
             self.paradigmChooserCheckBoxList = [self.threshPriorChooserCheckBox,
                                                 self.slopePriorChooserCheckBox,
                                                 self.lapsePriorChooserCheckBox,
@@ -2712,7 +2724,8 @@ class pychControlWin(QMainWindow):
                                                 self.swptRuleChooserCheckBox,
                                                 self.stimScalingCheckBox,
                                                 self.slopeSpacingChooserCheckBox,
-                                                self.lapseSpacingChooserCheckBox]
+                                                self.lapseSpacingChooserCheckBox,
+                                                self.loadStateChooserCheckBox]
 
             self.paradigmFieldList = [self.loStim, self.hiStim, self.suggestedLambdaSwpt,
                                       self.lambdaSwptPC, self.ruleDownTF,

@@ -21,12 +21,12 @@
 
 import copy, random, scipy
 import numpy as np
-from numpy import arange, exp, linspace, logspace, log, log10, meshgrid, pi, ravel
+from numpy import arange, exp, inf, linspace, logspace, log, log10, meshgrid, pi, ravel
 from scipy.stats import lognorm, norm #gamma conflicts with gamma variable
 from scipy import stats
 from scipy.special import erf
 from .pysdt import*
-from .stats_utils import gammaShRaFromMeanSD, gammaShRaFromModeSD
+from .stats_utils import gammaShRaFromMeanSD, gammaShRaFromModeSD, betaABFromMeanSTD, generalizedBetaABFromMeanSTD
 
 
 def setupUML(model="Logistic", swptRule="Up-Down", nDown=2, centTend="Mean", stimScale="Linear", x0=None, xLim=(-10, 10), 
@@ -169,6 +169,24 @@ def setPrior(phi, s):
             p0 = stats.gamma.pdf(phi, gShape, loc=0, scale=1/gRate)
         elif s["spacing"] == "Logarithmic":
             p0 = stats.gamma.pdf(log(phi), gShape, loc=0, scale=1/gRate)
+    elif s["dist"] == "Beta":
+        if s["spacing"] == "Linear":
+            a,b=betaABFromMeanSTD(s["mu"], s["std"])
+            p0  = stats.beta.pdf(phi, a=a, b=b)
+        elif s["spacing"] == "Logarithmic":
+            a,b=betaABFromMeanSTD(log(s["mu"]), log(s["std"]))
+            p0  = stats.beta.pdf(phi, a=a, b=b)
+        #p0[np.isinf(p0)] = scipy.stats.beta.pdf(np.finfo(0.1).eps, a, b)
+        #p0[np.isneginf(p0)] = scipy.stats.beta.pdf(np.finfo(0.1).eps, a, b)
+    elif s["dist"] == "Generalized Beta":
+        if s["spacing"] == "Linear":
+            a,b=generalizedBetaABFromMeanSTD(s["mu"], s["std"], s["limits"][0], s["limits"][1])
+            p0  = stats.beta.pdf(phi, a=a, b=b, loc=s["limits"][0], scale=s["limits"][1]-s["limits"][0])
+        elif s["spacing"] == "Logarithmic":
+            a,b=generalizedBetaABFromMeanSTD(log(s["mu"]), log(s["std"]), log(s["limits"][0]), log(s["limits"][1]))
+            p0  = stats.beta.pdf(phi, a=a, b=b, loc=log(s["limits"][0]), scale=log(s["limits"][1])-log(s["limits"][0]))
+        #p0[np.isinf(p0)] = scipy.stats.beta.pdf(np.finfo(0.1).eps, a, b)
+        #p0[np.isneginf(p0)] = scipy.stats.beta.pdf(np.finfo(0.1).eps, a, b)
     elif s["dist"] == "t":
         if s["spacing"] == "Linear":
             p0  = stats.t.pdf(phi, loc=s["mu"], scale=s["std"], df=1)
@@ -269,6 +287,7 @@ def UML_update(UML, r):
                 if UML["track_direction"] == 1:
                     UML["rev_flag"] = np.append(UML["rev_flag"], 1)
                     UML["nrev"] = UML["nrev"] +1
+                UML["track_direction"] = -1
             elif UML["step_flag"] < UML["par"]["nDown"]-1:
                 newx = swpt[UML["current_step"]-1]
                 UML["step_flag"] = UML["step_flag"]+1

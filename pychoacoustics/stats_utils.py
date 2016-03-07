@@ -91,15 +91,36 @@ def gammaShRaFromModeSD(mode, sd):
 
     return shape, rate
 
-def betaABfromMeanSD(mean, sd):
+def betaABFromMeanSTD(mean, std):
   if mean <=0 or mean >= 1:
        raise ValueError("must have 0 < mean < 1")
-  if sd <= 0:
+  if std <= 0:
        raise ValueError("sd must be > 0")
-  kappa = mean*(1-mean)/sd**2 - 1
+  kappa = mean*(1-mean)/std**2 - 1
   if kappa <= 0:
        raise ValueError("invalid combination of mean and sd")
   a = mean * kappa
   b = (1.0 - mean) * kappa
 
   return a, b
+
+def betaMeanSTDFromAB(a,b):
+     mu = a/(a+b)
+     std = sqrt(a*b/((a+b)**2*(a+b+1)))
+     #= mu*(1-mu)/(a+b+1)
+     return mu, std
+
+def generalizedBetaABFromMeanSTD(mu, std, xmin, xmax):
+     lmbd = (((mu-xmin)*(xmax-mu))/std**2)-1
+     a = lmbd*((mu-xmin)/(xmax-xmin))
+     b = lmbd*((xmax-mu)/(xmax-xmin))
+
+     return a,b
+
+def generalizedBetaMeanSTDFromAB(a,b,xmin,xmax):
+     mu = (xmin*b+xmax*a)/(a+b)
+     std = sqrt(((a*b)*(xmax-xmin)**2)/((a+b)**2*(1+a+b)))
+
+     return mu, std
+     
+     
