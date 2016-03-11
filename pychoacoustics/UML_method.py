@@ -313,16 +313,16 @@ def UML_update(UML, r):
     else:
         UML["xnextLinear"] = UML["xnext"]
 
-    print('Est Midpoint: ', UML["est_midpoint"])
-    print('Est Slope: ', UML["est_slope"])
-    print('Est Lapse: ', UML["est_lapse"])
-    print('Next level: ', UML["xnextLinear"])
-    if UML["par"]["stimScale"] == "Logarithmic":
-        print('xCeiling: ', exp(xCeiling))
-        print('Lambda Swpt: ', exp(lmbdSwpt))
-    else:
-        print('xCeiling: ', xCeiling)
-        print('Lambda Swpt: ', lmbdSwpt)
+    # print('Est Midpoint: ', UML["est_midpoint"])
+    # print('Est Slope: ', UML["est_slope"])
+    # print('Est Lapse: ', UML["est_lapse"])
+    # print('Next level: ', UML["xnextLinear"])
+    # if UML["par"]["stimScale"] == "Logarithmic":
+    #     print('xCeiling: ', exp(xCeiling))
+    #     print('Lambda Swpt: ', exp(lmbdSwpt))
+    # else:
+    #     print('xCeiling: ', xCeiling)
+    #     print('Lambda Swpt: ', lmbdSwpt)
         
     return UML
 
@@ -373,9 +373,9 @@ def logit_sweetpoints(phi):
 
     swpts = np.zeros(3)
 
-    swpts[0] = scipy.optimize.fmin(betavar_est1, x0=alpha-10)
-    swpts[2] = scipy.optimize.fmin(betavar_est2, x0=alpha+10)
-    swpts[1] = scipy.optimize.fmin(alphavar_est, x0=alpha)
+    swpts[0] = scipy.optimize.fmin(betavar_est1, x0=alpha-10, disp=False)
+    swpts[2] = scipy.optimize.fmin(betavar_est2, x0=alpha+10, disp=False)
+    swpts[1] = scipy.optimize.fmin(alphavar_est, x0=alpha, disp=False)
     swpts.sort()
 
     return swpts
@@ -424,9 +424,9 @@ def weibull_sweetpoints(phi):
     # swpts[1] = fminsearch(@(x) kvar_est(x,k,beta,gamma,lambdax),k,opt)
     
     swpts = np.zeros(3)
-    swpts[0] = scipy.optimize.fmin(betavar_est1, x0=k/2)
-    swpts[2] = scipy.optimize.fmin(betavar_est2, x0=k*2)
-    swpts[1] = scipy.optimize.fmin(kvar_est, x0=k)
+    swpts[0] = scipy.optimize.fmin(betavar_est1, x0=k/2, disp=False)
+    swpts[2] = scipy.optimize.fmin(betavar_est2, x0=k*2, disp=False)
+    swpts[1] = scipy.optimize.fmin(kvar_est, x0=k, disp=False)
     swpts = np.maximum(np.sort(swpts), 0)
 
     return swpts
@@ -472,9 +472,9 @@ def gaussian_sweetpoints(phi):
     # swpt_sigma_L = fminsearch(sigma2_sigma, phi(1)-10)
     # swpt_sigma_H = fminsearch(sigma2_sigma, phi(1)+10)
 
-    swpt_mu = scipy.optimize.fmin(sigma2_mu, x0=phi[0])
-    swpt_sigma_L = scipy.optimize.fmin(sigma2_sigma, x0=phi[0]-10)
-    swpt_sigma_H = scipy.optimize.fmin(sigma2_sigma, x0=phi[0]+10)
+    swpt_mu = scipy.optimize.fmin(sigma2_mu, x0=phi[0], disp=False)
+    swpt_sigma_L = scipy.optimize.fmin(sigma2_sigma, x0=phi[0]-10, disp=False)
+    swpt_sigma_H = scipy.optimize.fmin(sigma2_sigma, x0=phi[0]+10, disp=False)
     swpts = np.array([swpt_sigma_L, swpt_mu, swpt_sigma_H])
 
     return swpts

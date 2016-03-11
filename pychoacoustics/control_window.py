@@ -2681,6 +2681,7 @@ class pychControlWin(QMainWindow):
             self.loadStateChooserLabel = QLabel(self.tr("Load UML state from prev. blocks:"), self)
             self.paradigm_widg_sizer.addWidget(self.loadStateChooserLabel, n, 1)
             self.loadStateChooser = QComboBox()
+            self.loadStateChooser.setCurrentIndex(1)
             self.loadStateChooser.addItems(["Yes", "No"])
             self.paradigm_widg_sizer.addWidget(self.loadStateChooser, n, 2)
             self.loadStateChooserCheckBox = QCheckBox()

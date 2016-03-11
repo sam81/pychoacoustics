@@ -655,6 +655,10 @@ of parameter values from the Bayesian posterior distribution of parameter values
 -  **Lapse mu** The mean of the prior distribution for the lapse rate of the psychometric function.
 
 -  **Lapse STD** The standard deviation of the prior distribution for the lapse rate of the psychometric function.
+      
+-  **Load UML state from prev. blocks** If ``Yes``, at the end of each block the state of the UML posterior parameter distribution will be saved
+   in a file named after the condition label of the block. When a subsequent block with the same condition label is encountered this file will be
+   used to set the initial UML posterior parameter distribution for the block instead of the priors specified in the control window.
    
 Weighted Up-Down Paradigm Widgets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

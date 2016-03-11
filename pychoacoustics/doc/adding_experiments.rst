@@ -221,8 +221,11 @@ The ``select_default_parameters_`` function accepts three arguments,
 "parent" is simply a reference to the pychoacoustics application, 
 "paradigm" is the paradigm with which the function has been called, 
 while "par" is a variable that can hold some special values for 
-initializing the function. The use of the "par" argument is discussed 
-in Section :ref:`sec-par`.  From line three to line seven, we create a 
+initializing the function. The use of the "par" argument will be discussed 
+later on when procedures with interleaved tracks will be described. For the
+time being you should just know that the ``select_default_parameters_`` should
+always have this argument.
+From line three to line seven, we create a 
 series of empty lists. The ``field`` and ``fieldLabel`` lists will hold 
 the default values of our text field widgets, and their labels, respectively. 
 The ``chooser`` and ``chooserLabel`` lists will likewise hold the default 
@@ -798,7 +801,30 @@ below:
 
       return prm
 
+The transformed/weighted up-down interleaved paradigms can be run with any
+number of adaptive tracks. Similarly, the multiple constants m-intervals
+n-alternatives procedure can be run with any number of constant differences
+between the standard and comparison intervals. All the user has to do is
+select the desired number of adaptive tracks, or constant differences
+from the appropriate chooser in the ``pychoacoustics`` control window.
+``select_default_parameters_`` function, however, needs to know how
+many tracks or how many constant differences are being run in order to set
+up the necessary fields storing the experimental variables.
+The ``par`` argument that is always passed to the ``select_default_parameters_``
+function has the purpose of passing additional parameters to dinamycally modify
+the behavior of the function in cases like this.
 
+In the case of paradigms with interleaved tracks, or multiple constant differences
+the ``par`` argument has a key called ``nDifferences`` that specifies the
+number of tracks or constant differences. For the current experiment we
+retieve this value on line 3. Then, on lines 11-15 we set up a for loop
+in which we add a field to store the frequency and level of the tones for
+each adaptive track. The rest of the function is similar to previous examples,
+so it will not be discussed further.
+
+The ``get_fields_to_hide_`` function for the "Demo Audiogram Multiple Frequencies"
+experiment is shown in the code block below. Again, nothing new here.
+      
 .. code-block:: python
    :linenos:
       
@@ -808,13 +834,15 @@ below:
       else:
          parent.fieldsToShow = [parent.prm['fieldLabel'].index(QApplication.translate("","Bandwidth (Hz)",""))]
 
+The ``doTrial_`` function for the "Demo Audiogram Multiple Frequencies" experiment
+is shown below:	 
+
 .. code-block:: python
    :linenos:
    
    def doTrial_audiogram_mf(parent):
       currBlock = 'b'+ str(parent.prm['currentBlock'])
       nDifferences = parent.prm['nDifferences']
-      frequency = []
       if parent.prm['startOfBlock'] == True:
          parent.prm['additional_parameters_to_write'] = {}
          parent.prm['conditions'] = []
@@ -824,10 +852,10 @@ below:
             parent.prm['adaptiveParam'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Level (dB SPL) " + str(i+1),""))])
          parent.writeResultsHeader('log')
 
+      frequency = []
       for i in range(nDifferences):
          frequency.append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index(QApplication.translate("","Frequency (Hz) " + str(i+1),""))])
 
-      #these fields are necessary for the two procedures (multiple constants, adaptive interleaved)
       parent.currentCondition = parent.prm['conditions'][parent.prm['currentDifference']] #this is necessary for counting correct/total trials
       correctLevel = parent.prm['adaptiveParam'][parent.prm['currentDifference']]
     
@@ -857,6 +885,39 @@ below:
          parent.stimulusIncorrect.append(thisSnd)
       parent.playRandomisedIntervals(parent.stimulusCorrect, parent.stimulusIncorrect)
 
+
+note that on line 3 we retrieve the number of adaptive tracks (for adaptive interleaved
+paradigms), or the number of constant differences (for multiple constant paradigms) that
+we're currently running. This parameter is stored in the ``parent.prm`` dictionary.
+
+At the start of a block of trials (cfr. line 4) we set up a number of parameters.
+Among these there are two in particular that need some explanation. The
+``parent.prm['adaptiveParam'] on line 7 is a list that is populated in the for loop
+starting on line 9 with the initial values of the parameter that is adaptively varying
+for each track. The ``parent.prm['conditions'] on the other hand is a parameter
+that is used only when the experiment is run with the multiple constants m-intervals
+n-alternatives paradigm. It's a list of labels for each "condition" that is being
+run in the experiment, that is for each constant difference that is being tested.
+
+On lines 13-15 we retrieve the frequencies of the tones used for each track or
+constant difference.
+
+On line 17 we retrieve the label of the current condition and store it in the
+``parent.currentCondition`` variable. Thisvariable will be used by ``pychoacoustics``
+for keeping count of the correct and total number of trials for each constant
+difference when using the multiple constants paradigm. Note how the
+``parent.prm['currentDifference']`` variable is used for this purpose. This variable
+is the index to the current track or current cosnatnt difference that is being
+currently tested. This variable is set outside of the ``doTrial_`` function,
+(a random track or constant difference is chosen for each trial) but
+we can retrieve its value through the ``parent`` handle.
+
+On line 18 we make use of the ``parent.prm['currentDifference']`` variable again, this
+time to retrieve the level of the comparison stimulus for the track or constant difference
+that is run on the current trial. The rest of the function is not different from
+the ``doTrial_`` functions used in transformed/weighted up-down paradigms with
+non-interleaved tracks, and should be easy to follow if you've followed the previous
+examples.
 
 
 Writing a matching experiment using interleaved adaptive tracks
@@ -1157,15 +1218,6 @@ The Experiment “opts”
    then a ``preTrialStim`` sound needs to be passed to the ``playRandomisedIntervals``
    function. This sound will be presented at the beginning of each trial. 
 
-
-.. _sec-par:
-
-Using ``par``
-=============
-
-.. todo::
-  
-   Illustrate the use of par
 
 .. _sec-play_sound_functions:
 

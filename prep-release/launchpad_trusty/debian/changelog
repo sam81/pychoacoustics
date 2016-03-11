@@ -1,3 +1,9 @@
+pychoacoustics (0.3.40-ppa0~trusty) trusty; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Tue, 08 Mar 2016 00:10:16 +0100
+
 pychoacoustics (0.3.38-ppa0~trusty) trusty; urgency=low
 
   * New upstream release
