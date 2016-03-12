@@ -69,7 +69,7 @@ for each paradigm is given in Table :ref:`tab-proc_res`
   Multiple Constants 1-Interval 2-Alternatives        Yes        Yes                Yes
   Multiple Constants 1-Pair Same/Different            Yes        Yes                Yes
   Multiple Constants m-Intervals n-Alternatives       Yes        Yes                Yes
-  Multiple Constants Odd One Out                      No         No                 No
+  Multiple Constants Odd One Out                      No         Yes                No
   Multiple Constants Sound Comparison                 No         No                 No	   
   PEST                                                Yes        Yes                Yes
   PSI                                                 No         No                 No

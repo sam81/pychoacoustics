@@ -97,6 +97,8 @@ class processResultsDialog(QDialog):
             self.paradigm = "multipleConstants1PairSD"
         elif paradigm == self.tr("Multiple Constants ABX") and self.resformat == "table": #currently supports only tabular
             self.paradigm = "multipleConstantsABX"
+        elif paradigm == self.tr("Multiple Constants Odd One Out") and self.resformat == "table": #currently supports only tabular
+            self.paradigm = "multipleConstantsOddOneOut"
 
         else:
             QMessageBox.warning(self, self.tr("Error"), self.tr("File type or paradigm not supported."))
@@ -311,6 +313,8 @@ class processResultsDialog(QDialog):
                 procResTableMultipleConstants1PairSameDifferent(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
             elif self.paradigm == "multipleConstantsABX":
                 procResTableMultipleConstantsABX(fList, self.foutName, self.separator, last=last, block_range=block_range, dprimeCorrection=self.dpCorrCheckBox.isChecked())
+            elif self.paradigm == "multipleConstantsOddOneOut":
+                procResTableMultipleConstantsOddOneOut(fList, self.foutName, self.separator, last=last, block_range=block_range)
 
 
             if self.parent().prm['appData']['plotting_available'] == True and (self.plotCheckBox.isChecked() == True or self.pdfPlotCheckBox.isChecked() == True):

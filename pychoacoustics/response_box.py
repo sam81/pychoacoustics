@@ -729,12 +729,12 @@ class responseBox(QMainWindow):
         return
     
 
-    def playSoundsOddOneOut(self, soundList):
+    def playSoundsWavComp(self, soundList):
         currBlock = 'b'+ str(self.prm['currentBlock'])
         nIntervals = self.prm['nIntervals']
 
-        numpy.random.shuffle(parent.prm['currStimOrder'])
-        parent.correctButton = parent.prm['currStimOrder'].index(2)+1
+        # numpy.random.shuffle(parent.prm['currStimOrder'])
+        # parent.correctButton = parent.prm['currStimOrder'].index(2)+1
 
         nLight = 0
         if self.prm["warningInterval"] == True:
@@ -5254,10 +5254,10 @@ class responseBox(QMainWindow):
         elif paradigm in ['Multiple Constants Odd One Out']:
             headerToWrite = 'nTrials' + self.prm['pref']["general"]["csvSeparator"]
             for i in range(len(self.prm['conditions'])):
-                headerToWrite = headerToWrite + 'cnd'+str(i+1) + '_nCorr'+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'cnd'+str(i+1) + '_nTrials'+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'cnd'+str(i+1)+ '_percCorr'+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'cnd'+str(i+1) + '_dprime'+ self.prm['pref']["general"]["csvSeparator"]  
+                headerToWrite = headerToWrite + 'nCorr_subcnd'+str(i+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'nTrials_subcnd'+str(i+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'percCorr_subcnd'+str(i+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'dprime_subcnd'+str(i+1) + self.prm['pref']["general"]["csvSeparator"]  
                                 
             headerToWrite = headerToWrite + 'condition' + self.prm['pref']["general"]["csvSeparator"] + \
                             'listener' + self.prm['pref']["general"]["csvSeparator"] + \
@@ -5272,12 +5272,12 @@ class responseBox(QMainWindow):
         elif paradigm in ['Multiple Constants Sound Comparison']:
             headerToWrite = 'nTrials' + self.prm['pref']["general"]["csvSeparator"]
             for i in range(len(self.prm['conditions'])):
-                headerToWrite = headerToWrite + 'cnd'+str(i+1)+'_stim1_count'+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'cnd'+str(i+1) + '_stim1_percent'+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'cnd'+str(i+1) + '_stim2_count'+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'cnd'+str(i+1)+ '_stim2_percent'+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'cnd'+str(i+1) + '_stim2_count'+ self.prm['pref']["general"]["csvSeparator"] + \
-                                'cnd'+str(i+1)+ '_stim3_percent'+ self.prm['pref']["general"]["csvSeparator"] 
+                headerToWrite = headerToWrite + 'stim1_count_subcnd' + str(i+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'stim1_percent_subcnd' + str(i+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'stim2_count_subcnd' + str(i+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'stim2_percent_subcnd' + str(i+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'stim3_count_subcnd' + str(i+1) + self.prm['pref']["general"]["csvSeparator"] + \
+                                'stim3_percent_subcnd' + str(i+1) + self.prm['pref']["general"]["csvSeparator"] 
                                 
             headerToWrite = headerToWrite + 'condition' + self.prm['pref']["general"]["csvSeparator"] + \
                             'listener' + self.prm['pref']["general"]["csvSeparator"] + \
@@ -5504,7 +5504,7 @@ class responseBox(QMainWindow):
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
                             'paradigm' + self.prm['pref']["general"]["csvSeparator"]
         if paradigm in ['Multiple Constants Odd One Out']:
-            headerToWrite = 'comparison' + self.prm['pref']["general"]["csvSeparator"] + \
+            headerToWrite = 'subcondition' + self.prm['pref']["general"]["csvSeparator"] + \
                             'response' + self.prm['pref']["general"]["csvSeparator"]
             if 'additional_parameters_to_write' in self.prm:
                 for p in range(len(self.prm['additional_parameters_to_write_labels'])):
@@ -5754,6 +5754,8 @@ class responseBox(QMainWindow):
             procResTableMultipleConstants1PairSameDifferent([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
         elif self.prm['paradigm'] in [self.tr("Multiple Constants ABX")]:
             procResTableMultipleConstantsABX([resFilePath], fout=None, separator=separator, dprimeCorrection=self.prm['pref']['general']['dprimeCorrection'])
+        elif self.prm['paradigm'] in [self.tr("Multiple Constants Odd One Out")]:
+            procResTableMultipleConstantsOddOneOut([resFilePath], fout=None, separator=separator)
 
 
     def plotDataEnd(self, winPlot, pdfPlot):

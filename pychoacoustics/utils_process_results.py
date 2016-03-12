@@ -955,6 +955,92 @@ def procResTableMultipleConstantsABX(fName, fout=None, separator=';', last=None,
     writeResTable(fNameOut, separator, datsPro, resKeys)
     return
 
+def procResTableMultipleConstantsOddOneOut(fName, fout=None, separator=';', last=None, block_range=None):
+    fldict = readTableFiles(fName, separator)
+
+    if fout == None:
+        fNameOut = fName[0].split('.csv')[0] + '_sess.csv'
+    else:
+        fNameOut = fout
+    
+    if len(fldict) > 1:
+        fout = open(fNameOut, 'w')
+        fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
+        fout.close()
+        return
+
+    data = fldict[list(fldict.keys())[0]]
+
+    nBlocks = len(data['data'])
+    keysToRemove = ['session', 'date', 'time', 'duration', 'block', '']
+    keysNotToCheck = ['conditionAgglomerate', 'procedure']
+
+    keys = data['header'].split(separator) #.pop removes \n newline character
+    keys.pop()
+    nSubCond = 0
+    for key in keys:
+        if key[0:13] == 'dprime_subcnd':
+            nSubCond = nSubCond +1
+
+    numFields = []
+    for c in range(nSubCond):
+        cn = str(c+1)
+        numFields.extend(['nCorr_subcnd'+cn, 'nTrials_subcnd'+cn])
+    dCols = getColVals(data["data"], data["header"], numFields, separator)
+    for c in range(nSubCond):
+        cn = str(c+1)
+        keysToRemove.extend(['dprime_subcnd'+cn, 'percCorr_subcnd'+cn])
+        keysNotToCheck.extend(['nCorr_subcnd'+cn, 'nTrials_subcnd'+cn])
+    dCols = makeAgglomerateCondition(dCols, keysToRemove, keysNotToCheck, nBlocks)
+    datsPro = makeDatsProSkeleton(dCols, keysNotToCheck)
+
+    #sort on the basis of condition-agglomerate
+    cnds = list(set(dCols['conditionAgglomerate']))
+
+    for c in range(nSubCond):
+        cn = str(c+1)
+        datsPro['dprime_subcnd'+cn] = zeros(len(cnds))
+        datsPro['nCorr_subcnd'+cn] = zeros(len(cnds))
+        datsPro['nTrials_subcnd'+cn] = zeros(len(cnds))
+        datsPro['percCorr_subcnd'+cn] = zeros(len(cnds))
+
+    nCorr = [[[] for c in range(nSubCond)] for j in range(len(cnds))]
+    nTrials = [[[] for c in range(nSubCond)] for j in range(len(cnds))]
+
+    for j in range(nBlocks):
+        cndIdx = cnds.index(dCols['conditionAgglomerate'][j])
+        for c in range(nSubCond):
+            cn = str(c+1)
+            nCorr[cndIdx][c].append(dCols['nCorr_subcnd'+cn][j])
+            nTrials[cndIdx][c].append(dCols['nTrials_subcnd'+cn][j])
+
+
+    for j in range(len(cnds)):
+        for c in range(nSubCond):
+            cn = str(c+1)
+            start, stop = getBlockRangeToProcess(last, block_range, nCorr[j][c])
+
+            datsPro['nCorr_subcnd'+cn][j] =  sum(nCorr[j][c][start:stop])
+            datsPro['nTrials_subcnd'+cn][j] =  sum(nTrials[j][c][start:stop])
+            datsPro['percCorr_subcnd'+cn][j] = datsPro['nCorr_subcnd'+cn][j] / datsPro['nTrials_subcnd'+cn][j] * 100
+
+
+            try:
+                datsPro['dprime_subcnd'+cn][j] = dprime_oddity(datsPro['nCorr_subcnd'+cn][j] / datsPro['nTrials_subcnd'+cn][j])
+            except:
+                datsPro['dprime_subcnd'+cn][j] = numpy.nan
+
+        cndIdx = dCols['conditionAgglomerate'].index(cnds[j])
+        for key in dCols:
+            if key not in keysNotToCheck:
+                datsPro[key].append(dCols[key][cndIdx])
+    resKeys = []
+    for c in range(nSubCond):
+        cn = str(c+1)
+        resKeys.extend(['nCorr_subcnd'+cn, 'nTrials_subcnd'+cn, 'dprime_subcnd'+cn])
+    writeResTable(fNameOut, separator, datsPro, resKeys)
+    return
+
     
 def processResultsAdaptive(fName, fout=None, last=None, block_range=None):
     if fout == None:

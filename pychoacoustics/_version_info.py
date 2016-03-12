@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 
-pychoacoustics_version = "0.3.40"
-pychoacoustics_builddate = "07-Mar-2016 21:10"
+pychoacoustics_version = "0.3.41"
+pychoacoustics_builddate = "12-Mar-2016 18:59"
