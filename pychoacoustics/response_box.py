@@ -480,7 +480,7 @@ class responseBox(QMainWindow):
                     self.responseButton[i].setFont(self.responseBoxButtonFont)
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
                     self.responseButton[i].setFocusPolicy(Qt.NoFocus)
-            elif self.parent().currParadigm in ["Multiple Constants Odd One Out"]:
+            elif self.parent().currParadigm in ["Multiple Constants Odd One Out", "Multiple Constants Sound Comparison"]:
                 for i in range(nIntervals):
                     self.intervalLight.append(intervalLight(self))
                     self.intervalSizer.addWidget(self.intervalLight[n], 0, n)
@@ -623,8 +623,12 @@ class responseBox(QMainWindow):
         # this randint function comes from numpy and has different behaviour than in the python 'random' module
         # Return random integers x such that low <= x < high
         currBlock = 'b'+ str(self.prm['currentBlock'])
-        nAlternatives = self.prm[currBlock]['nAlternatives']
-        nIntervals = self.prm[currBlock]['nIntervals']
+        try:
+            nAlternatives = self.prm[currBlock]['nAlternatives']
+            nIntervals = self.prm[currBlock]['nIntervals']
+        except: #this should work for paradigms that don't have the alternatives chosser, hence have a fixed number of response alternatives
+             nIntervals = self.prm[self.parent().currExp]['defaultNIntervals'] 
+             nAlternatives = self.prm[self.parent().currExp]['defaultNAlternatives'] 
         #cmd = self.prm['pref']['sound']['playCommand']
         if nAlternatives == nIntervals:
             self.correctInterval = numpy.random.randint(0, nIntervals)
@@ -724,9 +728,13 @@ class responseBox(QMainWindow):
 
         return
     
-    def playSoundsWavComp(self, soundList, fsList, nBitsList):
+
+    def playSoundsOddOneOut(self, soundList):
         currBlock = 'b'+ str(self.prm['currentBlock'])
         nIntervals = self.prm['nIntervals']
+
+        numpy.random.shuffle(parent.prm['currStimOrder'])
+        parent.correctButton = parent.prm['currStimOrder'].index(2)+1
 
         nLight = 0
         if self.prm["warningInterval"] == True:
@@ -738,7 +746,7 @@ class responseBox(QMainWindow):
             
         for i in range(nIntervals):
             self.intervalLight[nLight].setStatus('on')
-            self.audioManager.playSound(soundList[i], fsList[i], nBitsList[i], self.prm['pref']['sound']['writewav'], 'interval'+str(i+1) +'.wav')
+            self.audioManager.playSound(soundList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'interval'+str(i+1) +'.wav')
             self.intervalLight[nLight].setStatus('off')
             nLight = nLight+1
             if i < nIntervals-1:
@@ -857,7 +865,8 @@ class responseBox(QMainWindow):
                                           self.tr("Multiple Constants m-Intervals n-Alternatives"),
                                           self.tr("Multiple Constants 1-Pair Same/Different"),
                                           self.tr("Multiple Constants ABX"),
-                                          self.tr("Multiple Constants Odd One Out")]:
+                                          self.tr("Multiple Constants Odd One Out"),
+                                          self.tr("Multiple Constants Sound Comparison")]:
                 self.prm['nTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Trials"))])
                 self.prm['nPracticeTrials'] = int(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("No. Practice Trials"))])
                 self.prm['nDifferences'] = int(self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("No. Differences:"))])
@@ -1322,6 +1331,8 @@ class responseBox(QMainWindow):
             self.sortResponseUMLEstGuessRate(buttonClicked)
         elif self.prm['paradigm'] == self.tr("Multiple Constants Odd One Out"):
             self.sortResponseMultipleConstantsOddOneOut(buttonClicked)
+        elif self.prm['paradigm'] == self.tr("Multiple Constants Sound Comparison"):
+            self.sortResponseMultipleConstantsSoundComparison(buttonClicked)
         elif self.prm['paradigm'] == self.tr("Adaptive Digit Span"):
             self.sortResponseAdaptiveDigitSpan(buttonClicked)
         self.prm['sortingResponse'] = False
@@ -4403,24 +4414,192 @@ class responseBox(QMainWindow):
             self.prm['twos'] = 0
             self.prm['threes'] = 0
             self.fullFileLines = []
+            self.fullFileSummLines = []
             self.stimCount = {}
             self.trialCountCnds = {}
+            self.correctCountCnds = {}
             for i in range(self.prm['nDifferences']):
                 self.stimCount[self.prm['conditions'][i]] = [0,0,0]
                 self.trialCountCnds[self.prm['conditions'][i]] = 0
+                self.correctCountCnds[self.prm['conditions'][i]] = 0
             self.prm['buttonCounter'] = [0 for i in range(self.prm['nAlternatives'])]
         self.prm['buttonCounter'][buttonClicked-1] = self.prm['buttonCounter'][buttonClicked-1] +1
 
         self.trialCountCnds[self.currentCondition] = self.trialCountCnds[self.currentCondition] +1
+
+        if buttonClicked == self.correctButton:
+            if self.trialCountCnds[self.currentCondition] > self.prm['nPracticeTrials']:
+                self.correctCountCnds[self.currentCondition] = self.correctCountCnds[self.currentCondition] +1
+            resp = 1
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback("correct")
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback("neutral")
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback("off")
+        elif buttonClicked != self.correctButton:
+            resp = 0
+            if self.prm["responseLight"] == self.tr("Feedback"):
+                self.responseLight.giveFeedback("incorrect")
+            elif self.prm["responseLight"] == self.tr("Neutral"):
+                self.responseLight.giveFeedback("neutral")
+            elif self.prm["responseLight"] == self.tr("None"):
+                self.responseLight.giveFeedback("off")
+
+
+        self.fullFileLog.write(self.currentCondition + '; ' + str(resp) + '; ')
+        self.fullFileLines.append(self.currentCondition + '; ' + str(resp) + '; ')
+        self.fullFileSummLines.append([self.currentCondition + self.prm['pref']["general"]["csvSeparator"] +
+                                       str(resp) + self.prm['pref']["general"]["csvSeparator"]])
+        if 'additional_parameters_to_write' in self.prm:
+            for p in range(len(self.prm['additional_parameters_to_write'])):
+                self.fullFileLog.write(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileLines.append(str(self.prm['additional_parameters_to_write'][p]))
+                self.fullFileSummLines[len(self.fullFileSummLines)-1].append(str(self.prm['additional_parameters_to_write'][p]) + self.prm['pref']["general"]["csvSeparator"])
+                self.fullFileLog.write('; ')
+                self.fullFileLines.append('; ')
+        self.fullFileLog.write('\n')
+        self.fullFileLines.append('\n')
+        self.fullFileLog.flush()
+        cnt = 0
+        for i in range(len(self.prm['conditions'])):
+            cnt = cnt + self.trialCountCnds[self.prm['conditions'][i]]
+        pcDone = cnt / self.prm['nTrials'] *len(self.prm['conditions']) * 100
+        bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
+        pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
+        pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
+        self.gauge.setValue(pcTot)
+        
+
+        if self.trialCountCnds[self.currentCondition] == self.prm['nTrials']:
+            self.prm['comparisonChoices'].remove(self.currentCondition)
+        if len(self.prm['comparisonChoices']) == 0: #Block is completed
+
+            dp = {}
+            prCorr = {}
+            for cnd in self.prm['conditions']:
+                try:
+                    prCorr[cnd] = self.correctCountCnds[cnd] / self.trialCountCnds[cnd]
+                except:
+                    prCorr[cnd] = nan
+                try:
+                    dp[cnd] = dprime_oddity(prCorr[cnd])
+                except:
+                    dp[cnd] = nan
+                    
+            self.writeResultsHeader('standard')
+            for i in range(len(self.fullFileLines)):
+                self.fullFile.write(self.fullFileLines[i])
+            self.fullFileLog.write('\n')
+            self.fullFile.write('\n')
+            
+            for ftyp in [self.resFile, self.resFileLog]:
+                for cnd in self.prm['conditions']:
+                    ftyp.write('Condition %s\n\n' %(cnd))
+                    ftyp.write('No. Correct = %d\n' %(self.correctCountCnds[cnd]))
+                    ftyp.write('No. Trials = %d\n' %(self.trialCountCnds[cnd]))
+                    ftyp.write('Percent Correct = %5.3f\n' %(prCorr[cnd]*100))
+                    ftyp.write('d-prime = %5.3f\n' %(dp[cnd]))
+                    ftyp.write('\n\n')
+
+                for i in range(self.prm['nAlternatives']):
+                     ftyp.write("B{0} = {1}".format(i+1, self.prm['buttonCounter'][i]))
+                     if i != self.prm['nAlternatives']-1:
+                         ftyp.write(', ')
+                ftyp.write('\n\n')
+
+                ftyp.flush()
+            
+            self.fullFile.flush()
+            self.fullFileLog.flush()
+
+            self.getEndTime()
+
+            currBlock = 'b' + str(self.prm['currentBlock'])
+            durString = '{0:5.3f}'.format(self.prm['blockEndTime'] - self.prm['blockStartTime'])
+            
+            resLineToWrite = str(self.prm['nTrials']) + self.prm['pref']["general"]["csvSeparator"]
+            for cnd in self.prm['conditions']:
+                resLineToWrite = resLineToWrite + str(self.correctCountCnds[cnd]) + self.prm['pref']["general"]["csvSeparator"] + \
+                                 str(self.trialCountCnds[cnd]) + self.prm['pref']["general"]["csvSeparator"] + \
+                                 str(prCorr[cnd]*100) + self.prm['pref']["general"]["csvSeparator"] + \
+                                 str(dp[cnd]) + self.prm['pref']["general"]["csvSeparator"] 
+                                
+                                 
+            resLineToWrite = resLineToWrite + self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+            self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+            self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+            self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+            self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+            self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+            durString + self.prm['pref']["general"]["csvSeparator"] + \
+            self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+            self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] + \
+            self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+
+            resLineToWrite = self.getCommonTabFields(resLineToWrite)
+
+            resLineToWrite = resLineToWrite + '\n'
+            self.writeResultsSummaryLine('Multiple Constants Odd One Out', resLineToWrite)
+
+            resLineToWriteSummFull = ""
+            for i in range(len(self.fullFileSummLines)):
+                resLineToWriteSummFull = resLineToWriteSummFull + " ".join(self.fullFileSummLines[i]) + \
+                                         self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                                         self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
+                                         self.prm['sessionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
+                                         self.prm['allBlocks']['experimentLabel'] + self.prm['pref']["general"]["csvSeparator"] +\
+                                         self.prm['blockEndDateString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                                         self.prm['blockEndTimeString'] + self.prm['pref']["general"]["csvSeparator"] + \
+                                         durString + self.prm['pref']["general"]["csvSeparator"] + \
+                                         self.prm[currBlock]['blockPosition'] + self.prm['pref']["general"]["csvSeparator"] + \
+                                         self.prm[currBlock]['experiment'] + self.prm['pref']["general"]["csvSeparator"] +\
+                                         self.prm[currBlock]['paradigm'] + self.prm['pref']["general"]["csvSeparator"]
+             
+                resLineToWriteSummFull = self.getCommonTabFields(resLineToWriteSummFull)
+                resLineToWriteSummFull = resLineToWriteSummFull + '\n'
+                
+            self.writeResultsSummaryFullLine('Multiple Constants Odd One Out', resLineToWriteSummFull)
+
+            self.atBlockEnd()
+          
+
+        else:
+            self.doTrial()
+
+    def sortResponseMultipleConstantsSoundComparison(self, buttonClicked):
+        if self.prm['startOfBlock'] == True: #Initialize counts and data structures
+            self.prm['startOfBlock'] = False
+
+            self.prm['ones'] = 0
+            self.prm['twos'] = 0
+            self.prm['threes'] = 0
+            self.fullFileLines = []
+            self.stimCount = {}
+            self.trialCountCnds = {}
+            #self.correctCountCnds = {}
+            for i in range(self.prm['nDifferences']):
+                self.stimCount[self.prm['conditions'][i]] = [0,0,0]
+                self.trialCountCnds[self.prm['conditions'][i]] = 0
+                #self.correctCountCnds[self.prm['conditions'][i]] = 0
+            self.prm['buttonCounter'] = [0 for i in range(self.prm['nAlternatives'])]
+        self.prm['buttonCounter'][buttonClicked-1] = self.prm['buttonCounter'][buttonClicked-1] +1
+
+        self.trialCountCnds[self.currentCondition] = self.trialCountCnds[self.currentCondition] +1
+
+     
+        if self.prm["responseLight"] == self.tr("Neutral"):
+            self.responseLight.giveFeedback("neutral")
+        elif self.prm["responseLight"] == self.tr("None"):
+            self.responseLight.giveFeedback("off")
+      
+
         if self.trialCountCnds[self.currentCondition] > self.prm['nPracticeTrials']:
             if buttonClicked == 1:
-                #self.prm['ones'] = self.prm['ones'] + 1
                 self.stimCount[self.currentCondition][self.prm['currStimOrder'][0]] = self.stimCount[self.currentCondition][self.prm['currStimOrder'][0]]+1   
             elif buttonClicked == 2:
-                #self.prm['twos'] = self.prm['twos'] + 1
                 self.stimCount[self.currentCondition][self.prm['currStimOrder'][1]] = self.stimCount[self.currentCondition][self.prm['currStimOrder'][1]]+1   
             elif buttonClicked == 3:
-                #self.prm['threes'] = self.prm['threes'] + 1
                 self.stimCount[self.currentCondition][self.prm['currStimOrder'][2]] = self.stimCount[self.currentCondition][self.prm['currStimOrder'][2]]+1   
 
         resp = str(self.prm['currStimOrder'][buttonClicked-1]+1)
@@ -4448,6 +4627,19 @@ class responseBox(QMainWindow):
         if self.trialCountCnds[self.currentCondition] == self.prm['nTrials']:
             self.prm['comparisonChoices'].remove(self.currentCondition)
         if len(self.prm['comparisonChoices']) == 0: #Block is completed
+
+            # dp = {}
+            # prCorr = {}
+            # for cnd in self.prm['conditions']:
+            #     try:
+            #         prCorr[cnd] = self.correctCountCnds[cnd] / self.trialCountCnds[cnd]
+            #     except:
+            #         prCorr[cnd] = nan
+            #     try:
+            #         dp[cnd] = dprime_oddity(prCorr[cnd])
+            #     except:
+            #         dp[cnd] = nan
+                    
             self.writeResultsHeader('standard')
             for i in range(len(self.fullFileLines)):
                 self.fullFile.write(self.fullFileLines[i])
@@ -4456,7 +4648,12 @@ class responseBox(QMainWindow):
             
             for ftyp in [self.resFile, self.resFileLog]:
                 for cnd in self.prm['conditions']:
-                    ftyp.write('Condition %s\n' %(cnd))
+                    ftyp.write('Condition %s\n\n' %(cnd))
+                    # ftyp.write('No. Correct = %d\n' %(self.correctCountCnds[cnd]))
+                    # ftyp.write('No. Trials = %d\n' %(self.trialCountCnds[cnd]))
+                    # ftyp.write('Percent Correct = %5.3f\n' %(prCorr[cnd]*100))
+                    # ftyp.write('d-prime = %5.3f\n' %(dp[cnd]))
+                    ftyp.write('\n')
                     ftyp.write('Stimulus 1 = %d/%d; Percent = %5.2f\n' %(self.stimCount[cnd][0], self.prm['nTrials'], self.stimCount[cnd][0]/self.prm['nTrials']*100))
                     ftyp.write('Stimulus 2 = %d/%d; Percent = %5.2f\n' %(self.stimCount[cnd][1], self.prm['nTrials'], self.stimCount[cnd][1]/self.prm['nTrials']*100))
                     ftyp.write('Stimulus 3 = %d/%d; Percent = %5.2f\n' %(self.stimCount[cnd][2], self.prm['nTrials'], self.stimCount[cnd][2]/self.prm['nTrials']*100))
@@ -4501,7 +4698,7 @@ class responseBox(QMainWindow):
             resLineToWrite = self.getCommonTabFields(resLineToWrite)
 
             resLineToWrite = resLineToWrite + '\n'
-            self.writeResultsSummaryLine('Multiple Constants Odd One Out', resLineToWrite)
+            self.writeResultsSummaryLine('Multiple Constants Sound Comparison', resLineToWrite)
 
             self.atBlockEnd()
           
@@ -5057,6 +5254,24 @@ class responseBox(QMainWindow):
         elif paradigm in ['Multiple Constants Odd One Out']:
             headerToWrite = 'nTrials' + self.prm['pref']["general"]["csvSeparator"]
             for i in range(len(self.prm['conditions'])):
+                headerToWrite = headerToWrite + 'cnd'+str(i+1) + '_nCorr'+ self.prm['pref']["general"]["csvSeparator"] + \
+                                'cnd'+str(i+1) + '_nTrials'+ self.prm['pref']["general"]["csvSeparator"] + \
+                                'cnd'+str(i+1)+ '_percCorr'+ self.prm['pref']["general"]["csvSeparator"] + \
+                                'cnd'+str(i+1) + '_dprime'+ self.prm['pref']["general"]["csvSeparator"]  
+                                
+            headerToWrite = headerToWrite + 'condition' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
+        elif paradigm in ['Multiple Constants Sound Comparison']:
+            headerToWrite = 'nTrials' + self.prm['pref']["general"]["csvSeparator"]
+            for i in range(len(self.prm['conditions'])):
                 headerToWrite = headerToWrite + 'cnd'+str(i+1)+'_stim1_count'+ self.prm['pref']["general"]["csvSeparator"] + \
                                 'cnd'+str(i+1) + '_stim1_percent'+ self.prm['pref']["general"]["csvSeparator"] + \
                                 'cnd'+str(i+1) + '_stim2_count'+ self.prm['pref']["general"]["csvSeparator"] + \
@@ -5274,6 +5489,22 @@ class responseBox(QMainWindow):
                             'B' + self.prm['pref']["general"]["csvSeparator"] + \
                             'X' + self.prm['pref']["general"]["csvSeparator"] + \
                             'case' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'response' + self.prm['pref']["general"]["csvSeparator"]
+            if 'additional_parameters_to_write' in self.prm:
+                for p in range(len(self.prm['additional_parameters_to_write_labels'])):
+                    headerToWrite = headerToWrite + self.prm['additional_parameters_to_write_labels'][p] +  self.prm['pref']["general"]["csvSeparator"]
+            headerToWrite = headerToWrite + 'condition' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'listener' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'session'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experimentLabel'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'date'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'time'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'duration'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'block'+ self.prm['pref']["general"]["csvSeparator"] + \
+                            'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
+                            'paradigm' + self.prm['pref']["general"]["csvSeparator"]
+        if paradigm in ['Multiple Constants Odd One Out']:
+            headerToWrite = 'comparison' + self.prm['pref']["general"]["csvSeparator"] + \
                             'response' + self.prm['pref']["general"]["csvSeparator"]
             if 'additional_parameters_to_write' in self.prm:
                 for p in range(len(self.prm['additional_parameters_to_write_labels'])):

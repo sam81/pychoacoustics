@@ -193,6 +193,49 @@ def dprime_ABX_from_counts(nCA, nTA, nCB, nTB, meth, corr):
 
     return dprime_ABX(H=tA, FA=1-tB, meth=meth)
 
+def dprime_oddity(prCorr):
+    """
+    Compute d' for oddity task from proportion of correct responses.
+
+    Parameters
+    ----------
+    prCorr : float
+        Proportion of correct responses.
+
+    Returns
+    -------
+    dprime : float
+        d' value
+
+    Examples
+    --------
+    >>> dp = dprime_oddity(0.7)
+    >>> dp = dprime_oddity(0.8)
+
+    """
+    
+    if prCorr < 1/3:
+        raise ValueError("Only valid for Pc.tri > 1/3")
+    
+    root3 = sqrt(3)
+    root2_3 = sqrt(2)/root3
+    def est_dp(dp):
+        
+        def pr(x):
+
+            out =  2 *(norm.cdf(-x * root3 + dp * root2_3) + norm.cdf(-x * root3 - dp * root2_3)) * norm.pdf(x)
+
+            return out
+       
+        out2 = prCorr - quad(pr, 0, Inf)[0] 
+
+        return out2
+
+    dp_res = scipy.optimize.brentq(est_dp, 0, 10)
+
+    return dp_res
+        
+
 
 
 def dprime_SD(H, FA, meth):
