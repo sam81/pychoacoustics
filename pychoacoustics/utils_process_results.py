@@ -979,7 +979,7 @@ def procResTableMultipleConstantsOddOneOut(fName, fout=None, separator=';', last
     keys.pop()
     nSubCond = 0
     for key in keys:
-        if key[0:13] == 'dprime_subcnd':
+        if key[0:18] == 'dprime_diff_subcnd':
             nSubCond = nSubCond +1
 
     numFields = []
@@ -989,7 +989,7 @@ def procResTableMultipleConstantsOddOneOut(fName, fout=None, separator=';', last
     dCols = getColVals(data["data"], data["header"], numFields, separator)
     for c in range(nSubCond):
         cn = str(c+1)
-        keysToRemove.extend(['dprime_subcnd'+cn, 'percCorr_subcnd'+cn])
+        keysToRemove.extend(['dprime_IO_subcnd'+cn, 'dprime_diff_subcnd'+cn, 'percCorr_subcnd'+cn])
         keysNotToCheck.extend(['nCorr_subcnd'+cn, 'nTrials_subcnd'+cn])
     dCols = makeAgglomerateCondition(dCols, keysToRemove, keysNotToCheck, nBlocks)
     datsPro = makeDatsProSkeleton(dCols, keysNotToCheck)
@@ -999,7 +999,8 @@ def procResTableMultipleConstantsOddOneOut(fName, fout=None, separator=';', last
 
     for c in range(nSubCond):
         cn = str(c+1)
-        datsPro['dprime_subcnd'+cn] = zeros(len(cnds))
+        datsPro['dprime_IO_subcnd'+cn] = zeros(len(cnds))
+        datsPro['dprime_diff_subcnd'+cn] = zeros(len(cnds))
         datsPro['nCorr_subcnd'+cn] = zeros(len(cnds))
         datsPro['nTrials_subcnd'+cn] = zeros(len(cnds))
         datsPro['percCorr_subcnd'+cn] = zeros(len(cnds))
@@ -1024,11 +1025,15 @@ def procResTableMultipleConstantsOddOneOut(fName, fout=None, separator=';', last
             datsPro['nTrials_subcnd'+cn][j] =  sum(nTrials[j][c][start:stop])
             datsPro['percCorr_subcnd'+cn][j] = datsPro['nCorr_subcnd'+cn][j] / datsPro['nTrials_subcnd'+cn][j] * 100
 
-
             try:
-                datsPro['dprime_subcnd'+cn][j] = dprime_oddity(datsPro['nCorr_subcnd'+cn][j] / datsPro['nTrials_subcnd'+cn][j])
+                datsPro['dprime_IO_subcnd'+cn][j] = dprime_oddity(datsPro['nCorr_subcnd'+cn][j] / datsPro['nTrials_subcnd'+cn][j], meth="IO")
             except:
-                datsPro['dprime_subcnd'+cn][j] = numpy.nan
+                datsPro['dprime_IO_subcnd'+cn][j] = numpy.nan
+            try:
+                datsPro['dprime_diff_subcnd'+cn][j] = dprime_oddity(datsPro['nCorr_subcnd'+cn][j] / datsPro['nTrials_subcnd'+cn][j], meth="diff")
+            except:
+                datsPro['dprime_diff_subcnd'+cn][j] = numpy.nan
+ 
 
         cndIdx = dCols['conditionAgglomerate'].index(cnds[j])
         for key in dCols:
@@ -1037,8 +1042,9 @@ def procResTableMultipleConstantsOddOneOut(fName, fout=None, separator=';', last
     resKeys = []
     for c in range(nSubCond):
         cn = str(c+1)
-        resKeys.extend(['nCorr_subcnd'+cn, 'nTrials_subcnd'+cn, 'dprime_subcnd'+cn])
+        resKeys.extend(['nCorr_subcnd'+cn, 'nTrials_subcnd'+cn, 'dprime_IO_subcnd'+cn, 'dprime_diff_subcnd'+cn])
     writeResTable(fNameOut, separator, datsPro, resKeys)
+    
     return
 
     

@@ -193,14 +193,17 @@ def dprime_ABX_from_counts(nCA, nTA, nCB, nTB, meth, corr):
 
     return dprime_ABX(H=tA, FA=1-tB, meth=meth)
 
-def dprime_oddity(prCorr):
+def dprime_oddity(prCorr, meth="diff"):
     """
     Compute d' for oddity task from proportion of correct responses.
+    Only valid for the case in which there are three presentation intervals.
 
     Parameters
     ----------
     prCorr : float
         Proportion of correct responses.
+    meth : string
+        'diff' for differencing strategy or 'IO' for independent observations strategy.
 
     Returns
     -------
@@ -216,22 +219,35 @@ def dprime_oddity(prCorr):
     
     if prCorr < 1/3:
         raise ValueError("Only valid for Pc.tri > 1/3")
-    
-    root3 = sqrt(3)
-    root2_3 = sqrt(2)/root3
-    def est_dp(dp):
-        
-        def pr(x):
 
-            out =  2 *(norm.cdf(-x * root3 + dp * root2_3) + norm.cdf(-x * root3 - dp * root2_3)) * norm.pdf(x)
+    if meth == "diff":
+        root3 = sqrt(3)
+        root2_3 = sqrt(2)/root3
+        def est_dp(dp):
+
+            def pr(x):
+
+                out =  2 *(norm.cdf(-x * root3 + dp * root2_3) + norm.cdf(-x * root3 - dp * root2_3)) * norm.pdf(x)
+
+                return out
+
+            out2 = prCorr - quad(pr, 0, Inf)[0] 
+
+            return out2
+
+        dp_res = scipy.optimize.brentq(est_dp, 0, 10)
+    elif meth == "IO":
+        def est_dp(dp):
+            def pr1(x):
+                return norm.pdf(x)*norm.cdf(x+dp)**2
+            def pr2(x):
+                return norm.pdf(x)*(1-norm.cdf(x+dp))**2
+
+            out = prCorr - (norm.cdf(dp/2)**3 + quad(pr1, -Inf, -dp/2)[0] + (1-norm.cdf(dp/2))**3 + quad(pr2, -dp/2, Inf)[0])
 
             return out
-       
-        out2 = prCorr - quad(pr, 0, Inf)[0] 
 
-        return out2
-
-    dp_res = scipy.optimize.brentq(est_dp, 0, 10)
+        dp_res = scipy.optimize.brentq(est_dp, 0, 10)
 
     return dp_res
         

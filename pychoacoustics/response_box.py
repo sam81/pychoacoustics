@@ -4415,11 +4415,9 @@ class responseBox(QMainWindow):
             self.prm['threes'] = 0
             self.fullFileLines = []
             self.fullFileSummLines = []
-            self.stimCount = {}
             self.trialCountCnds = {}
             self.correctCountCnds = {}
             for i in range(self.prm['nDifferences']):
-                self.stimCount[self.prm['conditions'][i]] = [0,0,0]
                 self.trialCountCnds[self.prm['conditions'][i]] = 0
                 self.correctCountCnds[self.prm['conditions'][i]] = 0
             self.prm['buttonCounter'] = [0 for i in range(self.prm['nAlternatives'])]
@@ -4461,31 +4459,34 @@ class responseBox(QMainWindow):
         self.fullFileLog.write('\n')
         self.fullFileLines.append('\n')
         self.fullFileLog.flush()
+
+
         cnt = 0
-        for i in range(len(self.prm['conditions'])):
-            cnt = cnt + self.trialCountCnds[self.prm['conditions'][i]]
-        pcDone = cnt / self.prm['nTrials'] *len(self.prm['conditions']) * 100
+        for j in range(self.prm['nDifferences']):
+            cnt = cnt + self.trialCountCnds[self.prm['conditions'][j]]
+        pcDone = cnt / ((self.prm['nTrials']+self.prm['nPracticeTrials']) *self.prm['nDifferences']) * 100
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
         self.gauge.setValue(pcTot)
-        
 
         if self.trialCountCnds[self.currentCondition] == self.prm['nTrials']:
             self.prm['comparisonChoices'].remove(self.currentCondition)
         if len(self.prm['comparisonChoices']) == 0: #Block is completed
 
-            dp = {}
+            dp_diff = {}; dp_IO = {}
             prCorr = {}
             for cnd in self.prm['conditions']:
+                prCorr[cnd] = self.correctCountCnds[cnd] / self.trialCountCnds[cnd]
                 try:
-                    prCorr[cnd] = self.correctCountCnds[cnd] / self.trialCountCnds[cnd]
+                    dp_IO[cnd] = dprime_oddity(prCorr[cnd], meth="IO")
                 except:
-                    prCorr[cnd] = nan
+                    dp_IO[cnd] = nan
                 try:
-                    dp[cnd] = dprime_oddity(prCorr[cnd])
+                    dp_diff[cnd] = dprime_oddity(prCorr[cnd], meth="diff")
                 except:
-                    dp[cnd] = nan
+                    dp_diff[cnd] = nan
+ 
                     
             self.writeResultsHeader('standard')
             for i in range(len(self.fullFileLines)):
@@ -4499,7 +4500,8 @@ class responseBox(QMainWindow):
                     ftyp.write('No. Correct = %d\n' %(self.correctCountCnds[cnd]))
                     ftyp.write('No. Trials = %d\n' %(self.trialCountCnds[cnd]))
                     ftyp.write('Percent Correct = %5.3f\n' %(prCorr[cnd]*100))
-                    ftyp.write('d-prime = %5.3f\n' %(dp[cnd]))
+                    ftyp.write('d-prime IO = %5.3f\n' %(dp_IO[cnd]))
+                    ftyp.write('d-prime diff = %5.3f\n' %(dp_diff[cnd]))
                     ftyp.write('\n\n')
 
                 for i in range(self.prm['nAlternatives']):
@@ -4518,12 +4520,13 @@ class responseBox(QMainWindow):
             currBlock = 'b' + str(self.prm['currentBlock'])
             durString = '{0:5.3f}'.format(self.prm['blockEndTime'] - self.prm['blockStartTime'])
             
-            resLineToWrite = str(self.prm['nTrials']) + self.prm['pref']["general"]["csvSeparator"]
+            resLineToWrite = ""#str(self.prm['nTrials']) + self.prm['pref']["general"]["csvSeparator"]
             for cnd in self.prm['conditions']:
                 resLineToWrite = resLineToWrite + str(self.correctCountCnds[cnd]) + self.prm['pref']["general"]["csvSeparator"] + \
                                  str(self.trialCountCnds[cnd]) + self.prm['pref']["general"]["csvSeparator"] + \
                                  str(prCorr[cnd]*100) + self.prm['pref']["general"]["csvSeparator"] + \
-                                 str(dp[cnd]) + self.prm['pref']["general"]["csvSeparator"] 
+                                 str(dp_IO[cnd]) + self.prm['pref']["general"]["csvSeparator"] + \
+                                 str(dp_diff[cnd]) + self.prm['pref']["general"]["csvSeparator"] 
                                 
                                  
             resLineToWrite = resLineToWrite + self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
@@ -4627,18 +4630,6 @@ class responseBox(QMainWindow):
         if self.trialCountCnds[self.currentCondition] == self.prm['nTrials']:
             self.prm['comparisonChoices'].remove(self.currentCondition)
         if len(self.prm['comparisonChoices']) == 0: #Block is completed
-
-            # dp = {}
-            # prCorr = {}
-            # for cnd in self.prm['conditions']:
-            #     try:
-            #         prCorr[cnd] = self.correctCountCnds[cnd] / self.trialCountCnds[cnd]
-            #     except:
-            #         prCorr[cnd] = nan
-            #     try:
-            #         dp[cnd] = dprime_oddity(prCorr[cnd])
-            #     except:
-            #         dp[cnd] = nan
                     
             self.writeResultsHeader('standard')
             for i in range(len(self.fullFileLines)):
@@ -4649,10 +4640,6 @@ class responseBox(QMainWindow):
             for ftyp in [self.resFile, self.resFileLog]:
                 for cnd in self.prm['conditions']:
                     ftyp.write('Condition %s\n\n' %(cnd))
-                    # ftyp.write('No. Correct = %d\n' %(self.correctCountCnds[cnd]))
-                    # ftyp.write('No. Trials = %d\n' %(self.trialCountCnds[cnd]))
-                    # ftyp.write('Percent Correct = %5.3f\n' %(prCorr[cnd]*100))
-                    # ftyp.write('d-prime = %5.3f\n' %(dp[cnd]))
                     ftyp.write('\n')
                     ftyp.write('Stimulus 1 = %d/%d; Percent = %5.2f\n' %(self.stimCount[cnd][0], self.prm['nTrials'], self.stimCount[cnd][0]/self.prm['nTrials']*100))
                     ftyp.write('Stimulus 2 = %d/%d; Percent = %5.2f\n' %(self.stimCount[cnd][1], self.prm['nTrials'], self.stimCount[cnd][1]/self.prm['nTrials']*100))
@@ -5252,12 +5239,13 @@ class responseBox(QMainWindow):
                             'experiment' + self.prm['pref']["general"]["csvSeparator"] + \
                             'paradigm' + self.prm['pref']["general"]["csvSeparator"]
         elif paradigm in ['Multiple Constants Odd One Out']:
-            headerToWrite = 'nTrials' + self.prm['pref']["general"]["csvSeparator"]
+            headerToWrite = ""#'nTrials' + self.prm['pref']["general"]["csvSeparator"]
             for i in range(len(self.prm['conditions'])):
                 headerToWrite = headerToWrite + 'nCorr_subcnd'+str(i+1) + self.prm['pref']["general"]["csvSeparator"] + \
                                 'nTrials_subcnd'+str(i+1) + self.prm['pref']["general"]["csvSeparator"] + \
                                 'percCorr_subcnd'+str(i+1) + self.prm['pref']["general"]["csvSeparator"] + \
-                                'dprime_subcnd'+str(i+1) + self.prm['pref']["general"]["csvSeparator"]  
+                                'dprime_IO_subcnd'+str(i+1) + self.prm['pref']["general"]["csvSeparator"] +\
+                                'dprime_diff_subcnd'+str(i+1) + self.prm['pref']["general"]["csvSeparator"]  
                                 
             headerToWrite = headerToWrite + 'condition' + self.prm['pref']["general"]["csvSeparator"] + \
                             'listener' + self.prm['pref']["general"]["csvSeparator"] + \
