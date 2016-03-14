@@ -2430,9 +2430,9 @@ class responseBox(QMainWindow):
                 self.trialCountCnds[self.prm['conditions'][i]] = {}
                 self.correctCountCnds[self.prm['conditions'][i]] = {}
                 self.trialCountAllCnds[self.prm['conditions'][i]] = 0
-                for j in range(len(self.prm['subconditions'])):
-                    self.trialCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][j]] = 0
-                    self.correctCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][j]] = 0
+                for j in range(len(self.prm['trialTypes'])):
+                    self.trialCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][j]] = 0
+                    self.correctCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][j]] = 0
             self.trialCountAll = 0
 
         self.trialCountAll = self.trialCountAll + 1
@@ -2489,8 +2489,8 @@ class responseBox(QMainWindow):
             self.fullFile.write('\n')
 
             totalCorrectCount = 0
-            subconditionTrialCount = [0 for number in range(len(self.prm['subconditions']))]
-            subconditionCorrectCount = [0 for number in range(len(self.prm['subconditions']))]
+            subconditionTrialCount = [0 for number in range(len(self.prm['trialTypes']))]
+            subconditionCorrectCount = [0 for number in range(len(self.prm['trialTypes']))]
             A_correct = []
             A_total = []
             B_correct = []
@@ -2500,17 +2500,17 @@ class responseBox(QMainWindow):
             for i in range(len(self.prm['conditions'])):
                 totalTrialCount = totalTrialCount + self.trialCount[i]
                 thisCondTotalCorrectCount = 0
-                for j in range(len(self.prm['subconditions'])):
-                    thisCondTotalCorrectCount = thisCondTotalCorrectCount + self.correctCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][j]]
-                    subconditionCorrectCount[j] = subconditionCorrectCount[j] + self.correctCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][j]]
-                    subconditionTrialCount[j] = subconditionTrialCount[j] + self.trialCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][j]]
+                for j in range(len(self.prm['trialTypes'])):
+                    thisCondTotalCorrectCount = thisCondTotalCorrectCount + self.correctCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][j]]
+                    subconditionCorrectCount[j] = subconditionCorrectCount[j] + self.correctCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][j]]
+                    subconditionTrialCount[j] = subconditionTrialCount[j] + self.trialCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][j]]
                 totalCorrectCount = totalCorrectCount + thisCondTotalCorrectCount
 
                 #compute d-prime for each condition
-                A_correct.append(self.correctCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][0]]) 
-                A_total.append(self.trialCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][0]])
-                B_correct.append(self.correctCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][1]]) 
-                B_total.append(self.trialCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][1]])
+                A_correct.append(self.correctCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][0]]) 
+                A_total.append(self.trialCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][0]])
+                B_correct.append(self.correctCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][1]]) 
+                B_total.append(self.trialCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][1]])
 
                 try:
                     this_dp = dprime_yes_no_from_counts(nCA=A_correct[i], nTA=A_total[i], nCB=B_correct[i], nTB=B_total[i], corr=self.prm['pref']['general']['dprimeCorrection'])
@@ -2526,15 +2526,15 @@ class responseBox(QMainWindow):
                     ftyp.write("d-prime = %5.3f \n\n" %(this_dp))
                     
 
-                for j in range(len(self.prm['subconditions'])):
+                for j in range(len(self.prm['trialTypes'])):
                     try:
-                        thisPercentCorrect = self.correctCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][j]]/self.trialCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][j]]*100
+                        thisPercentCorrect = self.correctCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][j]]/self.trialCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][j]]*100
                     except:
                         thisPercentCorrect = nan
                     for ftyp in [self.resFile, self.resFileLog]:
-                        ftyp.write('No. Correct Subcondition %s = %d\n' %(self.prm['subconditions'][j], self.correctCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][j]]))
-                        ftyp.write('No. Total Subcondition %s = %d \n' %(self.prm['subconditions'][j], self.trialCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][j]]))
-                        ftyp.write('Percent Correct Subcondition %s = %5.2f \n' %(self.prm['subconditions'][j], thisPercentCorrect))
+                        ftyp.write('No. Correct Subcondition %s = %d\n' %(self.prm['trialTypes'][j], self.correctCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][j]]))
+                        ftyp.write('No. Total Subcondition %s = %d \n' %(self.prm['trialTypes'][j], self.trialCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][j]]))
+                        ftyp.write('Percent Correct Subcondition %s = %5.2f \n' %(self.prm['trialTypes'][j], thisPercentCorrect))
                 
                 self.resFile.write('\n\n')
                 self.resFileLog.write('\n\n')
@@ -2556,16 +2556,16 @@ class responseBox(QMainWindow):
                 ftyp.write('Percent Correct = %5.2f \n' %(totalCorrectCount/totalTrialCount*100))
                 ftyp.write("d-prime = %5.3f \n\n" %(dp_ALL))
 
-            for j in range(len(self.prm['subconditions'])):
+            for j in range(len(self.prm['trialTypes'])):
                 try:
                     thisPercentCorrect = subconditionCorrectCount[j]/subconditionTrialCount[j]*100
                 except:
                     thisPercentCorrect = nan
 
                 for ftyp in [self.resFile, self.resFileLog]:
-                    ftyp.write('No. Correct Subcondition %s = %d\n' %(self.prm['subconditions'][j], subconditionCorrectCount[j]))
-                    ftyp.write('No. Total Subcondition %s = %d \n' %(self.prm['subconditions'][j], subconditionTrialCount[j]))
-                    ftyp.write('Percent Correct Subcondition %s = %5.2f \n' %(self.prm['subconditions'][j], thisPercentCorrect))
+                    ftyp.write('No. Correct Subcondition %s = %d\n' %(self.prm['trialTypes'][j], subconditionCorrectCount[j]))
+                    ftyp.write('No. Total Subcondition %s = %d \n' %(self.prm['trialTypes'][j], subconditionTrialCount[j]))
+                    ftyp.write('Percent Correct Subcondition %s = %5.2f \n' %(self.prm['trialTypes'][j], thisPercentCorrect))
 
             self.resFile.write('\n')
             self.resFileLog.write('\n')
@@ -2587,15 +2587,15 @@ class responseBox(QMainWindow):
             ## #'dprime condition listener session experimentLabel nCorrectA nTotalA nCorrectB nTotalB nCorrect nTotal date time duration block experiment'
             resLineToWrite = '{0:5.3f}'.format(dp_ALL) + self.prm['pref']["general"]["csvSeparator"] 
             resLineToWrite = resLineToWrite + str(totalTrialCount) + self.prm['pref']["general"]["csvSeparator"]
-            for j in range(len(self.prm['subconditions'])):
+            for j in range(len(self.prm['trialTypes'])):
                 resLineToWrite = resLineToWrite + str(subconditionCorrectCount[j]) + self.prm['pref']["general"]["csvSeparator"] + \
                                  str(subconditionTrialCount[j]) + self.prm['pref']["general"]["csvSeparator"]
             for i in range(len(self.prm['conditions'])):
                 resLineToWrite = resLineToWrite + '{0:5.3f}'.format(dp[i]) + self.prm['pref']["general"]["csvSeparator"] 
-                resLineToWrite = resLineToWrite + str(self.trialCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][0]] + self.trialCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][1]]) + self.prm['pref']["general"]["csvSeparator"]
-                for j in range(len(self.prm['subconditions'])):
-                    resLineToWrite = resLineToWrite + str(self.correctCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][j]]) + self.prm['pref']["general"]["csvSeparator"] + \
-                            str(self.trialCountCnds[self.prm['conditions'][i]][self.prm['subconditions'][j]])  + self.prm['pref']["general"]["csvSeparator"]
+                resLineToWrite = resLineToWrite + str(self.trialCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][0]] + self.trialCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][1]]) + self.prm['pref']["general"]["csvSeparator"]
+                for j in range(len(self.prm['trialTypes'])):
+                    resLineToWrite = resLineToWrite + str(self.correctCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][j]]) + self.prm['pref']["general"]["csvSeparator"] + \
+                            str(self.trialCountCnds[self.prm['conditions'][i]][self.prm['trialTypes'][j]])  + self.prm['pref']["general"]["csvSeparator"]
 
             resLineToWrite = resLineToWrite + self.prm[currBlock]['conditionLabel'] + self.prm['pref']["general"]["csvSeparator"] + \
                              self.prm['listener'] + self.prm['pref']["general"]["csvSeparator"] + \
@@ -3011,11 +3011,6 @@ class responseBox(QMainWindow):
      
         if self.trialCount[self.prm['currentDifference']] == self.prm['nTrials']:
             self.prm['differenceChoices'].remove(self.currentDifferenceName)
-
-        # print('Trial Count:', self.trialCount)
-        # print('Trial Count All:', self.trialCountAll)
-        # print('Difference Choices:', self.prm['differenceChoices'])
-        # print(self.currentDifferenceName)
 
         if len(self.prm['differenceChoices']) == 0:
             totalCorrectCount = {}

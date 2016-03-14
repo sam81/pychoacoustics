@@ -1563,35 +1563,135 @@ Not currently implemented.
 Multiple Constants Odd One Out Result Files
 -------------------------------------------
 
-Tabular Block-Summary Result Files (Odd One Out)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Block-Summary Result Files (Multiple Constants Odd One Out)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The multiple constants odd one out tabular block-summary result files have five
+paradigm-specific columns for each subcondition tested:
+
+- **nCorr_subcndX** the number of correct response in subcondition *X*
+- **nTrials_subcndX** the number of trials in subcondition *X*
+- **percCorr_subcndX** the percentage of correct responses in subcondition *X*
+- **dprime_IO_subcndX** the estimated d' in subcondition *X* for a listener using the independent observations strategy 
+- **dprime_diff_subcndX** the estimated d' in subcondition *X* for a listener using the differencing strategy 
+
+Tabular Trial-Summary Result Files (Multiple Constants Odd One Out)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The multiple constants odd one out tabular trial-summary result files have two
+paradigm-specific columns:
+
+- **subcondition** the subcondition tested in each trial
+- **response** 1 for a correct response, 0 otherwise
+
+
+Tabular Session-Summary Result Files (Multiple Constants Odd One Out)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The multiple constants odd one out tabular session-summary result files have five
+paradigm-specific columns for each subcondition tested:
+
+- **nCorr_subcndX** the number of correct response in subcondition *X*
+- **nTrials_subcndX** the number of trials in subcondition *X*
+- **percCorr_subcndX** the percentage of correct responses in subcondition *X*
+- **dprime_IO_subcndX** the estimated d' in subcondition *X* for a listener using the independent observations strategy 
+- **dprime_diff_subcndX** the estimated d' in subcondition *X* for a listener using the differencing strategy
+    
+
+Plain-Text Block-Summary Result Files (Multiple Constants Odd One Out)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The result section of a plain-text block-summary file for the multiple constants odd one out paradigm is
+shown below:
+
+::
+
+   Condition Comparison1
+
+   No. Correct = 9
+   No. Trials = 10
+   Percent Correct = 90.000
+   d-prime IO = 3.324
+   d-prime diff = 4.028
+
+
+   Condition Comparison2
+
+   No. Correct = 7
+   No. Trials = 10
+   Percent Correct = 70.000
+   d-prime IO = 2.101
+   d-prime diff = 2.504
+
+
+   B1 = 7, B2 = 7, B3 = 6
+
+for each subcondition, after the subcondition label, the following values are listed
+on successive lines: the number of correct trials, the number of
+trials, the percentage of correct responses, the d' value for a listener using the
+independent observations strategy, and the d' value for a listener using the differencing strategy.
+
+The final line shows the number of times each button was pressed by the listener.
+
+   
+Plain-Text Trial-Summary Result Files (Multiple Constants Odd One Out)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A snippet from a plain-text trial-summary result file for the multiple constants odd one out paradigm
+is shown below:
+
+::
+
+   Comparison2; 0; 
+   Comparison2; 1; 
+   Comparison1; 1; 
+   Comparison1; 1; 
+   Comparison1; 1; 
+   Comparison1; 0;
+
+the first column shows the label of the subcondition tested on each trial, the second column
+shows the response (1 for correct, 0 otherwise).   
+   
+
+Plain-Text Session-Summary Files (Multiple Constants Odd One Out)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Not currently implemented.
+
+
+
+Multiple Constants Sound Comparison Result Files
+-------------------------------------------
+
+Tabular Block-Summary Result Files (Multiple Constants Sound Comparison)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The multiple constants odd one out tabular block-summary result files have the following paradigm-specific columns:
 
-- **nTrials** the total number of trials per condition
+- **nTrials** the total number of trials per subcondition
 
 then, for each condition:
   
-- **cndX_stim1_count** the number of times stimulus 1 was chosen as the odd one in condition *X*
-- **cndX_stim1_percent** the percent of times stimulus 1 was chosen as the odd one in condition *X*
-- **cndX_stim2_count** the number of times stimulus 3 was chosen as the odd one in condition *X*
-- **cndX_stim2_percent** the percent of times stimulus 2 was chosen as the odd one in condition *X*
-- **cndX_stim3_count** the number of times stimulus 3 was chosen as the odd one in condition *X*
-- **cndX_stim3_percent** the percent of times stimulus 3 was chosen as the odd one in condition *X*
+- **stim1_count_subcndX** the number of times stimulus 1 was chosen as the odd one in subcondition *X*
+- **stim1_percent_subcndX** the percent of times stimulus 1 was chosen as the odd one in subcondition *X*
+- **stim2_count_subcndX** the number of times stimulus 3 was chosen as the odd one in subcondition *X*
+- **stim2_percent_subcndX** the percent of times stimulus 2 was chosen as the odd one in subcondition *X*
+- **stim3_count_subcndX** the number of times stimulus 3 was chosen as the odd one in subcondition *X*
+- **stim3_percent_subcndX** the percent of times stimulus 3 was chosen as the odd one in subcondition *X*
 
   
-Tabular Trial-Summary Result Files (Odd One Out)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Trial-Summary Result Files (Multiple Constants Sound Comparison)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Not currently implemented.
 
-Tabular Session-Summary Result Files (Odd One Out)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Tabular Session-Summary Result Files (Multiple Constants Sound Comparison)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Not currently implemented.
 
-Plain-Text Block-Summary Result Files (Odd One Out)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Block-Summary Result Files (Multiple Constants Sound Comparison)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The result section of an odd-one-out plain-text block-summary result
 file is shown below:
@@ -1622,8 +1722,8 @@ button was pressed.
 
 
 
-Plain-Text Trial-Summary Result Files (Odd One Out)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Trial-Summary Result Files (Multiple Constants Sound Comparison)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A snippet from the result section of an odd-one-out plain-text trial-summary result
 file is shown below:
@@ -1637,8 +1737,8 @@ file is shown below:
 the first column shows the condition tested on each trial. The second
 column shows the alternative chosen.
 
-Plain-Text Session-Summary Files (Odd One Out)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Plain-Text Session-Summary Files (Multiple Constants Sound Comparison)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Not currently implemented.
 

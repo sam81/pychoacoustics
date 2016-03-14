@@ -22,9 +22,10 @@ def initialize_dummy_adaptive_interleaved(prm):
     prm["experimentsChoices"].append(exp_name)
     prm[exp_name] = {}
     prm[exp_name]["paradigmChoices"] = ["Transformed Up-Down Interleaved",
-                                        "Weighted Up-Down Interleaved"]
+                                        "Weighted Up-Down Interleaved",
+                                        "Multiple Constants m-Intervals n-Alternatives"]
 
-    prm[exp_name]["opts"] = ["hasAlternativesChooser", "hasNTracksChooser"]
+    prm[exp_name]["opts"] = ["hasAlternativesChooser", "hasNTracksChooser", "hasNDifferencesChooser"]
     prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Geometric","")
     prm[exp_name]['defaultNIntervals'] = 2
     prm[exp_name]['defaultNAlternatives'] = 2
@@ -64,11 +65,13 @@ def doTrial_dummy_adaptive_interleaved(parent):
     if parent.prm['startOfBlock'] == True:
         nDifferences = parent.prm['nDifferences']
         parent.prm['adaptiveParam'] = []
+        parent.prm['conditions'] = []
         for i in range(nDifferences):
             parent.prm['adaptiveParam'].append(parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Difference " + str(i+1))])
+            parent.prm['conditions'].append('Difference ' + str(i+1))
             parent.writeResultsHeader('log')
 
-
+    parent.currentCondition = parent.prm['conditions'][parent.prm['currentDifference']] 
     nAlternatives = parent.prm[currBlock]['nAlternatives']
     nIntervals = parent.prm[currBlock]['nIntervals']
         

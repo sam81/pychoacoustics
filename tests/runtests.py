@@ -11,6 +11,10 @@ from sndlib_unittest import*
 
 ###########################
 # paradigm tests
+from test_constant_1_interval_2_alternatives import*
+from test_constant_1_pair_same_different import*
+from test_constant_m_intervals_n_alternatives import*
+from test_multiple_constants_m_intervals_n_alternatives import*
 from test_transformed_up_down import*
 from test_transformed_up_down_interleaved import*
 from test_weighted_up_down import*
@@ -18,6 +22,13 @@ from test_weighted_up_down_interleaved import*
 from test_PEST import*
 from test_PSI import*
 from test_UML import*
+
+###########################
+# experiment tests
+from test_wav_ABX import*
+from test_wav_odd_one_out import*
+from test_wav_same_different import*
+
 
 if __name__ == "__main__":
     unittest.main()

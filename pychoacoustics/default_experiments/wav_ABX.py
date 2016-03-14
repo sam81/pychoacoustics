@@ -113,7 +113,7 @@ def doTrial_wav_ABX(parent):
     fsList = []
     nBitsList = []
 
-    (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['currentDifference']][stimChoices.index(parent.stim1)], level, parent.prm['maxLevel'], channel)
+    (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['currentDifference']][stimChoices.index(parent.stim1)], level, parent.prm['maxLevel'], channel, parent.prm['sampRate'])
     soundList.append(thisSnd)
     fsList.append(thisFs)
     nBitsList.append(thisNbits)
@@ -128,14 +128,14 @@ def doTrial_wav_ABX(parent):
         parent.stim3 = parent.stim2
 
 
-    (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['currentDifference']][stimChoices.index(parent.stim2)], level, parent.prm['maxLevel'], channel)
+    (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['currentDifference']][stimChoices.index(parent.stim2)], level, parent.prm['maxLevel'], channel, parent.prm['sampRate'])
     soundList.append(thisSnd)
     fsList.append(thisFs)
     nBitsList.append(thisNbits)
 
-    (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['currentDifference']][stimChoices.index(parent.stim3)], level, parent.prm['maxLevel'], channel)
+    (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['currentDifference']][stimChoices.index(parent.stim3)], level, parent.prm['maxLevel'], channel, parent.prm['sampRate'])
     soundList.append(thisSnd)
     fsList.append(thisFs)
     nBitsList.append(thisNbits)
 
-    parent.playSoundsWavComp(soundList, fsList, nBitsList)
+    parent.playSoundsWavComp(soundList)#, fsList, nBitsList)

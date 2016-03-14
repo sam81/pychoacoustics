@@ -87,7 +87,7 @@ def doTrial_wav_sameDifferent(parent):
         parent.prm['conditions'] = ['same','different']
         parent.prm['differenceChoices'] = [] #these are removed as the number of trials for each difference is reached
         parent.prm['differenceNames'] = [] #these are permanent
-        parent.prm['currStimOrder'] = [0,1,2]
+        #parent.prm['currStimOrder'] = [0,1,2]
         #parent.correctButton = random.choice([1,2]) #this is just in case of automatic response
         for i in range(parent.prm['nDifferences']):
             parent.prm['differenceChoices'].append("Pair"+str(i+1))
@@ -119,7 +119,7 @@ def doTrial_wav_sameDifferent(parent):
     fsList = []
     nBitsList = []
 
-    (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['currentDifference']][stimChoices.index(parent.stim1)], level, parent.prm['maxLevel'], channel)
+    (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['currentDifference']][stimChoices.index(parent.stim1)], level, parent.prm['maxLevel'], channel, parent.prm['sampRate'])
     soundList.append(thisSnd)
     fsList.append(thisFs)
     nBitsList.append(thisNbits)
@@ -128,17 +128,18 @@ def doTrial_wav_sameDifferent(parent):
             parent.stim2 = 'WAV1'
         else:
             parent.stim2 = 'WAV2'
-        (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['currentDifference']][stimChoices.index(parent.stim2)], level, parent.prm['maxLevel'], channel)
+        (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['currentDifference']][stimChoices.index(parent.stim2)], level, parent.prm['maxLevel'], channel, parent.prm['sampRate'])
     else:
         if parent.stim1 == 'WAV1':
             parent.stim2 = 'WAV2'
         else:
             parent.stim2 = 'WAV1'
-        (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['currentDifference']][stimChoices.index(parent.stim2)], level, parent.prm['maxLevel'], channel)
+        (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['currentDifference']][stimChoices.index(parent.stim2)], level, parent.prm['maxLevel'], channel, parent.prm['sampRate'])
     soundList.append(thisSnd)
     fsList.append(thisFs)
     nBitsList.append(thisNbits)
     
     fsList.append(thisFs)
     nBitsList.append(thisNbits)
-    parent.playSoundsWavComp(soundList, fsList, nBitsList)
+    parent.playSoundsWavComp(soundList)#, fsList, nBitsList)
+    #parent.playSoundsSequntialIntervals(soundList, fsList, nBitsList)

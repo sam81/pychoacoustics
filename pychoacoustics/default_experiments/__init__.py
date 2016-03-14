@@ -12,4 +12,5 @@ __all__ = ["audiogram",
            "wav_sameDifferent",
            "wav_comparison",
            "dummy_adaptive",
-           "dummy_adaptive_interleaved"]
+           "dummy_adaptive_interleaved",
+           "dummy_constant"]

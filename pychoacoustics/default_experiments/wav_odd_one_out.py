@@ -57,11 +57,9 @@ def select_default_parameters_wav_odd_one_out(parent, par):
     chooser.append(parent.tr("Original"))
 
     for i in range(nDifferences):
-        fileChooserButton.append("Comparison"+str(i+1)+" WAV1")
+        fileChooserButton.append("Pair"+str(i+1)+" Standard WAV")
         fileChooser.append("")
-        fileChooserButton.append("Comparison"+str(i+1)+" WAV2")
-        fileChooser.append("")
-        fileChooserButton.append("Comparison"+str(i+1)+" WAV3")
+        fileChooserButton.append("Pair"+str(i+1)+" Odd WAV")
         fileChooser.append("")
    
 
@@ -86,8 +84,8 @@ def doTrial_wav_odd_one_out(parent):
         parent.prm['comparisonChoices'] = []
         #parent.prm['currStimOrder'] = [0,1,2]
         for i in range(parent.prm['nDifferences']):
-            parent.prm['conditions'].append("Comparison"+str(i+1))
-            parent.prm['comparisonChoices'].append("Comparison"+str(i+1))
+            parent.prm['conditions'].append("Pair"+str(i+1))
+            parent.prm['comparisonChoices'].append("Pair"+str(i+1))
         
         parent.writeResultsHeader('log')
         
@@ -96,20 +94,19 @@ def doTrial_wav_odd_one_out(parent):
 
     wavfiles = []
     for i in range(parent.prm['nDifferences']):
-        a = parent.prm[currBlock]['fileChooser'][parent.prm['fileChooserButton'].index(parent.tr("Comparison"+str(i+1)+" WAV1"))]
-        b = parent.prm[currBlock]['fileChooser'][parent.prm['fileChooserButton'].index(parent.tr("Comparison"+str(i+1)+" WAV2"))]
-        c = parent.prm[currBlock]['fileChooser'][parent.prm['fileChooserButton'].index(parent.tr("Comparison"+str(i+1)+" WAV3"))]
-        wavfiles.append([a,b,c])
+        a = parent.prm[currBlock]['fileChooser'][parent.prm['fileChooserButton'].index(parent.tr("Pair"+str(i+1)+" Standard WAV"))]
+        b = parent.prm[currBlock]['fileChooser'][parent.prm['fileChooserButton'].index(parent.tr("Pair"+str(i+1)+" Odd WAV"))]
+        wavfiles.append([a,b])
 
     
     parent.currentCondition =  random.choice(parent.prm['comparisonChoices'])
-    (stimulusCorrect, fs, nBits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['conditions'].index(parent.currentCondition)][2], level, parent.prm['maxLevel'], channel, parent.prm['sampRate'])
+    (stimulusCorrect, fs, nBits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['conditions'].index(parent.currentCondition)][1], level, parent.prm['maxLevel'], channel, parent.prm['sampRate'])
     
     stimulusIncorrect = []
     fsIncorrect = []
     nBitsIncorrect = []
     for i in range(2):
-        (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['conditions'].index(parent.currentCondition)][i], level, parent.prm['maxLevel'], channel, parent.prm['sampRate'])
+        (thisSnd, thisFs, thisNbits) = parent.audioManager.loadWavFile(wavfiles[parent.prm['conditions'].index(parent.currentCondition)][0], level, parent.prm['maxLevel'], channel, parent.prm['sampRate'])
         stimulusIncorrect.append(thisSnd)
                                                                    
     parent.playRandomisedIntervals(stimulusCorrect, stimulusIncorrect)
