@@ -28,6 +28,7 @@ from test_UML import*
 from test_wav_ABX import*
 from test_wav_odd_one_out import*
 from test_wav_same_different import*
+from test_sig_detect_multi import*
 
 
 if __name__ == "__main__":
