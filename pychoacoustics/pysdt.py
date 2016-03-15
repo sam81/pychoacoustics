@@ -136,6 +136,8 @@ def dprime_ABX(H, FA, meth):
             dprime =  scipy.optimize.brentq(est_dp2, 0, 10)
         except:
             dprime = numpy.nan
+    # if H == FA:
+    #     dprime = 0
     return dprime*dpsign
 
 def dprime_ABX_from_counts(nCA, nTA, nCB, nTB, meth, corr):
@@ -234,8 +236,10 @@ def dprime_oddity(prCorr, meth="diff"):
             out2 = prCorr - quad(pr, 0, Inf)[0] 
 
             return out2
-
-        dp_res = scipy.optimize.brentq(est_dp, 0, 10)
+        try:
+            dp_res = scipy.optimize.brentq(est_dp, 0, 10)
+        except:
+            dp_res = numpy.nan
     elif meth == "IO":
         def est_dp(dp):
             def pr1(x):
@@ -247,7 +251,10 @@ def dprime_oddity(prCorr, meth="diff"):
 
             return out
 
-        dp_res = scipy.optimize.brentq(est_dp, 0, 10)
+        try:
+            dp_res = scipy.optimize.brentq(est_dp, 0, 10)
+        except:
+            dp_res = numpy.nan
 
     return dp_res
         
@@ -291,7 +298,10 @@ def dprime_SD(H, FA, meth):
         try:
             dprime =  scipy.optimize.brentq(est_dp2, 0, 10)
         except:
-            dprime = numpy.nan
+            if H == FA:
+                dprime = 0
+            else:
+                dprime = numpy.nan
     elif meth == "IO":
         zdiff = norm.ppf(H) - norm.ppf(FA)
         pcMax = norm.cdf(zdiff/2)

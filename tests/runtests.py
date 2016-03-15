@@ -9,6 +9,13 @@ import write_sndlib_examples_code
 import sndlib_examples_code
 from sndlib_unittest import*
 
+#############################
+# pysdt tests
+from test_dprime_ABX import*
+from test_dprime_mAFC import*
+from test_dprime_oddity_diff import*
+from test_dprime_SD import*
+
 ###########################
 # paradigm tests
 from test_constant_1_interval_2_alternatives import*
