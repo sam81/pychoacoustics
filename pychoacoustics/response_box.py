@@ -4157,7 +4157,10 @@ class responseBox(QMainWindow):
             
             self.writeResultsSummaryFullLine('UML', resLineToWriteSummFull)
             if self.prm["saveUMLState"] == True:
-                np.save(os.path.dirname(self.prm['resultsFile'])+self.prm[currBlock]['conditionLabel']+".npy", self.UML["p"], allow_pickle=False, fix_imports=False)
+                # if int("".join(np.__version__.split("."))) >=182:
+                #                     np.save(os.path.dirname(self.prm['resultsFile'])+self.prm[currBlock]['conditionLabel']+".npy", self.UML["p"], allow_pickle=False, fix_imports=False)
+                # else:
+                np.save(os.path.dirname(self.prm['resultsFile'])+self.prm[currBlock]['conditionLabel']+".npy", self.UML["p"])#, allow_pickle=False, fix_imports=False)
             del self.UML #clear memory
             self.atBlockEnd()
         else:

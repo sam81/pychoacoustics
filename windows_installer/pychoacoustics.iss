@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "pychoacoustics"
-#define MyAppVersion "0.3.38"
+#define MyAppVersion "0.3.42"
 #define MyAppPublisher "Samuele Carcagno"
 #define MyAppURL "http://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html"
 
