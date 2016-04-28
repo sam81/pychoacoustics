@@ -666,11 +666,11 @@ def doTrial_F0DL(parent):
         if noise1Type != parent.tr("None") or noise2Type != parent.tr("None"):
             noise = numpy.zeros(thisTone.shape)
             if channel == parent.tr("Odd Left") or channel == parent.tr("Odd Right"): #alternating harmonics, different noise to the two ears
-                noise1Source = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                noise1Source = broadbandNoise(noise1SpectrumLevel, duration + ramp*2+20, 0,
                                        "Dichotic", parent.prm['sampRate'],
                                        parent.prm['maxLevel'])
             else:
-                noise1Source = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                noise1Source = broadbandNoise(noise1SpectrumLevel, duration + ramp*2+20, 0,
                                        channel, parent.prm['sampRate'],
                                        parent.prm['maxLevel'])
 
@@ -681,7 +681,7 @@ def doTrial_F0DL(parent):
                     noise1 = copy.copy(noise1Source)
                 noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq,
                                   noise1HighFreq*highStop, noise1, parent.prm['sampRate'])
-                noise1 = noise1[0:thisTone.shape[0],]
+                noise1 = noise1[int(round(0.01*parent.prm['sampRate'])):int(round(0.01*parent.prm['sampRate']))+thisTone.shape[0],]
                 noise = noise+noise1
             if noise2Type != parent.tr("None"): 
                 noise2Source = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise1Source)
@@ -691,7 +691,7 @@ def doTrial_F0DL(parent):
                     noise2 = copy.copy(noise2Source)
                 noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq,
                                   noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
-                noise2 = noise2[0:thisTone.shape[0],]
+                noise2 = noise2[int(round(0.01*parent.prm['sampRate'])):int(round(0.01*parent.prm['sampRate']))+thisTone.shape[0],]
                 noise = noise+noise2
             
             noise = gate(ramp, noise, parent.prm['sampRate'])
@@ -733,11 +733,11 @@ def doTrial_F0DL(parent):
         if noise1Type != parent.tr("None") or noise2Type != parent.tr("None"):
             noise = numpy.zeros(thisSnd.shape)
             if channel == parent.tr("Odd Left") or channel == parent.tr("Odd Right"): #alternating harmonics, different noise to the two ears
-                noise1Source = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                noise1Source = broadbandNoise(noise1SpectrumLevel, duration + ramp*2+20, 0,
                                        "Dichotic", parent.prm['sampRate'],
                                        parent.prm['maxLevel'])
             else:
-                noise1Source = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+                noise1Source = broadbandNoise(noise1SpectrumLevel, duration + ramp*2+20, 0,
                                        channel, parent.prm['sampRate'],
                                        parent.prm['maxLevel'])
 
@@ -748,7 +748,7 @@ def doTrial_F0DL(parent):
                     noise1 = copy.copy(noise1Source)
                 noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq,
                                   noise1HighFreq*highStop, noise1, parent.prm['sampRate'])
-                noise1 = noise1[0:thisSnd.shape[0],]
+                noise1 = noise1[int(round(0.01*parent.prm['sampRate'])):int(round(0.01*parent.prm['sampRate']))+thisTone.shape[0],]
                 noise = noise+noise1
             if noise2Type != parent.tr("None"): 
                 noise2Source = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise1Source)
@@ -758,7 +758,7 @@ def doTrial_F0DL(parent):
                     noise2 = copy.copy(noise2Source)
                 noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq,
                                   noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
-                noise2 = noise2[0:thisSnd.shape[0],]
+                noise2 = noise2[int(round(0.01*parent.prm['sampRate'])):int(round(0.01*parent.prm['sampRate']))+thisTone.shape[0],]
                 noise = noise+noise2
             
             noise = gate(ramp, noise, parent.prm['sampRate'])
@@ -766,16 +766,16 @@ def doTrial_F0DL(parent):
 
         # if noiseType != parent.tr("None"):
         #     if channel == parent.tr("Odd Left") or channel == parent.tr("Odd Right"): #alternating harmonics, different noise to the two ears
-        #         noiseR = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+        #         noiseR = broadbandNoise(noise1SpectrumLevel, duration + ramp*2+20, 0,
         #                                 parent.tr("Right"),
         #                                 parent.prm['sampRate'],
         #                                 parent.prm['maxLevel'])
-        #         noiseL = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+        #         noiseL = broadbandNoise(noise1SpectrumLevel, duration + ramp*2+20, 0,
         #                                 parent.tr("Left"), parent.prm['sampRate'],
         #                                 parent.prm['maxLevel'])
         #         noise = noiseR + noiseL
         #     else:
-        #         noise = broadbandNoise(noise1SpectrumLevel, duration + ramp*6, 0,
+        #         noise = broadbandNoise(noise1SpectrumLevel, duration + ramp*2+20, 0,
         #                                channel, parent.prm['sampRate'],
         #                                parent.prm['maxLevel'])
         #     if noiseType == parent.tr("Pink"):
@@ -786,7 +786,7 @@ def doTrial_F0DL(parent):
         #     noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq,
         #                       noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
         #     noise = noise1 + noise2
-        #     noise = noise[0:thisSnd.shape[0],]
+        #     noise = noise[int(round(0.01*parent.prm['sampRate'])):int(round(0.01*parent.prm['sampRate']))+thisTone.shape[0],]
         #     noise = gate(ramp, noise, parent.prm['sampRate'])
         #     thisSnd = thisSnd + noise 
 

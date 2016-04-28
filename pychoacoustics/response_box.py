@@ -20,8 +20,8 @@ from __future__ import nested_scopes, generators, division, absolute_import, wit
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4 import QtGui, QtCore
-    from PyQt4.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime, QRect
-    from PyQt4.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QIcon, QInputDialog, QIntValidator, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
+    from PyQt4.QtCore import Qt, QEvent, QThread, QDate, QRegExp, QTime, QDateTime, QRect
+    from PyQt4.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QDoubleValidator, QFileDialog, QFrame, QGridLayout, QIcon, QInputDialog, QIntValidator, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QValidator, QVBoxLayout, QWidget, QWidgetItem
     QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
     QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
     QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
@@ -34,8 +34,8 @@ if pyqtversion == 4:
         matplotlib_available = False
 elif pyqtversion == -4:
     from PySide import QtGui, QtCore
-    from PySide.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime, QRect
-    from PySide.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QIcon, QInputDialog, QIntValidator, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
+    from PySide.QtCore import Qt, QEvent, QThread, QDate, QRegExp, QTime, QDateTime, QRect
+    from PySide.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QDoubleValidator, QFileDialog, QFrame, QGridLayout, QIcon, QInputDialog, QIntValidator, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QValidator, QVBoxLayout, QWidget, QWidgetItem
     try:
         import matplotlib
         matplotlib_available = True
@@ -45,9 +45,9 @@ elif pyqtversion == -4:
         matplotlib_available = False
 elif pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
-    from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QTime, QDateTime, QRect
+    from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QRegExp, QTime, QDateTime, QRect
     from PyQt5.QtWidgets import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
-    from PyQt5.QtGui import QIcon, QIntValidator, QPainter
+    from PyQt5.QtGui import QDoubleValidator, QIcon, QIntValidator, QPainter, QValidator
     try:
         import matplotlib
         matplotlib_available = True
@@ -355,7 +355,9 @@ class responseBox(QMainWindow):
             if self.parent().currExp == self.tr("Digit Triplets Test"): #only three max digits
                 self.dialerResponseField.setValidator(QIntValidator(0, 999, self))
             else:
-                self.dialerResponseField.setValidator(QIntValidator(self))
+                self.dialerResponseField.setValidator(ValidDigitSequence(self)) #QIntValidator doesn't accept digit sequences greater than 2^31 or something like that so we have to use a custom validator
+
+
             self.responseButtonSizer.addWidget(self.dialerResponseField, 4, 0, 1, 3)
             self.dialerResponseField.returnPressed.connect(self.enterButtonPressed)
             self.dialerResponseField.setSizePolicy(sizePolicy)
@@ -1234,7 +1236,7 @@ class responseBox(QMainWindow):
                                           self.tr("Input sequence is shorter than correct sequence."),
                                           QMessageBox.Ok)
                 return
-                
+        
         self.dialerResponseField.setText("   ")
         self.dialerResponseField.setText("")
         self.sortResponse(int(currText))
@@ -6092,3 +6094,17 @@ class emailSender(QThread):
             print(errMsg, file=sys.stderr)
             return 
 
+
+class ValidDigitSequence(QValidator):
+    def __init__(self, parent):
+        QValidator.__init__(self, parent)
+
+    def validate(self, s, pos):
+        
+        self.regexp = QRegExp("[0-9]+")
+        if s == "":
+            return (QValidator.Intermediate, s, pos)
+        elif not self.regexp.exactMatch(s):
+            return (QValidator.Invalid, s, pos)
+        else:
+            return (QValidator.Acceptable,s, pos)
