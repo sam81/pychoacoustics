@@ -41,7 +41,6 @@ def initialize_level_discrimination(prm):
     prm[exp_name]['defaultNAlternatives'] = 2
     prm[exp_name]["execString"] = "level_discrimination"
     prm[exp_name]["version"] = __name__ + ' ' + pychoacoustics_version + ' ' + pychoacoustics_builddate
-    #prm[exp_name]["version"] = __name__ + ' ' + labexp_version + ' ' + labexp_builddate
 
     return prm
 
@@ -211,7 +210,6 @@ def doTrial_level_discrimination(parent):
         incorrectLevel = incorrectLevelSin
     elif sndType == parent.tr("Noise"):
         incorrectLevel = incorrectLevelNoise
-
  
     if parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("JND:"))] == parent.tr("Delta L"):
         if parent.prm['adaptiveParam'] < -deltaLLimit:
@@ -240,54 +238,63 @@ def doTrial_level_discrimination(parent):
         nCorrectTones = altReps
         nIncorrectTones = (parent.prm['nIntervals']-1)*altReps*2 + altReps
     correctTones = []; incorrectTones = []
-  
+
+
+    nSamples = int(round(duration/1000 * parent.prm['sampRate']))
+    nRamp = int(round(ramps/1000 * parent.prm['sampRate']))
+    nTot = nSamples + (nRamp * 2)
+
     for nt in range(nCorrectTones):
         if sndType == parent.tr("Noise"):
-            thisStim = broadbandNoise(correctLevel, duration, ramps,
+            thisStim = broadbandNoise(correctLevel, duration+ramps*2+20, 0,
                                                     channel, parent.prm['sampRate'],
                                                     parent.prm['maxLevel'])
             thisStim = fir2Filt(noiseLoFreq*lowStop, noiseLoFreq,
                                               noiseHiFreq, noiseHiFreq*highStop,
-                                              thisStim, parent.prm['sampRate'])                           
+                                              thisStim, parent.prm['sampRate'])
+            thisStim = thisStim[int(round(0.01*parent.prm['sampRate'])):int(round(0.01*parent.prm['sampRate']))+nTot,]
+            thisStim = gate(ramps, thisStim, parent.prm['sampRate'])
 
         elif sndType == parent.tr("Sinusoid"):
             thisStim = pureTone(frequency, phase, correctLevel, duration,
                                               ramps, channel, parent.prm['sampRate'],
                                               parent.prm['maxLevel'])
         if noiseType != parent.tr("None"):
-            noise = broadbandNoise(noise1SpectrumLevel, duration + ramps*6, 0, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+            noise = broadbandNoise(noise1SpectrumLevel, duration + ramps*2+20, 0, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
             if noiseType == parent.tr("Pink"):
                 noise = makePink(noise, parent.prm['sampRate'])
             noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq, noise1HighFreq*highStop, noise, parent.prm['sampRate'])
             noise2 = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise)
             noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq, noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
             noise = noise1 + noise2
-            noise = noise[0:thisStim.shape[0],]
+            noise = noise[int(round(0.01*parent.prm['sampRate'])):int(round(0.01*parent.prm['sampRate']))+thisStim.shape[0],]
             noise = gate(ramps, noise, parent.prm['sampRate'])
             thisStim = thisStim + noise
         correctTones.append(thisStim)
-            
+
 
     for i in range(nIncorrectTones):
         if sndType == parent.tr("Noise"):
-            thisSnd = broadbandNoise(incorrectLevel, duration, ramps,
+            thisSnd = broadbandNoise(incorrectLevel, duration+ramps*2+20, 0,
                                      channel, parent.prm['sampRate'],
                                      parent.prm['maxLevel'])
             thisSnd = fir2Filt(noiseLoFreq*lowStop, noiseLoFreq,
                                noiseHiFreq, noiseHiFreq*highStop,
-                               thisSnd, parent.prm['sampRate'])   
+                               thisSnd, parent.prm['sampRate'])
+            thisSnd = thisSnd[int(round(0.01*parent.prm['sampRate'])):int(round(0.01*parent.prm['sampRate']))+nTot,]
+            thisSnd = gate(ramps, thisSnd, parent.prm['sampRate'])
         elif sndType == parent.tr("Sinusoid"):
             thisSnd = pureTone(frequency, phase, incorrectLevel, duration, ramps, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
 
         if noiseType != parent.tr("None"):
-            noise = broadbandNoise(noise1SpectrumLevel, duration + ramps*6, 0, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
+            noise = broadbandNoise(noise1SpectrumLevel, duration + ramps*2+20, 0, channel, parent.prm['sampRate'], parent.prm['maxLevel'])
             if noiseType == parent.tr("Pink"):
                 noise = makePink(noise, parent.prm['sampRate'])
             noise1 = fir2Filt(noise1LowFreq*lowStop, noise1LowFreq, noise1HighFreq, noise1HighFreq*highStop, noise, parent.prm['sampRate'])
             noise2 = scale(noise2SpectrumLevel - noise1SpectrumLevel, noise)
             noise2 = fir2Filt(noise2LowFreq*lowStop, noise2LowFreq, noise2HighFreq, noise2HighFreq*highStop, noise2, parent.prm['sampRate'])
             noise = noise1 + noise2
-            noise = noise[0:thisSnd.shape[0],]
+            noise = noise[int(round(0.01*parent.prm['sampRate'])):int(round(0.01*parent.prm['sampRate']))+thisSnd.shape[0],]
             noise = gate(ramps, noise, parent.prm['sampRate'])
             thisSnd = thisSnd + noise
 

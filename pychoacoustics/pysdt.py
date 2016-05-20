@@ -57,6 +57,11 @@ def dprime_mAFC(Pc, m):
     --------
     >>> dp = dprime_mAFC(0.7, 3)
 
+    References
+    ----------
+   .. [1] Green, D. M., & Swets, J. A. (1988). *Signal Detection Theory and Psychophysics*. Los Altos, California: Peninsula Publishing.
+   .. [2] Green, D. M., & Dai, H. P. (1991). Probability of being correct with 1 of M orthogonal signals. *Perception & Psychophysics, 49(1)*, 100–101.
+    
     """
 
     if Pc < 0 or Pc > 1:
@@ -101,6 +106,10 @@ def dprime_ABX(H, FA, meth):
     --------
     >>> dp = dprime_ABX(0.7, 0.2, 'IO')
     >>> dp = dprime_ABX(0.7, 0.2, 'diff')
+
+    References
+    ----------
+    .. [1] Macmillan, N. A., & Creelman, C. D. (2004). *Detection Theory: A User’s Guide (2nd ed.)*. London: Lawrence Erlbraum Associates.
 
     """
 
@@ -168,6 +177,10 @@ def dprime_ABX_from_counts(nCA, nTA, nCB, nTB, meth, corr):
     --------
     >>> dp = dprime_ABX(0.7, 0.2, 'IO')
 
+    References
+    ----------
+    .. [1] Macmillan, N. A., & Creelman, C. D. (2004). *Detection Theory: A User’s Guide (2nd ed.)*. London: Lawrence Erlbraum Associates.
+
     """
 
     if nCA > nTA:
@@ -216,6 +229,11 @@ def dprime_oddity(prCorr, meth="diff"):
     --------
     >>> dp = dprime_oddity(0.7)
     >>> dp = dprime_oddity(0.8)
+
+    References
+    ----------
+    .. [1] Macmillan, N. A., & Creelman, C. D. (2004). *Detection Theory: A User’s Guide (2nd ed.)*. London: Lawrence Erlbraum Associates.
+    .. [2] Versfeld, N. J., Dai, H., & Green, D. M. (1996). The optimum decision rules for the oddity task. *Perception & Psychophysics, 58(1)*, 10–21.
 
     """
     
@@ -283,6 +301,11 @@ def dprime_SD(H, FA, meth):
     --------
     >>> dp = dprime_SD(0.7, 0.2, 'IO')
 
+    References
+    ----------
+    .. [1] Macmillan, N. A., & Creelman, C. D. (2004). *Detection Theory: A User’s Guide (2nd ed.)*. London: Lawrence Erlbraum Associates.
+    .. [2] Kingdom, F. A. A., & Prins, N. (2010). *Psychophysics: A Practical Introduction*. Academic Press.
+
     """
 
     if H < 0 or H > 1:
@@ -342,6 +365,11 @@ def dprime_SD_from_counts(nCA, nTA, nCB, nTB, meth, corr):
     --------
     >>> dp = dprime_SD(0.7, 0.2, 'IO')
 
+    References
+    ----------
+    .. [1] Macmillan, N. A., & Creelman, C. D. (2004). *Detection Theory: A User’s Guide (2nd ed.)*. London: Lawrence Erlbraum Associates.
+    .. [2] Kingdom, F. A. A., & Prins, N. (2010). *Psychophysics: A Practical Introduction*. Academic Press.
+
     """
 
     if nCA > nTA:
@@ -390,6 +418,11 @@ def dprime_yes_no(H, FA):
     --------
     >>> dp = dprime_yes_no(0.7, 0.2)
 
+    References
+    ----------
+    .. [1] Green, D. M., & Swets, J. A. (1988). *Signal Detection Theory and Psychophysics*. Los Altos, California: Peninsula Publishing.
+    .. [2] Macmillan, N. A., & Creelman, C. D. (2004). *Detection Theory: A User’s Guide (2nd ed.)*. London: Lawrence Erlbraum Associates.
+
     """
     
     if H < 0 or H > 1:
@@ -425,6 +458,11 @@ def dprime_yes_no_from_counts(nCA, nTA, nCB, nTB, corr):
     Examples
     --------
     >>> dp = dprime_yes_no_from_counts(nCA=70, nTA=100, nCB=80, nTB=100, corr=True)
+
+    References
+    ----------
+    .. [1] Green, D. M., & Swets, J. A. (1988). *Signal Detection Theory and Psychophysics*. Los Altos, California: Peninsula Publishing.
+    .. [2] Macmillan, N. A., & Creelman, C. D. (2004). *Detection Theory: A User’s Guide (2nd ed.)*. London: Lawrence Erlbraum Associates.
 
     """
     
@@ -466,16 +504,19 @@ def logisticPsy(x, alphax, betax, gammax, lambdax):
     betax:
         The slope of the psychometric function.
     gammax:
-        Lower limit of the psychometric function.
+        Lower limit of the psychometric function (guess rate).
     lambdax:
         The lapse rate.
 
     Returns
     -------
     pc :
-         Percent correct at the stimulus level(s)
-         in `x`.
-    
+         Proportion correct at the stimulus level(s) `x`.
+
+    References
+    ----------- 
+    .. [1] Kingdom, F. A. A., & Prins, N. (2010). *Psychophysics: A Practical Introduction*. Academic Press.
+
     """
     
     out = gammax + (1-gammax-lambdax) *(1/(1+exp(betax*(alphax-x))))
@@ -483,7 +524,7 @@ def logisticPsy(x, alphax, betax, gammax, lambdax):
 
 def invLogisticPsy(p, alphax, betax, gammax, lambdax):
     """
-    Compute the inverse of the logistic function.
+    Compute the inverse logistic psychometric function.
 
     Parameters
     ----------
@@ -501,8 +542,12 @@ def invLogisticPsy(p, alphax, betax, gammax, lambdax):
     Returns
     -------
     x :
-         Stimulus level at which percent correct equals `p`
+         Stimulus level at which proportion correct equals `p`
          for the listener specified by the function.
+    
+    References
+    ----------- 
+    .. [1] Kingdom, F. A. A., & Prins, N. (2010). *Psychophysics: A Practical Introduction*. Academic Press.
     
     """
 
@@ -522,26 +567,185 @@ def logisticLikelihood(lev, response, alphax, betax, gammax, lambdax):
 
 
 def gaussianPsy(x, alphax, betax, gammax, lambdax):
+    """
+    Compute the gaussian psychometric function.
+
+    Parameters
+    ----------
+    x : 
+        Stimulus level(s).
+    alphax:
+        Mid-point(s) of the psychometric function.
+    betax:
+        The slope of the psychometric function.
+    gammax:
+        Lower limit of the psychometric function (guess rate).
+    lambdax:
+        The lapse rate.
+
+    Returns
+    -------
+    pc :
+         Proportion correct at the stimulus level(s) `x`.
+
+    References
+    ----------- 
+    .. [1] Kingdom, F. A. A., & Prins, N. (2010). *Psychophysics: A Practical Introduction*. Academic Press.
+    
+    """
     # as in UML toolbox
     out = gammax+(1-gammax-lambdax)*(1+erf((x-alphax)/sqrt(2*betax**2)))/2
     return out
 
 def invGaussianPsy(p, alphax, betax, gammax, lambdax):
+    """
+    Compute the inverse gaussian psychometric function.
+
+    Parameters
+    ----------
+    p : 
+        Proportion correct on the psychometric function.
+    alphax:
+        Mid-point(s) of the psychometric function.
+    betax:
+        The slope of the psychometric function.
+    gammax:
+        Lower limit of the psychometric function.
+    lambdax:
+        The lapse rate.
+
+    Returns
+    -------
+    x :
+         Stimulus level at which proportion correct equals `p`
+         for the listener specified by the function.
+
+    References
+    ----------- 
+    .. [1] Kingdom, F. A. A., & Prins, N. (2010). *Psychophysics: A Practical Introduction*. Academic Press.
+    
+    """
     out = alphax + sqrt(2*betax**2)*erfinv(2*(p-gammax)/(1-gammax-lambdax)-1)
     return out
 
 def weibullPsy(x, alphax, betax, gammax, lambdax):
+    """
+    Compute the weibull psychometric function.
+
+    Parameters
+    ----------
+    x : 
+        Stimulus level(s).
+    alphax:
+        Mid-point(s) of the psychometric function.
+    betax:
+        The slope of the psychometric function.
+    gammax:
+        Lower limit of the psychometric function (guess rate).
+    lambdax:
+        The lapse rate.
+
+    Returns
+    -------
+    pc :
+         Proportion correct at the stimulus level(s) `x`.
+
+    References
+    ----------- 
+    .. [1] Kingdom, F. A. A., & Prins, N. (2010). *Psychophysics: A Practical Introduction*. Academic Press.
+    
+    """
     out = gammax+(1-gammax-lambdax)*(1-numpy.exp(-(x/alphax)**betax))
     return out
 
 def invWeibullPsy(p, alphax, betax, gammax, lambdax):
+    """
+    Compute the inverse weibull psychometric function.
+
+    Parameters
+    ----------
+    p : 
+        Proportion correct on the psychometric function.
+    alphax:
+        Mid-point(s) of the psychometric function.
+    betax:
+        The slope of the psychometric function.
+    gammax:
+        Lower limit of the psychometric function.
+    lambdax:
+        The lapse rate.
+
+    Returns
+    -------
+    x :
+         Stimulus level at which proportion correct equals `p`
+         for the listener specified by the function.
+
+    References
+    ----------- 
+    .. [1] Kingdom, F. A. A., & Prins, N. (2010). *Psychophysics: A Practical Introduction*. Academic Press.
+    
+    """
     out = alphax * (np.power(-log(1-(p-gammax)/(1-gammax-lambdax)), 1/betax))
     return out
     
 def gumbelPsy(x, alphax, betax, gammax, lambdax):
+    """
+    Compute the gumbel psychometric function.
+
+    Parameters
+    ----------
+    x : 
+        Stimulus level(s).
+    alphax:
+        Mid-point(s) of the psychometric function.
+    betax:
+        The slope of the psychometric function.
+    gammax:
+        Lower limit of the psychometric function (guess rate).
+    lambdax:
+        The lapse rate.
+
+    Returns
+    -------
+    pc :
+         Proportion correct at the stimulus level(s) `x`.
+
+    References
+    ----------- 
+    .. [1] Kingdom, F. A. A., & Prins, N. (2010). *Psychophysics: A Practical Introduction*. Academic Press.
+    
+    """
     out = gammax + (1-gammax-lambdax) * (1-numpy.exp(-10**(betax*(x-alphax))))
     return out
 
 def invGumbelPsy(p, alphax, betax, gammax, lambdax):
+    """
+    Compute the inverse gumbel psychometric function.
+
+    Parameters
+    ----------
+    p : 
+        Proportion correct on the psychometric function.
+    alphax:
+        Mid-point(s) of the psychometric function.
+    betax:
+        The slope of the psychometric function.
+    gammax:
+        Lower limit of the psychometric function.
+    lambdax:
+        The lapse rate.
+
+    Returns
+    -------
+    x :
+         Stimulus level at which proportion correct equals `p`
+         for the listener specified by the function.
+
+    References
+    ----------- 
+    .. [1] Kingdom, F. A. A., & Prins, N. (2010). *Psychophysics: A Practical Introduction*. Academic Press.
+    
+    """
     out = alphax + (log10(-log(1 - (p-gammax)/(1-gammax-lambdax))))/betax
     return out
