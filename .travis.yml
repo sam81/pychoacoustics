@@ -8,14 +8,14 @@ python:
 notifications:
     email: false
 
-sudo: true
+# sudo: true
 
-before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install python3-scipy python3-numpy
+# before_install:
+#   - sudo apt-get -qq update
+#   - sudo apt-get install python3-scipy python3-numpy
     
 # command to install dependencies
-#install: "pip install -r requirements.txt"
+install: "pip install numpy scipy pandas"
   
 # command to run tests
 script: nosetests
