@@ -1242,7 +1242,12 @@ class responseBox(QMainWindow):
         self.sortResponse(int(currText))
 
     def sortResponseButton(self):
-        buttonClicked = self.responseButton.index(self.sender())+1
+        #the try-except is here because when the interface is updating between blocks
+        #the sender may be missing (participants press multiple times response button when interface is changing)
+        try:
+            buttonClicked = self.responseButton.index(self.sender())+1
+        except:
+            buttonClicked = 0
         self.sortResponse(buttonClicked)
         
     def keyPressEvent(self, event):

@@ -2,6 +2,12 @@ pychoacoustics (0.3.44) unstable; urgency=low
 
   * New upstream release
 
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Wed, 25 May 2016 11:48:47 +0100
+
+pychoacoustics (0.3.44) unstable; urgency=low
+
+  * New upstream release
+
  -- Samuele Carcagno <sam.carcagno@gmail.com>  Thu, 28 Apr 2016 10:58:52 +0100
 
 pychoacoustics (0.3.43) unstable; urgency=low
