@@ -20,7 +20,7 @@
 """
 Module for reading and writing WAV files. It is a simple but convenient wrapper to the scipy.io.wavfile module.
 """
-from __future__ import division
+from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from scipy.io import wavfile
 from tempfile import mkstemp
 import platform, os, subprocess

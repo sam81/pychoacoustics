@@ -19,6 +19,7 @@
 # - Shen, Y., & Richards, V. (2012). A maximum-likelihood procedure for estimating psychometric functions: Thresholds, slopes, and lapses of attention. The Journal of the Acoustical Society of America, 132, 957–967.
 # - Shen, Y., Dai, W., & Richards, V. M. (2014). A MATLAB toolbox for the efficient estimation of the psychometric function using the updated maximum-likelihood adaptive procedure. Behavior Research Methods, 13–26.
 
+from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import copy, random, scipy
 import numpy as np
 from numpy import arange, exp, linspace, logspace, log, log10, meshgrid, pi, ravel

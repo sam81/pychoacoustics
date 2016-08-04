@@ -21,6 +21,7 @@
 
 #This is an attempt (so far unsuccessful) to make the computations faster by vectorizing
 
+from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import copy, scipy
 import numpy as np
 from numpy import arange, exp, linspace, logspace, log, log2, log10, meshgrid, sqrt

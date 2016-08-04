@@ -4,7 +4,7 @@
 Dummy experiment to test adaptive procedures
 
 """
-
+from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from ..pyqtver import*
 from .._version_info import*
 import numpy

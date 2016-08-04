@@ -19,6 +19,7 @@
 # - Prins, N. (2013). The psi-marginal adaptive method: How to give nuisance parameters the attention they deserve (no more, no less). Journal of Vision, 13, 1–17.
 # - Prins, N. (2012). The psychometric function: The lapse rate revisited. Journal of Vision, 12(6), 25–25.
 
+from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import copy, scipy
 import numpy as np
 from numpy import arange, exp, linspace, logspace, log, log2, log10, meshgrid, sqrt
