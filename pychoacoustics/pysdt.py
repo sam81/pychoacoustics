@@ -34,6 +34,66 @@ import numpy as np
 #from numpy.lib.scimath import logn #log with arbitrary base
 
 
+def compute_proportions(nCA, nTA, nIB, nTB, corr):
+    """
+    Compute proportions with optional corrections for extreme proportions.
+
+    Parameters
+    ----------
+    nCA : float
+        Number of correct 'A' trials
+    nTA : int
+        Number of total 'A' trials
+    nIB : float
+        Number of incorrect 'B' trials
+    nTB : int
+        Number of total 'B' trials
+    corr : string
+        The correction to apply, `none` for no correction, 'loglinear` for the
+        log-linear correction, and `2N` for the '2N' correction.
+
+    Returns
+    -------
+    HR : float
+        Hit rate
+    FA : float
+        False alarm rate
+
+    Examples
+    --------
+    >>> H,F = compute_proportions(8, 10, 2, 10, "loglinear")
+    >>> H,F = compute_proportions(10, 10, 2, 10, "loglinear")
+    >>> H,F = compute_proportions(10, 10, 2, 10, "2N")
+
+    References
+    ----------
+   .. [1] Hautus, M. J. (1995). Corrections for extreme proportions and their biasing effects on estimated values of d'. *Behavior Research Methods, Instruments, & Computers, 27(I)*, 46–51. http://doi.org/10.3758/BF03203619
+   .. [2] Macmillan, N. A., & Creelman, C. D. (2004). *Detection Theory: A User’s Guide (2nd ed.)*. London: Lawrence Erlbraum Associates.
+
+    
+    """
+    if corr == "loglinear":
+        HR = (nCA+0.5)/(nTA+1)
+        FR = (nIB+0.5)/(nTB+1)
+    elif corr == "2N":
+        if nCA == nTA:
+            HR = 1 - 1/(2*nTA)
+        elif nCA == 0:
+            HR = 1 / (2*nTA)
+        else:
+            HR = nCA/(nTA)
+
+        if nIB == nTB:
+            FR = 1 - 1/(2*nTB)
+        elif nIB == 0:
+            FR = 1 / (2*nTB)
+        else:
+            FR = nIB/(nTB)
+    else:
+        HR = nCA/nTA
+        FR = nIB/nTB
+
+    return HR, FR
 
 
 def dprime_mAFC(Pc, m):
