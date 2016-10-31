@@ -148,7 +148,9 @@ def initialize_F0DL(prm):
                                         QApplication.translate("","Constant m-Intervals n-Alternatives",""),
                                         QApplication.translate("","PEST",""),
                                         QApplication.translate("","PSI",""),
-                                        QApplication.translate("","UML","")]
+                                        QApplication.translate("","UML",""),
+                                        QApplication.translate("","Transformed Up-Down Hybrid",""),
+                                        QApplication.translate("","Weighted Up-Down Hybrid","")]
     prm[exp_name]["opts"] = ["hasISIBox", "hasAlternativesChooser", "hasFeedback", "hasIntervalLights", "hasAltReps"]
     prm[exp_name]['defaultAdaptiveType'] = QApplication.translate("","Geometric","")
     prm[exp_name]['defaultNIntervals'] = 2
@@ -550,6 +552,7 @@ def doTrial_F0DL(parent):
     harmonicity        = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(parent.tr("Harmonicity:"))]
     altReps = parent.prm['altReps']
     altRepsISI = parent.prm['altRepsISI']
+    parent.prm['adaptiveMaxLimit'] = deltaF0Limit
     
     if dichoticDifference in [parent.tr("IPD Stepped"), parent.tr("IPD Linear"), parent.tr("IPD Random")]:
         dichoticDifferenceValue = ipd

@@ -1193,11 +1193,11 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.ruleDownCheckBox, n, 0)
 
             self.ruleUpLabel = QLabel(self.tr("Rule Up"), self)
-            self.paradigm_widg_sizer.addWidget(self.ruleUpLabel, n, 5)
+            self.paradigm_widg_sizer.addWidget(self.ruleUpLabel, n, 4)
             self.ruleUpTF = QLineEdit()
             self.ruleUpTF.setText('1')
             self.ruleUpTF.setValidator(QIntValidator(self))
-            self.paradigm_widg_sizer.addWidget(self.ruleUpTF, n, 4)
+            self.paradigm_widg_sizer.addWidget(self.ruleUpTF, n, 5)
             self.ruleUpCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.ruleUpCheckBox, n, 3)
             n = n+1
@@ -1211,11 +1211,11 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.initialTurnpointsCheckBox, n, 0)
 
             self.totalTurnpointsLabel = QLabel(self.tr("Total Turnpoints"), self)
-            self.paradigm_widg_sizer.addWidget(self.totalTurnpointsLabel, n, 5)
+            self.paradigm_widg_sizer.addWidget(self.totalTurnpointsLabel, n, 4)
             self.totalTurnpointsTF = QLineEdit()
             self.totalTurnpointsTF.setText('16')
             self.totalTurnpointsTF.setValidator(QIntValidator(self))
-            self.paradigm_widg_sizer.addWidget(self.totalTurnpointsTF, n, 4)
+            self.paradigm_widg_sizer.addWidget(self.totalTurnpointsTF, n, 5)
             self.totalTurnpointsCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.totalTurnpointsCheckBox, n, 3)
             n = n+1
@@ -1230,12 +1230,12 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.stepSize1CheckBox, n, 0)
 
             self.stepSize2Label = QLabel(self.tr("Step Size 2"), self)
-            self.paradigm_widg_sizer.addWidget(self.stepSize2Label, n, 5)
+            self.paradigm_widg_sizer.addWidget(self.stepSize2Label, n, 4)
             self.stepSize2TF = QLineEdit()
             self.stepSize2TF.setText('2')
             self.stepSize2TF.setValidator(QDoubleValidator(self))
             self.stepSize2TF.setWhatsThis(self.tr("Step size for the final turnpoints"))
-            self.paradigm_widg_sizer.addWidget(self.stepSize2TF, n, 4)
+            self.paradigm_widg_sizer.addWidget(self.stepSize2TF, n, 5)
             self.stepSize2CheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.stepSize2CheckBox, n, 3)
 
@@ -1700,6 +1700,212 @@ class pychControlWin(QMainWindow):
             self.paradigmFieldCheckBoxList.extend(self.totalTurnpointsCheckBox)
             self.paradigmFieldCheckBoxList.extend(self.stepSize1CheckBox)
             self.paradigmFieldCheckBoxList.extend(self.stepSize2CheckBox)
+
+        #-------------------------------------------------------
+        #Transformed Up-Down Hybrid Paradigm Widgets
+        if self.currParadigm in [self.tr("Transformed Up-Down Hybrid")]:
+            n = 0
+            self.adaptiveTypeChooserLabel = QLabel(self.tr("Procedure:"), self)
+            self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
+            self.adaptiveTypeChooser = QComboBox()
+            self.adaptiveTypeChooser.addItems(self.prm["adaptiveTypeChoices"])
+            try:
+                self.adaptiveTypeChooser.setCurrentIndex(self.prm["adaptiveTypeChoices"].index(self.prm[self.currExp]['defaultAdaptiveType']))
+            except:
+                self.adaptiveTypeChooser.setCurrentIndex(0)
+            self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooser, n, 2)
+            self.adaptiveTypeCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.adaptiveTypeCheckBox, n, 0)
+
+            n = n+1
+            self.corrTrackDirChooserLabel = QLabel(self.tr("Corr. Resp. Move Track:"), self)
+            self.paradigm_widg_sizer.addWidget(self.corrTrackDirChooserLabel, n, 1)
+            self.corrTrackDirChooser = QComboBox()
+            self.corrTrackDirChooser.addItems([self.tr("Up"), self.tr("Down")])
+            self.corrTrackDirChooser.setCurrentIndex(1)
+            self.paradigm_widg_sizer.addWidget(self.corrTrackDirChooser, n, 2)
+            self.corrTrackDirCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.corrTrackDirCheckBox, n, 0)
+
+            n = n+1
+            self.ruleDownLabel = QLabel(self.tr("Rule Down"), self)
+            self.paradigm_widg_sizer.addWidget(self.ruleDownLabel, n, 1)
+            self.ruleDownTF = QLineEdit()
+            self.ruleDownTF.setText('2')
+            self.ruleDownTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.ruleDownTF, n, 2)
+            self.ruleDownCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.ruleDownCheckBox, n, 0)
+
+            self.ruleUpLabel = QLabel(self.tr("Rule Up"), self)
+            self.paradigm_widg_sizer.addWidget(self.ruleUpLabel, n, 4)
+            self.ruleUpTF = QLineEdit()
+            self.ruleUpTF.setText('1')
+            self.ruleUpTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.ruleUpTF, n, 5)
+            self.ruleUpCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.ruleUpCheckBox, n, 3)
+            n = n+1
+            self.initialTurnpointsLabel = QLabel(self.tr("Initial Turnpoints"), self)
+            self.paradigm_widg_sizer.addWidget(self.initialTurnpointsLabel, n, 1)
+            self.initialTurnpointsTF = QLineEdit()
+            self.initialTurnpointsTF.setText('4')
+            self.initialTurnpointsTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.initialTurnpointsTF, n, 2)
+            self.initialTurnpointsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.initialTurnpointsCheckBox, n, 0)
+
+            self.totalTurnpointsLabel = QLabel(self.tr("Total Turnpoints"), self)
+            self.paradigm_widg_sizer.addWidget(self.totalTurnpointsLabel, n, 4)
+            self.totalTurnpointsTF = QLineEdit()
+            self.totalTurnpointsTF.setText('16')
+            self.totalTurnpointsTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.totalTurnpointsTF, n, 5)
+            self.totalTurnpointsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.totalTurnpointsCheckBox, n, 3)
+            n = n+1
+            self.stepSize1Label = QLabel(self.tr("Step Size 1"), self)
+            self.paradigm_widg_sizer.addWidget(self.stepSize1Label, n, 1)
+            self.stepSize1TF = QLineEdit()
+            self.stepSize1TF.setText('4')
+            self.stepSize1TF.setValidator(QDoubleValidator(self))
+            self.stepSize1TF.setWhatsThis(self.tr("Step size for the initial turnpoints"))
+            self.paradigm_widg_sizer.addWidget(self.stepSize1TF, n, 2)
+            self.stepSize1CheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.stepSize1CheckBox, n, 0)
+
+            self.stepSize2Label = QLabel(self.tr("Step Size 2"), self)
+            self.paradigm_widg_sizer.addWidget(self.stepSize2Label, n, 4)
+            self.stepSize2TF = QLineEdit()
+            self.stepSize2TF.setText('2')
+            self.stepSize2TF.setValidator(QDoubleValidator(self))
+            self.stepSize2TF.setWhatsThis(self.tr("Step size for the final turnpoints"))
+            self.paradigm_widg_sizer.addWidget(self.stepSize2TF, n, 5)
+            self.stepSize2CheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.stepSize2CheckBox, n, 3)
+
+            n = n+1
+            self.constantNTrialsLabel = QLabel(self.tr("Constant No. Trials"), self)
+            self.paradigm_widg_sizer.addWidget(self.constantNTrialsLabel, n, 1)
+            self.constantNTrialsTF = QLineEdit()
+            self.constantNTrialsTF.setText('50')
+            self.constantNTrialsTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.constantNTrialsTF, n, 2)
+            self.constantNTrialsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.constantNTrialsCheckBox, n, 0)
+
+            self.minSwitchNTrialsLabel = QLabel(self.tr("Min. No. trials before switch"), self)
+            self.paradigm_widg_sizer.addWidget(self.minSwitchNTrialsLabel, n, 4)
+            self.minSwitchNTrialsTF = QLineEdit()
+            self.minSwitchNTrialsTF.setText('10')
+            self.minSwitchNTrialsTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.minSwitchNTrialsTF, n, 5)
+            self.minSwitchNTrialsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.minSwitchNTrialsCheckBox, n, 3)
+
+            self.paradigmChooserList = [self.adaptiveTypeChooser, self.corrTrackDirChooser]
+            self.paradigmChooserLabelList = [self.adaptiveTypeChooserLabel, self.corrTrackDirChooserLabel]
+            self.paradigmChooserOptionsList = [self.prm["adaptiveTypeChoices"], [self.tr("Up"), self.tr("Down")]]
+            self.paradigmChooserCheckBoxList = [self.adaptiveTypeCheckBox, self.corrTrackDirCheckBox]
+
+            self.paradigmFieldList = [self.ruleDownTF, self.ruleUpTF, self.initialTurnpointsTF, self.totalTurnpointsTF, self.stepSize1TF, self.stepSize2TF, self.constantNTrialsTF, self.minSwitchNTrialsTF]
+            self.paradigmFieldLabelList = [self.ruleDownLabel, self.ruleUpLabel, self.initialTurnpointsLabel, self.totalTurnpointsLabel, self.stepSize1Label, self.stepSize2Label,  self.constantNTrialsLabel, self.minSwitchNTrialsLabel]
+            self.paradigmFieldCheckBoxList = [self.ruleDownCheckBox, self.ruleUpCheckBox, self.initialTurnpointsCheckBox, self.totalTurnpointsCheckBox, self.stepSize1CheckBox, self.stepSize2CheckBox, self.constantNTrialsCheckBox, self.minSwitchNTrialsCheckBox]
+
+        #------------------------------------
+        #WEIGHTED UP/DOWN Hybrid PARADIGM WIDGETS
+        if self.currParadigm in [self.tr("Weighted Up-Down Hybrid")]:
+            n = 0
+            self.adaptiveTypeChooserLabel = QLabel(self.tr("Procedure:"), self)
+            self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooserLabel, n, 1)
+            self.adaptiveTypeChooser = QComboBox()
+            self.adaptiveTypeChooser.addItems(self.prm["adaptiveTypeChoices"])
+            try:
+                self.adaptiveTypeChooser.setCurrentIndex(self.prm["adaptiveTypeChoices"].index(self.prm[self.currExp]['defaultAdaptiveType']))
+            except:
+                self.adaptiveTypeChooser.setCurrentIndex(0)
+            self.paradigm_widg_sizer.addWidget(self.adaptiveTypeChooser, n, 2)
+            self.adaptiveTypeCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.adaptiveTypeCheckBox, n, 0)
+
+            n = n+1
+            self.corrTrackDirChooserLabel = QLabel(self.tr("Corr. Resp. Move Track:"), self)
+            self.paradigm_widg_sizer.addWidget(self.corrTrackDirChooserLabel, n, 1)
+            self.corrTrackDirChooser = QComboBox()
+            self.corrTrackDirChooser.addItems([self.tr("Up"), self.tr("Down")])
+            self.corrTrackDirChooser.setCurrentIndex(1)
+            self.paradigm_widg_sizer.addWidget(self.corrTrackDirChooser, n, 2)
+            self.corrTrackDirCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.corrTrackDirCheckBox, n, 0)
+            n = n+1
+            self.pcTrackedLabel = QLabel(self.tr("Percent Correct Tracked"), self)
+            self.paradigm_widg_sizer.addWidget(self.pcTrackedLabel, n, 1)
+            self.pcTrackedTF = QLineEdit()
+            self.pcTrackedTF.setText('75')
+            self.paradigm_widg_sizer.addWidget(self.pcTrackedTF, n, 2)
+            self.pcTrackedCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.pcTrackedCheckBox, n, 0)
+            
+            n = n+1
+            self.initialTurnpointsLabel = QLabel(self.tr("Initial Turnpoints"), self)
+            self.paradigm_widg_sizer.addWidget(self.initialTurnpointsLabel, n, 1)
+            self.initialTurnpointsTF = QLineEdit()
+            self.initialTurnpointsTF.setText('4')
+            self.paradigm_widg_sizer.addWidget(self.initialTurnpointsTF, n, 2)
+            self.initialTurnpointsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.initialTurnpointsCheckBox, n, 0)
+
+            self.totalTurnpointsLabel = QLabel(self.tr("Total Turnpoints"), self)
+            self.paradigm_widg_sizer.addWidget(self.totalTurnpointsLabel, n, 4)
+            self.totalTurnpointsTF = QLineEdit()
+            self.totalTurnpointsTF.setText('16')
+            self.paradigm_widg_sizer.addWidget(self.totalTurnpointsTF, n, 5)
+            self.totalTurnpointsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.totalTurnpointsCheckBox, n, 3)
+            n = n+1
+            self.stepSize1Label = QLabel(self.tr("Step Size 1"), self)
+            self.paradigm_widg_sizer.addWidget(self.stepSize1Label, n, 1)
+            self.stepSize1TF = QLineEdit()
+            self.stepSize1TF.setText('4')
+            self.paradigm_widg_sizer.addWidget(self.stepSize1TF, n, 2)
+            self.stepSize1CheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.stepSize1CheckBox, n, 0)
+
+            self.stepSize2Label = QLabel(self.tr("Step Size 2"), self)
+            self.paradigm_widg_sizer.addWidget(self.stepSize2Label, n, 4)
+            self.stepSize2TF = QLineEdit()
+            self.stepSize2TF.setText('2')
+            self.paradigm_widg_sizer.addWidget(self.stepSize2TF, n, 5)
+            self.stepSize2CheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.stepSize2CheckBox, n, 3)
+            n = n+1
+
+            self.constantNTrialsLabel = QLabel(self.tr("Constant No. Trials"), self)
+            self.paradigm_widg_sizer.addWidget(self.constantNTrialsLabel, n, 1)
+            self.constantNTrialsTF = QLineEdit()
+            self.constantNTrialsTF.setText('50')
+            self.constantNTrialsTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.constantNTrialsTF, n, 2)
+            self.constantNTrialsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.constantNTrialsCheckBox, n, 0)
+
+            self.minSwitchNTrialsLabel = QLabel(self.tr("Min. No. trials before switch"), self)
+            self.paradigm_widg_sizer.addWidget(self.minSwitchNTrialsLabel, n, 4)
+            self.minSwitchNTrialsTF = QLineEdit()
+            self.minSwitchNTrialsTF.setText('10')
+            self.minSwitchNTrialsTF.setValidator(QIntValidator(self))
+            self.paradigm_widg_sizer.addWidget(self.minSwitchNTrialsTF, n, 5)
+            self.minSwitchNTrialsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.minSwitchNTrialsCheckBox, n, 3)
+            
+            self.paradigmChooserList = [self.adaptiveTypeChooser, self.corrTrackDirChooser]
+            self.paradigmChooserLabelList = [self.adaptiveTypeChooserLabel, self.corrTrackDirChooserLabel]
+            self.paradigmChooserOptionsList = [self.prm["adaptiveTypeChoices"], [self.tr("Up"), self.tr("Down")]]
+            self.paradigmChooserCheckBoxList = [self.adaptiveTypeCheckBox, self.corrTrackDirCheckBox]
+
+            self.paradigmFieldList = [self.pcTrackedTF, self.initialTurnpointsTF, self.totalTurnpointsTF, self.stepSize1TF, self.stepSize2TF, self.constantNTrialsTF, self.minSwitchNTrialsTF]
+            self.paradigmFieldLabelList = [self.pcTrackedLabel, self.initialTurnpointsLabel, self.totalTurnpointsLabel, self.stepSize1Label, self.stepSize2Label, self.constantNTrialsLabel, self.minSwitchNTrialsLabel]
+            self.paradigmFieldCheckBoxList = [self.pcTrackedCheckBox, self.initialTurnpointsCheckBox, self.totalTurnpointsCheckBox, self.stepSize1CheckBox, self.stepSize2CheckBox, self.constantNTrialsCheckBox, self.minSwitchNTrialsCheckBox]
 
         #------------------------
         #ONE CONSTANT PARADIGM WIDGETS
@@ -3986,6 +4192,7 @@ class pychControlWin(QMainWindow):
         self.setParadigmWidgets(self.currParadigm, self.prevParadigm)
         if self.currParadigm in [self.tr("Transformed Up-Down"), self.tr("Weighted Up-Down"),
                                  self.tr("Transformed Up-Down Limited"), self.tr("Weighted Up-Down Limited"),
+                                 self.tr("Transformed Up-Down Hybrid"), self.tr("Weighted Up-Down Hybrid"),
                                  self.tr("Transformed Up-Down Interleaved"), self.tr("Weighted Up-Down Interleaved"),
                                  self.tr("PEST")]:
             try: #set to the default adaptive type is specified
