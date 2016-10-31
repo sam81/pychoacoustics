@@ -973,13 +973,14 @@ class preferencesDialog(QDialog):
                 self.revertChanges()
 
     def listAlsaaudioPlaybackCards(self):
-        playbackCardList = []
-        for card in alsaaudio.cards():
-            try:
-                alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=card)
-                playbackCardList.append(card)
-            except:
-                pass
+        # playbackCardList = []
+        # for card in alsaaudio.cards():
+        #     try:
+        #         alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=card)
+        #         playbackCardList.append(card)
+        #     except:
+        #         pass
+        playbackCardList = alsaaudio.pcms(alsaaudio.PCM_PLAYBACK)
         return playbackCardList
     
     def listPyaudioPlaybackDevices(self):

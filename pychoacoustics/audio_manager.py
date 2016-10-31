@@ -84,10 +84,10 @@ class audioManager():
 
         if self.playCmd == "alsaaudio":
             try:
-                self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=self.prm["pref"]["sound"]["alsaaudioDevice"])
+                self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, device=self.prm["pref"]["sound"]["alsaaudioDevice"])
                 print("Opening preferred alsaaudio device")
             except:
-                self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=self.listAlsaaudioPlaybackCards()[0])
+                self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, device=self.listAlsaaudioPlaybackCards()[0])
                 print("Opening first alsaaudio device")
         elif self.playCmd == "pyaudio":
             self.paManager = pyaudio.PyAudio()
@@ -313,13 +313,14 @@ class audioManager():
            self.wavfile.write(fname, fs, data)
 
     def listAlsaaudioPlaybackCards(self):
-        playbackCardList = []
-        for card in alsaaudio.cards():
-            try:
-                alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=card)
-                playbackCardList.append(card)
-            except:
-                pass
+        # playbackCardList = []
+        # for card in alsaaudio.cards():
+        #     try:
+        #         alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=card)
+        #         playbackCardList.append(card)
+        #     except:
+        #         pass
+        playbackCardList = alsaaudio.pcms(alsaaudio.PCM_PLAYBACK)
         return playbackCardList
         
     
