@@ -851,23 +851,23 @@ class pychControlWin(QMainWindow):
         if prevExp != None:
             for i in range(len(self.additionalWidgetsIntFieldList)):
                 self.add_widg_sizer.removeWidget(self.additionalWidgetsIntFieldLabelList[i])
-                self.additionalWidgetsIntFieldLabelList[i].setParent(None)
+                #self.additionalWidgetsIntFieldLabelList[i].setParent(None)
                 self.additionalWidgetsIntFieldLabelList[i].deleteLater()
                 self.add_widg_sizer.removeWidget(self.additionalWidgetsIntFieldList[i])
-                self.additionalWidgetsIntFieldList[i].setParent(None)
+                #self.additionalWidgetsIntFieldList[i].setParent(None)
                 self.additionalWidgetsIntFieldList[i].deleteLater()
                 self.add_widg_sizer.removeWidget(self.additionalWidgetsIntFieldCheckBoxList[i])
-                self.additionalWidgetsIntFieldCheckBoxList[i].setParent(None)
+                #self.additionalWidgetsIntFieldCheckBoxList[i].setParent(None)
                 self.additionalWidgetsIntFieldCheckBoxList[i].deleteLater()
             for i in range(len(self.additionalWidgetsChooserList)):
                 self.add_widg_sizer.removeWidget(self.additionalWidgetsChooserLabelList[i])
-                self.additionalWidgetsChooserLabelList[i].setParent(None)
+                #self.additionalWidgetsChooserLabelList[i].setParent(None)
                 self.additionalWidgetsChooserLabelList[i].deleteLater()
                 self.add_widg_sizer.removeWidget(self.additionalWidgetsChooserList[i])
-                self.additionalWidgetsChooserList[i].setParent(None)
+                #self.additionalWidgetsChooserList[i].setParent(None)
                 self.additionalWidgetsChooserList[i].deleteLater()
                 self.add_widg_sizer.removeWidget(self.additionalWidgetsChooserCheckBoxList[i])
-                self.additionalWidgetsChooserCheckBoxList[i].setParent(None)
+                #self.additionalWidgetsChooserCheckBoxList[i].setParent(None)
                 self.additionalWidgetsChooserCheckBoxList[i].deleteLater()
 
 
@@ -1144,28 +1144,28 @@ class pychControlWin(QMainWindow):
         if prevParadigm != None:
             for i in range(len(self.paradigmChooserList)):
                 self.paradigm_widg_sizer.removeWidget(self.paradigmChooserList[i])
-                self.paradigmChooserList[i].setParent(None)
+                #self.paradigmChooserList[i].setParent(None)
                 self.paradigmChooserList[i].deleteLater()
                 self.paradigm_widg_sizer.removeWidget(self.paradigmChooserLabelList[i])
-                self.paradigmChooserLabelList[i].setParent(None)
+                #self.paradigmChooserLabelList[i].setParent(None)
                 self.paradigmChooserLabelList[i].deleteLater()
                 self.paradigm_widg_sizer.removeWidget(self.paradigmChooserCheckBoxList[i])
-                self.paradigmChooserCheckBoxList[i].setParent(None)
+                #self.paradigmChooserCheckBoxList[i].setParent(None)
                 self.paradigmChooserCheckBoxList[i].deleteLater()
             for i in range(len(self.paradigmFieldList)):
                 self.paradigm_widg_sizer.removeWidget(self.paradigmFieldList[i])
-                self.paradigmFieldList[i].setParent(None)
+                #self.paradigmFieldList[i].setParent(None)
                 self.paradigmFieldList[i].deleteLater()
                 self.paradigm_widg_sizer.removeWidget(self.paradigmFieldLabelList[i])
-                self.paradigmFieldLabelList[i].setParent(None)
+                #self.paradigmFieldLabelList[i].setParent(None)
                 self.paradigmFieldLabelList[i].deleteLater()
                 self.paradigm_widg_sizer.removeWidget(self.paradigmFieldCheckBoxList[i])
-                self.paradigmFieldCheckBoxList[i].setParent(None)
+                #self.paradigmFieldCheckBoxList[i].setParent(None)
                 self.paradigmFieldCheckBoxList[i].deleteLater()
             if prevParadigm in ["UML", "PSI", "UML - Est. Guess Rate", "PSI - Est. Guess Rate"]:
                 for i in range(len(self.paradigmButtonList)):
                     self.paradigm_widg_sizer.removeWidget(self.paradigmButtonList[i])
-                    self.paradigmButtonList[i].setParent(None)
+                    #self.paradigmButtonList[i].setParent(None)
                     self.paradigmButtonList[i].deleteLater()
 
          
@@ -4223,45 +4223,45 @@ class pychControlWin(QMainWindow):
         if self.prevExp != None:
             for f in range(len(self.field)):
                 self.pw_prm_sizer_0.removeWidget(self.fieldLabel[f])
-                self.fieldLabel[f].setParent(None)
+                #self.fieldLabel[f].setParent(None)
                 self.fieldLabel[f].deleteLater()
                 self.pw_prm_sizer_0.removeWidget(self.field[f])
-                self.field[f].setParent(None)
+                #self.field[f].setParent(None)
                 self.field[f].deleteLater()
                 self.pw_prm_sizer_0.removeWidget(self.fieldCheckBox[f])
-                self.fieldCheckBox[f].setParent(None)
+                #self.fieldCheckBox[f].setParent(None)
                 self.fieldCheckBox[f].deleteLater()
             for c in range(len(self.chooser)):
                 self.pw_prm_sizer_1.removeWidget(self.chooserLabel[c])
-                self.chooserLabel[c].setParent(None)
+                #self.chooserLabel[c].setParent(None)
                 self.chooserLabel[c].deleteLater()
                 self.pw_prm_sizer_1.removeWidget(self.chooser[c])
-                self.chooser[c].setParent(None)
+                #self.chooser[c].setParent(None)
                 self.chooser[c].deleteLater()
                 self.pw_prm_sizer_1.removeWidget(self.chooserCheckBox[c])
-                self.chooserCheckBox[c].setParent(None)
+                #self.chooserCheckBox[c].setParent(None)
                 self.chooserCheckBox[c].deleteLater()
             for f in range(len(self.fileChooser)):
                 self.pw_prm_sizer_0.removeWidget(self.fileChooser[f])
-                self.fileChooser[f].setParent(None)
+                #self.fileChooser[f].setParent(None)
                 self.fileChooser[f].deleteLater()
                 self.pw_prm_sizer_0.removeWidget(self.fileChooserButton[f])
-                self.fileChooserButton[f].setParent(None)
+                #self.fileChooserButton[f].setParent(None)
                 self.fileChooserButton[f].deleteLater()
                 self.pw_prm_sizer_0.removeWidget(self.fileChooserCheckBox[f])
-                self.fileChooserCheckBox[f].setParent(None)
+                #self.fileChooserCheckBox[f].setParent(None)
                 self.fileChooserCheckBox[f].deleteLater()
             for f in range(len(self.dirChooser)):
                 self.pw_prm_sizer_0.removeWidget(self.dirChooser[f])
-                self.dirChooser[f].setParent(None)
+                #self.dirChooser[f].setParent(None)
                 self.dirChooser[f].deleteLater()
                 self.pw_prm_sizer_0.removeWidget(self.dirChooserButton[f])
-                self.dirChooserButton[f].setParent(None)
+                #self.dirChooserButton[f].setParent(None)
                 self.dirChooserButton[f].deleteLater()
                 self.pw_prm_sizer_0.removeWidget(self.dirChooserCheckBox[f])
-                self.dirChooserCheckBox[f].setParent(None)
+                #self.dirChooserCheckBox[f].setParent(None)
                 self.dirChooserCheckBox[f].deleteLater()
-                
+            
     def updateParametersWin(self):
         #if the next block is already stored show it, otherwise copy the values from the previous block
         currBlock = 'b' + str(self.prm["currentBlock"])
@@ -5437,6 +5437,7 @@ class pychControlWin(QMainWindow):
             self.prm['shuffled'] = True
             self.saveParametersToFile(self.prm["tmpParametersFile"])
             self.updateParametersWin()
+            #QApplication.processEvents()
             self.responseBox.statusButton.setText(self.prm['rbTrans'].translate("rb", "Start"))
             self.responseBox.RBTaskLabel.setText(self.taskLabelTF.text())
             self.autoSetGaugeValue()

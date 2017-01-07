@@ -129,7 +129,7 @@ def setupUMLEstGuessRate(model="Logistic", swptRule="Up-Down", nDown=2, centTend
     elif UML["par"]["x0"] == UML["par"]["x"]["limits"][1]:
         UML["current_step"] = UML["nsteps"]
     else:
-        UML["current_step"] = np.ceil(UML["nsteps"]/2)
+        UML["current_step"] = int(np.ceil(UML["nsteps"]/2))
 
 
     return UML

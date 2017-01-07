@@ -597,6 +597,7 @@ class responseBox(QMainWindow):
         elif int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition']) == 1 and self.prm["shuffled"] == False and self.prm['allBlocks']['shuffleMode'] == self.tr("Auto") and self.prm['storedBlocks'] > 1 :
          
             self.parent().onClickShuffleBlocksButton()
+
             self.prm["shuffled"] = True
         #self.prm[currBlock]['blockPosition']
         if int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition']) in self.prm["allBlocks"]["instructionsAt"]:
@@ -620,7 +621,7 @@ class responseBox(QMainWindow):
             print("SENDING START TRIGGER", self.prm["pref"]["general"]["ONTrigger"])
         if self.prm['currentBlock'] > self.prm['storedBlocks']:
             self.parent().onClickNextBlockPositionButton()
-        
+
         self.doTrial()
 
     def playRandomisedIntervals(self, stimulusCorrect, stimulusIncorrect, preTrialStim=None, precursorStim=None, postCursorStim=None):
