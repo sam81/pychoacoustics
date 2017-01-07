@@ -96,7 +96,7 @@ used in the file.
 The tabular result files contain three sets of columns:
 
 - paradigm-specific columns (e.g. threshold estimate, for the transformed
-  up-down procedure, or d' for the constant 1-pair same/different procedure).
+  up-down procedure, or *d'* for the constant 1-pair same/different procedure).
   The columns that are specific to each paradigm will be described in
   Section :ref:`sec-result_files_by_paradigm`
 - fixed columns that are common to all paradigms (e.g. date and time
@@ -181,7 +181,7 @@ psychometric functions from the results of adaptive procedures.
 The tabular result files contain four sets of columns:
 
 - paradigm-specific columns (e.g. threshold estimate, for the transformed
-  up-down procedure, or d' for the constant 1-pair same/different procedure).
+  up-down procedure, or *d'* for the constant 1-pair same/different procedure).
   The columns that are specific to each paradigm will be described in
   Section :ref:`sec-result_files_by_paradigm`
 - experiment-specific columns, for example a frequency discrimination task with
@@ -693,7 +693,7 @@ Tabular Block-Summary Result Files (Constant m-Intervals n-Alternatives)
 The constant m-intervals n-alternatives tabular block-summary result files have four
 paradigm-specific columns:
 
-- **dprime** the d' value
+- **dprime** the *d'* value
 - **perc_corr** the percentage of correct response
 - **n_corr** the number of correct responses
 - **n_trials** the total number of trials
@@ -709,7 +709,7 @@ Tabular Session-Summary Result Files (Constant m-Intervals n-Alternatives)
 The constant m-intervals n-alternatives tabular session-summary result files have four
 paradigm-specific columns:
 
-- **dprime** the d' value
+- **dprime** the *d'* value
 - **perc_corr** the percentage of correct response
 - **n_corr** the number of correct responses
 - **n_trials** the total number of trials
@@ -729,7 +729,7 @@ with a constant m-intervals n-alternatives procedure is shown below:
 
 the first row shows the number of correct responses, the second row
 shows the total number of trials, the third row shows the percentage
-of correct responses, while the last row shows the d' value.
+of correct responses, while the last row shows the *d'* value.
    
 Plain-Text Trial-Summary Result Files (Constant m-Intervals n-Alternatives)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -771,7 +771,7 @@ Tabular Block-Summary Result Files (Multiple Constants m-Intervals n-Alternative
 The multiple constants m-intervals n-alternatives tabular block-summary result files have four
 paradigm-specific columns:
 
-- **dprime_subcX** the d' value for sub-condition *X*
+- **dprime_subcX** the *d'* value for sub-condition *X*
 - **perc_corr_subcX** the percentage of correct response for sub-condition *X*
 - **n_corr_subcX** the number of correct responses for sub-condition *X*
 - **n_trials_subcX** the total number of trials for sub-condition *X*
@@ -788,14 +788,14 @@ The multiple constants m-intervals n-alternatives tabular
 session-summary result files have the following
 paradigm-specific columns:
 
-- **dprime_ALL** the d' value across sub-conditions
+- **dprime_ALL** the *d'* value across sub-conditions
 - **perc_corr_ALL** the percentage of correct response across sub-conditions
 - **n_corr_ALL** the number of correct responses across sub-conditions
 - **n_trials_ALL** the total number of trials across sub-conditions
 
 then for each sub-condition:
 
-- **dprime_subcX** the d' value for sub-condition *X*
+- **dprime_subcX** the *d'* value for sub-condition *X*
 - **perc_corr_subcX** the percentage of correct response for sub-condition *X*
 - **n_corr_subcX** the number of correct responses for sub-condition *X*
 - **n_trials_subcX** the total number of trials for sub-condition *X*
@@ -829,7 +829,7 @@ with a multiple constants m-intervals n-alternatives procedure is shown below:
 
 first, for each condition, after a line with the sub-condition number and
 condition label, the number of correct responses, the number of total trials, the
-percent of correct responses, and d' are show in successive lines. Then
+percent of correct responses, and *d'* are show in successive lines. Then
 the same information is shown for the data pooled across sub-conditions.
 
 
@@ -892,7 +892,7 @@ first, for each condition, a line with the sub-condition number and
 sub-condition label is shown, followed by a list of the percentage of
 correct responses for that condition in each block. After these lines
 the number of correct responses, the number of total trials, the
-percentage of correct responses, and d' are show in successive lines.
+percentage of correct responses, and *d'* are show in successive lines.
 
 After these summaries for each sub-condition, the same summaries are shown
 for the data pooled across sub-conditions ("CONDITION ALL").
@@ -907,7 +907,7 @@ Tabular Block-Summary Result Files (Constant 1-Intervals 2-Alternatives)
 The constant 1-interval 2-alternatives tabular block-summary result files have six
 paradigm-specific columns:
 
-- **dprime** the d' value
+- **dprime** the *d'* value
 - **nTotal** the total number of trials 
 - **nCorrectA** the number of correct responses for *A* (signal
   present) trials
@@ -928,7 +928,7 @@ Tabular Session-Summary Result Files (Constant 1-Intervals 2-Alternatives)
 The constant 1-interval 2-alternatives tabular session-summary result files have six
 paradigm-specific columns:
 
-- **dprime** the d' value
+- **dprime** the *d'* value
 - **nTotal** the total number of trials 
 - **nCorrectA** the number of correct responses for *A* (signal
   present) trials
@@ -1020,10 +1020,10 @@ shown below:
    No. Total B = 27 
    Percent Correct B = 55.56
 
-the section starts with a list of the d' values obtained on each block
+the section starts with a list of the *d'* values obtained on each block
 of trials. The second paragraph shows the number of correct responses,
 the total number of trials, the percentage of correct responses, and
-the d' value. The last paragraph shows the number of correct
+the *d'* value. The last paragraph shows the number of correct
 responses, the total number of trials, and the percentage of correct
 responses separately for "A" (signal present), and "B" (signal absent) trials.
 
@@ -1038,7 +1038,7 @@ Tabular Block-Summary Result Files (Multiple Constants 1-Intervals 2-Alternative
 The multiple constants 1-interval 2-alternatives tabular block-summary
 result files have the following paradigm-specific columns:
 
-- **dprime_ALL** the d' value across all sub-conditions
+- **dprime_ALL** the *d'* value across all sub-conditions
 - **nTotal_ALL** the total number of trials across all sub-conditions
 - **nCorrectA_ALL** the number of correct responses for *A* (signal
   present) trials across all sub-conditions
@@ -1050,7 +1050,7 @@ result files have the following paradigm-specific columns:
 
 then for each sub-condition:
 
-- **dprime_subcX** the d' value for sub-condition *X*
+- **dprime_subcX** the *d'* value for sub-condition *X*
 - **nTotal_subcX** the total number of trials for sub-condition *X*
 - **nCorrectA_subcX** the number of correct responses for *A* (signal
   present) trials for sub-condition *X*
@@ -1070,7 +1070,7 @@ Tabular Session-Summary Result Files (Multiple Constants 1-Intervals 2-Alternati
 The multiple constants 1-interval 2-alternatives tabular session-summary
 result files have the following paradigm-specific columns:
 
-- **dprime_ALL** the d' value across all sub-conditions
+- **dprime_ALL** the *d'* value across all sub-conditions
 - **nTotal_ALL** the total number of trials across all sub-conditions
 - **nCorrectA_ALL** the number of correct responses for *A* (signal
   present) trials across all sub-conditions
@@ -1082,7 +1082,7 @@ result files have the following paradigm-specific columns:
 
 then for each sub-condition:
 
-- **dprime_subcX** the d' value for sub-condition *X*
+- **dprime_subcX** the *d'* value for sub-condition *X*
 - **nTotal_subcX** the total number of trials for sub-condition *X*
 - **nCorrectA_subcX** the number of correct responses for *A* (signal
   present) trials for sub-condition *X*
@@ -1146,7 +1146,7 @@ all sub-conditions ("CONDITION: ALL"). The parts containing summaries for each
 sub-condition start with the sub-condition number, and sub-condition
 label (this will vary from experiment to experiment). Following this,
 the total number of correct responses, the total number of trials, the
-percentage of correct responses, and the d' value for the subcondition
+percentage of correct responses, and the *d'* value for the subcondition
 are shown. Then the number of correct responses, the number of total
 responses, and the percentage of correct responses are shown for each
 sub-sub-condition within a sub-condition. This same information is
@@ -1234,10 +1234,10 @@ sub-condition, and one containing summaries for the data pooled across
 all sub-conditions. The parts containing summaries for each
 sub-condition start with a line showing the sub-condition number, and sub-condition
 label (this will vary from experiment to experiment). Following this
-there is a listing of d' values obtain in each block for that
+there is a listing of *d'* values obtain in each block for that
 subcondition. The next lines show the total number of correct
 responses, the total number of trials, the percentage of correct
-responses, and the d' value for the given sub-condition. Then, the
+responses, and the *d'* value for the given sub-condition. Then, the
 number of correct responses, the number of trials, and the percentage
 of correct responses are shown for each trial type ("A" for signal
 present, "B" for signal absent) within a sub-condition. This same information is
@@ -1252,8 +1252,8 @@ Tabular Block-Summary Result Files (Constant 1-Pair Same/Different)
 The constant 1-pair same/different tabular block-summary result files have seven
 paradigm-specific columns:
 
-- **dprime_IO** the estimated d' for a listener using the independent observations strategy
-- **dprime_diff** the estimated d' for a listener using the differencing strategy
+- **dprime_IO** the estimated *d'* for a listener using the independent observations strategy
+- **dprime_diff** the estimated *d'* for a listener using the differencing strategy
 - **nTotal** the total number of trials
 - **nCorrect_same** the number of correct response for "same" trials
 - **nTotal_same** the total number of "same" trials
@@ -1267,8 +1267,8 @@ Tabular Session-Summary Result Files (Constant 1-Pair Same/Different)
 The constant 1-pair same/different tabular session-summary result files have seven
 paradigm-specific columns:
 
-- **dprime_IO** the estimated d' for a listener using the independent observations strategy
-- **dprime_diff** the estimated d' for a listener using the differencing strategy
+- **dprime_IO** the estimated *d'* for a listener using the independent observations strategy
+- **dprime_diff** the estimated *d'* for a listener using the differencing strategy
 - **nTotal** the total number of trials
 - **nCorrect_same** the number of correct response for "same" trials
 - **nTotal_same** the total number of "same" trials
@@ -1297,7 +1297,7 @@ The results section for a  constant 1-pair same/different is shown below:
 
 the first line shows the total number of correct responses. The second
 line shows the total number of trials. The third line shows the percentage
-of correct responses. The fourth line shows the  estimated d' for a listener using the independent observations strategy. The fifth line shows the estimated d' for a listener using the differencing strategy. The following lines show the number of correct responses, the total number of trials, and the percentage of correct responses, separately for "same", and "different" trials.
+of correct responses. The fourth line shows the  estimated *d'* for a listener using the independent observations strategy. The fifth line shows the estimated *d'* for a listener using the differencing strategy. The following lines show the number of correct responses, the total number of trials, and the percentage of correct responses, separately for "same", and "different" trials.
    
 Plain-Text Trial-Summary Result Files (Constant 1-Pair Same/Different)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1341,10 +1341,10 @@ The result section for a 1-pair same/different paradigm session is shown below:
    No. Total B = 27 
    Percent Correct B = 81.48 
 
-the first paragraph is a listing of the d' values calculated according
+the first paragraph is a listing of the *d'* values calculated according
 to the independent observations and differencing strategy for each
 block of trials in the session. The secon paragraph lists the number of correct
-responses, total number of trials, percent correct, and d' values (for both independent
+responses, total number of trials, percent correct, and *d'* values (for both independent
 observation and differencing strategy) across all the blocks of trials in the session.
 The last paragraph shows summary statistics for "same", and "different" trials separately ("A"
 refers to "same" trials, and "B" refers to "different" trials.
@@ -1357,8 +1357,8 @@ Tabular Block-Summary Result Files (Multiple Constants 1-Pair Same-Different)
 
 The multiple constants 1-pair same/different tabular block-summary result files have seven paradigm-specific columns for each pair of stimuli that are tested:
 
-- **dprime_IO_pairX** the estimated d' for a listener using the independent observations strategy for the stimulus pair number *X*
-- **dprime_diff_pairX** the estimated d' for a listener using the differencing strategy for the stimulus pair number *X*
+- **dprime_IO_pairX** the estimated *d'* for a listener using the independent observations strategy for the stimulus pair number *X*
+- **dprime_diff_pairX** the estimated *d'* for a listener using the differencing strategy for the stimulus pair number *X*
 - **nTotal_pairX** the total number of trials for the stimulus pair number *X*
 - **nCorrect_same_pairX** the number of correct response for "same" trials for the stimulus pair number *X*
 - **nTotal_same_pairX** the total number of "same" trials for the stimulus pair number *X*
@@ -1384,8 +1384,8 @@ Tabular Session-Summary Result Files (Multiple Constants 1-Pair Same-Different)
 
 The multiple constants 1-pair same/different tabular session-summary result files have seven paradigm-specific columns for each pair of stimuli that are tested:
 
-- **dprime_IO_pairX** the estimated d' for a listener using the independent observations strategy for the stimulus pair number *X*
-- **dprime_diff_pairX** the estimated d' for a listener using the differencing strategy for the stimulus pair number *X*
+- **dprime_IO_pairX** the estimated *d'* for a listener using the independent observations strategy for the stimulus pair number *X*
+- **dprime_diff_pairX** the estimated *d'* for a listener using the differencing strategy for the stimulus pair number *X*
 - **nTotal_pairX** the total number of trials for the stimulus pair number *X*
 - **nCorrect_same_pairX** the number of correct response for "same" trials for the stimulus pair number *X*
 - **nTotal_same_pairX** the total number of "same" trials for the stimulus pair number *X*
@@ -1431,8 +1431,8 @@ The result section of a plain-text block-summary file obtained with the multiple
 
 the result section is composed of two parts for each pair of stimuli tested. The first part
 lists first the pair number, and then gives summary statistics for that pair (number of
-correct responses, total number of trials, percent correct, d' for the independent observations
-strategy, d' for the differencing strategy). The second part gives summary statistics separately
+correct responses, total number of trials, percent correct, *d'* for the independent observations
+strategy, *d'* for the differencing strategy). The second part gives summary statistics separately
 for "same" and "different" trials.
 
 Plain-Text Trial-Summary Result Files (Multiple Constants 1-Pair Same-Different)
@@ -1469,8 +1469,8 @@ Tabular Block-Summary Result Files (Multiple Constants ABX)
 The multiple constants ABX tabular block-summary result files have seven
 paradigm-specific columns for each pair of stimuli that are tested:
 
-- **dprime_IO_pairZ** the estimated d' for a listener using the independent observations strategy for the stimulus pair number *Z*
-- **dprime_diff_pairZ** the estimated d' for a listener using the differencing strategy for the stimulus pair number *Z*
+- **dprime_IO_pairZ** the estimated *d'* for a listener using the independent observations strategy for the stimulus pair number *Z*
+- **dprime_diff_pairZ** the estimated *d'* for a listener using the differencing strategy for the stimulus pair number *Z*
 - **nTotal_pairZ** the total number of trials for the stimulus pair number *Z*
 - **nCorrect_A_pairZ** the number of correct response for "A" trials for the stimulus pair number *Z*
 - **nTotal_A_pairZ** the total number of "A" trials for the stimulus pair number *Z*
@@ -1487,7 +1487,7 @@ paradigm-specific columns:
 - **A** the label of the stimulus that was presented in interval *A*
 - **B** the label of the stimulus that was presented in interval *B*
 - **X** the label of the stimulus that was presented in interval *X*
-- **case** whethe the *X* stimulus is the same as the one presented in interval *A* or *B*
+- **case** whether the *X* stimulus is the same as the one presented in interval *A* or *B*
 - **response** 1 for a correct response, 0 otherwise
 
 Tabular Session-Summary Result Files (Multiple Constants ABX)
@@ -1496,8 +1496,8 @@ Tabular Session-Summary Result Files (Multiple Constants ABX)
 The multiple constants ABX tabular session-summary result files have seven
 paradigm-specific columns for each pair of stimuli that are tested:
 
-- **dprime_IO_pairZ** the estimated d' for a listener using the independent observations strategy for the stimulus pair number *Z*
-- **dprime_diff_pairZ** the estimated d' for a listener using the differencing strategy for the stimulus pair number *Z*
+- **dprime_IO_pairZ** the estimated *d'* for a listener using the independent observations strategy for the stimulus pair number *Z*
+- **dprime_diff_pairZ** the estimated *d'* for a listener using the differencing strategy for the stimulus pair number *Z*
 - **nTotal_pairZ** the total number of trials for the stimulus pair number *Z*
 - **nCorrect_A_pairZ** the number of correct response for "A" trials for the stimulus pair number *Z*
 - **nTotal_A_pairZ** the total number of "A" trials for the stimulus pair number *Z*
@@ -1528,8 +1528,8 @@ shown below:
 
 the result section is composed of two parts for each pair of stimuli tested. The first part
 lists first the pair number, and then gives summary statistics for that pair (number of
-correct responses, total number of trials, percent correct, d' for the independent observations
-strategy, d' for the differencing strategy). The second part gives summary statistics separately
+correct responses, total number of trials, percent correct, *d'* for the independent observations
+strategy, *d'* for the differencing strategy). The second part gives summary statistics separately
 for trials in which stimulus *X* was presented in interval *A* and for trials in which it was
 presented in interval *B*.
 
@@ -1572,8 +1572,8 @@ paradigm-specific columns for each subcondition tested:
 - **nCorr_subcndX** the number of correct response in subcondition *X*
 - **nTrials_subcndX** the number of trials in subcondition *X*
 - **percCorr_subcndX** the percentage of correct responses in subcondition *X*
-- **dprime_IO_subcndX** the estimated d' in subcondition *X* for a listener using the independent observations strategy 
-- **dprime_diff_subcndX** the estimated d' in subcondition *X* for a listener using the differencing strategy 
+- **dprime_IO_subcndX** the estimated *d'* in subcondition *X* for a listener using the independent observations strategy 
+- **dprime_diff_subcndX** the estimated *d'* in subcondition *X* for a listener using the differencing strategy 
 
 Tabular Trial-Summary Result Files (Multiple Constants Odd One Out)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1594,8 +1594,8 @@ paradigm-specific columns for each subcondition tested:
 - **nCorr_subcndX** the number of correct response in subcondition *X*
 - **nTrials_subcndX** the number of trials in subcondition *X*
 - **percCorr_subcndX** the percentage of correct responses in subcondition *X*
-- **dprime_IO_subcndX** the estimated d' in subcondition *X* for a listener using the independent observations strategy 
-- **dprime_diff_subcndX** the estimated d' in subcondition *X* for a listener using the differencing strategy
+- **dprime_IO_subcndX** the estimated *d'* in subcondition *X* for a listener using the independent observations strategy 
+- **dprime_diff_subcndX** the estimated *d'* in subcondition *X* for a listener using the differencing strategy
     
 
 Plain-Text Block-Summary Result Files (Multiple Constants Odd One Out)
@@ -1628,8 +1628,8 @@ shown below:
 
 for each subcondition, after the subcondition label, the following values are listed
 on successive lines: the number of correct trials, the number of
-trials, the percentage of correct responses, the d' value for a listener using the
-independent observations strategy, and the d' value for a listener using the differencing strategy.
+trials, the percentage of correct responses, the *d'* value for a listener using the
+independent observations strategy, and the *d'* value for a listener using the differencing strategy.
 
 The final line shows the number of times each button was pressed by the listener.
 

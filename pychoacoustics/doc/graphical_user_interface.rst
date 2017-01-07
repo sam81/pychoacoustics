@@ -1163,12 +1163,12 @@ Calibrating with a voltmeter
 
 Open the "Edit Phones" dialog. Select the phone for which you want to calibrate and note its
 ``MaxLevel`` (by default this is set to 100 dB SPL). Use the rightmost panel to play
-a 1-kHz sinusoid at the ``MaxLevel`` (e.g. 100 dB), and note the rms voltage reading from
+a 1-kHz sinusoid at the ``MaxLevel`` (e.g. 100 dB), and note the RMS voltage reading from
 a voltmeter connected to a cable receiving input from the soundcard.
 Manufacturers of professional phones usually provide datasheets indicating
-what is the dB SPL level output by the phone when it is driven by a 1-volt :sub:`rms`
+what is the dB SPL level output by the phone when it is driven by a 1-volt :sub:`RMS`
 sinusoid at 1 kHz. You can use this figure to calculate what the dB SPL output is for the
-1-kHz sinusoid. Suppose that the dB SPL output for a 1-volt :sub:`rms` sinusoid at 1 kHz
+1-kHz sinusoid. Suppose that the dB SPL output for a 1-volt :sub:`RMS` sinusoid at 1 kHz
 is :math:`L_r`, and the voltage output for the sinusoid played at ``MaxLevel`` is :math:`V_x`,
 the dB SPL output for the sinusoid (:math:`L_x`) will be:
 
@@ -1176,14 +1176,14 @@ the dB SPL output for the sinusoid (:math:`L_x`) will be:
    
    L_x = L_r + 20 log10(V_x)
 
-if the reference rms voltage in the datasheet is not 1 but some other value :math:`V_r`,
+if the reference RMS voltage in the datasheet is not 1 but some other value :math:`V_r`,
 :math:`L_x` can be calculated as:   
 
 .. math::
 
    L_x = L_r + 20 log10(V_x/V_r)
 
-Finally, set the ``MaxLevel`` for the phone you're calibrating to math:`L_x`. As for the SPL meter calibration
+Finally, set the ``MaxLevel`` for the phone you're calibrating to :math:`L_x`. As for the SPL meter calibration
 you do not actually need to play the sinusoid at the ``MaxLevel`` (and it may be better not to do so
 because you may get distortions at very high levels). Instead, you could for example
 play it at a level equal to ``MaxLevel`` - 20. You would then add back the 20 dBs in the equation to

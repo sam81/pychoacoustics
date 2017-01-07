@@ -67,7 +67,7 @@ def compute_proportions(nCA, nTA, nIB, nTB, corr):
 
     References
     ----------
-   .. [1] Hautus, M. J. (1995). Corrections for extreme proportions and their biasing effects on estimated values of d'. *Behavior Research Methods, Instruments, & Computers, 27(I)*, 46–51. http://doi.org/10.3758/BF03203619
+   .. [1] Hautus, M. J. (1995). Corrections for extreme proportions and their biasing effects on estimated values of *d'*. *Behavior Research Methods, Instruments, & Computers, 27(I)*, 46–51. http://doi.org/10.3758/BF03203619
    .. [2] Macmillan, N. A., & Creelman, C. D. (2004). *Detection Theory: A User’s Guide (2nd ed.)*. London: Lawrence Erlbraum Associates.
 
     
@@ -98,7 +98,7 @@ def compute_proportions(nCA, nTA, nIB, nTB, corr):
 
 def dprime_mAFC(Pc, m):
     """
-    Compute d' corresponding to a certain proportion of correct
+    Compute *d'* corresponding to a certain proportion of correct
     responses in m-AFC tasks.
 
     Parameters
@@ -111,7 +111,7 @@ def dprime_mAFC(Pc, m):
     Returns
     -------
     dprime : float
-        d' value
+        *d'* value
 
     Examples
     --------
@@ -146,7 +146,7 @@ def dprime_mAFC(Pc, m):
 
 def dprime_ABX(H, FA, meth):
     """
-    Compute d' for ABX task from 'hit' and 'false alarm' rates.
+    Compute *d'* for ABX task from 'hit' and 'false alarm' rates.
 
     Parameters
     ----------
@@ -160,7 +160,7 @@ def dprime_ABX(H, FA, meth):
     Returns
     -------
     dprime : float
-        d' value
+        *d'* value
 
     Examples
     --------
@@ -211,7 +211,7 @@ def dprime_ABX(H, FA, meth):
 
 def dprime_ABX_from_counts(nCA, nTA, nCB, nTB, meth, corr):
     """
-    Compute d' for ABX task from counts of correct and total responses.
+    Compute *d'* for ABX task from counts of correct and total responses.
 
     Parameters
     ----------
@@ -231,7 +231,7 @@ def dprime_ABX_from_counts(nCA, nTA, nCB, nTB, meth, corr):
     Returns
     -------
     dprime : float
-        d' value
+        *d'* value
 
     Examples
     --------
@@ -270,7 +270,7 @@ def dprime_ABX_from_counts(nCA, nTA, nCB, nTB, meth, corr):
 
 def dprime_oddity(prCorr, meth="diff"):
     """
-    Compute d' for oddity task from proportion of correct responses.
+    Compute *d'* for oddity task from proportion of correct responses.
     Only valid for the case in which there are three presentation intervals.
 
     Parameters
@@ -283,7 +283,7 @@ def dprime_oddity(prCorr, meth="diff"):
     Returns
     -------
     dprime : float
-        d' value
+        *d'* value
 
     Examples
     --------
@@ -341,7 +341,7 @@ def dprime_oddity(prCorr, meth="diff"):
 
 def dprime_SD(H, FA, meth):
     """
-    Compute d' for one interval same/different task from 'hit' and 'false alarm' rates.
+    Compute *d'* for one interval same/different task from 'hit' and 'false alarm' rates.
 
     Parameters
     ----------
@@ -355,7 +355,7 @@ def dprime_SD(H, FA, meth):
     Returns
     -------
     dprime : float
-        d' value
+        *d'* value
 
     Examples
     --------
@@ -399,7 +399,7 @@ def dprime_SD(H, FA, meth):
 
 def dprime_SD_from_counts(nCA, nTA, nCB, nTB, meth, corr):
     """
-    Compute d' for one interval same/different task from counts of correct and total responses.
+    Compute *d'* for one interval same/different task from counts of correct and total responses.
 
     Parameters
     ----------
@@ -419,7 +419,7 @@ def dprime_SD_from_counts(nCA, nTA, nCB, nTB, meth, corr):
     Returns
     -------
     dprime : float
-        d' value
+        *d'* value
 
     Examples
     --------
@@ -460,7 +460,7 @@ def dprime_SD_from_counts(nCA, nTA, nCB, nTB, meth, corr):
 
 def dprime_yes_no(H, FA):
     """
-    Compute d' for one interval 'yes/no' type tasks from hits and false alarm rates.
+    Compute *d'* for one interval 'yes/no' type tasks from hits and false alarm rates.
 
     Parameters
     ----------
@@ -472,7 +472,7 @@ def dprime_yes_no(H, FA):
     Returns
     -------
     dprime : float
-        d' value
+        *d'* value
 
     Examples
     --------
@@ -495,7 +495,7 @@ def dprime_yes_no(H, FA):
 
 def dprime_yes_no_from_counts(nCA, nTA, nCB, nTB, corr):
     """
-    Compute d' for one interval 'yes/no' type tasks from counts of correct and total responses.
+    Compute *d'* for one interval 'yes/no' type tasks from counts of correct and total responses.
 
     Parameters
     ----------
@@ -513,7 +513,7 @@ def dprime_yes_no_from_counts(nCA, nTA, nCB, nTB, corr):
     Returns
     -------
     dprime : float
-        d' value
+        *d'* value
 
     Examples
     --------

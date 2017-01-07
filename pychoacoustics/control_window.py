@@ -5766,7 +5766,7 @@ class pychControlWin(QMainWindow):
                               self.tr("""<b>pychoacoustics - Python app for psychoacoustics</b> <br>
                               - version: {0}; <br>
                               - build date: {1} <br>
-                              <p> Copyright &copy; 2008-2015 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 
+                              <p> Copyright &copy; 2008-2016 Samuele Carcagno. <a href="mailto:sam.carcagno@gmail.com">sam.carcagno@gmail.com</a> 
                               All rights reserved. <p>
                               This program is free software: you can redistribute it and/or modify
                               it under the terms of the GNU General Public License as published by

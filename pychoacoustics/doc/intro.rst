@@ -38,7 +38,7 @@ Some of the main features of pychoacoustics are that:
 - pychoacoustics lets you create complex auditory experiments with relative ease
 - experimental variables can be easily manipulated, stored, and retrieved using a graphical user interface
 - pychoacoustics takes care of stimulus presentation, including setting up interval lights and response buttons
-- pychoacoustics takes care of collecting responses, computing summary measures such as threshold estimates, and d', and storing them as CSV files so that they can be readily visualized and processed using statistics programs (R, SPSS, etc...), or spreadsheet applications (Excel, Libreoffice Calc, etc...)
+- pychoacoustics takes care of collecting responses, computing summary measures such as threshold estimates, and *d'*, and storing them as CSV files so that they can be readily visualized and processed using statistics programs (R, SPSS, etc...), or spreadsheet applications (Excel, Libreoffice Calc, etc...)
 - pychoacoustics supports the most commonly used stimulus presentation procedures, such as the transformed up-down, same-different, and ABX procedures. It also supports less known and cutting-edge procedures such as the update maximum likelihood and the PSI+ and PSI-marginal procedures
 - for many procedures pychoacoustics provides graphical summaries of the results 
 - pychoacoustics stores all important information, including names and values of experimental parameters, timestamps, participant identification codes (if provided), version of the software used to run the experiment, etc..., so that no important information is accidentally lost

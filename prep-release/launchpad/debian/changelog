@@ -1,3 +1,9 @@
+pychoacoustics (0.4.1-ppa0~xenial) xenial; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Fri, 18 Nov 2016 00:12:03 +0100
+
 pychoacoustics (0.3.45-ppa0~xenial) xenial; urgency=low
 
   * New upstream release
