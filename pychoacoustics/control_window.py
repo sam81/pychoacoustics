@@ -3903,6 +3903,14 @@ class pychControlWin(QMainWindow):
             self.onChangeLapsePrior()
             self.onChangeSwptRule()
 
+        if self.currParadigm in [self.tr("Adaptive Digit Span")]:
+            self.paradigmChooserList = []
+            self.paradigmChooserLabelList = []
+            self.paradigmChooserOptionsList = []
+            self.paradigmChooserCheckBoxList = []
+            self.paradigmFieldList = []
+            self.paradigmFieldLabelList = []
+            self.paradigmFieldCheckBoxList = []
 
     def onExperimentChange(self, experimentSelected):
         for i in range(self.paradigmChooser.count()):

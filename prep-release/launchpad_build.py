@@ -64,3 +64,9 @@ os.chdir("pychoacoustics-" + ver)
 
 #For Launchpad Upload
 os.system("debuild -S -sa")
+
+#back to the buildpath directory
+os.chdir("../")
+#upload to launchpad
+uploadCmd = "dput ppa:samuele-carcagno/hearinglab " + "pychoacoustics_"+ ver + pparev + "~" + series + "_source.changes"
+os.system(uploadCmd)

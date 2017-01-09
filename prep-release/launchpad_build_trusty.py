@@ -66,3 +66,9 @@ os.chdir("pychoacoustics-pyqt4-" + ver)
 os.system("debuild -S -sa")
 
 #cmd = "dput ppa:samuele-carcagno/hearinglab"
+
+#back to the buildpath directory
+os.chdir("../")
+#upload to launchpad
+uploadCmd = "dput ppa:samuele-carcagno/hearinglab " + "pychoacoustics_"+ ver + pparev + "~" + series + "_source.changes"
+os.system(uploadCmd)
