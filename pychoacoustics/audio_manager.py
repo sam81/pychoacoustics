@@ -361,7 +361,7 @@ class threadedAudioPlayer(QThread):
                 self.snd = concatenate((self.snd, pad), axis=0)
 
         if playCmd == "alsaaudio":
-            self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=self.prm["pref"]["sound"]["alsaaudioDevice"])
+            self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, device=self.prm["pref"]["sound"]["alsaaudioDevice"])
             self.device.setchannels(nChannels)
             self.device.setrate(sampRate)
             self.device.setperiodsize(self.bufferSize)
