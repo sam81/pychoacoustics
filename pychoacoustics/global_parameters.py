@@ -186,6 +186,15 @@ def set_global_parameters(prm):
             prm['appData']['pyaudioAvailable'] = False
 
         prm['appData']['available_play_commands'].append(QApplication.translate("","custom",""))
+    elif platform.system() == 'FreeBSD':
+        prm['appData']['available_play_commands'] = ["wavplay"]
+        if pyaudioAvailable == True:
+            prm['appData']['available_play_commands'].append("pyaudio")
+            prm['appData']['pyaudioAvailable'] = True
+        else:
+            prm['appData']['pyaudioAvailable'] = False
+
+        prm['appData']['available_play_commands'].append(QApplication.translate("","custom",""))
     else:
         prm['appData']['available_play_commands'] = [QApplication.translate("","custom","")]
         if pyaudioAvailable == True:
