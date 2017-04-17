@@ -18,6 +18,7 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import numpy
+from numpy import arange, ceil, floor, linspace, log, log10
 
 
 def get_list_indices(li, value):
@@ -74,6 +75,44 @@ def isEven(number):
         out = False
 
     return out
+
+def log_10_product(x, pos):
+    """The two args are the value and tick position.
+    Label ticks with the product of the exponentiation"""
+    return '%1i' % (x)
+
+def logBase(val, base):
+    """
+    Compute logarithm with base `base`.
+    """
+    out = log(val)/log(base)
+    return out
+
+def nextPow10(val):
+    p = int(ceil(log10(val)))
+    return p
+
+def prevPow10(val):
+    p = int(floor(log10(val)))
+    return p
+
+def setLogTicks(ax, base):
+    """
+    Set logarithmic ticks for axis `ax` with logarithmic 
+    coordinates in base `base`.
+    """
+    powd = prevPow10(base**(ax.get_xlim()[0]))
+    powup = nextPow10(base**(ax.get_xlim()[1]))
+    majTicks = 10.0**(arange(powd, powup))
+    ax.set_xticks(log(majTicks))
+    xTickLabels = []
+    for tick in majTicks:
+        xTickLabels.append(str(tick))
+    ax.set_xticklabels(xTickLabels)
+    minTicks = []
+    for i in range(len(majTicks)-1):
+        minTicks.extend(logBase(linspace(majTicks[i], majTicks[i+1], 10), base))
+    ax.set_xticks(minTicks, minor=True)
 
 def stimSpacingGrid(lo, hi, step, scale='linear'):
     if scale == "linear":

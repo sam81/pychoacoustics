@@ -65,6 +65,7 @@ import matplotlib.font_manager as fm
 
 from .pysdt import*
 from .UML_method import*
+from .utils_general import*
 
 #mpl.rcParams['font.family'] = 'sans-serif'
 
@@ -72,20 +73,6 @@ from .UML_method import*
 #fontPath = '/media/ntfsShared/lin_home/auditory/code/pychoacoustics/pychoacoustics-qt4/development/dev/data/Ubuntu-R.ttf'
 #prop = fm.FontProperties(fname=fontPath)
 #mpl.rcParams.update({'font.size': 16})
-
-
-
-def log_10_product(x, pos):
-    """The two args are the value and tick position.
-    Label ticks with the product of the exponentiation"""
-    return '%1i' % (x)
-def nextPow10Up(val):
-    p = int(ceil(log10(val)))
-    return p
-
-def nextPow10Down(val):
-    p = int(floor(log10(val)))
-    return p
 
 class UMLParSpacePlot(QMainWindow):
     def __init__(self, parent):
@@ -262,8 +249,8 @@ class UMLParSpacePlot(QMainWindow):
         
         if self.stimScaling == "Linear":
             markerline, stemlines, baseline = self.ax1.stem(self.UML["alpha"], self.A[:,0,0], 'k')
-        elif self.stimScaling == "Logarithmic":
-            markerline, stemlines, baseline = self.ax1.stem(exp(self.UML["alpha"]), self.A[:,0,0], 'k')
+        elif self.stimScaling == "Logarithmic": #logarithmic spaced plotted on linear coords
+            markerline, stemlines, baseline = self.ax1.stem(exp(self.UML["alpha"]), self.A[:,0,0]/exp(self.UML["alpha"]), 'k')
             if self.loStim < 0:
                 self.ax1.set_xticklabels(list(map(str, -self.ax1.get_xticks())))
             
@@ -274,7 +261,10 @@ class UMLParSpacePlot(QMainWindow):
     def plotDataSlope(self):
         self.ax2.clear()
         self.B = setPrior(self.UML["b"], self.UML["par"]["beta"])
-        markerline, stemlines, baseline = self.ax2.stem(self.UML["beta"], self.B[0,:,0], 'k')
+        if self.UML["par"]["beta"]["spacing"] == "Linear":
+            markerline, stemlines, baseline = self.ax2.stem(self.UML["beta"], self.B[0,:,0], 'k')
+        elif self.UML["par"]["beta"]["spacing"] == "Logarithmic":
+            markerline, stemlines, baseline = self.ax2.stem(self.UML["beta"], self.B[0,:,0]/self.UML["beta"], 'k')
         plt.setp(markerline, 'markerfacecolor', 'k')
         nBeta = len(self.B[0,:,0])
         self.ax2.set_title("Slope, #Points " + str(nBeta))
@@ -282,7 +272,10 @@ class UMLParSpacePlot(QMainWindow):
     def plotDataLapse(self):
         self.ax3.clear()
         L = setPrior(self.UML["l"], self.UML["par"]["lambda"])
-        markerline, stemlines, baseline = self.ax3.stem(self.UML["lambda"], L[0,0,:], 'k')
+        if self.UML["par"]["lambda"]["spacing"] == "Linear":
+            markerline, stemlines, baseline = self.ax3.stem(self.UML["lambda"], L[0,0,:], 'k')
+        elif self.UML["par"]["lambda"]["spacing"] == "Logarithmic":
+            markerline, stemlines, baseline = self.ax3.stem(self.UML["lambda"], L[0,0,:]/self.UML["lambda"], 'k')
         plt.setp(markerline, 'markerfacecolor', 'k')
         nLambda = len(L[0,0,:])
         self.ax3.set_title("Lapse, #Points " + str(nLambda))
@@ -291,54 +284,29 @@ class UMLParSpacePlot(QMainWindow):
     def plotDataMidpointLogAxis(self):
         self.ax1.clear()
         self.A = setPrior(self.UML["a"], self.UML["par"]["alpha"])
-        
-        if self.stimScaling == "Linear":
-            x = self.UML["alpha"]
-        elif self.stimScaling == "Logarithmic":
-            x = exp(self.UML["alpha"])
-        markerline, stemlines, baseline = self.ax1.stem(log10(x), self.A[:,0,0], 'k')
 
-        powd = nextPow10Down(10**(self.ax1.get_xlim()[0]))
-        powup = nextPow10Up(10**(self.ax1.get_xlim()[1]))
-        majTicks = arange(powd, powup+1)
-        self.ax1.set_xticks(majTicks)
-        xTickLabels = []
-        for tick in majTicks:
-            if self.stimScaling == "Logarithmic" and self.loStim < 0:
-                xTickLabels.append(str(-10**tick))
-            else:
-                xTickLabels.append(str(10**tick))
-        self.ax1.set_xticklabels(xTickLabels)
-        minTicks = []
-        for i in range(len(majTicks)-1):
-            minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
-        self.ax1.set_xticks(minTicks, minor=True)
-            
+        if self.stimScaling == "Logarithmic":
+            x = self.UML["alpha"]
+            markerline, stemlines, baseline = self.ax1.stem(x, self.A[:,0,0], 'k')
+        elif self.stimScaling == "Linear":
+            x = log(self.UML["alpha"])
+            markerline, stemlines, baseline = self.ax1.stem(x, self.A[:,0,0]*self.UML["alpha"], 'k')
+
+        setLogTicks(self.ax1, exp(1))   
         plt.setp(markerline, 'markerfacecolor', 'k')
         nAlpha = len(self.A[:,0,0])
         self.ax1.set_title("Midpoint, #Points " + str(nAlpha))
 
-        # if self.stimScaling == "Logarithmic":
-        #     if self.loStim < 0:
-        #         self.ax1.set_xlim(self.ax1.get_xlim()[::-1])
     def plotDataSlopeLogAxis(self):
         self.ax2.clear()
         self.B = setPrior(self.UML["b"], self.UML["par"]["beta"])
-        markerline, stemlines, baseline = self.ax2.stem(log10(self.UML["beta"]), self.B[0,:,0], 'k')
+        if self.UML["par"]["beta"]["spacing"] == "Logarithmic":
+            markerline, stemlines, baseline = self.ax2.stem(log(self.UML["beta"]), self.B[0,:,0], 'k')
+        elif self.UML["par"]["beta"]["spacing"] == "Linear":
+            markerline, stemlines, baseline = self.ax2.stem(log(self.UML["beta"]), self.B[0,:,0]*self.UML["beta"], 'k')
+            
+        setLogTicks(self.ax2, exp(1))
         plt.setp(markerline, 'markerfacecolor', 'k')
-
-        powd = nextPow10Down(10**(self.ax2.get_xlim()[0]))
-        powup = nextPow10Up(10**(self.ax2.get_xlim()[1]))
-        majTicks = arange(powd, powup+1)
-        self.ax2.set_xticks(majTicks)
-        xTickLabels = []
-        for tick in majTicks:
-            xTickLabels.append(str(10**tick))
-        self.ax2.set_xticklabels(xTickLabels)
-        minTicks = []
-        for i in range(len(majTicks)-1):
-            minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
-        self.ax2.set_xticks(minTicks, minor=True)
         
         nBeta = len(self.B[0,:,0])
         self.ax2.set_title("Slope, #Points " + str(nBeta))
@@ -346,21 +314,12 @@ class UMLParSpacePlot(QMainWindow):
     def plotDataLapseLogAxis(self):
         self.ax3.clear()
         L = setPrior(self.UML["l"], self.UML["par"]["lambda"])
-        markerline, stemlines, baseline = self.ax3.stem(log10(self.UML["lambda"]), L[0,0,:], 'k')
+        if self.UML["par"]["lambda"]["spacing"] == "Logarithmic":
+            markerline, stemlines, baseline = self.ax3.stem(log(self.UML["lambda"]), L[0,0,:], 'k')
+        elif self.UML["par"]["lambda"]["spacing"] == "Linear":
+            markerline, stemlines, baseline = self.ax3.stem(log(self.UML["lambda"]), L[0,0,:]*self.UML["lambda"], 'k')
+        setLogTicks(self.ax3, exp(1))
         plt.setp(markerline, 'markerfacecolor', 'k')
-
-        powd = nextPow10Down(10**(self.ax3.get_xlim()[0]))
-        powup = nextPow10Up(10**(self.ax3.get_xlim()[1]))
-        majTicks = arange(powd, powup+1)
-        self.ax3.set_xticks(majTicks)
-        xTickLabels = []
-        for tick in majTicks:
-            xTickLabels.append(str(10**tick))
-        self.ax3.set_xticklabels(xTickLabels)
-        minTicks = []
-        for i in range(len(majTicks)-1):
-            minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
-        self.ax3.set_xticks(minTicks, minor=True)
         
         nLambda = len(L[0,0,:])
         self.ax3.set_title("Lapse, #Points " + str(nLambda))

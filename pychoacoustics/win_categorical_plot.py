@@ -61,6 +61,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import pandas as pd
 import matplotlib.font_manager as fm
+from .utils_general import*
 
 #mpl.rcParams['font.family'] = 'sans-serif'
 
@@ -68,20 +69,6 @@ import matplotlib.font_manager as fm
 #fontPath = '/media/ntfsShared/lin_home/auditory/code/pychoacoustics/pychoacoustics-qt4/development/dev/data/Ubuntu-R.ttf'
 #prop = fm.FontProperties(fname=fontPath)
 #mpl.rcParams.update({'font.size': 16})
-
-
-
-def log_10_product(x, pos):
-    """The two args are the value and tick position.
-    Label ticks with the product of the exponentiation"""
-    return '%1i' % (x)
-def nextPow10Up(val):
-    p = int(ceil(log10(val)))
-    return p
-
-def nextPow10Down(val):
-    p = int(floor(log10(val)))
-    return p
 
 class categoricalPlot(QMainWindow):
     def __init__(self, parent, plot_type, fName, winPlot, pdfPlot, paradigm, csv_separator, plot_params, prm):
@@ -307,8 +294,8 @@ class categoricalPlot(QMainWindow):
                     self.ax.add_line(l)
                     self.ax.add_line(top)
                     self.ax.add_line(bot)
-                powd = nextPow10Down(10**(self.ax.get_ylim()[0]))
-                powup = nextPow10Up(10**(self.ax.get_ylim()[1]))
+                powd = prevPow10(10**(self.ax.get_ylim()[0]))
+                powup = nextPow10(10**(self.ax.get_ylim()[1]))
                 majTicks = arange(powd, powup+1)
                 self.ax.set_yticks(majTicks)
                 yTickLabels = []
@@ -363,8 +350,8 @@ class categoricalPlot(QMainWindow):
                         self.ax.add_line(l)
                         self.ax.add_line(top)
                         self.ax.add_line(bot)
-                    powd = nextPow10Down(10**(self.ax.get_ylim()[0]))
-                    powup = nextPow10Up(10**(self.ax.get_ylim()[1]))
+                    powd = prevPow10(10**(self.ax.get_ylim()[0]))
+                    powup = nextPow10(10**(self.ax.get_ylim()[1]))
                     majTicks = arange(powd, powup+1)
                     self.ax.set_yticks(majTicks)
                     yTickLabels = []

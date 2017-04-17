@@ -65,6 +65,7 @@ import matplotlib.font_manager as fm
 
 from .pysdt import*
 from .PSI_method import*
+from .utils_general import*
 
 #mpl.rcParams['font.family'] = 'sans-serif'
 
@@ -73,19 +74,6 @@ from .PSI_method import*
 #prop = fm.FontProperties(fname=fontPath)
 #mpl.rcParams.update({'font.size': 16})
 
-
-
-def log_10_product(x, pos):
-    """The two args are the value and tick position.
-    Label ticks with the product of the exponentiation"""
-    return '%1i' % (x)
-def nextPow10Up(val):
-    p = int(ceil(log10(val)))
-    return p
-
-def nextPow10Down(val):
-    p = int(floor(log10(val)))
-    return p
 
 class PSIParSpacePlot(QMainWindow):
     def __init__(self, parent):
@@ -284,7 +272,7 @@ class PSIParSpacePlot(QMainWindow):
         if self.stimScaling == "Linear":
             markerline, stemlines, baseline = self.ax1.stem(self.PSI["alpha"], self.A[:,0,0], 'k')
         elif self.stimScaling == "Logarithmic":
-            markerline, stemlines, baseline = self.ax1.stem(exp(self.PSI["alpha"]), self.A[:,0,0], 'k')
+            markerline, stemlines, baseline = self.ax1.stem(exp(self.PSI["alpha"]), self.A[:,0,0]/exp(self.PSI["alpha"]), 'k')
             if self.loStim < 0:
                 self.ax1.set_xticklabels(list(map(str, -self.ax1.get_xticks())))
                 
@@ -295,7 +283,10 @@ class PSIParSpacePlot(QMainWindow):
     def plotDataSlope(self):
         self.ax2.clear()
         self.B = setPrior(self.PSI["b"], self.PSI["par"]["beta"])
-        markerline, stemlines, baseline = self.ax2.stem(self.PSI["beta"], self.B[0,:,0], 'k')
+        if self.PSI["par"]["beta"]["spacing"] == "Linear":
+            markerline, stemlines, baseline = self.ax2.stem(self.PSI["beta"], self.B[0,:,0], 'k')
+        elif self.PSI["par"]["beta"]["spacing"] == "Logarithmic":
+            markerline, stemlines, baseline = self.ax2.stem(self.PSI["beta"], self.B[0,:,0]/self.PSI["beta"], 'k')
         plt.setp(markerline, 'markerfacecolor', 'k')
         nBeta = len(self.B[0,:,0])
         self.ax2.set_title("Slope, #Points " + str(nBeta))
@@ -303,7 +294,10 @@ class PSIParSpacePlot(QMainWindow):
     def plotDataLapse(self):
         self.ax3.clear()
         L = setPrior(self.PSI["l"], self.PSI["par"]["lambda"])
-        markerline, stemlines, baseline = self.ax3.stem(self.PSI["lambda"], L[0,0,:], 'k')
+        if self.PSI["par"]["lambda"]["spacing"] == "Linear":
+            markerline, stemlines, baseline = self.ax3.stem(self.PSI["lambda"], L[0,0,:], 'k')
+        elif self.PSI["par"]["lambda"]["spacing"] == "Logarithmic":
+            markerline, stemlines, baseline = self.ax3.stem(self.PSI["lambda"], L[0,0,:]/self.PSI["lambda"], 'k')
         plt.setp(markerline, 'markerfacecolor', 'k')
         nLambda = len(L[0,0,:])
         self.ax3.set_title("Lapse, #Points " + str(nLambda))
@@ -326,29 +320,15 @@ class PSIParSpacePlot(QMainWindow):
     def plotDataMidpointLogAxis(self):
         self.ax1.clear()
         self.A = setPrior(self.PSI["a"], self.PSI["par"]["alpha"])
-        
-        if self.stimScaling == "Linear":
-            x = self.PSI["alpha"]
-        elif self.stimScaling == "Logarithmic":
-            x = exp(self.PSI["alpha"])
-        markerline, stemlines, baseline = self.ax1.stem(log10(x), self.A[:,0,0], 'k')
 
-        powd = nextPow10Down(10**(self.ax1.get_xlim()[0]))
-        powup = nextPow10Up(10**(self.ax1.get_xlim()[1]))
-        majTicks = arange(powd, powup+1)
-        self.ax1.set_xticks(majTicks)
-        xTickLabels = []
-        for tick in majTicks:
-            if self.stimScaling == "Logarithmic" and self.loStim < 0:
-                xTickLabels.append(str(-10**tick))
-            else:
-                xTickLabels.append(str(10**tick))
-        self.ax1.set_xticklabels(xTickLabels)
-        minTicks = []
-        for i in range(len(majTicks)-1):
-            minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
-        self.ax1.set_xticks(minTicks, minor=True)
-            
+        if self.stimScaling == "Logarithmic":
+            x = self.PSI["alpha"]
+            markerline, stemlines, baseline = self.ax1.stem(x, self.A[:,0,0], 'k')
+        elif self.stimScaling == "Linear":
+            x = log(self.PSI["alpha"])
+            markerline, stemlines, baseline = self.ax1.stem(x, self.A[:,0,0]*self.PSI["alpha"], 'k')
+      
+        setLogTicks(self.ax1, exp(1))   
         plt.setp(markerline, 'markerfacecolor', 'k')
         nAlpha = len(self.A[:,0,0])
         self.ax1.set_title("Midpoint, #Points " + str(nAlpha))
@@ -356,21 +336,13 @@ class PSIParSpacePlot(QMainWindow):
     def plotDataSlopeLogAxis(self):
         self.ax2.clear()
         self.B = setPrior(self.PSI["b"], self.PSI["par"]["beta"])
-        markerline, stemlines, baseline = self.ax2.stem(log10(self.PSI["beta"]), self.B[0,:,0], 'k')
-        plt.setp(markerline, 'markerfacecolor', 'k')
+        if self.PSI["par"]["beta"]["spacing"] == "Logarithmic":
+            markerline, stemlines, baseline = self.ax2.stem(log(self.PSI["beta"]), self.B[0,:,0], 'k')
+        elif self.PSI["par"]["beta"]["spacing"] == "Linear":
+            markerline, stemlines, baseline = self.ax2.stem(log(self.PSI["beta"]), self.B[0,:,0]*self.PSI["beta"], 'k')
 
-        powd = nextPow10Down(10**(self.ax2.get_xlim()[0]))
-        powup = nextPow10Up(10**(self.ax2.get_xlim()[1]))
-        majTicks = arange(powd, powup+1)
-        self.ax2.set_xticks(majTicks)
-        xTickLabels = []
-        for tick in majTicks:
-            xTickLabels.append(str(10**tick))
-        self.ax2.set_xticklabels(xTickLabels)
-        minTicks = []
-        for i in range(len(majTicks)-1):
-            minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
-        self.ax2.set_xticks(minTicks, minor=True)
+        setLogTicks(self.ax2, exp(1))
+        plt.setp(markerline, 'markerfacecolor', 'k')
         
         nBeta = len(self.B[0,:,0])
         self.ax2.set_title("Slope, #Points " + str(nBeta))
@@ -378,22 +350,14 @@ class PSIParSpacePlot(QMainWindow):
     def plotDataLapseLogAxis(self):
         self.ax3.clear()
         L = setPrior(self.PSI["l"], self.PSI["par"]["lambda"])
-        markerline, stemlines, baseline = self.ax3.stem(log10(self.PSI["lambda"]), L[0,0,:], 'k')
-        plt.setp(markerline, 'markerfacecolor', 'k')
+        if self.PSI["par"]["lambda"]["spacing"] == "Logarithmic":
+            markerline, stemlines, baseline = self.ax3.stem(log(self.PSI["lambda"]), L[0,0,:], 'k')
+        elif self.PSI["par"]["lambda"]["spacing"] == "Linear":
+            markerline, stemlines, baseline = self.ax3.stem(log(self.PSI["lambda"]), L[0,0,:]*self.PSI["lambda"], 'k')
 
-        powd = nextPow10Down(10**(self.ax3.get_xlim()[0]))
-        powup = nextPow10Up(10**(self.ax3.get_xlim()[1]))
-        majTicks = arange(powd, powup+1)
-        self.ax3.set_xticks(majTicks)
-        xTickLabels = []
-        for tick in majTicks:
-            xTickLabels.append(str(10**tick))
-        self.ax3.set_xticklabels(xTickLabels)
-        minTicks = []
-        for i in range(len(majTicks)-1):
-            minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
-        self.ax3.set_xticks(minTicks, minor=True)
-        
+        setLogTicks(self.ax3, exp(1))
+        plt.setp(markerline, 'markerfacecolor', 'k')
+      
         nLambda = len(L[0,0,:])
         self.ax3.set_title("Lapse, #Points " + str(nLambda))
 
@@ -401,28 +365,15 @@ class PSIParSpacePlot(QMainWindow):
         self.ax4.clear()
 
         nStim = len(self.PSI["stims"])
-        if self.stimScaling == "Linear":
+        if self.stimScaling == "Logarithmic":
             x = self.PSI["stims"]
-        elif self.stimScaling == "Logarithmic":
-            x = exp(self.PSI["stims"])
+        elif self.stimScaling == "Linear":
+            x = log(self.PSI["stims"])
+
             
-        markerline, stemlines, baseline = self.ax4.stem(log10(x), np.ones(nStim), 'k')
+        markerline, stemlines, baseline = self.ax4.stem(x, np.ones(nStim), 'k')
+        setLogTicks(self.ax4, exp(1))
         plt.setp(markerline, 'markerfacecolor', 'k')
-        powd = nextPow10Down(10**(self.ax4.get_xlim()[0]))
-        powup = nextPow10Up(10**(self.ax4.get_xlim()[1]))
-        majTicks = arange(powd, powup+1)
-        self.ax4.set_xticks(majTicks)
-        xTickLabels = []
-        for tick in majTicks:
-            if self.stimScaling == "Logarithmic" and self.loStim < 0:
-                xTickLabels.append(str(-10**tick))
-            else:
-                xTickLabels.append(str(10**tick))
-        self.ax4.set_xticklabels(xTickLabels)
-        minTicks = []
-        for i in range(len(majTicks)-1):
-            minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
-        self.ax4.set_xticks(minTicks, minor=True)
         
         self.ax4.set_title("Stimulus, #Points " + str(nStim))
 
