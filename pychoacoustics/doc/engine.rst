@@ -72,6 +72,18 @@ the system path, ``pychoacoustics`` will detect them automatically.
 Note that external media players with a graphical user interface (like
 foobar2000) may not work well with ``pychoacoustics``.
 
+Sound Output on macOS
+---------------------
+
+By default ``pychoacoustics`` uses the ``afplay`` command to output sound
+on macOS. If ``pyaudio`` is properly installed and configured for the Python
+distribution used to run ``pychoacoustics`` it can also be used by ``pychoacoustics`` to play sounds on macOS.
+
+Sound Output on FreeBSD
+-----------------------
+
+The default command used by ``pychoacoustics`` to play sound on FreeBSD is ``wavplay``.
+Several other commands can be used to play sound on FreeBSD systems, see `here <https://forums.freebsd.org/threads/59793/>`_.
 
 .. _sec-parameters_files:
 
