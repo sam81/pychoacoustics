@@ -38,7 +38,7 @@
         <translation type="obsolete">Absent</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="407"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="416"/>
         <source>Yes</source>
         <translation>Oui</translation>
     </message>
@@ -68,7 +68,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="280"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="289"/>
         <source>Ask</source>
         <translation type="unfinished"></translation>
     </message>
@@ -78,7 +78,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="281"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="290"/>
         <source>Real Listener</source>
         <translation type="unfinished"></translation>
     </message>
@@ -93,92 +93,92 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="348"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="357"/>
         <source>custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="207"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="216"/>
         <source>System Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="325"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="334"/>
         <source>en</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="201"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="210"/>
         <source>it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="202"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="211"/>
         <source>fr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="203"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="212"/>
         <source>es</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="204"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="213"/>
         <source>el</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="326"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="335"/>
         <source>US</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="209"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="218"/>
         <source>GB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="211"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="220"/>
         <source>IT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="212"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="221"/>
         <source>CH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="213"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="222"/>
         <source>FR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="214"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="223"/>
         <source>CA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="216"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="225"/>
         <source>ES</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="217"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="226"/>
         <source>BO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="218"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="227"/>
         <source>CL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="220"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="229"/>
         <source>GR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="221"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="230"/>
         <source>CY</source>
         <translation type="unfinished"></translation>
     </message>
