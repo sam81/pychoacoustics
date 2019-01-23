@@ -12,7 +12,7 @@ ease of use. The application is divided in two graphical windows
 a) the “response box”, shown in Figure :ref:`fig-response_box`, with 
 which listeners interact during the experiment, and b) the control window, 
 shown in Figure :ref:`fig-control_window`, that contains a series of 
-widgets (choosers, text field and buttons) that are used by the experimenter 
+widgets (choosers, text fields and buttons) that are used by the experimenter 
 to set all of the relevant experimental parameters which can also be stored 
 and later reloaded into the application. 
 

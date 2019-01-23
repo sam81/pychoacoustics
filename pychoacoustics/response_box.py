@@ -1609,6 +1609,7 @@ class responseBox(QMainWindow):
         # if percent correct performance at self.prm['adaptiveMaxLimit'] is less than self.prm['percentCorrectTracked']
         # after self.prm['minSwitchTrials'] at self.prm['adaptiveMaxLimit'], switch to a constant procedure
         # that measures percent correct at self.prm['adaptiveMaxLimit'] for self.prm['nTrialsRequiredAtMaxLimit']
+        # note that the the value of parent.prm['adaptiveParam'] needs to be limited in the experiment file!
         if self.prm['startOfBlock'] == True:
             self.prm['blockHasEnded'] = False
             self.prm['correctCount'] = 0
@@ -1660,7 +1661,7 @@ class responseBox(QMainWindow):
                     stepSize[self.prm['incorrTrackDir']] = self.prm['adaptiveStepSize2'] ** (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
 
         #--..--
-        if self.prm['adaptiveParam'] == self.prm['adaptiveMaxLimit']:
+        if self.prm['adaptiveParam'] >= self.prm['adaptiveMaxLimit']:
             self.prm['nTotalAtMaxLimit'] = self.prm['nTotalAtMaxLimit']+1
             if buttonClicked == self.correctButton:
                 self.prm['nCorrectAtMaxLimit'] = self.prm['nCorrectAtMaxLimit']+1
@@ -1751,11 +1752,12 @@ class responseBox(QMainWindow):
                     elif self.prm['adaptiveType'] == self.tr("Geometric"):
                         self.prm['adaptiveParam'] = self.prm['adaptiveParam'] * (stepSize[self.prm['incorrTrackDir']]**self.prm['incorrTrackSign'])
 
-        print(self.prm['percentCorrectTracked'])
-        print(self.prm['switchedToConstant'])
-        print(self.prm['nCorrectAtMaxLimit'])
-        print(self.prm['nTotalAtMaxLimit'])
-        print(self.prm['percentCorrectAtMaxLimit'])
+        #print("Adaptive param. :" + str(self.prm['adaptiveParam']))
+        print("PC tracked: " + str(self.prm['percentCorrectTracked']))
+        print("Switched to constant: " + str(self.prm['switchedToConstant']))
+        print("N corr. at max limit: " + str(self.prm['nCorrectAtMaxLimit']))
+        print("N tot. at max limit: " + str(self.prm['nTotalAtMaxLimit']))
+        print("PC at max limit: " + str(self.prm['percentCorrectAtMaxLimit']))
 
         self.fullFileLog.flush()
         if self.prm['switchedToConstant'] == False:
@@ -1800,7 +1802,7 @@ class responseBox(QMainWindow):
                     self.resFileLog.write('\n\n')
                     self.resFileLog.write('geometric turnpointMean = %5.2f, s.d. = %5.2f \n' %(turnpointMean,turnpointSd))
         else:
-            if self.prm['nTotalAtMaxLimit'] == self.prm['nTrialsRequiredAtMaxLimit']:
+            if self.prm['nTotalAtMaxLimit'] >= self.prm['nTrialsRequiredAtMaxLimit']:
                 self.prm['blockHasEnded'] = True
                 self.writeResultsHeader('standard')
                 #process results
