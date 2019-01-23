@@ -1807,23 +1807,32 @@ class pychControlWin(QMainWindow):
             self.constantNTrialsCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.constantNTrialsCheckBox, n, 0)
 
-            self.minSwitchNTrialsLabel = QLabel(self.tr("Min. No. trials before switch"), self)
-            self.paradigm_widg_sizer.addWidget(self.minSwitchNTrialsLabel, n, 4)
-            self.minSwitchNTrialsTF = QLineEdit()
-            self.minSwitchNTrialsTF.setText('10')
-            self.minSwitchNTrialsTF.setValidator(QIntValidator(self))
-            self.paradigm_widg_sizer.addWidget(self.minSwitchNTrialsTF, n, 5)
-            self.minSwitchNTrialsCheckBox = QCheckBox()
-            self.paradigm_widg_sizer.addWidget(self.minSwitchNTrialsCheckBox, n, 3)
+            n = n+1
+            self.switchAfterInitialTurnpointsChooserLabel = QLabel(self.tr("Switch only after initial turnpoints:"), self)
+            self.paradigm_widg_sizer.addWidget(self.switchAfterInitialTurnpointsChooserLabel, n, 1)
+            self.switchAfterInitialTurnpointsChooser = QComboBox()
+            self.switchAfterInitialTurnpointsChooser.addItems([self.tr("Yes"), self.tr("No")])
+            self.switchAfterInitialTurnpointsChooser.setCurrentIndex(0)
+            self.paradigm_widg_sizer.addWidget(self.switchAfterInitialTurnpointsChooser, n, 2)
+            self.switchAfterInitialTurnpointsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.switchAfterInitialTurnpointsCheckBox, n, 0)
+            # self.adaptParamLimLabel = QLabel(self.tr("Adapt. Param. Limit"), self)
+            # self.paradigm_widg_sizer.addWidget(self.adaptParamLimLabel, n, 4)
+            # self.adaptParamLimTF = QLineEdit()
+            # self.adaptParamLimTF.setText('10')
+            # self.adaptParamLimTF.setValidator(QIntValidator(self))
+            # self.paradigm_widg_sizer.addWidget(self.adaptParamLimTF, n, 5)
+            # self.adaptParamLimCheckBox = QCheckBox()
+            # self.paradigm_widg_sizer.addWidget(self.adaptParamLimCheckBox, n, 3)
 
-            self.paradigmChooserList = [self.adaptiveTypeChooser, self.corrTrackDirChooser]
-            self.paradigmChooserLabelList = [self.adaptiveTypeChooserLabel, self.corrTrackDirChooserLabel]
-            self.paradigmChooserOptionsList = [self.prm["adaptiveTypeChoices"], [self.tr("Up"), self.tr("Down")]]
-            self.paradigmChooserCheckBoxList = [self.adaptiveTypeCheckBox, self.corrTrackDirCheckBox]
+            self.paradigmChooserList = [self.adaptiveTypeChooser, self.corrTrackDirChooser, self.switchAfterInitialTurnpointsChooser]
+            self.paradigmChooserLabelList = [self.adaptiveTypeChooserLabel, self.corrTrackDirChooserLabel, self.switchAfterInitialTurnpointsChooserLabel]
+            self.paradigmChooserOptionsList = [self.prm["adaptiveTypeChoices"], [self.tr("Up"), self.tr("Down")], [self.tr("Yes"), self.tr("No")]]
+            self.paradigmChooserCheckBoxList = [self.adaptiveTypeCheckBox, self.corrTrackDirCheckBox, self.switchAfterInitialTurnpointsCheckBox]
 
-            self.paradigmFieldList = [self.ruleDownTF, self.ruleUpTF, self.initialTurnpointsTF, self.totalTurnpointsTF, self.stepSize1TF, self.stepSize2TF, self.constantNTrialsTF, self.minSwitchNTrialsTF]
-            self.paradigmFieldLabelList = [self.ruleDownLabel, self.ruleUpLabel, self.initialTurnpointsLabel, self.totalTurnpointsLabel, self.stepSize1Label, self.stepSize2Label,  self.constantNTrialsLabel, self.minSwitchNTrialsLabel]
-            self.paradigmFieldCheckBoxList = [self.ruleDownCheckBox, self.ruleUpCheckBox, self.initialTurnpointsCheckBox, self.totalTurnpointsCheckBox, self.stepSize1CheckBox, self.stepSize2CheckBox, self.constantNTrialsCheckBox, self.minSwitchNTrialsCheckBox]
+            self.paradigmFieldList = [self.ruleDownTF, self.ruleUpTF, self.initialTurnpointsTF, self.totalTurnpointsTF, self.stepSize1TF, self.stepSize2TF, self.constantNTrialsTF]#, self.adaptParamLimTF]
+            self.paradigmFieldLabelList = [self.ruleDownLabel, self.ruleUpLabel, self.initialTurnpointsLabel, self.totalTurnpointsLabel, self.stepSize1Label, self.stepSize2Label,  self.constantNTrialsLabel]#, self.adaptParamLimLabel]
+            self.paradigmFieldCheckBoxList = [self.ruleDownCheckBox, self.ruleUpCheckBox, self.initialTurnpointsCheckBox, self.totalTurnpointsCheckBox, self.stepSize1CheckBox, self.stepSize2CheckBox, self.constantNTrialsCheckBox]#, self.adaptParamLimCheckBox]
 
         #------------------------------------
         #WEIGHTED UP/DOWN Hybrid PARADIGM WIDGETS
@@ -1902,23 +1911,33 @@ class pychControlWin(QMainWindow):
             self.constantNTrialsCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.constantNTrialsCheckBox, n, 0)
 
-            self.minSwitchNTrialsLabel = QLabel(self.tr("Min. No. trials before switch"), self)
-            self.paradigm_widg_sizer.addWidget(self.minSwitchNTrialsLabel, n, 4)
-            self.minSwitchNTrialsTF = QLineEdit()
-            self.minSwitchNTrialsTF.setText('10')
-            self.minSwitchNTrialsTF.setValidator(QIntValidator(self))
-            self.paradigm_widg_sizer.addWidget(self.minSwitchNTrialsTF, n, 5)
-            self.minSwitchNTrialsCheckBox = QCheckBox()
-            self.paradigm_widg_sizer.addWidget(self.minSwitchNTrialsCheckBox, n, 3)
-            
-            self.paradigmChooserList = [self.adaptiveTypeChooser, self.corrTrackDirChooser]
-            self.paradigmChooserLabelList = [self.adaptiveTypeChooserLabel, self.corrTrackDirChooserLabel]
-            self.paradigmChooserOptionsList = [self.prm["adaptiveTypeChoices"], [self.tr("Up"), self.tr("Down")]]
-            self.paradigmChooserCheckBoxList = [self.adaptiveTypeCheckBox, self.corrTrackDirCheckBox]
+            # self.adaptParamLimLabel = QLabel(self.tr("Adapt. Param. Limit"), self)
+            # self.paradigm_widg_sizer.addWidget(self.adaptParamLimLabel, n, 4)
+            # self.adaptParamLimTF = QLineEdit()
+            # self.adaptParamLimTF.setText('10')
+            # self.adaptParamLimTF.setValidator(QIntValidator(self))
+            # self.paradigm_widg_sizer.addWidget(self.adaptParamLimTF, n, 5)
+            # self.adaptParamLimCheckBox = QCheckBox()
+            # self.paradigm_widg_sizer.addWidget(self.adaptParamLimCheckBox, n, 3)
 
-            self.paradigmFieldList = [self.pcTrackedTF, self.initialTurnpointsTF, self.totalTurnpointsTF, self.stepSize1TF, self.stepSize2TF, self.constantNTrialsTF, self.minSwitchNTrialsTF]
-            self.paradigmFieldLabelList = [self.pcTrackedLabel, self.initialTurnpointsLabel, self.totalTurnpointsLabel, self.stepSize1Label, self.stepSize2Label, self.constantNTrialsLabel, self.minSwitchNTrialsLabel]
-            self.paradigmFieldCheckBoxList = [self.pcTrackedCheckBox, self.initialTurnpointsCheckBox, self.totalTurnpointsCheckBox, self.stepSize1CheckBox, self.stepSize2CheckBox, self.constantNTrialsCheckBox, self.minSwitchNTrialsCheckBox]
+            n = n+1
+            self.switchAfterInitialTurnpointsChooserLabel = QLabel(self.tr("Switch only after initial turnpoints:"), self)
+            self.paradigm_widg_sizer.addWidget(self.switchAfterInitialTurnpointsChooserLabel, n, 1)
+            self.switchAfterInitialTurnpointsChooser = QComboBox()
+            self.switchAfterInitialTurnpointsChooser.addItems([self.tr("Yes"), self.tr("No")])
+            self.switchAfterInitialTurnpointsChooser.setCurrentIndex(0)
+            self.paradigm_widg_sizer.addWidget(self.switchAfterInitialTurnpointsChooser, n, 2)
+            self.switchAfterInitialTurnpointsCheckBox = QCheckBox()
+            self.paradigm_widg_sizer.addWidget(self.switchAfterInitialTurnpointsCheckBox, n, 0)
+            
+            self.paradigmChooserList = [self.adaptiveTypeChooser, self.corrTrackDirChooser, self.switchAfterInitialTurnpointsChooser]
+            self.paradigmChooserLabelList = [self.adaptiveTypeChooserLabel, self.corrTrackDirChooserLabel, self.switchAfterInitialTurnpointsChooserLabel]
+            self.paradigmChooserOptionsList = [self.prm["adaptiveTypeChoices"], [self.tr("Up"), self.tr("Down")], [self.tr("Yes"), self.tr("No")]]
+            self.paradigmChooserCheckBoxList = [self.adaptiveTypeCheckBox, self.corrTrackDirCheckBox, self.switchAfterInitialTurnpointsCheckBox]
+
+            self.paradigmFieldList = [self.pcTrackedTF, self.initialTurnpointsTF, self.totalTurnpointsTF, self.stepSize1TF, self.stepSize2TF, self.constantNTrialsTF]#, self.adaptParamLimTF]
+            self.paradigmFieldLabelList = [self.pcTrackedLabel, self.initialTurnpointsLabel, self.totalTurnpointsLabel, self.stepSize1Label, self.stepSize2Label, self.constantNTrialsLabel]#, self.adaptParamLimLabel]
+            self.paradigmFieldCheckBoxList = [self.pcTrackedCheckBox, self.initialTurnpointsCheckBox, self.totalTurnpointsCheckBox, self.stepSize1CheckBox, self.stepSize2CheckBox, self.constantNTrialsCheckBox]#, self.adaptParamLimCheckBox]
 
         #------------------------
         #ONE CONSTANT PARADIGM WIDGETS

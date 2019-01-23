@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2008-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2019 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -835,7 +835,9 @@ class responseBox(QMainWindow):
                 self.prm['adaptiveType'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Procedure:"))]
                 self.prm['corrTrackDir'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Corr. Resp. Move Track:"))]
                 self.prm['nTrialsRequiredAtMaxLimit'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Constant No. Trials"))]
-                self.prm['minSwitchTrials'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Min. No. trials before switch"))]
+                #self.prm['minSwitchTrials'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Min. No. trials before switch"))]
+                #self.prm['adaptiveMaxLimit'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Adapt. Param. Limit"))]
+                self.prm['switchAfterInitialTurnpoints'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Switch only after initial turnpoints:"))]
 
             elif self.prm['paradigm'] in [self.tr("Weighted Up-Down"), self.tr("Weighted Up-Down Limited")]:
                 self.prm['percentCorrectTracked'] = float(self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Percent Correct Tracked"))])
@@ -884,7 +886,8 @@ class responseBox(QMainWindow):
                 self.prm['numberCorrectNeeded'] = 1
                 self.prm['numberIncorrectNeeded'] = 1
                 self.prm['nTrialsRequiredAtMaxLimit'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Constant No. Trials"))]
-                self.prm['minSwitchTrials'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Min. No. trials before switch"))]
+                #self.prm['minSwitchTrials'] = self.prm[currBlock]['paradigmField'][self.prm[currBlock]['paradigmFieldLabel'].index(self.tr("Min. No. trials before switch"))]
+                self.prm['switchAfterInitialTurnpoints'] = self.prm[currBlock]['paradigmChooser'][self.prm[currBlock]['paradigmChooserLabel'].index(self.tr("Switch only after initial turnpoints:"))]
                 
             elif self.prm['paradigm'] in [self.tr("Constant m-Intervals n-Alternatives"),
                                           self.tr("Constant 1-Interval 2-Alternatives"),
@@ -1606,8 +1609,7 @@ class responseBox(QMainWindow):
         # procedure inspired by Hopkins, K., & Moore, B. C. J. (2010). Development of a fast method for measuring sensitivity to temporal fine structure information at low frequencies. International Journal of Audiology, 49(12), 940–6. http://doi.org/10.3109/14992027.2010.512613
         # see also:
         # King, A., Hopkins, K., & Plack, C. J. (2014). The effects of age and hearing loss on interaural phase difference discrimination. The Journal of the Acoustical Society of America, 135(1), 342–51. http://doi.org/10.1121/1.4838995
-        # if percent correct performance at self.prm['adaptiveMaxLimit'] is less than self.prm['percentCorrectTracked']
-        # after self.prm['minSwitchTrials'] at self.prm['adaptiveMaxLimit'], switch to a constant procedure
+        # if the adaptive track reaches self.prm['adaptiveMaxLimit'], switch to a constant procedure
         # that measures percent correct at self.prm['adaptiveMaxLimit'] for self.prm['nTrialsRequiredAtMaxLimit']
         # note that the the value of parent.prm['adaptiveParam'] needs to be limited in the experiment file!
         if self.prm['startOfBlock'] == True:
@@ -1618,10 +1620,10 @@ class responseBox(QMainWindow):
             self.prm['startOfBlock'] = False
             self.prm['turnpointVal'] = []
             self.prm['trackDir'] = copy.copy(self.prm['corrTrackDir'])
-            self.prm['nCorrectAtMaxLimit'] = 0
-            self.prm['nTotalAtMaxLimit'] = 0
-            self.prm['percentCorrectAtMaxLimit'] = numpy.nan
-            self.prm['switchedToConstant'] = False
+            self.prm['nCorrectAtMaxLimit'] = 0 ##
+            self.prm['nTotalAtMaxLimit'] = 0 ##
+            self.prm['percentCorrectAtMaxLimit'] = numpy.nan ##
+            self.prm['switchedToConstant'] = False ##
             if method == 'transformedUpDown':
                 self.prm['percentCorrectTracked'] = (0.5**(1/self.prm['numberCorrectNeeded']))*100
             if self.prm['corrTrackDir'] == self.tr("Down"):
@@ -1636,7 +1638,7 @@ class responseBox(QMainWindow):
             self.fullFileSummLines = []
             self.prm['buttonCounter'] = [0 for i in range(self.prm['nAlternatives'])]
         self.prm['buttonCounter'][buttonClicked-1] = self.prm['buttonCounter'][buttonClicked-1] + 1
-
+        
         stepSize = {}
         if method == 'transformedUpDown':
             if self.prm['nTurnpoints'] < self.prm['initialTurnpoints']:
@@ -1661,15 +1663,28 @@ class responseBox(QMainWindow):
                     stepSize[self.prm['incorrTrackDir']] = self.prm['adaptiveStepSize2'] ** (self.prm['percentCorrectTracked'] / (100-self.prm['percentCorrectTracked']))
 
         #--..--
-        if self.prm['adaptiveParam'] >= self.prm['adaptiveMaxLimit']:
-            self.prm['nTotalAtMaxLimit'] = self.prm['nTotalAtMaxLimit']+1
-            if buttonClicked == self.correctButton:
-                self.prm['nCorrectAtMaxLimit'] = self.prm['nCorrectAtMaxLimit']+1
-            self.prm['percentCorrectAtMaxLimit'] = (self.prm['nCorrectAtMaxLimit']/self.prm['nTotalAtMaxLimit'])*100
-        if  self.prm['nTotalAtMaxLimit'] > self.prm['minSwitchTrials']:
-            if  self.prm['percentCorrectAtMaxLimit'] < self.prm['percentCorrectTracked']:
-                self.prm['switchedToConstant'] = True
-        
+        # if self.prm['adaptiveParam'] >= self.prm['adaptiveMaxLimit']:
+        #     self.prm['nTotalAtMaxLimit'] = self.prm['nTotalAtMaxLimit']+1
+        #     if buttonClicked == self.correctButton:
+        #         self.prm['nCorrectAtMaxLimit'] = self.prm['nCorrectAtMaxLimit']+1
+        #     self.prm['percentCorrectAtMaxLimit'] = (self.prm['nCorrectAtMaxLimit']/self.prm['nTotalAtMaxLimit'])*100
+        # if  self.prm['nTotalAtMaxLimit'] > self.prm['minSwitchTrials']:
+        #     if  self.prm['percentCorrectAtMaxLimit'] < self.prm['percentCorrectTracked']:
+        #         self.prm['switchedToConstant'] = True
+        if self.prm['switchAfterInitialTurnpoints'] == self.tr("Yes"):
+            if self.prm['adaptiveParam'] >= self.prm['adaptiveMaxLimit'] and self.prm['nTurnpoints'] > self.prm['initialTurnpoints']: 
+                self.prm['nTotalAtMaxLimit'] = self.prm['nTotalAtMaxLimit']+1
+                if buttonClicked == self.correctButton:
+                    self.prm['nCorrectAtMaxLimit'] = self.prm['nCorrectAtMaxLimit']+1
+                self.prm['percentCorrectAtMaxLimit'] = (self.prm['nCorrectAtMaxLimit']/self.prm['nTotalAtMaxLimit'])*100
+        else:
+            if self.prm['adaptiveParam'] >= self.prm['adaptiveMaxLimit']: 
+                self.prm['nTotalAtMaxLimit'] = self.prm['nTotalAtMaxLimit']+1
+                if buttonClicked == self.correctButton:
+                    self.prm['nCorrectAtMaxLimit'] = self.prm['nCorrectAtMaxLimit']+1
+                self.prm['percentCorrectAtMaxLimit'] = (self.prm['nCorrectAtMaxLimit']/self.prm['nTotalAtMaxLimit'])*100
+            
+            
         if buttonClicked == self.correctButton:
             if self.prm["responseLight"] == self.tr("Feedback"):
                 self.responseLight.giveFeedback("correct")
@@ -1752,8 +1767,17 @@ class responseBox(QMainWindow):
                     elif self.prm['adaptiveType'] == self.tr("Geometric"):
                         self.prm['adaptiveParam'] = self.prm['adaptiveParam'] * (stepSize[self.prm['incorrTrackDir']]**self.prm['incorrTrackSign'])
 
+        if self.prm['switchAfterInitialTurnpoints'] == self.tr("Yes"):
+            if self.prm['adaptiveParam'] >= self.prm['adaptiveMaxLimit'] and self.prm['nTurnpoints'] >= self.prm['initialTurnpoints']:
+                self.prm['switchedToConstant'] = True
+        else:
+            if self.prm['adaptiveParam'] >= self.prm['adaptiveMaxLimit']:
+                self.prm['switchedToConstant'] = True
+                
+
         #print("Adaptive param. :" + str(self.prm['adaptiveParam']))
-        print("PC tracked: " + str(self.prm['percentCorrectTracked']))
+        #print("PC tracked: " + str(self.prm['percentCorrectTracked']))
+        print(self.prm['nTurnpoints'])
         print("Switched to constant: " + str(self.prm['switchedToConstant']))
         print("N corr. at max limit: " + str(self.prm['nCorrectAtMaxLimit']))
         print("N tot. at max limit: " + str(self.prm['nTotalAtMaxLimit']))
