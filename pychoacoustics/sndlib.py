@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2019 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of sndlib
 
 #    sndlib is free software: you can redistribute it and/or modify
@@ -98,7 +98,6 @@ def addSounds(snd1, snd2, delay, fs):
         
     return snd
 
-
 def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
            duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
@@ -118,7 +117,7 @@ def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
     AMPhase : float
         Starting AM phase in radians.
     level : float
-        Tone level in dB SPL. 
+        Average tone level in dB SPL. See notes.
     duration : float
         Tone duration (excluding ramps) in milliseconds.
     ramp : float
@@ -134,12 +133,103 @@ def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
     Returns
     -------
     snd : 2-dimensional array of floats
+
+    Notes
+    ------
+    For a fixed base amplitude, the average power of an AM tone (as defined in this function) increases proportionally with AM depth by a factor of 1+AMDepth^2/2 (Viemeister, 1979, Yost et al., 1989, Hartmann, 2004). This function compensates for this average increase in power. You can use the `AMToneVarLev` function if you want to generate AM tones varying in average power with AM depth.
+
+    References
+    ----------
+    .. [H] Hartmann, W. M. (2004). Signals, Sound, and Sensation. Springer Science & Business Media
+    .. Viemeister, N. F. (1979). Temporal modulation transfer functions based upon modulation thresholds. The Journal of the Acoustical Society of America, 66(5), 1364–1380. https://doi.org/10.1121/1.383531
+    .. [YSO] Yost, W., Sheft, S., & Opie, J. (1989). Modulation interference in detection and discrimination of amplitude modulation. The Journal of the Acoustical Society of America, 86(December 1989), 2138–2147. https://doi.org/10.1121/1.398474
        
     Examples
     --------
     >>> snd = AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, 
     ...     AMPhase=1.5*pi, level=65, duration=180, ramp=10, channel='Both', 
     ...     fs=48000, maxLevel=100)
+    
+    """        
+
+    duration = duration / 1000 #convert from ms to sec
+    
+    nSamples = int(round(duration * fs))
+    nRamp = int(round(ramp/1000 * fs))
+    nTot = nSamples + (nRamp * 2)
+
+    timeAll = arange(0, nTot) / fs
+    timeRamp = arange(0, nRamp) 
+
+    snd = zeros((nTot, 2))
+
+    if channel == "Right":
+        snd[:, 1] = (1 + AMDepth*sin(2*pi*AMFreq*timeAll[:]+AMPhase)) * sin(2*pi*frequency * timeAll[:] + phase)
+    elif channel == "Left":
+        snd[:, 0] = (1 + AMDepth*sin(2*pi*AMFreq*timeAll[:]+AMPhase)) * sin(2*pi*frequency * timeAll[:] + phase)
+    elif channel == "Both":
+        snd[:, 0] = (1 + AMDepth*sin(2*pi*AMFreq*timeAll[:]+AMPhase)) * sin(2*pi*frequency * timeAll[:] + phase)
+        snd[:, 1] = snd[:, 0]
+    else:
+        raise ValueError("Invalid channel argument. Channel must be one of 'Right', 'Left' or 'Both'")
+
+    snd = setLevel_(level, snd, maxLevel, channel=channel)
+    snd = gate(ramp, snd, fs)
+
+    return snd
+
+
+def AMToneVarLev(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
+                 duration=980, ramp=10, channel="Both", fs=48000, maxLevel=101):
+    """
+    Generate an amplitude modulated (AM) tone.
+
+    Parameters
+    ----------
+    frequency : float
+        Carrier frequency in hertz.
+    AMFreq : float
+        Amplitude modulation frequency in Hz.
+    AMDepth : float
+        Amplitude modulation depth (a value of 1
+        corresponds to 100% modulation). 
+    phase : float
+        Starting phase in radians.
+    AMPhase : float
+        Starting AM phase in radians.
+    level : float
+        Average level of the tone in dB SPL when the `AMDepth` is zero. The level of the tone will be higher when `AMDepth` is > zero. See notes. 
+    duration : float
+        Tone duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    channel : string ('Right', 'Left' or 'Both')
+        Channel in which the tone will be generated.
+    fs : int
+        Samplig frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
+
+    Returns
+    -------
+    snd : 2-dimensional array of floats
+
+    Notes
+    ------
+    For a fixed base amplitude, the average power of an AM tone (as defined in this function) increases proportionally with AM depth by a factor of 1+AMDepth^2/2 (Viemeister, 1979, Yost et al., 1989, Hartmann, 2004). This function does not compensate for this average increase in power. You can use the `AMTone` function if you want to generate AM tones matched in average power irrespective of AM depth.
+
+    References
+    ----------
+    .. [H] Hartmann, W. M. (2004). Signals, Sound, and Sensation. Springer Science & Business Media
+    .. Viemeister, N. F. (1979). Temporal modulation transfer functions based upon modulation thresholds. The Journal of the Acoustical Society of America, 66(5), 1364–1380. https://doi.org/10.1121/1.383531
+    .. [YSO] Yost, W., Sheft, S., & Opie, J. (1989). Modulation interference in detection and discrimination of amplitude modulation. The Journal of the Acoustical Society of America, 86(December 1989), 2138–2147. https://doi.org/10.1121/1.398474
+       
+    Examples
+    --------
+    >>> snd = AMToneVarLev(frequency=1000, AMFreq=20, AMDepth=1, phase=0, 
+    ...       AMPhase=1.5*pi, level=65, duration=180, ramp=10, channel='Both', 
+    ...       fs=48000, maxLevel=100)
     
     """        
 
@@ -3860,6 +3950,49 @@ def scale(level, sig):
     sig = sig * 10**(level/20)
     return sig
 
+def setLevel_(level, snd, maxLevel, channel="Both"):
+    """
+    Set the RMS level of a sound signal to a given value.
+
+    Parameters
+    ----------
+    level : float
+        The desired RMS level of the signal in dB SPL.
+    snd : array of floats
+        Signal whose level is to be set.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
+    channel : string ('Right', 'Left' or 'Both')
+        Channel in which the level will be set.
+
+    Returns
+    -------
+    sig : 2-dimensional array of floats
+       
+    Examples
+    --------
+    >>> import copy
+    >>> pt = pureTone(frequency=1000, phase=0, level=60, duration=100,
+    ...     ramp=0, channel="Both", fs=48000, maxLevel=100)
+    >>> pt2 = copy.copy(pt) #this function modifies the argument so make a copy!
+    >>> pt2 = setLevel_(level=40, snd=pt2, maxLevel=100, channel="Both") #set spectrum level to 20 dB SPL
+    >>> levDiff = 20*log10(getRMS(pt)[1]/getRMS(pt2)[1])
+
+    """
+    if channel == "Both":
+        chans = [0,1]
+    if channel == "Right":
+        chans = [1]
+    elif channel == "Left":
+        chans = [0]
+
+    for ch in range(len(chans)):
+        i = chans[ch]
+        currAmplitude = sqrt(mean(snd[:,i]*snd[:,i]))*sqrt(2)
+        currLevel = 20*log10(currAmplitude)+maxLevel
+        snd[:,i] = snd[:,i] * 10**((level-currLevel)/20)
+
+    return snd
 
 def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
