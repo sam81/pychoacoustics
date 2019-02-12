@@ -96,32 +96,29 @@ modules. These include:
     
 - WinPython (Windows only): `http://winpython.github.io/ http://winpython.github.io/>`_
 
-Step by step instructions to install ``pychoacoustics`` on Windows with Pyzo are provided below.
+Step by step instructions to install ``pychoacoustics`` on Windows with WinPython are provided below.
 Although these instructions are specific to Windows the installation steps are similar on Mac OS X
 and Linux systems. If you get stuck at some point don't hesitate to get in touch <sam.carcagno@gmail.com>.
 
-Install with Pyzo on Windows
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Install with WinPython on Windows
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo:: this section is a bit outdated, but the general instructions are still valid.
-	  It's recommended to use Anaconda rather than Pyzo on Windows and MacOS.
-
-Download the latest version on Pyzo and unpack it to a folder of your choice.
-Download the Windows source package (PySide) of `pychoacoustics`. Open the DOS
-command prompt and change directory to the folder where you unpacked ``Pyzo``, which 
+Download the latest version on [WinPython](https://winpython.github.io/) and unpack it to a folder of your choice.
+Download the Windows source package of `pychoacoustics`. Open the DOS
+command prompt and change directory to the folder where you unpacked ``WinPython``, which 
 should contain the `python.exe` executable. For example:
 
 ::
 
-   cd C:\Users\audiolab\Desktop\pyzo2013c
+   cd C:\Users\audiolab\Desktop\WinPython
 
-once you're in the Pyzo folder, you can instruct the Pyzo Python interpreter
+once you're in the WinPython folder, you can instruct the Pyzo Python interpreter
 to run `pychoacoustics` by calling python.exe followed by the path where the `pychoacoustics`
 main file is located. For example:
 
 ::
    
-   python.exe "C:\Users\audiolab\Desktop\pychoacoustics-pyside-0.2.81\pychoacoustics.pyw"
+   python.exe "C:\Users\audiolab\Desktop\pychoacoustics-0.4.8\pychoacoustics.pyw"
 
 
 Currently there is not an application launcher. There is, however, a file called
@@ -142,12 +139,13 @@ above, you would change the contents of the file to:
 
 ::
 
-    C:\Users\audiolab\Desktop\pyzo2013c\python.exe "C:\Users\audiolab\Desktop\pychoacoustics-pyside-0.2.81\pychoacoustics.pyw"
+    "C:\Users\audiolab\Desktop\WinPython\python.exe" "C:\Users\audiolab\Desktop\pychoacoustics-pyside-0.4.8\pychoacoustics.pyw"
     %1 %2 %3 %4 %5 %6 %7 %8
 
 You can place the ``.bat`` 
 launcher wherever you want, for example on your ``Desktop`` folder. 
 Simply double click on it, and ``pychoacoustics`` should start.
+
 
 "Manual" Installation from Source
 ---------------------------------
