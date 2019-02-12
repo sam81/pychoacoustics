@@ -141,7 +141,7 @@ def AMTone(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level=60,
     References
     ----------
     .. [H] Hartmann, W. M. (2004). Signals, Sound, and Sensation. Springer Science & Business Media
-    .. Viemeister, N. F. (1979). Temporal modulation transfer functions based upon modulation thresholds. The Journal of the Acoustical Society of America, 66(5), 1364–1380. https://doi.org/10.1121/1.383531
+    .. [V79] Viemeister, N. F. (1979). Temporal modulation transfer functions based upon modulation thresholds. The Journal of the Acoustical Society of America, 66(5), 1364–1380. https://doi.org/10.1121/1.383531
     .. [YSO] Yost, W., Sheft, S., & Opie, J. (1989). Modulation interference in detection and discrimination of amplitude modulation. The Journal of the Acoustical Society of America, 86(December 1989), 2138–2147. https://doi.org/10.1121/1.398474
        
     Examples
@@ -222,7 +222,7 @@ def AMToneVarLev(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0, level
     References
     ----------
     .. [H] Hartmann, W. M. (2004). Signals, Sound, and Sensation. Springer Science & Business Media
-    .. Viemeister, N. F. (1979). Temporal modulation transfer functions based upon modulation thresholds. The Journal of the Acoustical Society of America, 66(5), 1364–1380. https://doi.org/10.1121/1.383531
+    .. [V79]Viemeister, N. F. (1979). Temporal modulation transfer functions based upon modulation thresholds. The Journal of the Acoustical Society of America, 66(5), 1364–1380. https://doi.org/10.1121/1.383531
     .. [YSO] Yost, W., Sheft, S., & Opie, J. (1989). Modulation interference in detection and discrimination of amplitude modulation. The Journal of the Acoustical Society of America, 86(December 1989), 2138–2147. https://doi.org/10.1121/1.398474
        
     Examples
@@ -290,7 +290,7 @@ def AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0,
     AMPhaseIPD : float
         IPD to apply to the modulation phase.
     level : float
-        Tone level in dB SPL. 
+        Average tone level in dB SPL. See notes.
     duration : float
         Tone duration (excluding ramps) in milliseconds.
     ramp : float
@@ -306,6 +306,16 @@ def AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0,
     Returns
     -------
     snd : 2-dimensional array of floats
+
+    Notes
+    ------
+    For a fixed base amplitude, the average power of an AM tone (as defined in this function) increases proportionally with AM depth by a factor of 1+AMDepth^2/2 (Viemeister, 1979, Yost et al., 1989, Hartmann, 2004). This function does not compensate for this average increase in power. You can use the `AMTone` function if you want to generate AM tones matched in average power irrespective of AM depth.
+
+    References
+    ----------
+    .. [H] Hartmann, W. M. (2004). Signals, Sound, and Sensation. Springer Science & Business Media
+    .. [V79] Viemeister, N. F. (1979). Temporal modulation transfer functions based upon modulation thresholds. The Journal of the Acoustical Society of America, 66(5), 1364–1380. https://doi.org/10.1121/1.383531
+    .. [YSO] Yost, W., Sheft, S., & Opie, J. (1989). Modulation interference in detection and discrimination of amplitude modulation. The Journal of the Acoustical Society of America, 86(December 1989), 2138–2147. https://doi.org/10.1121/1.398474
        
     Examples
     --------
@@ -315,16 +325,11 @@ def AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0,
     
     """
 
-    amp = 10**((level - maxLevel) / 20)
-    duration = duration / 1000 #convert from ms to sec
-    ramp = ramp / 1000
-
-    nSamples = int(round(duration * fs))
-    nRamp = int(round(ramp * fs))
+    nSamples = int(round(duration/1000 * fs))
+    nRamp = int(round(ramp/1000 * fs))
     nTot = nSamples + (nRamp * 2)
 
     timeAll = arange(0, nTot) / fs
-    timeRamp = arange(0, nRamp) 
 
     snd = zeros((nTot, 2))
 
@@ -333,25 +338,19 @@ def AMToneIPD(frequency=1000, AMFreq=20, AMDepth=1, phase=0, AMPhase=0,
     #print(shiftedPhase-phase, shiftedAMPhase-AMPhase)
 
     if channel == "Right":
-        snd[0:nRamp, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+shiftedAMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + shiftedPhase)
-        snd[nRamp:nRamp+nSamples, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+shiftedAMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + shiftedPhase)
-        snd[nRamp+nSamples:nTot, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+shiftedAMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + shiftedPhase)
+        snd[:, 1] = (1 + AMDepth*sin(2*pi*AMFreq*timeAll[:]+shiftedAMPhase)) * sin(2*pi*frequency * timeAll[:] + shiftedPhase)
+        snd[:, 0] = (1 + AMDepth*sin(2*pi*AMFreq*timeAll[:]+AMPhase)) * sin(2*pi*frequency * timeAll[:] + phase)
 
-        snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+AMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
-        snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+AMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
-        snd[nRamp+nSamples:nTot, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+AMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + phase)
     elif channel == "Left":
-        snd[0:nRamp, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+AMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + phase)
-        snd[nRamp:nRamp+nSamples, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+AMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + phase)
-        snd[nRamp+nSamples:nTot, 1] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+AMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + phase)
+        snd[:, 1] = (1 + AMDepth*sin(2*pi*AMFreq*timeAll[:]+AMPhase)) * sin(2*pi*frequency * timeAll[:] + phase)
+        snd[:, 0] = (1 + AMDepth*sin(2*pi*AMFreq*timeAll[:]+shiftedAMPhase)) * sin(2*pi*frequency * timeAll[:] + shiftedPhase)
 
-        snd[0:nRamp, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[0:nRamp]+shiftedAMPhase)) * ((1-cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[0:nRamp] + shiftedPhase)
-        snd[nRamp:nRamp+nSamples, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp:nRamp+nSamples]+shiftedAMPhase)) * sin(2*pi*frequency * timeAll[nRamp:nRamp+nSamples] + shiftedPhase)
-        snd[nRamp+nSamples:nTot, 0] = amp * (1 + AMDepth*sin(2*pi*AMFreq*timeAll[nRamp+nSamples:nTot]+shiftedAMPhase)) * ((1+cos(pi * timeRamp/nRamp))/2) * sin(2*pi*frequency * timeAll[nRamp+nSamples:nTot] + shiftedPhase)
     else:
         raise ValueError("Invalid channel argument. Channel must be either 'Right' or 'Left'")
   
-       
+    snd = setLevel_(level, snd, maxLevel, channel="Both")
+    snd = gate(ramp, snd, fs)
+    
     return snd
 
 

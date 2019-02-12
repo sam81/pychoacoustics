@@ -28,18 +28,18 @@ To install ``pychoacoustics`` first install the ``apt-transport-https`` package 
    sudo apt-get install apt-transport-https 
 
 then add one of the following lines to ``/etc/apt/sources.list`` depending on your Debian version:
-For Jessie (stable):
-
-::
-
-   deb https://dl.bintray.com/sam81/hearinglab jessie main
-
-
-For Stretch (testing):
+For Stretch (stable):
 
 ::
 
    deb https://dl.bintray.com/sam81/hearinglab stretch main
+
+
+For Jessie (oldstable):
+
+::
+
+   deb https://dl.bintray.com/sam81/hearinglab jessie main
 
 Download the key with which the repository is signed and add it to the apt keyring:
 
@@ -68,22 +68,16 @@ To install pychoacoustics run the following commands:
    sudo apt-get install pychoacoustics
 
 
-Installation on Windows
+Installation on Windows and MacOS
 -----------------------
 
-A Windows installer is provided on the downloads page:
+There are experimental binary installers for Windows and MacOS on the downloads page:
 
 `http://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html <http://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html#downloads>`_
 
-Installation on the Mac
-------------------------
-
-The easiest way to install ``pychoacoustics`` on the Mac is 
-to use Pyzo as a Python distribution.
-The steps are the same as for the installation with Pyzo on 
-Windows (see below). Please, note that if you install with Pyzo you
-will need to use the PySide version of ``pychoacoustics``.
-
+these are OK if you just want to try out pychoacoustics to see its look and feel. However, if you want to use pychoacoustics in research
+it's recommended that for Windows and MacOS you install from source (see below). Producing the binaries for these OSs is time consuming, so the binary
+installers may be updated less often with the latest bug fixes.
 
 .. _sec-install_from_source:
 
@@ -96,9 +90,9 @@ and all the dependencies "manually" (that is one by one). The other (and easier)
 way is to install a Python distribution that comes with a bundle of pre-installed
 modules. These include:
 
-- Pyzo: `http://www.pyzo.org/ <http://www.pyzo.org/>`_
-
 - Anaconda: `https://www.continuum.io/downloads https://www.continuum.io/downloads>`_
+  
+- Pyzo: `http://www.pyzo.org/ <http://www.pyzo.org/>`_
     
 - WinPython (Windows only): `http://winpython.github.io/ http://winpython.github.io/>`_
 
@@ -108,6 +102,9 @@ and Linux systems. If you get stuck at some point don't hesitate to get in touch
 
 Install with Pyzo on Windows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo:: this section is a bit outdated, but the general instructions are still valid.
+	  It's recommended to use Anaconda rather than Pyzo on Windows and MacOS.
 
 Download the latest version on Pyzo and unpack it to a folder of your choice.
 Download the Windows source package (PySide) of `pychoacoustics`. Open the DOS
@@ -173,12 +170,6 @@ of these modules, and use the corresponding version of ``pychoacoustics``
 
 - PyQt5
   `https://riverbankcomputing.com/software/pyqt/download5 <https://riverbankcomputing.com/software/pyqt/download5>`_
-
-- PyQt4
-  `http://www.riverbankcomputing.co.uk/software/pyqt/download <http://www.riverbankcomputing.co.uk/software/pyqt/download>`_
-
-- PySide
-  `https://pypi.python.org/pypi/PySide/ <https://pypi.python.org/pypi/PySide/>`_
   
 these programs need to be installed manually. Once these programs are
 installed you can proceed with the installtion of ``pychoacoustics``:

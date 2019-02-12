@@ -3,7 +3,7 @@ from distutils.core import setup
 import glob
 setup(
     name="pychoacoustics-pyqt4",
-    version="0.4.8",
+    version="0.5.1",
     url="http://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html",
     author="Samuele Carcagno",
     author_email="sam.carcagno@google.com;",

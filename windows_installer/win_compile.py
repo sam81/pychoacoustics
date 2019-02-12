@@ -82,7 +82,7 @@ if publish == 1 or publish == "y":
     else:
         print("#####################\n Upload Unsuccessful.")
 
-    htmlPagePath = "/media/ntfsShared/lin_home/dc/devel/websites/xoom-website/xoom/pychoacoustics/pychoacoustics.html"
+    htmlPagePath = "/media/ntfsShared/lin_home/dc/devel/websites/xoom-website/altervista/pychoacoustics/pychoacoustics.html"
     fIn = open(htmlPagePath, "r")
     lns = fIn.readlines()
     fIn.close()

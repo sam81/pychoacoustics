@@ -13,11 +13,11 @@ for i in range(len(ln)):
            ver = ln[i].strip().split('=')[1].strip()
            ver = ver[1:len(ver)-2]
 fPaths = ["../dist/pychoacoustics-" + ver + ".tar.gz",
-          "../dist/pychoacoustics-" + ver + ".zip",
-          "../dist/pychoacoustics-pyqt4-" + ver + ".tar.gz",
-          "../dist/pychoacoustics-pyqt4-" + ver + ".zip",
-          "../dist/pychoacoustics-pyside-" + ver + ".tar.gz",
-          "../dist/pychoacoustics-pyside-" + ver + ".zip"]
+          "../dist/pychoacoustics-" + ver + ".zip"]#,
+          # "../dist/pychoacoustics-pyqt4-" + ver + ".tar.gz",
+          # "../dist/pychoacoustics-pyqt4-" + ver + ".zip",
+          # "../dist/pychoacoustics-pyside-" + ver + ".tar.gz",
+          # "../dist/pychoacoustics-pyside-" + ver + ".zip"]
 #fPaths = []
 
 for fPath in fPaths:
@@ -25,7 +25,7 @@ for fPath in fPaths:
     fHandle = open(fPath, 'rb')
     session.storbinary("STOR " + fPath.split('/')[2], fHandle)
 
-htmlPagePath = "/media/ntfsShared/lin_home/dc/devel/websites/xoom-website/xoom/pychoacoustics/pychoacoustics.html"
+htmlPagePath = "/media/ntfsShared/lin_home/dc/devel/websites/xoom-website/altervista/pychoacoustics/pychoacoustics.html"
 fIn = open(htmlPagePath, "r")
 lns = fIn.readlines()
 fIn.close()
@@ -37,14 +37,14 @@ for i in range(len(lns)):
             lns[i] = '<li> <a href="pych_builds/pychoacoustics-'+ver+'.tar.gz">pychoacoustics-'+ver+'.tar.gz</a> Linux/UNIX source package (PyQt5)</li>\n'
         elif lns[i].split("</a>")[1].strip() == 'Windows source package (PyQt5)</li>':
             lns[i] = '<li> <a href="pych_builds/pychoacoustics-'+ver+'.zip">pychoacoustics-'+ver+'.zip</a> Windows source package (PyQt5)</li>\n'
-        elif lns[i].split("</a>")[1].strip() == 'Linux/UNIX source package (PyQt4)</li>':
-            lns[i] = '<li> <a href="pych_builds/pychoacoustics-pyqt4-'+ver+'.tar.gz">pychoacoustics-pyqt4-'+ver+'.tar.gz</a> Linux/UNIX source package (PyQt4)</li>\n'
-        elif lns[i].split("</a>")[1].strip() == 'Windows source package (PyQt4)</li>':
-            lns[i] = '<li> <a href="pych_builds/pychoacoustics-pyqt4-'+ver+'.zip">pychoacoustics-pyqt4-'+ver+'.zip</a> Windows source package (PyQt4)</li>\n'
-        elif lns[i].split("</a>")[1].strip() == 'Linux/UNIX source package (PySide)</li>':
-            lns[i] = '<li> <a href="pych_builds/pychoacoustics-pyside-'+ver+'.tar.gz">pychoacoustics-pyside-'+ver+'.tar.gz</a> Linux/UNIX source package (PySide)</li>\n'
-        elif lns[i].split("</a>")[1].strip() == 'Windows source package (PySide)</li>':
-            lns[i] = '<li> <a href="pych_builds/pychoacoustics-pyside-'+ver+'.zip">pychoacoustics-pyside-'+ver+'.zip</a> Windows source package (PySide)</li>\n'
+        # elif lns[i].split("</a>")[1].strip() == 'Linux/UNIX source package (PyQt4)</li>':
+        #     lns[i] = '<li> <a href="pych_builds/pychoacoustics-pyqt4-'+ver+'.tar.gz">pychoacoustics-pyqt4-'+ver+'.tar.gz</a> Linux/UNIX source package (PyQt4)</li>\n'
+        # elif lns[i].split("</a>")[1].strip() == 'Windows source package (PyQt4)</li>':
+        #     lns[i] = '<li> <a href="pych_builds/pychoacoustics-pyqt4-'+ver+'.zip">pychoacoustics-pyqt4-'+ver+'.zip</a> Windows source package (PyQt4)</li>\n'
+        # elif lns[i].split("</a>")[1].strip() == 'Linux/UNIX source package (PySide)</li>':
+        #     lns[i] = '<li> <a href="pych_builds/pychoacoustics-pyside-'+ver+'.tar.gz">pychoacoustics-pyside-'+ver+'.tar.gz</a> Linux/UNIX source package (PySide)</li>\n'
+        # elif lns[i].split("</a>")[1].strip() == 'Windows source package (PySide)</li>':
+        #     lns[i] = '<li> <a href="pych_builds/pychoacoustics-pyside-'+ver+'.zip">pychoacoustics-pyside-'+ver+'.zip</a> Windows source package (PySide)</li>\n'
         
 fOut = open(htmlPagePath, 'w')
 fOut.writelines(lns)
