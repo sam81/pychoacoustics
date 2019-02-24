@@ -2,7 +2,6 @@
 include pychoacoustics/*.py
 include pychoacoustics/default_experiments/*
 include pychoacoustics/nnresample/*
-include pychoacoustics/nnresample/nnresample/*
 include scripts/*
 include icons/*
 include translations/*

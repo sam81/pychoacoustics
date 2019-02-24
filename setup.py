@@ -3,7 +3,7 @@ from distutils.core import setup
 import glob
 setup(
     name="pychoacoustics",
-    version="0.5.8",
+    version="0.5.9",
     url="http://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html",
     author="Samuele Carcagno",
     author_email="sam.carcagno@google.com;",
@@ -32,7 +32,7 @@ setup(
         ],
     license="GPL v3",
     requires=['PyQt (>=5.3.2)', 'numpy (>=1.6.1)', 'scipy (>=0.10.1)'],
-    packages=["pychoacoustics", "pychoacoustics.default_experiments"],
+    packages=["pychoacoustics", "pychoacoustics.default_experiments", "pychoacoustics.nnresample"],
     scripts = ["pychoacoustics.pyw"],
     package_dir={"pychoacoustics": "pychoacoustics"},
     package_data={'pychoacoustics': ["qrc_resources.py",
