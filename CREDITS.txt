@@ -2,4 +2,4 @@ The pychoacoustics application icon is taken from the open clipart library http:
 
 The fallback icons are taken from the Oxygen project http://www.oxygen-icons.org/ 
 
-pychoacoustics includes a copy of the 'multirate.py' file from https://github.com/mubeta06/python which is also released under the GNU GENERAL PUBLIC LICENSE Version 3
+pychoacoustics includes a copy of the 'nnresample' https://github.com/jthiem/nnresample which is released under a Creative Commons Attribution 3.0 Unported (CC BY 3.0) License (https://creativecommons.org/licenses/by/3.0/)

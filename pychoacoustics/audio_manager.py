@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2019 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -21,7 +21,8 @@ from tempfile import mkstemp
 import platform, os, subprocess 
 from numpy import ceil, concatenate, floor, float32, int16, int32, mean, sqrt, transpose, zeros
 import numpy as np
-from .multirate import resample
+#from .multirate import resample
+from .nnresample.nnresample.nnresample import resample
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4.QtCore import QThread

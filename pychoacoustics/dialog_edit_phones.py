@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2017 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2019 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -127,7 +127,7 @@ class phonesDialog(QDialog):
         self.calibSizer.addWidget(self.toneLevTF, n, 1)
         n = n+1
         self.toneDurLabel = QLabel(self.tr('Duration (ms)'), self)
-        self.toneDurTF = QLineEdit("4980")
+        self.toneDurTF = QLineEdit("980")
         self.toneDurTF.setValidator(QDoubleValidator(self))
         self.calibSizer.addWidget(self.toneDurLabel, n, 0)
         self.calibSizer.addWidget(self.toneDurTF, n, 1)
