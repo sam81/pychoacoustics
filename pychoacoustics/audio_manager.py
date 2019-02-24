@@ -22,7 +22,7 @@ import platform, os, subprocess
 from numpy import ceil, concatenate, floor, float32, int16, int32, mean, sqrt, transpose, zeros
 import numpy as np
 #from .multirate import resample
-from .nnresample.nnresample.nnresample import resample
+from .nnresample.nnresample import resample
 from .pyqtver import*
 if pyqtversion == 4:
     from PyQt4.QtCore import QThread
