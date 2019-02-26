@@ -6002,31 +6002,33 @@ class pychControlWin(QMainWindow):
             self.pdfPlotCheckBox.setChecked(False)
 
     def onClickSoundCheckButton(self):
-        G= 196
-        Eb= 155.56
-        F= 174.61
-        D = 146.83
-        tUnit = 250
-        ramp = 25
-        level = 65
-        channel = "Both"
-        lowHarm = 2
-        highHarm = 2
+        # G= 196
+        # Eb= 155.56
+        # F= 174.61
+        # D = 146.83
+        # tUnit = 250
+        # ramp = 25
+        # level = 65
+        # channel = "Both"
+        # lowHarm = 2
+        # highHarm = 2
         
-        for i in range(3):
-            thisSnd = complexTone(G, "Sine", lowHarm, highHarm, 0, level, tUnit, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
-            self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
+        # for i in range(3):
+        #     thisSnd = complexTone(G, "Sine", lowHarm, highHarm, 0, level, tUnit, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
+        #     self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
 
-        thisSnd = complexTone(Eb, "Sine", lowHarm, highHarm, 0, level, tUnit*4, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
-        self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
-        time.sleep(tUnit/1000+ramp/1000*2)
-        for i in range(3):
-            thisSnd = complexTone(F, "Sine", lowHarm, highHarm, 0, level, tUnit, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
-            self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
+        # thisSnd = complexTone(Eb, "Sine", lowHarm, highHarm, 0, level, tUnit*4, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
+        # self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
+        # time.sleep(tUnit/1000+ramp/1000*2)
+        # for i in range(3):
+        #     thisSnd = complexTone(F, "Sine", lowHarm, highHarm, 0, level, tUnit, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
+        #     self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
 
-        thisSnd = complexTone(D, "Sine", lowHarm, highHarm, 0, level, tUnit*4, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
-        self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
-        
+        # thisSnd = complexTone(D, "Sine", lowHarm, highHarm, 0, level, tUnit*4, ramp, channel, self.prm['sampRate'], float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]))
+        # self.audioManager.playSound(thisSnd, self.prm['sampRate'], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
+
+        thisSnd, thisFs, thisNBits = self.audioManager.loadWavFile(os.path.abspath(os.path.dirname(__file__)) + '/sounds/left_right_tone_test_48000Hz.wav', 75, float(self.prm['phones']['phonesMaxLevel'][self.phonesChooser.currentIndex()]), "Both", desiredSampleRate=self.currLocale.toInt(self.sampRateTF.text())[0])
+        self.audioManager.playSound(thisSnd, self.currLocale.toInt(self.sampRateTF.text())[0], self.currLocale.toInt(self.nBitsChooser.currentText())[0], False, 'foo.wav')
 
 class dropFrame(QFrame):
     drpd = QtCore.Signal(str) 

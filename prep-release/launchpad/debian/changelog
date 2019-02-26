@@ -1,3 +1,9 @@
+pychoacoustics (0.5.9-ppa0~bionic) bionic; urgency=low
+
+  * New upstream release
+
+ -- Samuele Carcagno <sam.carcagno@gmail.com>  Sun, 24 Feb 2019 11:55:36 +0100
+
 pychoacoustics (0.5.1-ppa0~bionic) bionic; urgency=low
 
   * New upstream release

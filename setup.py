@@ -3,7 +3,7 @@ from distutils.core import setup
 import glob
 setup(
     name="pychoacoustics",
-    version="0.5.9",
+    version="0.5.10",
     url="http://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html",
     author="Samuele Carcagno",
     author_email="sam.carcagno@google.com;",
@@ -48,7 +48,8 @@ setup(
                                      "doc/_build/html/_static/font/*.*",
                                      "doc/_build/html/_static/js/*.*",
                                      "doc/_build/html/_templates/autosummary/*.*",
-                                     "doc/_build/html/_themes/*.*"],},
+                                     "doc/_build/html/_themes/*.*",
+                                     "sounds/*.*"],},
 
     
     data_files = [('share/applications', ['pychoacoustics.desktop']),

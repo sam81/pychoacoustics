@@ -250,6 +250,8 @@ class audioManager():
             elif snd.dtype == "int32":
                 snd = snd / (2.**31)
                 nbits = 32
+            elif snd.dtype == "float32":
+                nbits = 32
 
         if snd.ndim == 1:
             snd = snd.reshape(snd.shape[0], 1)
