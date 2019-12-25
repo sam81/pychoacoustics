@@ -5182,14 +5182,14 @@ class pychControlWin(QMainWindow):
                 tmp['b'+str(blockNumber)]['chooserCheckBox'].append(strToBoolean(allLines[foo['b'+str(blockNumber)]['startChooser']+i].split(':')[2].strip()))
 
             for i in range(foo['b'+str(blockNumber)]['startDirChooser'] - foo['b'+str(blockNumber)]['startFileChooser'] -1):
-                tmp['b'+str(blockNumber)]['fileChooser'].append(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(':')[1].strip())
-                tmp['b'+str(blockNumber)]['fileChooserButton'].append(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(':')[0].strip())#+':')
-                tmp['b'+str(blockNumber)]['fileChooserCheckBox'].append(strToBoolean(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(':')[2].strip()))
+                tmp['b'+str(blockNumber)]['fileChooser'].append(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(': ')[1].strip())
+                tmp['b'+str(blockNumber)]['fileChooserButton'].append(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(': ')[0].strip())#+':')
+                tmp['b'+str(blockNumber)]['fileChooserCheckBox'].append(strToBoolean(allLines[foo['b'+str(blockNumber)]['startFileChooser']+i].split(': ')[2].strip()))
 
             for i in range(foo['b'+str(blockNumber)]['startField'] - foo['b'+str(blockNumber)]['startDirChooser'] -1):
-                tmp['b'+str(blockNumber)]['dirChooser'].append(allLines[foo['b'+str(blockNumber)]['startDirChooser']+i].split(':')[1].strip())
-                tmp['b'+str(blockNumber)]['dirChooserButton'].append(allLines[foo['b'+str(blockNumber)]['startDirChooser']+i].split(':')[0].strip())#+':')
-                tmp['b'+str(blockNumber)]['dirChooserCheckBox'].append(strToBoolean(allLines[foo['b'+str(blockNumber)]['startDirChooser']+i].split(':')[2].strip()))
+                tmp['b'+str(blockNumber)]['dirChooser'].append(allLines[foo['b'+str(blockNumber)]['startDirChooser']+i].split(': ')[1].strip())
+                tmp['b'+str(blockNumber)]['dirChooserButton'].append(allLines[foo['b'+str(blockNumber)]['startDirChooser']+i].split(': ')[0].strip())#+':')
+                tmp['b'+str(blockNumber)]['dirChooserCheckBox'].append(strToBoolean(allLines[foo['b'+str(blockNumber)]['startDirChooser']+i].split(': ')[2].strip()))
 
             for i in range(foo['b'+str(blockNumber)]['endField'] - foo['b'+str(blockNumber)]['startField'] ):
                 tmp['b'+str(blockNumber)]['field'].append(self.currLocale.toDouble(allLines[foo['b'+str(blockNumber)]['startField']+i].split(':')[1].strip())[0])
@@ -5334,10 +5334,10 @@ class pychControlWin(QMainWindow):
                 fName.write(self.prm[currBlock]['chooserLabel'][k] +' ' + self.prm[currBlock]['chooser'][k] + ' :' + str(self.prm[currBlock]['chooserCheckBox'][k]) + '\n')
             fName.write('....\n')
             for k in range(len(self.prm[currBlock]['fileChooser'])):
-                fName.write(self.prm[currBlock]['fileChooserButton'][k] +': ' + self.prm[currBlock]['fileChooser'][k] + ' :' + str(self.prm[currBlock]['fileChooserCheckBox'][k]) + '\n')
+                fName.write(self.prm[currBlock]['fileChooserButton'][k] +': ' + self.prm[currBlock]['fileChooser'][k] + ' : ' + str(self.prm[currBlock]['fileChooserCheckBox'][k]) + '\n')
             fName.write('.....\n')
             for k in range(len(self.prm[currBlock]['dirChooser'])):
-                fName.write(self.prm[currBlock]['dirChooserButton'][k] +': ' + self.prm[currBlock]['dirChooser'][k] + ' :' + str(self.prm[currBlock]['dirChooserCheckBox'][k]) + '\n')
+                fName.write(self.prm[currBlock]['dirChooserButton'][k] +': ' + self.prm[currBlock]['dirChooser'][k] + ' : ' + str(self.prm[currBlock]['dirChooserCheckBox'][k]) + '\n')
             fName.write('......\n')
             for k in range(len(self.prm[currBlock]['field'])):
                 fName.write(self.prm[currBlock]['fieldLabel'][k] + ': ' + self.currLocale.toString(self.prm[currBlock]['field'][k], precision=self.prm["pref"]["general"]["precision"]) + ' :' + str(self.prm[currBlock]['fieldCheckBox'][k]) + '\n')
