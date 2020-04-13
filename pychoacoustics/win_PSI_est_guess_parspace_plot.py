@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-#   Copyright (C) 2008-2019 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 
 from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import matplotlib
+from cycler import cycler
 
 from .pyqtver import*
 if pyqtversion == 4:
@@ -98,7 +99,7 @@ class PSIEstGuessRateParSpacePlot(QMainWindow):
         mpl.rcParams['font.size'] = 14
         mpl.rcParams['figure.facecolor'] = 'white'
         mpl.rcParams['lines.color'] = 'black'
-        mpl.rcParams['axes.color_cycle'] = ["#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"]#['k', 'b', 'g', 'r', 'c', 'm', 'y']
+        mpl.rcParams['axes.prop_cycle'] = cycler('color', ["#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"])
 
         self.mw = QWidget(self)
         self.vbl = QVBoxLayout(self.mw)

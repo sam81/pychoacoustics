@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2008-2019 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -631,7 +631,7 @@ class responseBox(QMainWindow):
         try:
             nAlternatives = self.prm[currBlock]['nAlternatives']
             nIntervals = self.prm[currBlock]['nIntervals']
-        except: #this should work for paradigms that don't have the alternatives chosser, hence have a fixed number of response alternatives
+        except: #this should work for paradigms that don't have the alternatives chooser, hence have a fixed number of response alternatives
              nIntervals = self.prm[self.parent().currExp]['defaultNIntervals'] 
              nAlternatives = self.prm[self.parent().currExp]['defaultNAlternatives'] 
         #cmd = self.prm['pref']['sound']['playCommand']
