@@ -267,6 +267,7 @@ class audioManager():
         else:
             normSnd2 = snd[:,1]
         desiredAmp = 10**((desiredLevel - maxLevel)/20)
+
         snd[:,0] = desiredAmp * normSnd1
         snd[:,1] = desiredAmp * normSnd2
 
