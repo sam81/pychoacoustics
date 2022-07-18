@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2022 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -823,7 +823,7 @@ class pychControlWin(QMainWindow):
         self.pw_scrollarea = QScrollArea()
         self.pw_scrollarea.setWidget(self.pw)
         self.splitter.addWidget(self.pw_scrollarea)
-        self.splitter.setSizes([(2/6)*screen.width(), (2/6)*screen.width()])
+        self.splitter.setSizes([int((2/6)*screen.width()), int((2/6)*screen.width())])
         #self.splitter.setStretchFactor(1, 1.5)
         #self.splitter.setStretchFactor(2, 1.5)
         self.setCentralWidget(self.splitter)

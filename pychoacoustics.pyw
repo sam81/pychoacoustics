@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2019 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify

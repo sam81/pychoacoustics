@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, platform, time
+import os, distro, time
 
 pparev = input("ppa revision number: ")
 pparev = '-ppa'+str(pparev)
@@ -18,7 +18,7 @@ for i in range(len(ln)):
            ver = ln[i].strip().split('=')[1].strip()
            ver = ver[1:len(ver)-2]
 tarball_path = "../dist/pychoacoustics-" + ver + ".tar.gz"
-buildpath = "../../pkg_source_build/" + platform.linux_distribution()[0] + '_' + series #+ platform.linux_distribution()[1].replace('/', '_') + '_' + platform.uname()[4]
+buildpath = "../../pkg_source_build/" + distro.linux_distribution()[0] + '_' + series 
 
 if os.path.exists(buildpath) == False:
     os.makedirs(buildpath)

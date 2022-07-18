@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2022 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -6301,7 +6301,7 @@ class responseLight(QWidget):
             self.feedbackSmiley.paint(painter, rectRight, Qt.AlignCenter)
             rectLeft = QRect(self.width()/60, self.height()/60, self.width()-self.width()/2, self.height())
             self.feedbackSmiley.paint(painter, rectLeft, Qt.AlignCenter)
-            r = QtCore.QRectF(0,0,self.width(),self.height())
+            r = QtCore.QRectF(0,0,self.width(), self.height())
             painter.setPen(self.penColor)
             qfont = QFont()
             qfont.fromString(self.cw.prm["pref"]["resp_box"]["responseLightFont"])
@@ -6316,7 +6316,7 @@ class responseLight(QWidget):
             self.feedbackSmiley.paint(painter, rectRight, Qt.AlignCenter)
             rectLeft = QRect(self.width()/60, self.height()/60, self.width()-self.width()/2, self.height())
             self.feedbackSmiley.paint(painter, rectLeft, Qt.AlignCenter)
-            r = QtCore.QRectF(0,0,self.width(),self.height())
+            r = QtCore.QRectF(0,0,self.width(), self.height())
             painter.setPen(self.penColor)
             qfont = QFont()
             qfont.fromString(self.cw.prm["pref"]["resp_box"]["responseLightFont"])

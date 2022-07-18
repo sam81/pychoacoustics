@@ -226,7 +226,7 @@ class categoricalPlot(QMainWindow):
         self.setCentralWidget(self.mw)
 
         if self.checkMultipleHeaders(self.fName):
-            self.ax.text(0, 0.5, "The table files appear to contain multiple headers.\n Usually this happens because they contain results \n from different experiments/procedures or \n different check box selections. These table processing \n functions cannot process these type of files, \n and automatic plots are not supported.")
+            self.ax.text(0, 0.5, "The table files appear to contain multiple headers.\n Usually this happens because they contain results \n from different experiments/procedures or \n different check box selections. These table processing \n functions cannot process these types of files, \n and automatic plots are not supported.")
             if pdfPlot == True:
                 self.fig.savefig(self.fName.split('.')[0] + '.pdf', format='pdf')
             if winPlot == True:
