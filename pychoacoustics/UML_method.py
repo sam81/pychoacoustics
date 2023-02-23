@@ -327,7 +327,6 @@ def UML_update(UML, r):
         
     return UML
 
-
 def logit_sweetpoints(phi):
 
     def alphavar_est(x):

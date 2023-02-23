@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -94,7 +94,7 @@ def excepthook(except_type, except_val, tbck):
 
     sc = QScrollArea()
     sc.setWidget(lab)
-    siz.addWidget(sc)#SCROLLAREA IS A WIDGET SO IT NEEDS TO BE ADDED TO A LAYOUT
+    siz.addWidget(sc) #SCROLLAREA IS A WIDGET SO IT NEEDS TO BE ADDED TO A LAYOUT
 
     buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
 
@@ -175,7 +175,8 @@ def main(argv):
         prm['graphicssystem'] = args.graphicssystem
     if args.display:
         prm['display'] = args.display
-  
+
+    ## call the first time `get_prefs` to get the language preferences
     prm = global_parameters.get_prefs(prm)
     callArgs = sys.argv
     if 'display' in prm:
@@ -221,6 +222,10 @@ def main(argv):
     prm['rbTrans'] = responseBoxTranslator
     prm['buttonTranslator'] = respButtTranslator
 
+    ## call again `get_prefs` to properly set the preferences now that the
+    ## translations have been loaded
+    prm = global_parameters.get_prefs(prm)
+    
     prm = global_parameters.set_global_parameters(prm)
     app.setWindowIcon(QtGui.QIcon(":/Machovka_Headphones.svg"))
     #app.setStyle("plastique")

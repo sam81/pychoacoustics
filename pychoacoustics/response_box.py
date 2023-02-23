@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2008-2022 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -1511,7 +1511,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
         if self.prm['nTurnpoints'] == self.prm['totalTurnpoints']:
             self.writeResultsHeader('standard')
             #process results
@@ -1791,7 +1791,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
 
         if self.prm['switchedToConstant'] == False:
             if self.prm['nTurnpoints'] == self.prm['totalTurnpoints']:
@@ -2049,7 +2049,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
         if self.prm['nTurnpoints'] == self.prm['totalTurnpoints']:
             self.writeResultsHeader('standard')
             #process results
@@ -2278,7 +2278,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
 
         finished = 0
         for i in range(self.prm['nDifferences']):
@@ -2430,7 +2430,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
         
         if self.trialCountAll >= (self.prm['nTrials'] + self.prm['nPracticeTrials']): # Block is completed
             self.writeResultsHeader('standard')
@@ -2548,7 +2548,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
 
         if self.trialCountAll >= (self.prm['nTrials'] + self.prm['nPracticeTrials'])*len(self.prm['conditions']): # Block is completed
             totalCorrectCount = 0
@@ -2693,7 +2693,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
 
         #Completed all trials, compute stats
         if self.trialCountAll >= self.prm['nPracticeTrials'] + self.prm['nTrials']: # Block is completed
@@ -2829,7 +2829,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
 
         
         if self.trialCountAll >= (self.prm['nTrials'] + self.prm['nPracticeTrials'])*len(self.prm['conditions']): # Block is completed
@@ -3027,7 +3027,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
 
         
         if self.trialCountAll >= self.prm['nTrials'] + self.prm['nPracticeTrials']: # Block is completed
@@ -3174,7 +3174,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
 
      
 
@@ -3358,7 +3358,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
 
      
         if self.trialCount[self.prm['currentDifference']] == self.prm['nTrials']:
@@ -3657,7 +3657,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
         if self.prm['currStepSize'] < self.prm['minStepSize']:
             self.writeResultsHeader('standard')
             #process results
@@ -3813,7 +3813,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
         
         if self.trialCount == self.prm['nTrials']:
             self.writeResultsHeader('standard')
@@ -3985,7 +3985,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
         
         if self.trialCount == self.prm['nTrials']:
             
@@ -4212,7 +4212,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
         
         if self.trialCount == self.prm['nTrials']:
             
@@ -4432,7 +4432,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
         
         if self.trialCount == self.prm['nTrials']:
             
@@ -4656,7 +4656,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
         
         if self.trialCount == self.prm['nTrials']:
             
@@ -4818,7 +4818,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
 
         if self.trialCountCnds[self.currentCondition] == self.prm['nTrials']:
             self.prm['comparisonChoices'].remove(self.currentCondition)
@@ -4974,7 +4974,7 @@ class responseBox(QMainWindow):
         bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.gauge.setValue(pcTot)
+        self.gauge.setValue(int(pcTot))
         
 
         if self.trialCountCnds[self.currentCondition] == self.prm['nTrials']:
@@ -5121,7 +5121,7 @@ class responseBox(QMainWindow):
         # bp = int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition'])
         # pcThisRep = (bp-1) / self.prm['storedBlocks']*100 + 1 / self.prm['storedBlocks']*pcDone
         # pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        # self.gauge.setValue(pcTot)
+        # self.gauge.setValue(int(pcTot))
         #if self.runAnotherTrial == False:
         if self.prm['nTrialsSequence'] == 2:
             if self.prm['correct'][len(self.prm['correct'])-1] == 1 or self.prm['correct'][len(self.prm['correct'])-2] == 1:
@@ -6254,12 +6254,12 @@ class responseLight(QWidget):
             painter.setViewport(0,0,self.width(),self.height())
             painter.setPen(self.borderColor)
             painter.setBrush(self.lightColor)
-            painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            painter.drawRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height())
         elif self.responseLightType == self.tr("Text"):
             painter = QPainter(self)
             painter.setViewport(0,0,self.width(),self.height())
             painter.setBrush(self.offLightColor)
-            painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            painter.drawRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height())
             r = QtCore.QRectF(0,0,self.width(),self.height())
             painter.setPen(self.penColor)
             qfont = QFont()
@@ -6270,7 +6270,7 @@ class responseLight(QWidget):
             painter = QPainter(self)
             painter.setViewport(0,0,self.width(),self.height())
             painter.setBrush(self.offLightColor)
-            rect = painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            rect = painter.drawRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height())
             rect = QRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
             self.feedbackSmiley.paint(painter, rect, Qt.AlignCenter)
         elif self.responseLightType == self.tr("Light & Text"):
@@ -6278,7 +6278,7 @@ class responseLight(QWidget):
             painter.setViewport(0,0,self.width(),self.height())
             painter.setPen(self.borderColor)
             painter.setBrush(self.lightColor)
-            painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            painter.drawRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height())
             r = QtCore.QRectF(0,0,self.width(),self.height())
             painter.setPen(self.penColor)
             qfont = QFont()
@@ -6289,17 +6289,17 @@ class responseLight(QWidget):
             painter = QPainter(self)
             painter.setViewport(0,0,self.width(),self.height())
             painter.setBrush(self.lightColor)
-            rect = painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            rect = painter.drawRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height())
             rect = QRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
             self.feedbackSmiley.paint(painter, rect, Qt.AlignCenter)
         elif self.responseLightType == self.tr("Text & Smiley"):
             painter = QPainter(self)
             painter.setViewport(0,0,self.width(),self.height())
             painter.setBrush(self.offLightColor)
-            rect = painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
-            rectRight = QRect(self.width()/60, self.height()/60, self.width()+self.width()/2, self.height())
+            rect = painter.drawRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height())
+            rectRight = QRect(int(self.width()/60), int(self.height()/60), self.width()+int(self.width()/2), self.height())
             self.feedbackSmiley.paint(painter, rectRight, Qt.AlignCenter)
-            rectLeft = QRect(self.width()/60, self.height()/60, self.width()-self.width()/2, self.height())
+            rectLeft = QRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/2), self.height())
             self.feedbackSmiley.paint(painter, rectLeft, Qt.AlignCenter)
             r = QtCore.QRectF(0,0,self.width(), self.height())
             painter.setPen(self.penColor)
@@ -6311,10 +6311,10 @@ class responseLight(QWidget):
             painter = QPainter(self)
             painter.setViewport(0,0,self.width(),self.height())
             painter.setBrush(self.lightColor)
-            rect = painter.drawRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
-            rectRight = QRect(self.width()/60, self.height()/60, self.width()+self.width()/2, self.height())
+            rect = painter.drawRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height())
+            rectRight = QRect(int(self.width()/60), int(self.height()/60), self.width()+int(self.width()/2), self.height())
             self.feedbackSmiley.paint(painter, rectRight, Qt.AlignCenter)
-            rectLeft = QRect(self.width()/60, self.height()/60, self.width()-self.width()/2, self.height())
+            rectLeft = QRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/2), self.height())
             self.feedbackSmiley.paint(painter, rectLeft, Qt.AlignCenter)
             r = QtCore.QRectF(0,0,self.width(), self.height())
             painter.setPen(self.penColor)
@@ -6342,7 +6342,7 @@ class intervalLight(QFrame):
         painter.setViewport(0, 0, self.width(),self.height())
         painter.setPen(self.borderColor)
         painter.setBrush(self.lightColor)
-        painter.fillRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height(), self.lightColor)
+        painter.fillRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height(), self.lightColor)
 
 
 class threadedPlayer(QThread):

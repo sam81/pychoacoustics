@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -128,7 +128,6 @@ def set_global_parameters(prm):
     prm["nIntervalsChoices"] = ["2", "3", "4", "5", "6", "7", "8", "9", "10"]
     prm["adaptiveTypeChoices"] = [QApplication.translate("","Arithmetic",""), QApplication.translate("","Geometric","")]
     prm['tnpToAverageChoices'] = [QApplication.translate("","All final stepsize (even)",""), QApplication.translate("","First N final stepsize",""), QApplication.translate("","Last N final stepsize","")]
-
     prm["nBitsChoices"] = ["16", "32"]
     prm["shuffleChoices"] = [QApplication.translate("","No",""), QApplication.translate("","Ask",""), QApplication.translate("","Auto","")]
     prm["responseModeChoices"] = [QApplication.translate("","Real Listener",""), QApplication.translate("","Automatic",""), QApplication.translate("","Simulated Listener",""), QApplication.translate("","Psychometric","")]

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2008-2022 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -5473,7 +5473,7 @@ class pychControlWin(QMainWindow):
         bp = int(self.prm['b'+str(self.prm["currentBlock"])]["blockPosition"])
         pcThisRep = (bp-1)/self.prm["storedBlocks"]*100
         pcTot = (self.prm['currentRepetition'] - 1) / self.prm['allBlocks']['repetitions']*100 + 1 / self.prm['allBlocks']['repetitions']*pcThisRep
-        self.responseBox.gauge.setValue(pcTot)
+        self.responseBox.gauge.setValue(int(pcTot))
         self.responseBox.blockGauge.setRange(0, self.prm['storedBlocks']*self.prm['allBlocks']['repetitions'])
 
         cb = (self.prm['currentRepetition']-1)*self.prm["storedBlocks"]+bp
