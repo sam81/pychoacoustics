@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of sndlib
 
 #    sndlib is free software: you can redistribute it and/or modify
@@ -3560,7 +3560,6 @@ def nextpow2(x):
 #        n = n * 2
 #    return n
 
-
 def phaseShift(sig, f1, f2, phaseShift, phaseShiftType, channel, fs):
     """
     Shift the interaural phases of a sound within a given frequency region.
@@ -3992,6 +3991,111 @@ def setLevel_(level, snd, maxLevel, channel="Both"):
         snd[:,i] = snd[:,i] * 10**((level-currLevel)/20)
 
     return snd
+
+def spectralModNoise(spectrumLevel=25, duration=980, ramp=10, modAmp=10, modFreq=1, phase="Random", channel="Both", fs=48000, maxLevel=101):
+    """
+    Generate a broadband noise with a modulated spectral envelope.
+    The modulation is sinuisoidal on a log2 frequency, and logarithmic
+    amplitude (dB) scale.
+
+    Parameters
+    ----------
+    spectrumLevel : float
+        Intensity spectrum level of the noise in dB SPL (before modulation). 
+        Note that the shaped noise is scaled after shaping so as to have the
+        same overall RMS level than the noise before shaping.
+    duration : float
+        Noise duration (excluding ramps) in milliseconds.
+    ramp : float
+        Duration of the onset and offset ramps in milliseconds.
+        The total duration of the sound will be duration+ramp*2.
+    modAmp: float
+        Modulation amplitude (peak-to-trough difference) in dB.
+    modFreq: float
+        Modulation frequency in cycles-per-octave
+    modPhase: string
+        Starting modulation phase
+    channel : string ("Right", "Left", "Both", or "Dichotic")
+        Channel in which the noise will be generated. If 'Both' the
+        same noise will be generated in both channels. If 'Dichotic'
+        the noise will be independent at the two ears.
+    fs : int
+        Samplig frequency in Hz.
+    maxLevel : float
+        Level in dB SPL output by the soundcard for a sinusoid of amplitude 1.
+
+    Returns
+    -------
+    sig : 2-dimensional array of floats
+
+    References
+    ----------
+    Andéol, G., Macpherson, E. A., & Sabin, A. T. (2013). Sound localization in noise and sensitivity to spectral shape. Hearing Research, 304, 20–27. https://doi.org/10.1016/j.heares.2013.06.001
+
+    Eddins, D. A., & Bero, E. M. (2007). Spectral modulation detection as a function of modulation frequency, carrier bandwidth, and carrier frequency region. The Journal of the Acoustical Society of America, 121(1), 363–372. https://doi.org/10.1121/1.2382347
+
+     Litvak, L. M., Spahr, A. J., Saoji, A. A., & Fridman, G. Y. (2007). Relationship between perception of spectral ripple and speech recognition in cochlear implant and vocoder listeners. The Journal of the Acoustical Society of America, 122(2), 982–991. https://doi.org/10.1121/1.2749413
+       
+    Examples
+    --------
+    >>> noise = spectralModNoise(spectrumLevel=40, duration=180, ramp=10,
+    ...     modAmp=10, modFreq=2, phase="Random",  
+    ...     channel='Both', fs=48000, maxLevel=100)
+
+
+    """
+
+    sig = broadbandNoise(spectrumLevel=spectrumLevel, duration=duration,
+                         ramp=ramp,
+                         channel=channel, fs=fs, maxLevel=100)
+    noiseRMS = getRMS(sig, 'each')
+    nSamples = len(sig[:,0])
+    nUniquePts = int(ceil((nSamples+1)/2.0))
+    freqArray = arange(0, nUniquePts, 1.0) * (fs / nSamples);
+    nFreqs = freqArray.shape[0]
+    mod_wave_dB = zeros(nFreqs)
+
+    if phase == "Random":
+        st_phase = numpy.random.uniform(0, 2*pi)
+    elif phase == "Sine":
+        st_phase = 0
+    elif phase == "Cosine":
+        st_phase = pi/2
+        
+    mod_wave_dB[1:nFreqs] = modAmp*0.5*sin(2*pi*log2(freqArray[1:nFreqs])*modFreq+st_phase)
+    
+    ## left chan
+    if channel in ["Left", "Both"]:
+        x = rfft(sig[:,0], nSamples)
+        lenx = len(x)
+        mag = zeros(lenx)
+        mag[1:lenx] = abs(x[1:lenx]) * 10**(mod_wave_dB[1:lenx]/20)
+        mag[0] = abs(x[0])
+        ph = angle(x)
+        x = mag * (cos(ph) + 1j * sin(ph))
+        sig0 = irfft(x, nSamples)
+        sig[:, 0] = sig0
+        noiseShapedRMS = getRMS(sig, 'each')
+        sig[:,0] = scale(level=20*log10(noiseRMS[0]/noiseShapedRMS[0]), sig=sig[:,0])
+        
+    ## right chan
+    if channel in ["Right", "Both"]:
+        x = rfft(sig[:,1], nSamples)
+        lenx = len(x)
+        mag = zeros(lenx)
+        mag[1:lenx] = abs(x[1:lenx]) * 10**(mod_wave_dB[1:lenx]/20)
+        mag[0] = abs(x[0])
+        ph = angle(x)
+        x = mag * (cos(ph) + 1j * sin(ph))
+        sig1 = irfft(x, nSamples)
+        sig[:, 1] = sig1
+        noiseShapedRMS = getRMS(sig, 'each')
+        sig[:,1] = scale(level=20*log10(noiseRMS[1]/noiseShapedRMS[1]), sig=sig[:,1])
+
+    
+    
+    return sig
+
 
 def steepNoise(frequency1=440, frequency2=660, level=60, duration=180, ramp=10, channel="Both", fs=48000, maxLevel=101):
     """
