@@ -92,6 +92,7 @@ class audioManager():
                 print("Opening first alsaaudio device")
         elif self.playCmd == "pyaudio":
             self.paManager = pyaudio.PyAudio()
+
             
     def playSound(self, snd, fs, nbits, writewav, fname):
         wavmanager = self.prm["pref"]["sound"]["wavmanager"]
@@ -153,22 +154,22 @@ class audioManager():
                 data = data.astype(int32)
                 sampleFormat = pyaudio.paInt32
 
-            # try:
-            #     self.stream
-            # except:
-            stream = self.paManager.open(format=sampleFormat,
-                                              channels = nChannels,
-                                              rate = fs,
-                                              output = True,
-                                              input_device_index = None,
-                                              output_device_index=self.prm["pref"]["sound"]["pyaudioDevice"],
-                                              frames_per_buffer=bufferSize)
-
+            try:
+                self.paStream.start_stream()
+            except:
+                self.paStream = self.paManager.open(format=sampleFormat,
+                                             channels = nChannels,
+                                             rate = fs,
+                                             output = True,
+                                             input_device_index = None,
+                                             output_device_index=self.prm["pref"]["sound"]["pyaudioDevice"],
+                                             frames_per_buffer=bufferSize)
+                self.paStream.start_stream()
             for i in range(nSeg):
                 thisData = data[i*bufferSize:((i*bufferSize)+bufferSize)][:]
-                stream.write(thisData, num_frames=bufferSize)
-            stream.stop_stream()
-            stream.close()
+                self.paStream.write(thisData, num_frames=bufferSize)
+            self.paStream.stop_stream()
+            #stream.close()
             #time.sleep((bufferSize/fs)+0.02)
             #self.stream.close() #stream seems to close before sound finished playing
           
