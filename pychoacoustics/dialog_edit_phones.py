@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -45,7 +45,7 @@ class phonesDialog(QDialog):
         self.currLocale = self.parent().prm['currentLocale']
         self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
         screen = QDesktopWidget().screenGeometry()
-        self.resize(screen.width()/2.5,screen.height()/3)
+        self.resize(int(screen.width()/2.5), int(screen.height()/3))
         self.isPlaying = False
         #self.audioManager = audioManager(self)
         #self.playThread = threadedPlayer(self)

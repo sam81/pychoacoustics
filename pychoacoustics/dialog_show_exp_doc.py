@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -66,8 +66,8 @@ class showExpDocDialog(QDialog):
         self.setLayout(self.vBoxSizer)
         self.setWindowTitle(self.tr(expName) + " - " + self.tr("documentation"))
         screen = QDesktopWidget().screenGeometry()
-        wd = screen.width()/3
-        ht = 0.8*screen.height()
+        wd = int(screen.width()/3)
+        ht = int(0.8*screen.height())
         self.resize(wd, ht)
         self.show()
   

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -67,8 +67,8 @@ class dialogShowParDiff(QDialog):
         self.setWindowTitle(self.tr("Diff"))
 
         screen = QDesktopWidget().screenGeometry()
-        wd = screen.width()/4
-        ht = screen.height()/3
+        wd = int(screen.width()/4)
+        ht = int(screen.height()/3)
         self.resize(wd, ht)
         self.show()
   
