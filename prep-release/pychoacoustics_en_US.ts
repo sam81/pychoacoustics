@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="en_US" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.1" language="en_US">
 <context>
     <name></name>
     <message>
@@ -2891,7 +2892,7 @@
     <message>
         <location filename="../pychoacoustics/response_box.py" line="575"/>
         <source>Please, enter the listener&apos;s name:</source>
-        <translation>Please, enter the listener&apos;s name:</translation>
+        <translation>Please, enter the listener's name:</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/response_box.py" line="584"/>

@@ -5692,17 +5692,17 @@ class pychControlWin(QMainWindow):
                 self.fileChooserButton[self.fileChoosersToHide[i]].hide()
                 self.fileChooserCheckBox[self.fileChoosersToHide[i]].hide()
             for i in range(len(self.fileChoosersToShow)):
-                self.fileChooser[self.fileChoosersToHide[i]].show()
-                self.fileChooserButton[self.fileChoosersToHide[i]].show()
-                self.fileChooserCheckBox[self.fileChoosersToHide[i]].show()
+                self.fileChooser[self.fileChoosersToShow[i]].show()
+                self.fileChooserButton[self.fileChoosersToShow[i]].show()
+                self.fileChooserCheckBox[self.fileChoosersToShow[i]].show()
             for i in range(len(self.dirChoosersToHide)):
                 self.dirChooser[self.dirChoosersToHide[i]].hide()
                 self.dirChooserButton[self.dirChoosersToHide[i]].hide()
                 self.dirChooserCheckBox[self.dirChoosersToHide[i]].hide()
             for i in range(len(self.dirChoosersToShow)):
-                self.dirChooser[self.dirChoosersToHide[i]].show()
-                self.dirChooserButton[self.dirChoosersToHide[i]].show()
-                self.dirChooserCheckBox[self.dirChoosersToHide[i]].show()
+                self.dirChooser[self.dirChoosersToShow[i]].show()
+                self.dirChooserButton[self.dirChoosersToShow[i]].show()
+                self.dirChooserCheckBox[self.dirChoosersToShow[i]].show()
 
     def fileChooserButtonClicked(self):
         sender = self.sender()

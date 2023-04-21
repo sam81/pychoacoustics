@@ -286,8 +286,8 @@ class responseBox(QMainWindow):
 
         screen = QDesktopWidget().screenGeometry()
         if self.parent().currExp == self.tr("Coordinate Response Measure"):
-            self.statusButton.setMaximumSize(screen.width(), screen.height()/15)
-            self.responseLight.setMaximumSize(screen.width(), screen.height()/10)
+            self.statusButton.setMaximumSize(screen.width(), int(screen.height()/15))
+            self.responseLight.setMaximumSize(screen.width(), int(screen.height()/10))
             self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
             self.responseLight.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
 
@@ -306,8 +306,8 @@ class responseBox(QMainWindow):
                     self.responseButton[cnt].setStyleSheet("background-color: " + cols[cl])
                     cnt = cnt+1
         elif self.parent().currExp in [self.tr("Digit Triplets Test"), self.tr("Digit Span")]:
-            self.statusButton.setMaximumSize(screen.width(), screen.height()/15)
-            self.responseLight.setMaximumSize(screen.width(), screen.height()/10)
+            self.statusButton.setMaximumSize(screen.width(), int(screen.height()/15))
+            self.responseLight.setMaximumSize(screen.width(), int(screen.height()/10))
             self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
             self.responseLight.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
             cnt = 0

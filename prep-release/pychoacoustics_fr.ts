@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="fr_FR" sourcelanguage="">
+<!DOCTYPE TS>
+<TS version="2.1" language="fr_FR">
 <context>
     <name></name>
     <message>
@@ -25,7 +26,7 @@
     <message>
         <location filename="../pychoacoustics_pack/response_box.py" line="186"/>
         <source>Running</source>
-        <translation type="obsolete">En cours d&apos;exécution</translation>
+        <translation type="obsolete">En cours d'exécution</translation>
     </message>
     <message>
         <location filename="../pychoacoustics_pack/default_experiments/enhancement_PA.py" line="28"/>
@@ -2876,7 +2877,7 @@
     <message>
         <location filename="../pychoacoustics/response_box.py" line="1326"/>
         <source>Running</source>
-        <translation>En cours d&apos;exécution</translation>
+        <translation>En cours d'exécution</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/response_box.py" line="5201"/>
@@ -2896,7 +2897,7 @@
     <message>
         <location filename="../pychoacoustics/response_box.py" line="575"/>
         <source>Please, enter the listener&apos;s name:</source>
-        <translation>S&apos;il vous plaît, saisissez le nom du sujet:</translation>
+        <translation>S'il vous plaît, saisissez le nom du sujet:</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/response_box.py" line="584"/>
@@ -2926,7 +2927,7 @@
     <message>
         <location filename="../pychoacoustics/response_box.py" line="583"/>
         <source>Please, enter the session label:</source>
-        <translation>S&apos;il vous plaît, saisissez le nom de la séance:</translation>
+        <translation>S'il vous plaît, saisissez le nom de la séance:</translation>
     </message>
     <message>
         <location filename="../../pychoacoustics_exp/labexp/enhancement_forward_masking_ASSR.py" line="19"/>
@@ -3014,7 +3015,7 @@
     <message>
         <location filename="../pychoacoustics_pack/response_box.py" line="463"/>
         <source>Running</source>
-        <translation type="obsolete">En cours d&apos;exécution</translation>
+        <translation type="obsolete">En cours d'exécution</translation>
     </message>
     <message>
         <location filename="../pychoacoustics_pack/response_box.py" line="166"/>
