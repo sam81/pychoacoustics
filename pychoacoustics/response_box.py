@@ -6183,9 +6183,12 @@ class responseLight(QWidget):
         self.rb = self.parent() #response box
         self.cw = self.parent().parent() #control window
 
-        self.correctSmiley = QIcon.fromTheme("face-smile", QIcon(":/face-smile"))
-        self.incorrectSmiley = QIcon.fromTheme("face-sad", QIcon(":/face-sad"))
-        self.neutralSmiley = QIcon.fromTheme("face-plain", QIcon(":/face-plain"))
+        # self.correctSmiley = QIcon.fromTheme("face-smile", QIcon(":/face-smile"))
+        # self.incorrectSmiley = QIcon.fromTheme("face-sad", QIcon(":/face-sad"))
+        # self.neutralSmiley = QIcon.fromTheme("face-plain", QIcon(":/face-plain"))
+        self.correctSmiley = QIcon(":/face-smile")
+        self.incorrectSmiley = QIcon(":/face-sad")
+        self.neutralSmiley = QIcon(":/face-plain")
         self.offSmiley = QIcon() #create just a null icon
         self.feedbackSmiley = self.offSmiley
     def giveFeedback(self, feedback):
@@ -6271,7 +6274,7 @@ class responseLight(QWidget):
             painter.setViewport(0,0,self.width(),self.height())
             painter.setBrush(self.offLightColor)
             rect = painter.drawRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height())
-            rect = QRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            rect = QRect(int(self.width()/60), int(self.height()/60), int(self.width()-self.width()/30), self.height())
             self.feedbackSmiley.paint(painter, rect, Qt.AlignCenter)
         elif self.responseLightType == self.tr("Light & Text"):
             painter = QPainter(self)
@@ -6290,7 +6293,7 @@ class responseLight(QWidget):
             painter.setViewport(0,0,self.width(),self.height())
             painter.setBrush(self.lightColor)
             rect = painter.drawRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height())
-            rect = QRect(self.width()/60, self.height()/60, self.width()-self.width()/30, self.height())
+            rect = QRect(int(self.width()/60), int(self.height()/60), int(self.width()-self.width()/30), self.height())
             self.feedbackSmiley.paint(painter, rect, Qt.AlignCenter)
         elif self.responseLightType == self.tr("Text & Smiley"):
             painter = QPainter(self)
@@ -6316,7 +6319,7 @@ class responseLight(QWidget):
             self.feedbackSmiley.paint(painter, rectRight, Qt.AlignCenter)
             rectLeft = QRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/2), self.height())
             self.feedbackSmiley.paint(painter, rectLeft, Qt.AlignCenter)
-            r = QtCore.QRectF(0,0,self.width(), self.height())
+            r = QtCore.QRectF(0, 0, self.width(), self.height())
             painter.setPen(self.penColor)
             qfont = QFont()
             qfont.fromString(self.cw.prm["pref"]["resp_box"]["responseLightFont"])

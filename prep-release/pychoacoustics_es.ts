@@ -327,24 +327,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="6404"/>
+        <location filename="../pychoacoustics/response_box.py" line="6407"/>
         <source>Experimenter {} e-mail&apos;s address {} not valid 
  Please specify a valid address for the current experimenter 
  in the Edit -&gt; Experimenters dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="6408"/>
+        <location filename="../pychoacoustics/response_box.py" line="6411"/>
         <source>username invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="6412"/>
+        <location filename="../pychoacoustics/response_box.py" line="6415"/>
         <source>SMTP server name invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="6459"/>
+        <location filename="../pychoacoustics/response_box.py" line="6462"/>
         <source>Something went wrong, try to change server settings 
  {}</source>
         <translation type="unfinished"></translation>
@@ -3626,37 +3626,37 @@
 <context>
     <name>responseLight</name>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="6252"/>
+        <location filename="../pychoacoustics/response_box.py" line="6255"/>
         <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="6258"/>
+        <location filename="../pychoacoustics/response_box.py" line="6261"/>
         <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="6269"/>
+        <location filename="../pychoacoustics/response_box.py" line="6272"/>
         <source>Smiley</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="6276"/>
+        <location filename="../pychoacoustics/response_box.py" line="6279"/>
         <source>Light &amp; Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="6288"/>
+        <location filename="../pychoacoustics/response_box.py" line="6291"/>
         <source>Light &amp; Smiley</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="6310"/>
+        <location filename="../pychoacoustics/response_box.py" line="6313"/>
         <source>Light &amp; Text &amp; Smiley</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/response_box.py" line="6295"/>
+        <location filename="../pychoacoustics/response_box.py" line="6298"/>
         <source>Text &amp; Smiley</source>
         <translation type="unfinished"></translation>
     </message>
