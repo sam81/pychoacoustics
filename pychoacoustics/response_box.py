@@ -690,7 +690,8 @@ class responseBox(QMainWindow):
         #cmd = self.prm['pref']['sound']['playCommand']
         for i in range(len(sndList)):
             if self.prm['pref']['sound']['writeSndSeqSegments'] == True:
-                self.audioManager.scipy_wavwrite("sndSeq%i.wav"%(i+1), self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], sndList[i])
+                #self.audioManager.scipy_wavwrite("sndSeq%i.wav"%(i+1), self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], sndList[i])
+                self.audioManager.wavwrite(sndList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], "sndSeq%i.wav"%(i+1))
         nLight = 0
         if self.prm["warningInterval"] == True:
             self.intervalLight[nLight].setStatus('on')
@@ -718,7 +719,7 @@ class responseBox(QMainWindow):
         
         for i in range(len(sndList)):
             if self.prm['pref']['sound']['writeSndSeqSegments'] == True:
-                self.audioManager.scipy_wavwrite("sndSeq%i.wav"%(i+1), self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], sndList[i])
+                self.audioManager.wavwrite(sndList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], "sndSeq%i.wav"%(i+1))
         for i in range(len(sndList)):
             if trigNum != None:
                 self.audioManager.playSoundWithTrigger(sndList[i], self.prm['allBlocks']['sampRate'], self.prm['allBlocks']['nBits'], self.prm['pref']['sound']['writewav'], 'soundSequence.wav', trigNum)

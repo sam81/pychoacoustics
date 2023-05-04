@@ -75,7 +75,7 @@ def select_default_parameters_freq(parent, par):
     field.append(20)
     
     fieldLabel.append("Level (dB SPL)")
-    field.append(50)
+    field.append(65)
     
     fieldLabel.append("Duration (ms)")
     field.append(180)
@@ -88,7 +88,7 @@ def select_default_parameters_freq(parent, par):
                            "Left",
                            "Both"])
     chooserLabel.append("Ear:")
-    chooser.append("Right")
+    chooser.append("Both")
    
     
     prm = {}

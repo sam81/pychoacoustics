@@ -2829,7 +2829,7 @@
         <source>&lt;b&gt;pychoacoustics - Python app for psychoacoustics&lt;/b&gt; &lt;br&gt;
                               - version: {0}; &lt;br&gt;
                               - build date: {1} &lt;br&gt;
-                              &lt;p&gt; Copyright &amp;copy; 2008-2017 Samuele Carcagno. &lt;a href=&quot;mailto:sam.carcagno@gmail.com&quot;&gt;sam.carcagno@gmail.com&lt;/a&gt; 
+                              &lt;p&gt; Copyright &amp;copy; 2008-2023 Samuele Carcagno. &lt;a href=&quot;mailto:sam.carcagno@gmail.com&quot;&gt;sam.carcagno@gmail.com&lt;/a&gt; 
                               All rights reserved. &lt;p&gt;
                               This program is free software: you can redistribute it and/or modify
                               it under the terms of the GNU General Public License as published by

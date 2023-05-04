@@ -286,7 +286,7 @@ def def_pref(prm):
     prm["pref"]["general"]["defaultShuffle"] = QApplication.translate("","Ask","")
     prm["pref"]["general"]["defaultResponseMode"] = QApplication.translate("","Real Listener","")
     prm["pref"]["general"]["listenerNameWarn"] = True
-    prm["pref"]["general"]["sessionLabelWarn"] = True
+    prm["pref"]["general"]["sessionLabelWarn"] = False
     prm["pref"]["general"]["playEndMessage"] = False
     prm["pref"]["general"]["processResultsEnd"] = True
     prm["pref"]["interface"]["responseButtonSize"] = 20
@@ -332,7 +332,7 @@ def def_pref(prm):
     #Sound preferences
     prm["pref"]["sound"]["defaultNBits"] = "32"
     prm["pref"]["sound"]["defaultSampleRate"] = "48000"
-    prm["pref"]["sound"]["writewav"] = True
+    prm["pref"]["sound"]["writewav"] = False
     prm["pref"]["sound"]["writeSndSeqSegments"] = False
     prm["pref"]["sound"]["wavmanager"] = "scipy"
     prm["pref"]["sound"]["bufferSize"] = 1024

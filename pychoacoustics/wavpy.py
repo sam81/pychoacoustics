@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2013-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2013-2016 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of wavpy
 
 #    wavpy is free software: you can redistribute it and/or modify
@@ -20,11 +20,10 @@
 """
 Module for reading and writing WAV files. It is a simple but convenient wrapper to the scipy.io.wavfile module.
 """
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from scipy.io import wavfile
 from tempfile import mkstemp
 import platform, os, subprocess
-from numpy import int16, int32
+from numpy import float32, int16, int32
 
 def wavread(fname):
     """
@@ -54,7 +53,7 @@ def wavread(fname):
     elif snd.dtype == "int32":
         snd = snd / (2.**31)
         nbits = 32
-    elif snd.dtype == 'float32':
+    elif snd.dtype == "float32":
         nbits = 32
         
     return snd, fs, nbits
@@ -80,14 +79,14 @@ def wavwrite(data, fs, nbits, fname):
     >>> wavwrite(data, 48000, 32, "file.wav")
     """
     if nbits not in [16, 32]:
-        print("Sorry can only write 16 or 32 bits at the moment! Exiting")
+        raise Exception("Can only write at 16 or 32 bits depth")
         return
 
     if nbits == 16:
-        data = data*(2.**15)
+        data = data*(2.**15-1)
         data = data.astype(int16)
     elif nbits == 32:
-        data = data*(2.**31)
+        data = data*(2.**31-1)
         data = data.astype(int32)
 
     wavfile.write(fname, fs, data)
