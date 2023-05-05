@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2012-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2012-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysdt
 
 #    pysdt is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@ Some of the functions in this module have been ported to
 python from the 'psyphy' R package of Kenneth Knoblauch
 http://cran.r-project.org/web/packages/psyphy/index.html
 """
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
+
 from scipy.stats import norm
 from scipy.integrate import quad
 from scipy.special import erf, erfinv

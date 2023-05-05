@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -16,20 +16,16 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtCore import QLocale, Qt, QEvent
-    from PyQt4.QtGui import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtCore import QLocale, Qt, QEvent
-    from PySide.QtGui import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout
-elif pyqtversion == 5:
+
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, Qt, QEvent
     from PyQt5.QtWidgets import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtCore import QLocale, Qt, QEvent
+    from PyQt6.QtWidgets import QComboBox, QDialog, QDialogButtonBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout
 import copy, pickle
 from numpy import unique
 
@@ -42,7 +38,7 @@ class experimentersDialog(QDialog):
         self.tmpPref['experimenter'] = {}
         self.tmpPref['experimenter'] = copy.deepcopy(self.parent().prm['experimenter'])
         self.currLocale = self.parent().prm['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
 
         self.sizer = QGridLayout()
         self.h1Sizer = QHBoxLayout()
@@ -129,10 +125,10 @@ class experimentersDialog(QDialog):
         self.v2Sizer.addWidget(setAsDefaultButton)
         self.v2Sizer.addStretch()
 
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Apply|QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
-        buttonBox.button(QDialogButtonBox.Apply).clicked.connect(self.onClickApplyButton)
+        buttonBox.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(self.onClickApplyButton)
         
         self.h1Sizer.addLayout(self.v2Sizer)
         self.sizer.setAlignment(Qt.AlignTop)
@@ -228,8 +224,8 @@ class experimentersDialog(QDialog):
         if self.experimenterChooser.count() > 1:
             reply = QMessageBox.warning(self, self.tr('Message'),
                                               "Remove experimenter? This action cannot be undone!", QMessageBox.Yes | 
-                                              QMessageBox.No, QMessageBox.No)
-            if reply == QMessageBox.Yes:
+                                              QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
+            if reply == QMessageBox.StandardButton.Yes:
                 self.tmpPref['experimenter']['defaultExperimenter'].pop(self.currIdx)
                 self.tmpPref['experimenter']['experimenter_id'].pop(self.currIdx)
                 self.tmpPref['experimenter']['experimenter_name'].pop(self.currIdx)
@@ -251,7 +247,7 @@ class experimentersDialog(QDialog):
                 self.experimenterMobileTF.setText(self.tmpPref['experimenter']['experimenter_mobile'][self.currIdx])
             else:
                 QMessageBox.warning(self, self.tr('Message'),
-                                          self.tr("Only one experimenter left. Experimenter cannot be removed!"), QMessageBox.Ok)
+                                          self.tr("Only one experimenter left. Experimenter cannot be removed!"), QMessageBox.StandardButton.Ok)
 
     def onClickChangeIdButton(self):
         self.tryApply(self.currIdx)
@@ -296,8 +292,8 @@ class applyChanges(QDialog):
         label = QLabel(self.tr('There are unsaved changes. Apply Changes?'))
         grid.addWidget(label, n, 1)
         n = n+1
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|
-                                     QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|
+                                     QDialogButtonBox.StandardButton.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 

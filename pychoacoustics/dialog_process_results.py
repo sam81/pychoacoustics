@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -16,34 +16,28 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtCore import QLocale
-    from PyQt4.QtGui import QCheckBox, QDialog, QDesktopServices, QDialogButtonBox, QFileDialog, QHBoxLayout, QIcon, QIntValidator, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout, QWidget
-    QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
-    QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
-    QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
-    matplotlib_available = True
-    try:
-        import matplotlib
-    except:
-        matplotlib_available = False
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtCore import QLocale
-    from PySide.QtGui import QCheckBox, QDialog, QDesktopServices, QDialogButtonBox, QFileDialog, QHBoxLayout, QIcon, QIntValidator, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout, QWidget
-    matplotlib_available = True
-    try:
-        import matplotlib
-    except:
-        matplotlib_available = False
-elif pyqtversion == 5:
+
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale
     from PyQt5.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout, QWidget
     from PyQt5.QtGui import QDesktopServices, QIcon, QIntValidator
+    matplotlib_available = True
+    try:
+        import matplotlib
+    except:
+        matplotlib_available = False
+    try:
+        from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+        matplotlib_available = True
+    except:
+        matplotlib_available = False
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtCore import QLocale
+    from PyQt6.QtWidgets import QCheckBox, QDialog, QDialogButtonBox, QFileDialog, QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QVBoxLayout, QWidget
+    from PyQt6.QtGui import QDesktopServices, QIcon, QIntValidator
     matplotlib_available = True
     try:
         import matplotlib
@@ -75,7 +69,7 @@ class processResultsDialog(QDialog):
         self.resformat = resformat
       
         self.currLocale = self.parent().prm['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.prm = self.parent().prm
 
         if paradigm in [self.tr("Transformed Up-Down"), self.tr("Transformed Up-Down Limited"),
@@ -212,7 +206,7 @@ class processResultsDialog(QDialog):
         self.runButton.setIcon(QIcon.fromTheme("system-run", QIcon(":/system-run")))
         self.hBox9.addWidget(self.runButton)
 
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Close)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
         buttonBox.rejected.connect(self.reject)
        
         self.vBoxSizer.addLayout(self.hBox1)

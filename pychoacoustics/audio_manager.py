@@ -16,7 +16,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from tempfile import mkstemp
 import platform, os, subprocess 
 from numpy import ceil, concatenate, floor, float32, int16, int32, mean, sqrt, transpose, zeros
@@ -24,12 +23,11 @@ import numpy as np
 #from .multirate import resample
 from .nnresample.nnresample import resample
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4.QtCore import QThread
-elif pyqtversion == -4:
-    from PySide.QtCore import QThread
-elif pyqtversion == 5:
+
+if pyqtversion == 5:
     from PyQt5.QtCore import QThread
+elif pyqtversion == 6:
+    from PyQt6.QtCore import QThread
 import sys, time
 
 if platform.system() == "Windows":

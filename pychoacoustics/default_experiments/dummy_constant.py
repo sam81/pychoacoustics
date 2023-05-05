@@ -5,9 +5,7 @@ Dummy experiment for several constant paradigms.
 
 """
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-#from PyQt4 import QtGui, QtCore
-#from PyQt4.QtGui import QApplication
+
 import random, sys
 from .._version_info import*
 from pychoacoustics.sndlib import*

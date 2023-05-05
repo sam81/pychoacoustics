@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -16,23 +16,20 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtCore import QLocale, QThread, pyqtSignal
-    from PyQt4.QtGui import QApplication, QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFont, QFontDialog, QGridLayout, QIntValidator, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QStyleFactory, QWidget, QTabWidget, QVBoxLayout
-    QtCore.Signal = QtCore.pyqtSignal
-    QtCore.Slot = QtCore.pyqtSlot
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtCore import QLocale, QThread, Signal
-    from PySide.QtGui import QApplication, QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFont, QFontDialog, QGridLayout, QIntValidator, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QStyleFactory, QWidget, QTabWidget, QVBoxLayout
-elif pyqtversion == 5:
+
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, QThread, pyqtSignal
     from PyQt5.QtWidgets import QApplication, QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFontDialog, QGridLayout, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QStyleFactory, QWidget, QTabWidget, QVBoxLayout
     from PyQt5.QtGui import QFont, QIntValidator
+    QtCore.Signal = QtCore.pyqtSignal
+    QtCore.Slot = QtCore.pyqtSlot
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtCore import QLocale, QThread, pyqtSignal
+    from PyQt6.QtWidgets import QApplication, QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFontDialog, QGridLayout, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QStyleFactory, QWidget, QTabWidget, QVBoxLayout
+    from PyQt6.QtGui import QFont, QIntValidator
     QtCore.Signal = QtCore.pyqtSignal
     QtCore.Slot = QtCore.pyqtSlot
     
@@ -61,7 +58,7 @@ class preferencesDialog(QDialog):
         self.tmpPref = {}
         self.tmpPref['pref'] = copy.deepcopy(self.parent().prm['pref'])
         self.currLocale = self.parent().prm['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.audioManager = parent.audioManager
         self.mailer = emailSender(self)
         self.newMailerMessage.connect(self.popMailerMessage)
@@ -159,7 +156,7 @@ class preferencesDialog(QDialog):
         # n = n+1
         
         self.appPrefWidget.setLayout(appPrefGrid)
-        self.appPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
+        self.appPrefWidget.layout().setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
         
         
         #SOUND PREF
@@ -269,7 +266,7 @@ class preferencesDialog(QDialog):
         n = n+1
         
         self.soundPrefWidget.setLayout(soundPrefGrid)
-        self.soundPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
+        self.soundPrefWidget.layout().setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
         # NOTIFICATION PREF
         notificationPrefGrid = QGridLayout()
         
@@ -284,7 +281,7 @@ class preferencesDialog(QDialog):
         notificationPrefGrid.addWidget(self.endMessageButton, n, 1)
         n = n+1
 
-        notificationPrefGrid.addItem(QSpacerItem(20,20,QSizePolicy.Expanding), n, 0)
+        notificationPrefGrid.addItem(QSpacerItem(20,20,QSizePolicy.Policy.Expanding), n, 0)
         n = n+1
         
         self.nBlocksLabel = QLabel(self.tr('blocks before end of experiment:'))
@@ -305,7 +302,7 @@ class preferencesDialog(QDialog):
         n = n+1
 
 
-        notificationPrefGrid.addItem(QSpacerItem(20,20,QSizePolicy.Expanding), n, 0)
+        notificationPrefGrid.addItem(QSpacerItem(20,20,QSizePolicy.Policy.Expanding), n, 0)
         n = n+1
         self.atEndLabel = QLabel(self.tr('At the end of the experiment:'))
         notificationPrefGrid.addWidget(self.atEndLabel, n, 0)
@@ -322,7 +319,7 @@ class preferencesDialog(QDialog):
         notificationPrefGrid.addWidget(self.atEndCustomCommandWidget, n, 1)
         n = n+1
 
-        notificationPrefGrid.addItem(QSpacerItem(20,20,QSizePolicy.Expanding), n, 0)
+        notificationPrefGrid.addItem(QSpacerItem(20,20,QSizePolicy.Policy.Expanding), n, 0)
         n = n+1
         self.serverLabel = QLabel(self.tr('Outgoing server (SMTP):'))
         notificationPrefGrid.addWidget(self.serverLabel, n, 0)
@@ -359,7 +356,7 @@ class preferencesDialog(QDialog):
         self.passwordLabel = QLabel(self.tr('Password:'))
         notificationPrefGrid.addWidget(self.passwordLabel, n, 0)
         self.passwordWidget = QLineEdit(self.tmpPref['pref']['email']['fromPassword'])
-        self.passwordWidget.setEchoMode(QLineEdit.Password)
+        self.passwordWidget.setEchoMode(QLineEdit.EchoMode.Password)
         notificationPrefGrid.addWidget(self.passwordWidget, n, 1)
 
         n = n+1
@@ -372,7 +369,7 @@ class preferencesDialog(QDialog):
         notificationPrefGrid.addWidget(self.testEmailButton, n, 0, 1, 2)
         
         self.notificationPrefWidget.setLayout(notificationPrefGrid)
-        self.notificationPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
+        self.notificationPrefWidget.layout().setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
 
         respBoxPrefGrid = QGridLayout()
         n = 0
@@ -517,10 +514,10 @@ class preferencesDialog(QDialog):
         # self.offTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.offTextColor.name())
         # respBoxPrefGrid.addWidget(self.offTextColorSquare, n, 1)
 
-        #respBoxPrefGrid.addItem(QSpacerItem(10,10,QSizePolicy.Expanding), n+1, 1)
+        #respBoxPrefGrid.addItem(QSpacerItem(10,10,QSizePolicy.Policy.Expanding), n+1, 1)
         
         self.respBoxPrefWidget.setLayout(respBoxPrefGrid)
-        self.respBoxPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
+        self.respBoxPrefWidget.layout().setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
 
 
         ##--#--#--#--#--
@@ -547,7 +544,7 @@ class preferencesDialog(QDialog):
       
         
         self.eegPrefWidget.setLayout(eegPrefGrid)
-        self.eegPrefWidget.layout().setSizeConstraint(QLayout.SetFixedSize)
+        self.eegPrefWidget.layout().setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
 
         # ........................
         self.tabWidget.addTab(self.appPrefWidget, self.tr("Genera&l"))
@@ -556,10 +553,10 @@ class preferencesDialog(QDialog):
         self.tabWidget.addTab(self.notificationPrefWidget, self.tr("Notification&s"))
         self.tabWidget.addTab(self.eegPrefWidget, self.tr("EE&G"))
 
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Apply|QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
-        buttonBox.button(QDialogButtonBox.Apply).clicked.connect(self.permanentApply)
+        buttonBox.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(self.permanentApply)
         
         layout = QVBoxLayout()
         layout.addWidget(self.tabWidget)
@@ -620,7 +617,7 @@ class preferencesDialog(QDialog):
             
     def onClickEndMessageButton(self):
         dialog = wavListDialog(self)
-        if dialog.exec_():
+        if dialog.exec():
             self.wavsList = dialog.wavsList
             self.wavsPref = {}
             self.wavsPref['endMessageFiles'] = []
@@ -964,9 +961,9 @@ class preferencesDialog(QDialog):
     def tabChanged(self):
         self.tryApply()
         if self.tmpPref['pref'] != self.parent().prm['pref']:
-            reply = QMessageBox.warning(self, self.tr("Warning"), self.tr('There are unsaved changes. Apply Changes?'), QMessageBox.Yes | 
-                                            QMessageBox.No, QMessageBox.Yes)
-            if reply == QMessageBox.Yes:
+            reply = QMessageBox.warning(self, self.tr("Warning"), self.tr('There are unsaved changes. Apply Changes?'), QMessageBox.StandardButton.Yes | 
+                                            QMessageBox.StandardButton.No, QMessageBox.StandardButton.Yes)
+            if reply == QMessageBox.StandardButton.Yes:
                 self.permanentApply()
             else:
                 self.tmpPref['pref'] = copy.deepcopy(self.parent().prm['pref'])

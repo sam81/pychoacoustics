@@ -15,37 +15,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtCore, QtGui
-    from PyQt4.QtCore import Qt, QEvent
-    from PyQt4.QtGui import QAction, QCheckBox, QComboBox, QDesktopServices, QDesktopWidget, QDoubleValidator, QFrame, QFileDialog, QGridLayout, QHBoxLayout, QIcon, QIntValidator, QLabel, QLayout, QLineEdit, QMainWindow, QMessageBox, QScrollArea, QSizePolicy, QSpacerItem, QSplitter, QPushButton, QTextEdit, QVBoxLayout, QWhatsThis, QWidget
-    QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
-    QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
-    QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
-    QtCore.Signal = QtCore.pyqtSignal
-    QtCore.Slot = QtCore.pyqtSlot
-    try:
-        import matplotlib
-        matplotlib_available = True
-        matplotlib.rcParams['backend'] = "Qt4Agg"
-        matplotlib.rcParams['backend.qt4'] = "PyQt4"
-    except:
-        matplotlib_available = False
-elif pyqtversion == -4:
-    import PySide
-    from PySide import QtCore, QtGui
-    from PySide.QtCore import Qt, QEvent
-    from PySide.QtGui import QAction, QCheckBox, QComboBox, QDesktopServices, QDesktopWidget, QDoubleValidator, QFrame, QFileDialog, QGridLayout, QHBoxLayout, QIcon, QIntValidator, QLabel, QLayout, QLineEdit, QMainWindow, QMessageBox, QScrollArea, QSizePolicy, QSpacerItem, QSplitter, QPushButton, QTextEdit, QVBoxLayout, QWhatsThis, QWidget
-    try:
-        import matplotlib
-        matplotlib_available = True
-        matplotlib.rcParams['backend'] = "Qt4Agg"
-        matplotlib.rcParams['backend.qt4'] = "PySide"
-    except:
-        matplotlib_available = False
-elif pyqtversion == 5:
+if pyqtversion == 5:
     from PyQt5 import QtCore, QtGui
     from PyQt5.QtCore import Qt, QEvent
     from PyQt5.QtWidgets import QAction, QCheckBox, QComboBox, QDesktopWidget, QFrame, QFileDialog, QGridLayout, QHBoxLayout, QLabel, QLayout, QLineEdit, QMainWindow, QMessageBox, QScrollArea, QSizePolicy, QSpacerItem, QSplitter, QPushButton, QTextEdit, QVBoxLayout, QWhatsThis, QWidget
@@ -60,6 +31,24 @@ elif pyqtversion == 5:
         matplotlib_available = False
     try:
         from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+        matplotlib_available = True
+    except:
+        matplotlib_available = False
+elif pyqtversion == 6:
+    from PyQt6 import QtCore, QtGui
+    from PyQt6.QtCore import Qt, QEvent
+    from PyQt6.QtWidgets import QCheckBox, QComboBox, QFrame, QFileDialog, QGridLayout, QHBoxLayout, QLabel, QLayout, QLineEdit, QMainWindow, QMessageBox, QScrollArea, QSizePolicy, QSpacerItem, QSplitter, QPushButton, QTextEdit, QVBoxLayout, QWhatsThis, QWidget#, QDesktopWidget
+    from PyQt6.QtGui import QAction, QDesktopServices, QDoubleValidator, QIcon, QIntValidator
+    QtCore.Signal = QtCore.pyqtSignal
+    QtCore.Slot = QtCore.pyqtSlot
+    try:
+        import matplotlib
+        matplotlib_available = True
+        matplotlib.rcParams['backend'] = "QtAgg"
+    except:
+        matplotlib_available = False
+    try:
+        from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
         matplotlib_available = True
     except:
         matplotlib_available = False
@@ -117,11 +106,14 @@ class pychControlWin(QMainWindow):
         self.prm['version'] = __version__
         self.prm['builddate'] = pychoacoustics_builddate
         #
-        screen = QDesktopWidget().screenGeometry()
+        if pyqtversion == 5:
+            screen = QDesktopWidget().screenGeometry()
+        elif pyqtversion == 6:
+            screen = self.screen().geometry()
         self.setGeometry(25, 50, int((2/3)*screen.width()), int((7/10)*screen.height())) #was 80, 100
         #self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.WindowStaysOnTopHint)
         self.currLocale = prm['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.setWindowTitle(self.tr("Pychoacoustics - Control Window"))
         self.menubar = self.menuBar()
         self.statusBar()
@@ -214,9 +206,10 @@ class pychControlWin(QMainWindow):
 
         self.cw = QFrame()
         self.pw = dropFrame(None)
-        self.cw.setFrameStyle(QFrame.StyledPanel|QFrame.Sunken)
-        self.pw.setFrameStyle(QFrame.StyledPanel|QFrame.Sunken)
-        self.splitter = QSplitter(QtCore.Qt.Horizontal)
+        self.cw.setFrameStyle(QFrame.Shape.StyledPanel|QFrame.Shadow.Sunken)
+        self.pw.setFrameStyle(QFrame.Shape.StyledPanel|QFrame.Shadow.Sunken)
+        #self.splitter = QSplitter(QtCore.Qt.Horizontal)
+        self.splitter = QSplitter(QtCore.Qt.Orientation.Horizontal)
         self.pw.drpd.connect(self.onDropPrmFile)
 
 
@@ -359,7 +352,7 @@ class pychControlWin(QMainWindow):
         self.experimentChooser.setWhatsThis(self.tr("Choose the experiment for the current block."))
         self.experimentChooser.addItems(self.prm["experimentsChoices"])
         self.def_widg_sizer.addWidget(self.experimentChooser, n, 1)
-        self.experimentChooser.activated[str].connect(self.onExperimentChange)
+        self.experimentChooser.textActivated[str].connect(self.onExperimentChange)
         #PARADIGM
         n = n+1
         self.paradigmLabel = QLabel(self.tr("Paradigm:"), self)
@@ -369,7 +362,7 @@ class pychControlWin(QMainWindow):
         self.paradigmChooser.setCurrentIndex(1)
         self.paradigmChooser.setWhatsThis(self.tr("Choose the paradigm for the current block."))
         self.def_widg_sizer.addWidget(self.paradigmChooser, n, 1)
-        self.paradigmChooser.activated[str].connect(self.onParadigmChange)
+        self.paradigmChooser.textActivated[str].connect(self.onParadigmChange)
         #PHONES
         n = n+1
         self.phonesLabel = QLabel(self.tr("Phones:"), self)
@@ -399,7 +392,7 @@ class pychControlWin(QMainWindow):
         self.nBitsChooser.setWhatsThis(self.tr("Choose the bit depth for the current session. The bit depth chosen must be supported by your soundcard and the playing method chosen in the sound preferences (see manual)"))
         self.nBitsChooser.setCurrentIndex(self.prm["nBitsChoices"].index(self.prm["pref"]["sound"]["defaultNBits"])) 
         self.def_widg_sizer.addWidget(self.nBitsChooser, n, 1)
-        self.nBitsChooser.activated[str].connect(self.audioManager.initializeAudio)
+        self.nBitsChooser.textActivated[str].connect(self.audioManager.initializeAudio)
         #self.def_widg_sizer.addItem(QSpacerItem(10,10,QSizePolicy.Expanding), 0, 2)
         #self.def_widg_sizer.addItem(QSpacerItem(10,10,QSizePolicy.Expanding), 0, 3)
         #REPETITIONS
@@ -426,7 +419,7 @@ class pychControlWin(QMainWindow):
         self.warningIntervalChooser = QComboBox()
         self.warningIntervalChooser.addItems([self.tr("Yes"), self.tr("No")])
         self.warningIntervalChooser.setCurrentIndex(self.warningIntervalChooser.findText(self.tr("No")))
-        self.warningIntervalChooser.activated[str].connect(self.onWarningIntervalChange)
+        self.warningIntervalChooser.textActivated[str].connect(self.onWarningIntervalChange)
         self.warningIntervalChooser.setWhatsThis(self.tr("Should a warning interval be presented at the beginning of each trial?"))
         self.def_widg_sizer.addWidget(self.warningIntervalLabel, n, 0)
         self.def_widg_sizer.addWidget(self.warningIntervalChooser, n, 1)
@@ -459,7 +452,7 @@ class pychControlWin(QMainWindow):
         self.intervalLightsChooser.setWhatsThis(self.tr("Should interval lights be shown in the response box for the current block?"))
         self.intervalLightsChooser.setCurrentIndex(self.intervalLightsChooser.findText(self.prm['intervalLights']))
         self.def_widg_sizer.addWidget(self.intervalLightsChooser, n, 1)
-        self.intervalLightsChooser.activated[str].connect(self.onIntervalLightsChange)
+        self.intervalLightsChooser.textActivated[str].connect(self.onIntervalLightsChange)
         #RESULTS FILE
         n = n+1
         self.saveResultsLabel =  QLabel(self.tr("Results File:"), self)
@@ -477,8 +470,8 @@ class pychControlWin(QMainWindow):
         self.def_widg_sizer.addWidget(self.saveResultsButton, n, 1, 1, 1)
         #Additional Widgets
         self.add_widg_sizer = QGridLayout()
-        self.add_widg_sizer.addItem(QSpacerItem(10,10, QSizePolicy.Expanding), 0, 2)
-        self.add_widg_sizer.addItem(QSpacerItem(10,10, QSizePolicy.Expanding), 0, 3)
+        self.add_widg_sizer.addItem(QSpacerItem(10,10, QSizePolicy.Policy.Expanding), 0, 2)
+        self.add_widg_sizer.addItem(QSpacerItem(10,10, QSizePolicy.Policy.Expanding), 0, 3)
         #self.setAdditionalWidgets(self.currExp, self.prevExp) later
 
         #def widgets 2
@@ -491,7 +484,7 @@ class pychControlWin(QMainWindow):
         self.shuffleChooser.addItems(self.prm['shuffleChoices'])
         self.shuffleChooser.setCurrentIndex(self.prm['shuffleChoices'].index(QApplication.translate("",self.prm['pref']['general']['defaultShuffle'],"")))   
         self.def_widg_sizer2.addWidget(self.shuffleChooser, 1, 1)
-        self.def_widg_sizer2.addItem(QSpacerItem(10,10,QSizePolicy.Expanding), 0, 4)
+        self.def_widg_sizer2.addItem(QSpacerItem(10, 10, QSizePolicy.Policy.Expanding), 0, 4)
 
         #ONOFF Trigger
         self.triggerCheckBox = QCheckBox(self.tr('EEG ON/OFF Trigger'))
@@ -503,7 +496,7 @@ class pychControlWin(QMainWindow):
         self.responseModeChooser = QComboBox()
         self.responseModeChooser.addItems(self.prm['responseModeChoices'])
         self.responseModeChooser.setCurrentIndex(self.prm['responseModeChoices'].index(QApplication.translate("",self.prm['pref']['general']['defaultResponseMode'],"")))
-        self.responseModeChooser.activated[str].connect(self.onResponseModeChange)
+        self.responseModeChooser.textActivated[str].connect(self.onResponseModeChange)
         self.def_widg_sizer2.addWidget(self.responseModeChooser, 2, 1)
         
         #AUTO Percent Correct
@@ -539,7 +532,7 @@ class pychControlWin(QMainWindow):
         self.psyListFunChooser = QComboBox()
         self.psyListFunChooser.addItems(self.prm['psyListFunChoices'])
         #self.psyListFunChooser.setCurrentIndex(self.prm['psyListFunChoices'].index(QApplication.translate("",self.prm['pref']['general']['defaultResponseMode'],"")))
-        #self.psyListFunChooser.activated[str].connect(self.onResponseModeChange)
+        #self.psyListFunChooser.textActivated[str].connect(self.onResponseModeChange)
         self.def_widg_sizer2.addWidget(self.psyListFunChooser, n, 1)
         self.psyListFunChooserLabel.hide()
         self.psyListFunChooser.hide()
@@ -603,7 +596,7 @@ class pychControlWin(QMainWindow):
         self.loadParametersButton.clicked.connect(self.onClickLoadParametersButton)
         self.loadParametersButton.setToolTip(self.tr("Load a parameters file"))
         self.loadParametersButton.setWhatsThis(self.tr("Load a file containing the parameters for an experimental session"))
-        self.loadParametersButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.loadParametersButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.pw_buttons_sizer.addWidget(self.loadParametersButton, n, 0)
 
         #SAVE PARAMETERS BUTTON
@@ -613,7 +606,7 @@ class pychControlWin(QMainWindow):
         self.saveParametersButton.clicked.connect(self.onClickSaveParametersButton)
         self.saveParametersButton.setToolTip(self.tr("Save a parameters file"))
         self.saveParametersButton.setWhatsThis(self.tr("Save the current experimental parameters to a file"))
-        self.saveParametersButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.saveParametersButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.pw_buttons_sizer.addWidget(self.saveParametersButton, n, 1)
 
         #DELETE PARAMETERS BUTTON
@@ -623,7 +616,7 @@ class pychControlWin(QMainWindow):
         self.deleteParametersButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.deleteParametersButton.setToolTip(self.tr("Delete current block"))
         self.deleteParametersButton.setWhatsThis(self.tr("Delete the current block of trials."))
-        self.deleteParametersButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.deleteParametersButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.pw_buttons_sizer.addWidget(self.deleteParametersButton, n, 2)
 
      
@@ -633,7 +626,7 @@ class pychControlWin(QMainWindow):
         self.undoUnsavedButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.undoUnsavedButton.setToolTip(self.tr("Undo unsaved changes"))
         self.undoUnsavedButton.setWhatsThis(self.tr("Undo changes in the current block that have not yet been stored in memory."))
-        self.undoUnsavedButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.undoUnsavedButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.pw_buttons_sizer.addWidget(self.undoUnsavedButton, n, 3)
 
         #---- SECOND ROW
@@ -644,21 +637,21 @@ class pychControlWin(QMainWindow):
         self.storeParametersButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.storeParametersButton.setToolTip(self.tr("Store parameters in memory"))
         self.storeParametersButton.setWhatsThis(self.tr("Store parameters in memory."))
-        self.storeParametersButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.storeParametersButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.pw_buttons_sizer.addWidget(self.storeParametersButton, n, 0)
 
         self.storeandaddParametersButton = QPushButton(self.tr("Store 'n' add!"), self)
         self.storeandaddParametersButton.clicked.connect(self.onClickStoreandaddParametersButton)
         self.storeandaddParametersButton.setToolTip(self.tr("Store parameters in memory and add a new block"))
         self.storeandaddParametersButton.setWhatsThis(self.tr("Store parameters in memory and add a new block."))
-        self.storeandaddParametersButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.storeandaddParametersButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.pw_buttons_sizer.addWidget(self.storeandaddParametersButton, n, 1)
         
         self.storeandgoParametersButton = QPushButton(self.tr("Store 'n' go!"), self)
         self.storeandgoParametersButton.clicked.connect(self.onClickStoreandgoParametersButton)
         self.storeandgoParametersButton.setToolTip(self.tr("Store parameters and go to the next block"))
         self.storeandgoParametersButton.setWhatsThis(self.tr("Store parameters and go to the next block"))
-        self.storeandgoParametersButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.storeandgoParametersButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.pw_buttons_sizer.addWidget(self.storeandgoParametersButton, n, 2)
 
         self.newBlockButton = QPushButton(self.tr("New Block"), self)
@@ -667,7 +660,7 @@ class pychControlWin(QMainWindow):
         self.newBlockButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.newBlockButton.setToolTip(self.tr("Append a new block"))
         self.newBlockButton.setWhatsThis(self.tr("Append a new block."))
-        self.newBlockButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.newBlockButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.pw_buttons_sizer.addWidget(self.newBlockButton, n, 3)
 
       
@@ -681,7 +674,7 @@ class pychControlWin(QMainWindow):
         self.prevBlockButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.prevBlockButton.setToolTip(self.tr("Move to previous block"))
         self.prevBlockButton.setWhatsThis(self.tr("Move to previous block."))
-        self.prevBlockButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.prevBlockButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.pw_buttons_sizer.addWidget(self.prevBlockButton, n, 0)
 
         self.nextBlockButton = QPushButton(self.tr("Next"), self)
@@ -690,7 +683,7 @@ class pychControlWin(QMainWindow):
         self.nextBlockButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.nextBlockButton.setToolTip(self.tr("Move to next block"))
         self.nextBlockButton.setWhatsThis(self.tr("Move to next block."))
-        self.nextBlockButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.nextBlockButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.pw_buttons_sizer.addWidget(self.nextBlockButton, n, 1)
 
         self.shuffleBlocksButton = QPushButton(self.tr("Shuffle"), self)
@@ -699,7 +692,7 @@ class pychControlWin(QMainWindow):
         self.shuffleBlocksButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.shuffleBlocksButton.setToolTip(self.tr("Shuffle blocks"))
         self.shuffleBlocksButton.setWhatsThis(self.tr("Shuffle the blocks."))
-        self.shuffleBlocksButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.shuffleBlocksButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.pw_buttons_sizer.addWidget(self.shuffleBlocksButton, n, 2)
 
         self.resetParametersButton = QPushButton(self.tr("Reset"), self)
@@ -708,10 +701,10 @@ class pychControlWin(QMainWindow):
         self.resetParametersButton.setIconSize(QtCore.QSize(min_pw_icon_size, min_pw_icon_size))
         self.resetParametersButton.setToolTip(self.tr("Reset parameters"))
         self.resetParametersButton.setWhatsThis(self.tr("Reset the parameters."))
-        self.resetParametersButton.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.resetParametersButton.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.pw_buttons_sizer.addWidget(self.resetParametersButton, n, 3)
         n = n+1
-        self.pw_buttons_sizer.addItem(QSpacerItem(10,10,QSizePolicy.Expanding), n, 0, 1, 4)
+        self.pw_buttons_sizer.addItem(QSpacerItem(10,10,QSizePolicy.Policy.Expanding), n, 0, 1, 4)
 
 
         #----FOURTH ROW
@@ -737,7 +730,7 @@ class pychControlWin(QMainWindow):
         
         self.jumpToBlockLabel = QLabel(self.tr("Jump to Block:"))
         self.jumpToBlockChooser = QComboBox()
-        self.jumpToBlockChooser.activated[str].connect(self.onJumpToBlockChange)
+        self.jumpToBlockChooser.textActivated[str].connect(self.onJumpToBlockChange)
         self.jumpToBlockChooser.setToolTip(self.tr("Jump to a given block"))
         self.jumpToBlockChooser.setWhatsThis(self.tr("Jump to a given block."))
         self.pw_buttons_sizer.addWidget(self.jumpToBlockLabel, n, 2)
@@ -760,7 +753,7 @@ class pychControlWin(QMainWindow):
 
         self.jumpToPositionLabel = QLabel(self.tr("Jump to Position:"))
         self.jumpToPositionChooser = QComboBox()
-        self.jumpToPositionChooser.activated[str].connect(self.onJumpToPositionChange)
+        self.jumpToPositionChooser.textActivated[str].connect(self.onJumpToPositionChange)
         self.jumpToPositionChooser.setToolTip(self.tr("Jump to a given block position."))
         self.jumpToPositionChooser.setWhatsThis(self.tr("Jump to a given block position."))
         self.pw_buttons_sizer.addWidget(self.jumpToPositionLabel, n, 2)
@@ -791,7 +784,7 @@ class pychControlWin(QMainWindow):
         
         n = n+1
         #spacer
-        self.pw_buttons_sizer.addItem(QSpacerItem(10,10,QSizePolicy.Expanding), n, 5)
+        self.pw_buttons_sizer.addItem(QSpacerItem(10,10,QSizePolicy.Policy.Expanding), n, 5)
 
         #PARAMETERS AREA
         self.pw_prm_sizer = QHBoxLayout()
@@ -799,8 +792,8 @@ class pychControlWin(QMainWindow):
         self.pw_prm_sizer_1 = QGridLayout()
         #self.pw_prm_sizer_0.setVerticalSpacing(-20)
         #self.pw_prm_sizer_1.setVerticalSpacing(-20)
-        self.pw_prm_sizer_0.setAlignment(Qt.AlignTop)
-        self.pw_prm_sizer_1.setAlignment(Qt.AlignTop)
+        self.pw_prm_sizer_0.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.pw_prm_sizer_1.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.cw_sizer.addLayout(self.def_widg_sizer)
         self.cw_sizer.addLayout(self.add_widg_sizer)
         self.cw_sizer.addLayout(self.def_widg_sizer2)
@@ -818,8 +811,8 @@ class pychControlWin(QMainWindow):
         self.pw_prm_sizer.addLayout(self.pw_prm_sizer_1)
         self.pw_sizer.addLayout(self.pw_prm_sizer)
         self.pw.setLayout(self.pw_sizer)
-        self.pw.layout().setSizeConstraint(QLayout.SetFixedSize)
-        self.cw.layout().setSizeConstraint(QLayout.SetFixedSize)
+        self.pw.layout().setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
+        self.cw.layout().setSizeConstraint(QLayout.SizeConstraint.SetFixedSize)
         self.pw_scrollarea = QScrollArea()
         self.pw_scrollarea.setWidget(self.pw)
         self.splitter.addWidget(self.pw_scrollarea)
@@ -903,7 +896,7 @@ class pychControlWin(QMainWindow):
             else:
                 self.nIntervalsChooser.setCurrentIndex(0)
             self.add_widg_sizer.addWidget(self.nIntervalsChooser, n, 2)
-            self.nIntervalsChooser.activated[str].connect(self.onNIntervalsChange)
+            self.nIntervalsChooser.textActivated[str].connect(self.onNIntervalsChange)
             self.nIntervalsCheckBox = QCheckBox()
             self.add_widg_sizer.addWidget(self.nIntervalsCheckBox, n, 0)
             self.additionalWidgetsChooserList.append(self.nIntervalsChooser)
@@ -916,7 +909,7 @@ class pychControlWin(QMainWindow):
             self.nAlternativesChooser.addItems([str(self.currLocale.toInt(self.nIntervalsChooser.currentText())[0]-1), self.nIntervalsChooser.currentText()])
             self.nAlternativesChooser.setCurrentIndex(self.nAlternativesChooser.findText(str(self.prm['nAlternatives'])))
             self.add_widg_sizer.addWidget(self.nAlternativesChooser, n, 2)
-            self.nAlternativesChooser.activated[str].connect(self.onNAlternativesChange)
+            self.nAlternativesChooser.textActivated[str].connect(self.onNAlternativesChange)
             self.nAlternativesCheckBox = QCheckBox()
             self.add_widg_sizer.addWidget(self.nAlternativesCheckBox, n, 0)
             self.additionalWidgetsChooserList.append(self.nAlternativesChooser)
@@ -956,7 +949,7 @@ class pychControlWin(QMainWindow):
             self.preTrialIntervalChooser = QComboBox()
             self.preTrialIntervalChooser.addItems([self.tr("Yes"), self.tr("No")])
             self.preTrialIntervalChooser.setCurrentIndex(1)
-            self.preTrialIntervalChooser.activated[str].connect(self.onPreTrialIntervalChange)
+            self.preTrialIntervalChooser.textActivated[str].connect(self.onPreTrialIntervalChange)
             self.add_widg_sizer.addWidget(self.preTrialIntervalChooser, n, 2)
             self.preTrialIntervalCheckBox = QCheckBox()
             self.add_widg_sizer.addWidget(self.preTrialIntervalCheckBox, n, 0)
@@ -992,7 +985,7 @@ class pychControlWin(QMainWindow):
             self.precursorIntervalChooser = QComboBox()
             self.precursorIntervalChooser.addItems([self.tr("Yes"), self.tr("No")])
             self.precursorIntervalChooser.setCurrentIndex(1)
-            self.precursorIntervalChooser.activated[str].connect(self.onPrecursorIntervalChange)
+            self.precursorIntervalChooser.textActivated[str].connect(self.onPrecursorIntervalChange)
             self.add_widg_sizer.addWidget(self.precursorIntervalChooser, n, 2)
             self.precursorIntervalCheckBox = QCheckBox()
             self.add_widg_sizer.addWidget(self.precursorIntervalCheckBox, n, 0)
@@ -1028,7 +1021,7 @@ class pychControlWin(QMainWindow):
             self.postcursorIntervalChooser = QComboBox()
             self.postcursorIntervalChooser.addItems([self.tr("Yes"), self.tr("No")])
             self.postcursorIntervalChooser.setCurrentIndex(1)
-            self.postcursorIntervalChooser.activated[str].connect(self.onPostcursorIntervalChange)
+            self.postcursorIntervalChooser.textActivated[str].connect(self.onPostcursorIntervalChange)
             self.add_widg_sizer.addWidget(self.postcursorIntervalChooser, n, 2)
             self.postcursorIntervalCheckBox = QCheckBox()
             self.add_widg_sizer.addWidget(self.postcursorIntervalCheckBox, n, 0)
@@ -1365,7 +1358,7 @@ class pychControlWin(QMainWindow):
             nTracks = self.par['nDifferences']
             self.nTracksChooser.setCurrentIndex(self.nTracksOptionsList.index(str(nTracks)))
             self.paradigm_widg_sizer.addWidget(self.nTracksChooser, n, 2)
-            self.nTracksChooser.activated[str].connect(self.onChangeNTracks)
+            self.nTracksChooser.textActivated[str].connect(self.onChangeNTracks)
             self.nTracksCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.nTracksCheckBox, n, 0)
             if self.prm[self.currExp]["hasNTracksChooser"] == True:
@@ -1561,7 +1554,7 @@ class pychControlWin(QMainWindow):
             nTracks = self.par['nDifferences']
             self.nTracksChooser.setCurrentIndex(self.nTracksOptionsList.index(str(nTracks)))
             self.paradigm_widg_sizer.addWidget(self.nTracksChooser, n, 2)
-            self.nTracksChooser.activated[str].connect(self.onChangeNTracks)
+            self.nTracksChooser.textActivated[str].connect(self.onChangeNTracks)
             self.nTracksCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.nTracksCheckBox, n, 0)
             if self.prm[self.currExp]["hasNTracksChooser"] == True:
@@ -2010,7 +2003,7 @@ class pychControlWin(QMainWindow):
           
             self.nDifferencesChooser.setCurrentIndex(self.nDifferencesOptionsList.index(str(self.par["nDifferences"])))
             self.paradigm_widg_sizer.addWidget(self.nDifferencesChooser, n, 2)
-            self.nDifferencesChooser.activated[str].connect(self.onChangeNDifferences)
+            self.nDifferencesChooser.textActivated[str].connect(self.onChangeNDifferences)
 
             self.nDifferencesCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.nDifferencesCheckBox, n, 0)
@@ -2253,7 +2246,7 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.stimScalingChooser, n, 5)
             self.stimScalingCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.stimScalingCheckBox, n, 3)
-            self.stimScalingChooser.activated[str].connect(self.onStimScalingChooserChange)
+            self.stimScalingChooser.textActivated[str].connect(self.onStimScalingChooserChange)
 
             self.nTrialsLabel = QLabel(self.tr("No. Trials"), self)
             self.paradigm_widg_sizer.addWidget(self.nTrialsLabel, n, 7)
@@ -2330,7 +2323,7 @@ class pychControlWin(QMainWindow):
             self.threshPriorChooser = QComboBox()
             self.threshPriorChooser.addItems(priorOptions)
             self.paradigm_widg_sizer.addWidget(self.threshPriorChooser, n, 2)
-            self.threshPriorChooser.activated[str].connect(self.onChangeThreshPrior)
+            self.threshPriorChooser.textActivated[str].connect(self.onChangeThreshPrior)
             self.threshPriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.threshPriorChooserCheckBox, n, 0)
             # thres priro mu
@@ -2386,7 +2379,7 @@ class pychControlWin(QMainWindow):
             self.slopeSpacingChooser = QComboBox()
             self.slopeSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooser, n, 2)
-            self.slopeSpacingChooser.activated[str].connect(self.onSlopeSpacingChooserChange)
+            self.slopeSpacingChooser.textActivated[str].connect(self.onSlopeSpacingChooserChange)
             self.slopeSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooserCheckBox, n, 0)
 
@@ -2397,7 +2390,7 @@ class pychControlWin(QMainWindow):
             self.slopePriorChooser = QComboBox()
             self.slopePriorChooser.addItems(priorOptions)
             self.paradigm_widg_sizer.addWidget(self.slopePriorChooser, n, 2)
-            self.slopePriorChooser.activated[str].connect(self.onChangeSlopePrior)
+            self.slopePriorChooser.textActivated[str].connect(self.onChangeSlopePrior)
             self.slopePriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.slopePriorChooserCheckBox, n, 0)
             # thres priro mu
@@ -2453,7 +2446,7 @@ class pychControlWin(QMainWindow):
             self.lapseSpacingChooser = QComboBox()
             self.lapseSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooser, n, 2)
-            self.lapseSpacingChooser.activated[str].connect(self.onLapseSpacingChooserChange)
+            self.lapseSpacingChooser.textActivated[str].connect(self.onLapseSpacingChooserChange)
             self.lapseSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooserCheckBox, n, 0)
             n = n+1
@@ -2463,7 +2456,7 @@ class pychControlWin(QMainWindow):
             self.lapsePriorChooser = QComboBox()
             self.lapsePriorChooser.addItems(priorOptions)
             self.paradigm_widg_sizer.addWidget(self.lapsePriorChooser, n, 2)
-            self.lapsePriorChooser.activated[str].connect(self.onChangeLapsePrior)
+            self.lapsePriorChooser.textActivated[str].connect(self.onChangeLapsePrior)
             self.lapsePriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.lapsePriorChooserCheckBox, n, 0)
             # lapse priro mu
@@ -2672,7 +2665,7 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.swptRuleChooser, n, 5)
             self.swptRuleChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.swptRuleChooserCheckBox, n, 3)
-            self.swptRuleChooser.activated[str].connect(self.onChangeSwptRule)
+            self.swptRuleChooser.textActivated[str].connect(self.onChangeSwptRule)
             
             self.ruleDownLabel = QLabel(self.tr("Rule Down"), self)
             self.paradigm_widg_sizer.addWidget(self.ruleDownLabel, n, 7)
@@ -2713,7 +2706,7 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.stimScalingChooser, n, 8)
             self.stimScalingCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.stimScalingCheckBox, n, 6)
-            self.stimScalingChooser.activated[str].connect(self.onStimScalingChooserChange)
+            self.stimScalingChooser.textActivated[str].connect(self.onStimScalingChooserChange)
             n = n+1
             self.suggestedLambdaSwptLabel = QLabel(self.tr("Suggested Lapse Swpt."))
             self.suggestedLambdaSwpt = QLineEdit("40")
@@ -2764,7 +2757,7 @@ class pychControlWin(QMainWindow):
             self.threshPriorChooser = QComboBox()
             self.threshPriorChooser.addItems(priorOptions)
             self.paradigm_widg_sizer.addWidget(self.threshPriorChooser, n, 2)
-            self.threshPriorChooser.activated[str].connect(self.onChangeThreshPrior)
+            self.threshPriorChooser.textActivated[str].connect(self.onChangeThreshPrior)
             self.threshPriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.threshPriorChooserCheckBox, n, 0)
             # thres priro mu
@@ -2820,7 +2813,7 @@ class pychControlWin(QMainWindow):
             self.slopeSpacingChooser = QComboBox()
             self.slopeSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooser, n, 2)
-            self.slopeSpacingChooser.activated[str].connect(self.onSlopeSpacingChooserChange)
+            self.slopeSpacingChooser.textActivated[str].connect(self.onSlopeSpacingChooserChange)
             self.slopeSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooserCheckBox, n, 0)
             n = n+1
@@ -2830,7 +2823,7 @@ class pychControlWin(QMainWindow):
             self.slopePriorChooser = QComboBox()
             self.slopePriorChooser.addItems(priorOptions)
             self.paradigm_widg_sizer.addWidget(self.slopePriorChooser, n, 2)
-            self.slopePriorChooser.activated[str].connect(self.onChangeSlopePrior)
+            self.slopePriorChooser.textActivated[str].connect(self.onChangeSlopePrior)
             self.slopePriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.slopePriorChooserCheckBox, n, 0)
             # thres priro mu
@@ -2886,7 +2879,7 @@ class pychControlWin(QMainWindow):
             self.lapseSpacingChooser = QComboBox()
             self.lapseSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooser, n, 2)
-            self.lapseSpacingChooser.activated[str].connect(self.onLapseSpacingChooserChange)
+            self.lapseSpacingChooser.textActivated[str].connect(self.onLapseSpacingChooserChange)
             self.lapseSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooserCheckBox, n, 0)
             n = n+1
@@ -2896,7 +2889,7 @@ class pychControlWin(QMainWindow):
             self.lapsePriorChooser = QComboBox()
             self.lapsePriorChooser.addItems(lambdaPriorOptions)
             self.paradigm_widg_sizer.addWidget(self.lapsePriorChooser, n, 2)
-            self.lapsePriorChooser.activated[str].connect(self.onChangeLapsePrior)
+            self.lapsePriorChooser.textActivated[str].connect(self.onChangeLapsePrior)
             self.lapsePriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.lapsePriorChooserCheckBox, n, 0)
             # lapse priro mu
@@ -3023,7 +3016,7 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.stimScalingChooser, n, 5)
             self.stimScalingCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.stimScalingCheckBox, n, 3)
-            self.stimScalingChooser.activated[str].connect(self.onStimScalingChooserChange)
+            self.stimScalingChooser.textActivated[str].connect(self.onStimScalingChooserChange)
 
             self.nTrialsLabel = QLabel(self.tr("No. Trials"), self)
             self.paradigm_widg_sizer.addWidget(self.nTrialsLabel, n, 7)
@@ -3100,7 +3093,7 @@ class pychControlWin(QMainWindow):
             self.threshPriorChooser = QComboBox()
             self.threshPriorChooser.addItems(priorOptions)
             self.paradigm_widg_sizer.addWidget(self.threshPriorChooser, n, 2)
-            self.threshPriorChooser.activated[str].connect(self.onChangeThreshPrior)
+            self.threshPriorChooser.textActivated[str].connect(self.onChangeThreshPrior)
             self.threshPriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.threshPriorChooserCheckBox, n, 0)
             # thres priro mu
@@ -3157,7 +3150,7 @@ class pychControlWin(QMainWindow):
             self.guessSpacingChooser = QComboBox()
             self.guessSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.guessSpacingChooser, n, 2)
-            self.guessSpacingChooser.activated[str].connect(self.onGuessSpacingChooserChange)
+            self.guessSpacingChooser.textActivated[str].connect(self.onGuessSpacingChooserChange)
             self.guessSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.guessSpacingChooserCheckBox, n, 0)
 
@@ -3168,7 +3161,7 @@ class pychControlWin(QMainWindow):
             self.guessPriorChooser = QComboBox()
             self.guessPriorChooser.addItems(priorOptions)
             self.paradigm_widg_sizer.addWidget(self.guessPriorChooser, n, 2)
-            self.guessPriorChooser.activated[str].connect(self.onChangeGuessPrior)
+            self.guessPriorChooser.textActivated[str].connect(self.onChangeGuessPrior)
             self.guessPriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.guessPriorChooserCheckBox, n, 0)
             # guess prior mu
@@ -3225,7 +3218,7 @@ class pychControlWin(QMainWindow):
             self.slopeSpacingChooser = QComboBox()
             self.slopeSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooser, n, 2)
-            self.slopeSpacingChooser.activated[str].connect(self.onSlopeSpacingChooserChange)
+            self.slopeSpacingChooser.textActivated[str].connect(self.onSlopeSpacingChooserChange)
             self.slopeSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooserCheckBox, n, 0)
 
@@ -3236,7 +3229,7 @@ class pychControlWin(QMainWindow):
             self.slopePriorChooser = QComboBox()
             self.slopePriorChooser.addItems(priorOptions)
             self.paradigm_widg_sizer.addWidget(self.slopePriorChooser, n, 2)
-            self.slopePriorChooser.activated[str].connect(self.onChangeSlopePrior)
+            self.slopePriorChooser.textActivated[str].connect(self.onChangeSlopePrior)
             self.slopePriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.slopePriorChooserCheckBox, n, 0)
             # thres priro mu
@@ -3292,7 +3285,7 @@ class pychControlWin(QMainWindow):
             self.lapseSpacingChooser = QComboBox()
             self.lapseSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooser, n, 2)
-            self.lapseSpacingChooser.activated[str].connect(self.onLapseSpacingChooserChange)
+            self.lapseSpacingChooser.textActivated[str].connect(self.onLapseSpacingChooserChange)
             self.lapseSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooserCheckBox, n, 0)
             n = n+1
@@ -3302,7 +3295,7 @@ class pychControlWin(QMainWindow):
             self.lapsePriorChooser = QComboBox()
             self.lapsePriorChooser.addItems(priorOptions)
             self.paradigm_widg_sizer.addWidget(self.lapsePriorChooser, n, 2)
-            self.lapsePriorChooser.activated[str].connect(self.onChangeLapsePrior)
+            self.lapsePriorChooser.textActivated[str].connect(self.onChangeLapsePrior)
             self.lapsePriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.lapsePriorChooserCheckBox, n, 0)
             # lapse priro mu
@@ -3525,7 +3518,7 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.swptRuleChooser, n, 5)
             self.swptRuleChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.swptRuleChooserCheckBox, n, 3)
-            self.swptRuleChooser.activated[str].connect(self.onChangeSwptRule)
+            self.swptRuleChooser.textActivated[str].connect(self.onChangeSwptRule)
             
             self.ruleDownLabel = QLabel(self.tr("Rule Down"), self)
             self.paradigm_widg_sizer.addWidget(self.ruleDownLabel, n, 7)
@@ -3566,7 +3559,7 @@ class pychControlWin(QMainWindow):
             self.paradigm_widg_sizer.addWidget(self.stimScalingChooser, n, 8)
             self.stimScalingCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.stimScalingCheckBox, n, 6)
-            self.stimScalingChooser.activated[str].connect(self.onStimScalingChooserChange)
+            self.stimScalingChooser.textActivated[str].connect(self.onStimScalingChooserChange)
             n = n+1
             self.suggestedLambdaSwptLabel = QLabel(self.tr("Suggested Lapse Swpt."))
             self.suggestedLambdaSwpt = QLineEdit("40")
@@ -3617,7 +3610,7 @@ class pychControlWin(QMainWindow):
             self.threshPriorChooser = QComboBox()
             self.threshPriorChooser.addItems(priorOptions)
             self.paradigm_widg_sizer.addWidget(self.threshPriorChooser, n, 2)
-            self.threshPriorChooser.activated[str].connect(self.onChangeThreshPrior)
+            self.threshPriorChooser.textActivated[str].connect(self.onChangeThreshPrior)
             self.threshPriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.threshPriorChooserCheckBox, n, 0)
             # thresh prior mu
@@ -3673,7 +3666,7 @@ class pychControlWin(QMainWindow):
             self.guessSpacingChooser = QComboBox()
             self.guessSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.guessSpacingChooser, n, 2)
-            self.guessSpacingChooser.activated[str].connect(self.onGuessSpacingChooserChange)
+            self.guessSpacingChooser.textActivated[str].connect(self.onGuessSpacingChooserChange)
             self.guessSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.guessSpacingChooserCheckBox, n, 0)
             n = n+1
@@ -3683,7 +3676,7 @@ class pychControlWin(QMainWindow):
             self.guessPriorChooser = QComboBox()
             self.guessPriorChooser.addItems(priorOptions)
             self.paradigm_widg_sizer.addWidget(self.guessPriorChooser, n, 2)
-            self.guessPriorChooser.activated[str].connect(self.onChangeGuessPrior)
+            self.guessPriorChooser.textActivated[str].connect(self.onChangeGuessPrior)
             self.guessPriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.guessPriorChooserCheckBox, n, 0)
             # guess prior mu
@@ -3739,7 +3732,7 @@ class pychControlWin(QMainWindow):
             self.slopeSpacingChooser = QComboBox()
             self.slopeSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooser, n, 2)
-            self.slopeSpacingChooser.activated[str].connect(self.onSlopeSpacingChooserChange)
+            self.slopeSpacingChooser.textActivated[str].connect(self.onSlopeSpacingChooserChange)
             self.slopeSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.slopeSpacingChooserCheckBox, n, 0)
             n = n+1
@@ -3749,7 +3742,7 @@ class pychControlWin(QMainWindow):
             self.slopePriorChooser = QComboBox()
             self.slopePriorChooser.addItems(priorOptions)
             self.paradigm_widg_sizer.addWidget(self.slopePriorChooser, n, 2)
-            self.slopePriorChooser.activated[str].connect(self.onChangeSlopePrior)
+            self.slopePriorChooser.textActivated[str].connect(self.onChangeSlopePrior)
             self.slopePriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.slopePriorChooserCheckBox, n, 0)
             # thres priro mu
@@ -3805,7 +3798,7 @@ class pychControlWin(QMainWindow):
             self.lapseSpacingChooser = QComboBox()
             self.lapseSpacingChooser.addItems(["Linear", "Logarithmic"])
             self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooser, n, 2)
-            self.lapseSpacingChooser.activated[str].connect(self.onLapseSpacingChooserChange)
+            self.lapseSpacingChooser.textActivated[str].connect(self.onLapseSpacingChooserChange)
             self.lapseSpacingChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.lapseSpacingChooserCheckBox, n, 0)
             n = n+1
@@ -3815,7 +3808,7 @@ class pychControlWin(QMainWindow):
             self.lapsePriorChooser = QComboBox()
             self.lapsePriorChooser.addItems(priorOptions)
             self.paradigm_widg_sizer.addWidget(self.lapsePriorChooser, n, 2)
-            self.lapsePriorChooser.activated[str].connect(self.onChangeLapsePrior)
+            self.lapsePriorChooser.textActivated[str].connect(self.onChangeLapsePrior)
             self.lapsePriorChooserCheckBox = QCheckBox()
             self.paradigm_widg_sizer.addWidget(self.lapsePriorChooserCheckBox, n, 0)
             # lapse priro mu
@@ -4086,14 +4079,14 @@ class pychControlWin(QMainWindow):
                 if flag == 1:
                     ret = QMessageBox.warning(self, self.tr("Warning"),
                                               self.tr("Invalid character removed from 'Show Instructions At' text field."),
-                                              QMessageBox.Ok)
+                                              QMessageBox.StandardButton.Ok)
             
     def onDropPrmFile(self, l):
         lastFileDropped = l #l[len(l)-1]
         if os.path.exists(lastFileDropped):
-            reply = QMessageBox.question(self, self.tr('Message'), self.tr("Do you want to load the parameters file {0} ?").format(lastFileDropped), QMessageBox.Yes | 
-                                               QMessageBox.No, QMessageBox.Yes)
-            if reply == QMessageBox.Yes:
+            reply = QMessageBox.question(self, self.tr('Message'), self.tr("Do you want to load the parameters file {0} ?").format(lastFileDropped), QMessageBox.StandardButton.Yes | 
+                                               QMessageBox.StandardButton.No, QMessageBox.StandardButton.Yes)
+            if reply == QMessageBox.StandardButton.Yes:
                 self.loadParameters(lastFileDropped)
             else:
                 pass
@@ -4194,7 +4187,7 @@ class pychControlWin(QMainWindow):
             self.chooserCheckBox[c] = QCheckBox()
             self.pw_prm_sizer_1.addWidget(self.chooserCheckBox[c], c, 3)
         for c in range(len(self.chooser)):
-            self.chooser[c].activated[str].connect(self.onChooserChange)
+            self.chooser[c].textActivated[str].connect(self.onChooserChange)
  
         #SET UP FILE CHOOSERS
         self.fileChooser = list(range(self.prm['nFileChoosers']))
@@ -4425,12 +4418,12 @@ class pychControlWin(QMainWindow):
         self.jumpToPositionChooser.setCurrentIndex(int(self.prm[block]['blockPosition'])-1)
    
         for c in range(len(self.chooser)):
-            self.chooser[c].activated[str].connect(self.onChooserChange)
+            self.chooser[c].textActivated[str].connect(self.onChooserChange)
         self.onChooserChange(None)
         self.responseBox.setupLights()
 
     def onClickSaveResultsButton(self):
-        ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), "", QFileDialog.DontConfirmOverwrite)[0]
+        ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), "", QFileDialog.Option.DontConfirmOverwrite)[0]
         if len(ftow) > 0:
             if fnmatch.fnmatch(ftow, '*.txt') == False:
                 ftow = ftow + '.txt'
@@ -4861,14 +4854,14 @@ class pychControlWin(QMainWindow):
         if nStoredDifferent == True:
             ret = QMessageBox.warning(self, self.tr("Warning"),
                                             self.tr("Last block has not been stored. Do you want to store it?"),
-                                            QMessageBox.Yes | QMessageBox.No)
-            if ret == QMessageBox.Yes:
+                                            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+            if ret == QMessageBox.StandardButton.Yes:
                 self.onClickStoreParametersButton()
         elif prmChanged == True:
             ret = QMessageBox.warning(self, self.tr("Warning"),
                                             self.tr("Some parameters have been modified but not stored. Do you want to store them?"),
-                                            QMessageBox.Yes | QMessageBox.No)
-            if ret == QMessageBox.Yes:
+                                            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+            if ret == QMessageBox.StandardButton.Yes:
                 self.onClickStoreParametersButton()
                 
     def onClickNewBlockButton(self):
@@ -4881,7 +4874,7 @@ class pychControlWin(QMainWindow):
         else:
             ret = QMessageBox.warning(self, self.tr("Warning"),
                                             self.tr("You need to store the current block before adding a new one."),
-                                            QMessageBox.Ok)
+                                            QMessageBox.StandardButton.Ok)
           
         
     def onClickDeleteParametersButton(self):
@@ -5244,7 +5237,7 @@ class pychControlWin(QMainWindow):
         if self.prm["storedBlocks"] < 1:
             ret = QMessageBox.warning(self, self.tr("Warning"),
                                       self.tr("There are no stored parameters to save."),
-                                      QMessageBox.Ok)
+                                      QMessageBox.StandardButton.Ok)
         else:
             if self.parametersFile == None:
                 ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write prm'), ".prm", self.tr('All Files (*)'))[0]
@@ -5449,12 +5442,12 @@ class pychControlWin(QMainWindow):
                 except:
                     ret = QMessageBox.warning(self, self.tr("Warning"),
                                                     self.tr("Shuffling failed :-( Something may be wrong with your shuffling scheme."),
-                                                    QMessageBox.Ok | QMessageBox.Cancel)
+                                                    QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
                     return
                 if len(numpy.unique(blockPositions)) != self.prm['storedBlocks']:
                     ret = QMessageBox.warning(self, self.tr("Warning"),
                                                     self.tr("Shuffling failed :-( The length of the shuffling sequence seems to be different than the number of stored blocks. Maybe you recently added of deleted a block."),
-                                                    QMessageBox.Ok | QMessageBox.Cancel)
+                                                    QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
                     return
                     
                 for k in range(self.prm["storedBlocks"]):
@@ -5487,7 +5480,7 @@ class pychControlWin(QMainWindow):
         if b1 > self.prm["storedBlocks"] or b2 > self.prm["storedBlocks"]:
             ret = QMessageBox.warning(self, self.tr("Warning"),
                                             self.tr("You're trying to swap the position of a block that has not been stored yet. Please, store the block first."),
-                                            QMessageBox.Ok | QMessageBox.Cancel)
+                                            QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
             return
         if self.prm["storedBlocks"] > 1 and b1 <= self.prm["storedBlocks"] and b2 <= self.prm["storedBlocks"]:
             ol=copy.deepcopy(self.prm['b'+str(b1)])
@@ -5726,13 +5719,13 @@ class pychControlWin(QMainWindow):
         
     def onEditPref(self):
         dialog = preferencesDialog(self)
-        if dialog.exec_():
+        if dialog.exec():
             dialog.permanentApply()
             self.audioManager.initializeAudio()
     def onEditPhones(self):
         currIdx = self.phonesChooser.currentIndex()
         dialog = phonesDialog(self)
-        if dialog.exec_():
+        if dialog.exec():
             dialog.permanentApply()
      
         self.phonesChooser.setCurrentIndex(currIdx)
@@ -5741,7 +5734,7 @@ class pychControlWin(QMainWindow):
 
     def onEditExperimenters(self):
         dialog = experimentersDialog(self)
-        if dialog.exec_():
+        if dialog.exec():
             dialog.onClickApplyButton()
 
     def processResultsLinearDialog(self):
@@ -5801,19 +5794,19 @@ class pychControlWin(QMainWindow):
         else:
             ret = QMessageBox.information(self, self.tr("message"),
                                                 self.tr("No results file has been selected"),
-                                                QMessageBox.Ok | QMessageBox.Cancel)
+                                                QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
             
     def onAbout(self):
-        if pyqtversion in [4,5]:
+        if pyqtversion in [4,5,6]:
             qt_compiled_ver = QtCore.QT_VERSION_STR
             qt_runtime_ver = QtCore.qVersion()
             qt_pybackend_ver = QtCore.PYQT_VERSION_STR
             qt_pybackend = "PyQt"
-        elif pyqtversion == -4:
-            qt_compiled_ver = QtCore.__version__
-            qt_runtime_ver = QtCore.qVersion()
-            qt_pybackend_ver = PySide.__version__
-            qt_pybackend = "PySide"
+        # elif pyqtversion == -4:
+        #     qt_compiled_ver = QtCore.__version__
+        #     qt_runtime_ver = QtCore.qVersion()
+        #     qt_pybackend_ver = PySide.__version__
+        #     qt_pybackend = "PySide"
 
         QMessageBox.about(self, self.tr("About pychoacoustics"),
                               self.tr("""<b>pychoacoustics - Python app for psychoacoustics</b> <br>
@@ -5843,10 +5836,10 @@ class pychControlWin(QMainWindow):
             if self.parametersFile == None:
                 ret = QMessageBox.warning(self, self.tr("Warning"),
                                                 self.tr("The parameters have not been saved to a file. \n Do you want to save them before exiting?"),
-                                                QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
-                if ret == QMessageBox.Yes:
+                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel)
+                if ret == QMessageBox.StandardButton.Yes:
                     self.onClickSaveParametersButton()
-                elif ret == QMessageBox.Cancel:
+                elif ret == QMessageBox.StandardButton.Cancel:
                     self.exitFlag = False
             else:
                 f1 = open(self.parametersFile, 'r'); f2 = open(self.prm["tmpParametersFile"], 'r')
@@ -5864,7 +5857,7 @@ class pychControlWin(QMainWindow):
                     pardiff = difflib.unified_diff(l1,l2, n=0)
                     pardiff = '\n'.join(list(pardiff))
                     dialog = dialogMemoryFileParametersDiffer(self, "The parameters in memory differ from the parameters on file. \nDo you want to save the parameters stored in memory them before exiting?", pardiff)
-                    if dialog.exec_() and self.exitFlag == True:
+                    if dialog.exec() and self.exitFlag == True:
                         self.onClickSaveParametersButton()
 
         if self.exitFlag == True:
@@ -5891,18 +5884,18 @@ class pychControlWin(QMainWindow):
         
     def onSwapBlocksAction(self):
         dialog = swapBlocksDialog(self)
-        if dialog.exec_():
+        if dialog.exec():
             blockA = self.currLocale.toInt(dialog.blockAWidget.text())[0]
             blockB = self.currLocale.toInt(dialog.blockBWidget.text())[0]
             if self.prm['storedBlocks'] < 1:
                 ret = QMessageBox.warning(self, self.tr("Warning"),
                                                 self.tr("There are no stored blocks to swap."),
-                                                QMessageBox.Ok | QMessageBox.Cancel)
+                                                QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
                 return
             if blockA < 1 or blockB < 1 or blockA > self.prm['storedBlocks'] or blockB > self.prm['storedBlocks']:
                 ret = QMessageBox.warning(self, self.tr("Warning"),
                                                 self.tr("Block numbers specified out of range."),
-                                                QMessageBox.Ok | QMessageBox.Cancel)
+                                                QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
                 return
             else:
                 self.swapBlocks(blockA, blockB)
@@ -5918,7 +5911,7 @@ class pychControlWin(QMainWindow):
             if seq[i] not in allowedChars:
                 ret = QMessageBox.warning(self, self.tr("Warning"),
                                                 self.tr("Shuffling scheme contains non-allowed characters."),
-                                                QMessageBox.Ok | QMessageBox.Cancel)
+                                                QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
                 return
         seqFound = False
         k = 0

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -16,14 +16,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4.QtGui import QPlainTextEdit
-elif pyqtversion == -4:
-    from PySide.QtGui import QPlainTextEdit
-elif pyqtversion == 5:
+
+if pyqtversion == 5:
     from PyQt5.QtWidgets import QPlainTextEdit
+elif pyqtversion == 6:
+    from PyQt6.QtWidgets import QPlainTextEdit
 
 class OutputWindow(QPlainTextEdit):
     def write(self, txt):

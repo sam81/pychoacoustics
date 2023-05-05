@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -16,21 +16,18 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtCore import QLocale
-    from PyQt4.QtGui import QDialog, QDialogButtonBox, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtCore import QLocale
-    from PySide.QtGui import QDialog, QDialogButtonBox, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
-elif pyqtversion == 5:
+
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale
     from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
     from PyQt5.QtGui import QFont
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtCore import QLocale
+    from PyQt6.QtWidgets import QDialog, QDialogButtonBox, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
+    from PyQt6.QtGui import QFont
 import random
 
 class showInstructionsDialog(QDialog):
@@ -38,14 +35,14 @@ class showInstructionsDialog(QDialog):
         QDialog.__init__(self, parent)
         self.prm = self.parent().prm
         self.currLocale = self.parent().prm['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         #self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
        
         self.vBoxSizer = QVBoxLayout()
         self.hBoxSizer = QVBoxLayout()
         self.browser = QTextBrowser()
         self.browser.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok)
+        self.buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.setMinimumHeight(80)
         self.buttonBox.buttons()[0].setMinimumHeight(80)

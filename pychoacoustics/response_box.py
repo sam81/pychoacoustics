@@ -15,39 +15,13 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtCore import Qt, QEvent, QThread, QDate, QRegExp, QTime, QDateTime, QRect
-    from PyQt4.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QDoubleValidator, QFileDialog, QFrame, QGridLayout, QIcon, QInputDialog, QIntValidator, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QValidator, QVBoxLayout, QWidget, QWidgetItem
-    QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
-    QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
-    QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
-    try:
-        import matplotlib
-        matplotlib_available = True
-        matplotlib.rcParams['backend'] = "Qt4Agg"
-        matplotlib.rcParams['backend.qt4'] = "PyQt4"
-    except:
-        matplotlib_available = False
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtCore import Qt, QEvent, QThread, QDate, QRegExp, QTime, QDateTime, QRect
-    from PySide.QtGui import QAction, QApplication, QComboBox, QDesktopWidget, QDoubleValidator, QFileDialog, QFrame, QGridLayout, QIcon, QInputDialog, QIntValidator, QLabel, QLineEdit, QMainWindow, QMessageBox, QPainter, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QValidator, QVBoxLayout, QWidget, QWidgetItem
-    try:
-        import matplotlib
-        matplotlib_available = True
-        matplotlib.rcParams['backend'] = "Qt4Agg"
-        matplotlib.rcParams['backend.qt4'] = "PySide"
-    except:
-        matplotlib_available = False
-elif pyqtversion == 5:
+
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
-    from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QRegExp, QTime, QDateTime, QRect
+    from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QRegularExpression, QTime, QDateTime, QRect
     from PyQt5.QtWidgets import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
-    from PyQt5.QtGui import QDoubleValidator, QIcon, QIntValidator, QPainter, QValidator
+    from PyQt5.QtGui import QDoubleValidator, QIcon, QIntValidator, QPainter, QRegularExpressionValidator, QValidator
     try:
         import matplotlib
         matplotlib_available = True
@@ -56,6 +30,22 @@ elif pyqtversion == 5:
         matplotlib_available = False
     try:
         from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+        matplotlib_available = True
+    except:
+        matplotlib_available = False
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtCore import Qt, QEvent, QThread, QDate, QRegularExpression, QTime, QDateTime, QRect
+    from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QProgressBar, QPushButton, QScrollArea, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
+    from PyQt6.QtGui import QAction, QDoubleValidator, QIcon, QIntValidator, QPainter, QRegularExpressionValidator, QValidator, QShortcut
+    try:
+        import matplotlib
+        matplotlib_available = True
+        matplotlib.rcParams['backend'] = "QtAgg"
+    except:
+        matplotlib_available = False
+    try:
+        from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
         matplotlib_available = True
     except:
         matplotlib_available = False
@@ -115,13 +105,13 @@ class responseBox(QMainWindow):
         self.emailThread = emailSender(self)
         self.executerThread = commandExecuter(self)
         self.playThread = threadedPlayer(self)
-        self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowMaximizeButtonHint)
+        self.setWindowFlags(QtCore.Qt.WindowType.Window | QtCore.Qt.WindowType.CustomizeWindowHint | QtCore.Qt.WindowType.WindowMinimizeButtonHint | QtCore.Qt.WindowType.WindowMaximizeButtonHint)
         #self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowMaximizeButtonHint | QtCore.Qt.WindowSystemMenuHint) 
-        self.setWindowModality(Qt.NonModal)
+        self.setWindowModality(Qt.WindowModality.NonModal)
         self.prm = parent.prm
         self.audioManager = parent.audioManager
         self.currLocale = self.parent().prm['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.setWindowTitle(self.tr('Response Box'))
         self.responseBoxButtonFont = QFont()
         self.responseBoxButtonFont.fromString(self.prm["pref"]["resp_box"]["responseBoxButtonFont"])
@@ -171,17 +161,17 @@ class responseBox(QMainWindow):
         self.helpMenu.addAction(self.showInstructions)
         
         self.rb = QFrame()
-        self.rb.setFrameStyle(QFrame.StyledPanel|QFrame.Sunken)
+        self.rb.setFrameStyle(QFrame.Shape.StyledPanel|QFrame.Shadow.Sunken)
         self.rb_sizer = QVBoxLayout()
         self.intervalSizer = QGridLayout()
         self.responseButtonSizer = QGridLayout()
 
         self.RBTaskLabel = QLabel(self.parent().taskLabelTF.text())
-        self.RBTaskLabel.setAlignment(Qt.AlignCenter)
+        self.RBTaskLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
        
         self.statusButton = QPushButton(self.prm['rbTrans'].translate('rb', "Wait"), self)
         self.statusButton.clicked.connect(self.onClickStatusButton)
-        self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+        self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
         #self.statusButton.setProperty("responseBoxButton", True)
         self.statusButton.setFont(self.responseBoxButtonFont)
         self.statBtnShortcut = QShortcut("Ctrl+R", self, activated = self.onClickStatusButton)
@@ -284,12 +274,16 @@ class responseBox(QMainWindow):
         else:
             nAlternatives = nIntervals
 
-        screen = QDesktopWidget().screenGeometry()
+        if pyqtversion == 5:
+            screen = QDesktopWidget().screenGeometry()
+        elif pyqtversion == 6:
+            screen = self.screen().geometry()
+            
         if self.parent().currExp == self.tr("Coordinate Response Measure"):
             self.statusButton.setMaximumSize(screen.width(), int(screen.height()/15))
             self.responseLight.setMaximumSize(screen.width(), int(screen.height()/10))
-            self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-            self.responseLight.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+            self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
+            self.responseLight.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
 
             cols = ["cornflowerblue", "red", "white", "green"]
             cnt = 0
@@ -297,65 +291,69 @@ class responseBox(QMainWindow):
                 for rw in range(4):
                     self.responseButton.append(QPushButton(str(rw+1), self))
                     self.responseButtonSizer.addWidget(self.responseButton[cnt], rw, cl)
-                    sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+                    sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
                     self.responseButton[cnt].setSizePolicy(sizePolicy)
                     #self.responseButton[cnt].setProperty("responseBoxButton", True)
                     self.responseButton[cnt].setFont(self.responseBoxButtonFont)
                     self.responseButton[cnt].clicked.connect(self.sortResponseButton)
-                    self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
+                    self.responseButton[cnt].setFocusPolicy(Qt.FocusPolicy.NoFocus)
                     self.responseButton[cnt].setStyleSheet("background-color: " + cols[cl])
                     cnt = cnt+1
         elif self.parent().currExp in [self.tr("Digit Triplets Test"), self.tr("Digit Span")]:
             self.statusButton.setMaximumSize(screen.width(), int(screen.height()/15))
             self.responseLight.setMaximumSize(screen.width(), int(screen.height()/10))
-            self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-            self.responseLight.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+            self.statusButton.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
+            self.responseLight.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
             cnt = 0
 
             self.responseButton.append(QPushButton("0", self))
             self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 1)
-            sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
             self.responseButton[cnt].setSizePolicy(sizePolicy)
             self.responseButton[cnt].setFont(self.responseBoxButtonFont)
             self.responseButton[cnt].clicked.connect(self.dialerButtonClicked)
-            self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
+            self.responseButton[cnt].setFocusPolicy(Qt.FocusPolicy.NoFocus)
             cnt = cnt+1
             
             for rw in range(3):
                 for cl in range(3):
                     self.responseButton.append(QPushButton(str(cnt), self))
                     self.responseButtonSizer.addWidget(self.responseButton[cnt], rw, cl)
-                    sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+                    sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
                     self.responseButton[cnt].setSizePolicy(sizePolicy)
                     self.responseButton[cnt].setFont(self.responseBoxButtonFont)
                     self.responseButton[cnt].clicked.connect(self.dialerButtonClicked)
-                    self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
+                    self.responseButton[cnt].setFocusPolicy(Qt.FocusPolicy.NoFocus)
                     cnt = cnt+1
 
             self.responseButton.append(QPushButton(self.tr("Backspace"), self))
             self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 0)
-            sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
             self.responseButton[cnt].setSizePolicy(sizePolicy)
             self.responseButton[cnt].setFont(self.responseBoxButtonFont)
             self.responseButton[cnt].clicked.connect(self.backspaceButtonPressed)
-            self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
+            self.responseButton[cnt].setFocusPolicy(Qt.FocusPolicy.NoFocus)
             cnt = cnt+1
 
 
             
             self.responseButton.append(QPushButton(self.tr("Enter"), self))
             self.responseButtonSizer.addWidget(self.responseButton[cnt], 3, 2)
-            sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
             self.responseButton[cnt].setSizePolicy(sizePolicy)
             self.responseButton[cnt].setFont(self.responseBoxButtonFont)
             self.responseButton[cnt].clicked.connect(self.enterButtonPressed)
-            self.responseButton[cnt].setFocusPolicy(Qt.NoFocus)
+            self.responseButton[cnt].setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
             self.dialerResponseField = QLineEdit("")
             if self.parent().currExp == self.tr("Digit Triplets Test"): #only three max digits
                 self.dialerResponseField.setValidator(QIntValidator(0, 999, self))
             else:
-                self.dialerResponseField.setValidator(ValidDigitSequence(self)) #QIntValidator doesn't accept digit sequences greater than 2^31 or something like that so we have to use a custom validator
+                thisValidator = QRegularExpressionValidator(self)
+                thisValidator.setRegularExpression(QRegularExpression("[0-9]+"))
+                self.dialerResponseField.setValidator(thisValidator)
+                    
+                #self.dialerResponseField.setValidator(ValidDigitSequence(self)) #QIntValidator doesn't accept digit sequences greater than 2^31 or something like that so we have to use a custom validator
 
 
             self.responseButtonSizer.addWidget(self.dialerResponseField, 4, 0, 1, 3)
@@ -404,47 +402,47 @@ class responseBox(QMainWindow):
 
                 r = 0
                 if self.prm["warningInterval"] == True:
-                    self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                    self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Policy.Expanding), 0, r)
                     r = r+1
                 if self.prm["preTrialInterval"] == True:
-                    self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                    self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Policy.Expanding), 0, r)
                     r = r+1
                 if nAlternatives == nIntervals:
                     for i in range(nAlternatives):
                         if self.prm["precursorInterval"] == True:
-                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Policy.Expanding), 0, r)
                             r = r+1
                         self.responseButton.append(QPushButton(str(i+1), self))
                         self.responseButtonSizer.addWidget(self.responseButton[i], 1, r)
-                        self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+                        self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
                         #self.responseButton[i].setProperty("responseBoxButton", True)
                         self.responseButton[i].setFont(self.responseBoxButtonFont)
                         r = r+1
                         if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
-                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Policy.Expanding), 0, r)
                             r = r+1
                         self.responseButton[i].clicked.connect(self.sortResponseButton)
-                        self.responseButton[i].setFocusPolicy(Qt.NoFocus)
+                        self.responseButton[i].setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
                 elif nAlternatives == nIntervals-1:
                     for i in range(nAlternatives):
                         if self.prm[self.parent().currExp]["hasPrecursorInterval"] == True:
-                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Policy.Expanding), 0, r)
                             r = r+1
                         if i == 0:
-                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Policy.Expanding), 0, r)
                             r = r+1
 
                         self.responseButton.append(QPushButton(str(i+1), self))
                         self.responseButtonSizer.addWidget(self.responseButton[i], 1, r)
-                        self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+                        self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
                         #self.responseButton[i].setProperty("responseBoxButton", True)
                         self.responseButton[i].setFont(self.responseBoxButtonFont)
                         r = r+1
                         self.responseButton[i].clicked.connect(self.sortResponseButton)
-                        self.responseButton[i].setFocusPolicy(Qt.NoFocus)
+                        self.responseButton[i].setFocusPolicy(Qt.FocusPolicy.NoFocus)
                         if self.prm[self.parent().currExp]["hasPostcursorInterval"] == True:
-                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                            self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Policy.Expanding), 0, r)
                             r = r+1
 
             elif self.parent().currParadigm in ["Constant 1-Interval 2-Alternatives",
@@ -464,11 +462,11 @@ class responseBox(QMainWindow):
                     self.responseButton.append(QPushButton(self.prm[self.tr(self.parent().experimentChooser.currentText())]['buttonLabels'][i], self))
 
                     self.responseButtonSizer.addWidget(self.responseButton[i], 1, i)
-                    self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+                    self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
                     #self.responseButton[i].setProperty("responseBoxButton", True)
                     self.responseButton[i].setFont(self.responseBoxButtonFont)
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
-                    self.responseButton[i].setFocusPolicy(Qt.NoFocus)
+                    self.responseButton[i].setFocusPolicy(Qt.FocusPolicy.NoFocus)
             elif self.parent().currParadigm in ["Constant ABX", "Multiple Constants ABX"]:
                 for i in range(3):
                     self.intervalLight.append(intervalLight(self))
@@ -479,11 +477,11 @@ class responseBox(QMainWindow):
                     self.responseButton.append(QPushButton(self.prm[self.tr(self.parent().experimentChooser.currentText())]['buttonLabels'][i], self))
 
                     self.responseButtonSizer.addWidget(self.responseButton[i], 1, i)
-                    self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+                    self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
                     #self.responseButton[i].setProperty("responseBoxButton", True)
                     self.responseButton[i].setFont(self.responseBoxButtonFont)
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
-                    self.responseButton[i].setFocusPolicy(Qt.NoFocus)
+                    self.responseButton[i].setFocusPolicy(Qt.FocusPolicy.NoFocus)
             elif self.parent().currParadigm in ["Multiple Constants Odd One Out", "Multiple Constants Sound Comparison"]:
                 for i in range(nIntervals):
                     self.intervalLight.append(intervalLight(self))
@@ -492,16 +490,16 @@ class responseBox(QMainWindow):
 
                 r = 0
                 if self.prm["warningInterval"] == True:
-                    self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Expanding), 0, r)
+                    self.responseButtonSizer.addItem(QSpacerItem(-1, -1, QSizePolicy.Policy.Expanding), 0, r)
                     r = r+1
                 for i in range(self.prm['nAlternatives']):
                     self.responseButton.append(QPushButton(str(i+1), self))
                     self.responseButtonSizer.addWidget(self.responseButton[i], 1, i+r)
-                    self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+                    self.responseButton[i].setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
                     #self.responseButton[i].setProperty("responseBoxButton", True)
                     self.responseButton[i].setFont(self.responseBoxButtonFont)
                     self.responseButton[i].clicked.connect(self.sortResponseButton)
-                    self.responseButton[i].setFocusPolicy(Qt.NoFocus)
+                    self.responseButton[i].setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
 
         self.showHideIntervalLights(self.prm['intervalLights'])
@@ -589,9 +587,9 @@ class responseBox(QMainWindow):
         
         if int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition']) == 1 and self.prm['allBlocks']['shuffleMode'] == self.tr("Ask") and self.prm["shuffled"] == False and self.prm['storedBlocks'] > 1 :
             reply = QMessageBox.question(self, self.prm['rbTrans'].translate('rb', "Message"),
-                                               self.prm['rbTrans'].translate('rb', "Do you want to shuffle the blocks?"), QMessageBox.Yes | 
-                                               QMessageBox.No, QMessageBox.No)
-            if reply == QMessageBox.Yes:
+                                               self.prm['rbTrans'].translate('rb', "Do you want to shuffle the blocks?"), QMessageBox.StandardButton.Yes | 
+                                               QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
+            if reply == QMessageBox.StandardButton.Yes:
                 self.parent().onClickShuffleBlocksButton()
                 self.prm["shuffled"] = True
         elif int(self.prm['b'+str(self.prm['currentBlock'])]['blockPosition']) == 1 and self.prm["shuffled"] == False and self.prm['allBlocks']['shuffleMode'] == self.tr("Auto") and self.prm['storedBlocks'] > 1 :
@@ -1185,7 +1183,7 @@ class responseBox(QMainWindow):
                                             self.tr("PSI - Est. Guess Rate")]:
                 ret = QMessageBox.warning(self, self.tr("Warning"),
                                           self.tr("Sorry, psychometric listener not supported by current paradigm. Please, choose another response mode."),
-                                          QMessageBox.Ok)
+                                          QMessageBox.StandardButton.Ok)
                 return
                 
             self.prm['responseModeChoices'] = ["Real Listener", "Automatic", "Simulated Listener", "Psychometric"]
@@ -1261,14 +1259,14 @@ class responseBox(QMainWindow):
                 if currText[0] == currText[1] or currText[0] == currText[2] or currText[1] == currText[2]:
                     ret = QMessageBox.warning(self, self.tr("Warning"),
                                               self.tr("Repeated digits are not allowed. Please, edit your response."),
-                                              QMessageBox.Ok)
+                                              QMessageBox.StandardButton.Ok)
                     return
 
         if self.parent().currExp == self.tr("Digit Span"):
             if len(currText) < len(str(self.correctButton)):
                 ret = QMessageBox.warning(self, self.tr("Warning"),
                                           self.tr("Input sequence is shorter than correct sequence."),
-                                          QMessageBox.Ok)
+                                          QMessageBox.StandardButton.Ok)
                 return
         
         self.dialerResponseField.setText("   ")
@@ -1285,26 +1283,26 @@ class responseBox(QMainWindow):
         self.sortResponse(buttonClicked)
         
     def keyPressEvent(self, event):
-        if (event.type() == QEvent.KeyPress): 
-            if event.key()==Qt.Key_0:
+        if (event.type() == QEvent.Type.KeyPress): 
+            if event.key()==Qt.Key.Key_0:
                 buttonClicked = 0
-            elif event.key()==Qt.Key_1:
+            elif event.key()==Qt.Key.Key_1:
                 buttonClicked = 1
-            elif event.key()==Qt.Key_2:
+            elif event.key()==Qt.Key.Key_2:
                 buttonClicked = 2
-            elif event.key()==Qt.Key_3:
+            elif event.key()==Qt.Key.Key_3:
                 buttonClicked = 3
-            elif event.key()==Qt.Key_4:
+            elif event.key()==Qt.Key.Key_4:
                 buttonClicked = 4
-            elif event.key()==Qt.Key_5:
+            elif event.key()==Qt.Key.Key_5:
                 buttonClicked = 5
-            elif event.key()==Qt.Key_6:
+            elif event.key()==Qt.Key.Key_6:
                 buttonClicked = 6
-            elif event.key()==Qt.Key_7:
+            elif event.key()==Qt.Key.Key_7:
                 buttonClicked = 7
-            elif event.key()==Qt.Key_8:
+            elif event.key()==Qt.Key.Key_8:
                 buttonClicked = 8
-            elif event.key()==Qt.Key_9:
+            elif event.key()==Qt.Key.Key_9:
                 buttonClicked = 9
             else:
                 buttonClicked = 0
@@ -5279,15 +5277,15 @@ class responseBox(QMainWindow):
         
     def getEndTime(self):
         self.prm['blockEndTime'] = time.time()
-        self.prm['blockEndTimeStamp'] = QDateTime.toString(QDateTime.currentDateTime(), self.currLocale.dateTimeFormat(self.currLocale.ShortFormat)) 
-        self.prm['blockEndDateString'] = QDate.toString(QDate.currentDate(), self.currLocale.dateFormat(self.currLocale.ShortFormat)) 
-        self.prm['blockEndTimeString'] = QTime.toString(QTime.currentTime(), self.currLocale.timeFormat(self.currLocale.ShortFormat)) 
+        self.prm['blockEndTimeStamp'] = QDateTime.toString(QDateTime.currentDateTime(), self.currLocale.dateTimeFormat(self.currLocale.FormatType.ShortFormat)) 
+        self.prm['blockEndDateString'] = QDate.toString(QDate.currentDate(), self.currLocale.dateFormat(self.currLocale.FormatType.ShortFormat)) 
+        self.prm['blockEndTimeString'] = QTime.toString(QTime.currentTime(), self.currLocale.timeFormat(self.currLocale.FormatType.ShortFormat)) 
         
     def getStartTime(self):
         self.prm['blockStartTime'] = time.time()
-        self.prm['blockStartTimeStamp'] = QDateTime.toString(QDateTime.currentDateTime(), self.currLocale.dateTimeFormat(self.currLocale.ShortFormat)) 
-        self.prm['blockStartDateString'] = QDate.toString(QDate.currentDate(), self.currLocale.dateFormat(self.currLocale.ShortFormat)) 
-        self.prm['blockStartTimeString'] = QTime.toString(QTime.currentTime(), self.currLocale.timeFormat(self.currLocale.ShortFormat)) 
+        self.prm['blockStartTimeStamp'] = QDateTime.toString(QDateTime.currentDateTime(), self.currLocale.dateTimeFormat(self.currLocale.FormatType.ShortFormat)) 
+        self.prm['blockStartDateString'] = QDate.toString(QDate.currentDate(), self.currLocale.dateFormat(self.currLocale.FormatType.ShortFormat)) 
+        self.prm['blockStartTimeString'] = QTime.toString(QTime.currentTime(), self.currLocale.timeFormat(self.currLocale.FormatType.ShortFormat)) 
         
 
     def writeResultsHeader(self, fileType):
@@ -6170,14 +6168,14 @@ class responseBox(QMainWindow):
 class responseLight(QWidget):
     def __init__(self, parent):
         super(responseLight, self).__init__(parent)
-        self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding,
-                                       QSizePolicy.Expanding))
+        self.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding,
+                                       QSizePolicy.Policy.Expanding))
         self.correctLightColor = self.parent().parent().prm["pref"]["resp_box"]["correctLightColor"]
         self.incorrectLightColor = self.parent().parent().prm["pref"]["resp_box"]["incorrectLightColor"]
         self.neutralLightColor = self.parent().parent().prm["pref"]["resp_box"]["neutralLightColor"]
         self.offLightColor = self.parent().parent().prm["pref"]["resp_box"]["offLightColor"]
         
-        self.borderColor = Qt.black
+        self.borderColor = Qt.GlobalColor.black
         self.lightColor = self.offLightColor#Qt.black
         self.feedbackText = ""
         self.responseLightType = self.tr("Light") #this is just for inizialization purposes
@@ -6269,14 +6267,14 @@ class responseLight(QWidget):
             qfont = QFont()
             qfont.fromString(self.cw.prm["pref"]["resp_box"]["responseLightFont"])
             painter.setFont(qfont)
-            painter.drawText(r, Qt.AlignCenter, self.feedbackText)
+            painter.drawText(r, Qt.AlignmentFlag.AlignCenter, self.feedbackText)
         elif self.responseLightType == self.tr("Smiley"):
             painter = QPainter(self)
             painter.setViewport(0,0,self.width(),self.height())
             painter.setBrush(self.offLightColor)
             rect = painter.drawRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height())
             rect = QRect(int(self.width()/60), int(self.height()/60), int(self.width()-self.width()/30), self.height())
-            self.feedbackSmiley.paint(painter, rect, Qt.AlignCenter)
+            self.feedbackSmiley.paint(painter, rect, Qt.AlignmentFlag.AlignCenter)
         elif self.responseLightType == self.tr("Light & Text"):
             painter = QPainter(self)
             painter.setViewport(0,0,self.width(),self.height())
@@ -6288,57 +6286,57 @@ class responseLight(QWidget):
             qfont = QFont()
             qfont.fromString(self.cw.prm["pref"]["resp_box"]["responseLightFont"])
             painter.setFont(qfont)
-            painter.drawText(r, Qt.AlignCenter, self.feedbackText)
+            painter.drawText(r, Qt.AlignmentFlag.AlignCenter, self.feedbackText)
         elif self.responseLightType == self.tr("Light & Smiley"):
             painter = QPainter(self)
             painter.setViewport(0,0,self.width(),self.height())
             painter.setBrush(self.lightColor)
             rect = painter.drawRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height())
             rect = QRect(int(self.width()/60), int(self.height()/60), int(self.width()-self.width()/30), self.height())
-            self.feedbackSmiley.paint(painter, rect, Qt.AlignCenter)
+            self.feedbackSmiley.paint(painter, rect, Qt.AlignmentFlag.AlignCenter)
         elif self.responseLightType == self.tr("Text & Smiley"):
             painter = QPainter(self)
             painter.setViewport(0,0,self.width(),self.height())
             painter.setBrush(self.offLightColor)
             rect = painter.drawRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height())
             rectRight = QRect(int(self.width()/60), int(self.height()/60), self.width()+int(self.width()/2), self.height())
-            self.feedbackSmiley.paint(painter, rectRight, Qt.AlignCenter)
+            self.feedbackSmiley.paint(painter, rectRight, Qt.AlignmentFlag.AlignCenter)
             rectLeft = QRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/2), self.height())
-            self.feedbackSmiley.paint(painter, rectLeft, Qt.AlignCenter)
+            self.feedbackSmiley.paint(painter, rectLeft, Qt.AlignmentFlag.AlignCenter)
             r = QtCore.QRectF(0,0,self.width(), self.height())
             painter.setPen(self.penColor)
             qfont = QFont()
             qfont.fromString(self.cw.prm["pref"]["resp_box"]["responseLightFont"])
             painter.setFont(qfont)
-            painter.drawText(r, Qt.AlignCenter, self.feedbackText)
+            painter.drawText(r, Qt.AlignmentFlag.AlignCenter, self.feedbackText)
         elif self.responseLightType == self.tr("Light & Text & Smiley"):
             painter = QPainter(self)
             painter.setViewport(0,0,self.width(),self.height())
             painter.setBrush(self.lightColor)
             rect = painter.drawRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/30), self.height())
             rectRight = QRect(int(self.width()/60), int(self.height()/60), self.width()+int(self.width()/2), self.height())
-            self.feedbackSmiley.paint(painter, rectRight, Qt.AlignCenter)
+            self.feedbackSmiley.paint(painter, rectRight, Qt.AlignmentFlag.AlignCenter)
             rectLeft = QRect(int(self.width()/60), int(self.height()/60), self.width()-int(self.width()/2), self.height())
-            self.feedbackSmiley.paint(painter, rectLeft, Qt.AlignCenter)
+            self.feedbackSmiley.paint(painter, rectLeft, Qt.AlignmentFlag.AlignCenter)
             r = QtCore.QRectF(0, 0, self.width(), self.height())
             painter.setPen(self.penColor)
             qfont = QFont()
             qfont.fromString(self.cw.prm["pref"]["resp_box"]["responseLightFont"])
             painter.setFont(qfont)
-            painter.drawText(r, Qt.AlignCenter, self.feedbackText)
+            painter.drawText(r, Qt.AlignmentFlag.AlignCenter, self.feedbackText)
 
 class intervalLight(QFrame):
 
     def __init__(self, parent):
         QFrame.__init__(self, parent)
-        self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-        self.borderColor = Qt.red
-        self.lightColor = Qt.black
+        self.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding))
+        self.borderColor = Qt.GlobalColor.red
+        self.lightColor = Qt.GlobalColor.black
     def setStatus(self, status):
         if status == 'on':
-            self.lightColor = Qt.white
+            self.lightColor = Qt.GlobalColor.white
         elif status == 'off':
-            self.lightColor = Qt.black
+            self.lightColor = Qt.GlobalColor.black
         self.parent().repaint()
         QApplication.processEvents()
     def paintEvent(self, event=None):
@@ -6465,16 +6463,16 @@ class emailSender(QThread):
             return 
 
 
-class ValidDigitSequence(QValidator):
-    def __init__(self, parent):
-        QValidator.__init__(self, parent)
+# class ValidDigitSequence(QValidator):
+#     def __init__(self, parent):
+#         QValidator.__init__(self, parent)
 
-    def validate(self, s, pos):
+#     def validate(self, s, pos):
         
-        self.regexp = QRegExp("[0-9]+")
-        if s == "":
-            return (QValidator.Intermediate, s, pos)
-        elif not self.regexp.exactMatch(s):
-            return (QValidator.Invalid, s, pos)
-        else:
-            return (QValidator.Acceptable,s, pos)
+#         self.regexp = QRegExp("[0-9]+")
+#         if s == "":
+#             return (QValidator.Intermediate, s, pos)
+#         elif not self.regexp.exactMatch(s):
+#             return (QValidator.Invalid, s, pos)
+#         else:
+#             return (QValidator.Acceptable, s, pos)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -15,32 +15,12 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import matplotlib
 from cycler import cycler
 
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QCheckBox, QHBoxLayout, QMainWindow, QVBoxLayout, QWidget
-    # import the Qt4Agg FigureCanvas object, that binds Figure to
-    # Qt4Agg backend. It also inherits from QWidget
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    # import the NavigationToolbar Qt4Agg widget
-    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PyQt4"
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtGui import QCheckBox, QHBoxLayout, QMainWindow, QVBoxLayout, QWidget
-    # import the Qt4Agg FigureCanvas object, that binds Figure to
-    # Qt4Agg backend. It also inherits from QWidget
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    # import the NavigationToolbar Qt4Agg widget
-    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PySide"
-elif pyqtversion == 5:
+
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QCheckBox, QHBoxLayout, QMainWindow, QVBoxLayout, QWidget
     # import the Qt4Agg FigureCanvas object, that binds Figure to
@@ -49,6 +29,15 @@ elif pyqtversion == 5:
     # import the NavigationToolbar Qt4Agg widget
     from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
     matplotlib.rcParams['backend'] = "Qt5Agg"
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtWidgets import QCheckBox, QHBoxLayout, QMainWindow, QVBoxLayout, QWidget
+    # import the QtAgg FigureCanvas object, that binds Figure to
+    # QtAgg backend. It also inherits from QWidget
+    from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+    # import the NavigationToolbar QtAgg widget
+    from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "QtAgg"
 # Matplotlib Figure object
 from matplotlib.figure import Figure
 
@@ -75,7 +64,7 @@ class categoricalPlot(QMainWindow):
     def __init__(self, parent, plot_type, fName, winPlot, pdfPlot, paradigm, csv_separator, plot_params, prm):
         QMainWindow.__init__(self, parent)
         
-        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
         self.prm = prm
         self.paradigm = paradigm
         self.fName = fName
@@ -163,7 +152,7 @@ class categoricalPlot(QMainWindow):
         ## mpl.rcParams['figure.edgecolor'] = '0.50'
 
         #self.currLocale = self.parent().prm['data']['currentLocale']
-        #self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        #self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
 
         #define some parameters before axes creation
         ## self.canvasColor = pltColorFromQColor(self.prm['pref']['canvasColor'])
@@ -251,7 +240,7 @@ class categoricalPlot(QMainWindow):
         self.dats = pd.read_csv(self.fName, sep=csv_separator)
         
         idx = copy.copy(self.dats.index)
-        self.dats = self.dats.sort('condition')
+        self.dats = self.dats.sort_values('condition')
         self.dats.index = idx
         self.plotData()
 
@@ -301,11 +290,11 @@ class categoricalPlot(QMainWindow):
                 self.ax.set_yticks(majTicks)
                 yTickLabels = []
                 for tick in majTicks:
-                    yTickLabels.append(str(10**tick))
+                    yTickLabels.append(str(10.0**tick))
                 self.ax.set_yticklabels(yTickLabels)
                 minTicks = []
                 for i in range(len(majTicks)-1):
-                    minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
+                    minTicks.extend(log10(linspace(10.0**majTicks[i], 10.0**majTicks[i+1], 10)))
                 self.ax.set_yticks(minTicks, minor=True)
 
         elif self.paradigm == 'adaptive_interleaved':
@@ -351,17 +340,17 @@ class categoricalPlot(QMainWindow):
                         self.ax.add_line(l)
                         self.ax.add_line(top)
                         self.ax.add_line(bot)
-                    powd = prevPow10(10**(self.ax.get_ylim()[0]))
-                    powup = nextPow10(10**(self.ax.get_ylim()[1]))
+                    powd = prevPow10(10.0**(self.ax.get_ylim()[0]))
+                    powup = nextPow10(10.0**(self.ax.get_ylim()[1]))
                     majTicks = arange(powd, powup+1)
                     self.ax.set_yticks(majTicks)
                     yTickLabels = []
                     for tick in majTicks:
-                        yTickLabels.append(str(10**tick))
+                        yTickLabels.append(str(10.0**tick))
                     self.ax.set_yticklabels(yTickLabels)
                     minTicks = []
                     for i in range(len(majTicks)-1):
-                        minTicks.extend(log10(linspace(10**majTicks[i], 10**majTicks[i+1], 10)))
+                        minTicks.extend(log10(linspace(10.0**majTicks[i], 10.0**majTicks[i+1], 10)))
                     self.ax.set_yticks(minTicks, minor=True)
 
             yl = self.ax.get_ylim(); r = (yl[1]-yl[0])*10/100

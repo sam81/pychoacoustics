@@ -17,35 +17,42 @@
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import os, sys, platform, pickle, hashlib, base64
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QApplication, QColor, QFont
-    try:
-        import matplotlib
-        matplotlib_available = True
-        matplotlib.rcParams['backend'] = "Qt4Agg"
-        matplotlib.rcParams['backend.qt4'] = "PyQt4"
-    except:
-        matplotlib_available = False
-    prefFileSuffix = "-pyqt4"
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtGui import QApplication, QColor, QFont
-    try:
-        import matplotlib
-        matplotlib_available = True
-        matplotlib.rcParams['backend'] = "Qt4Agg"
-        matplotlib.rcParams['backend.qt4'] = "PySide"
-    except:
-        matplotlib_available = False
-    prefFileSuffix = "-pyside"
-elif pyqtversion == 5:
+# if pyqtversion == 4:
+#     from PyQt4 import QtGui, QtCore
+#     from PyQt4.QtGui import QApplication, QColor, QFont
+#     try:
+#         import matplotlib
+#         matplotlib_available = True
+#         matplotlib.rcParams['backend'] = "Qt4Agg"
+#         matplotlib.rcParams['backend.qt4'] = "PyQt4"
+#     except:
+#         matplotlib_available = False
+#     prefFileSuffix = "-pyqt4"
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QApplication
     from PyQt5.QtGui import QColor, QFont
+    try:
+        import matplotlib
+        matplotlib_available = True
+        if pyqtversion == 5:
+            matplotlib.rcParams['backend'] = "Qt5Agg"
+        elif pyqtversion == 5:
+            matplotlib.rcParams['backend'] = "QtAgg"
+    except:
+        matplotlib_available = False
+    try:
+        from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+        matplotlib_available = True
+    except:
+        matplotlib_available = False
+    prefFileSuffix = ""
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtWidgets import QApplication
+    from PyQt6.QtGui import QColor, QFont
     try:
         import matplotlib
         matplotlib_available = True
@@ -57,7 +64,7 @@ elif pyqtversion == 5:
         matplotlib_available = True
     except:
         matplotlib_available = False
-    prefFileSuffix = ""
+    prefFileSuffix = "-pyqt6"
 
 from .utils_redirect_stream_to_file import*
 
@@ -352,12 +359,12 @@ def def_pref(prm):
     if pyaudioAvailable == True:
         prm["pref"]["sound"]["pyaudioDevice"] = 0
 
-    prm["pref"]["resp_box"]["responseBoxButtonFont"] = QFont('Sans Serif', 24, QFont.Bold, False).toString()
+    prm["pref"]["resp_box"]["responseBoxButtonFont"] = QFont('Sans Serif', 24, QFont.Weight.Bold, False).toString()
     prm["pref"]["resp_box"]["correctLightColor"] = QColor(0,255,0)
     prm["pref"]["resp_box"]["incorrectLightColor"] = QColor(255,0,0)
     prm["pref"]["resp_box"]["neutralLightColor"] = QColor(255,255,255)
     prm["pref"]["resp_box"]["offLightColor"] = QColor(0,0,0)
-    prm["pref"]["resp_box"]["responseLightFont"] = QFont('Sans Serif', 20, QFont.Bold, False).toString()
+    prm["pref"]["resp_box"]["responseLightFont"] = QFont('Sans Serif', 20, QFont.Weight.Bold, False).toString()
 
     prm["pref"]["resp_box"]["correctTextFeedback"] = "CORRECT" #QApplication.translate("","Yes","") #self.tr("CORRECT")
     prm["pref"]["resp_box"]["incorrectTextFeedback"] = "INCORRECT"

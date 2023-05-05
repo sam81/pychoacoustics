@@ -17,22 +17,14 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
-
 from pychoacoustics.pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtCore
-    from PyQt4.QtGui import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QStyleFactory, QVBoxLayout
-    QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
-    QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
-    QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
-elif pyqtversion == -4:
-    from PySide import QtCore
-    from PySide.QtGui import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QStyleFactory, QVBoxLayout
-elif pyqtversion == 5:
+
+if pyqtversion == 5:
     from PyQt5 import QtCore
     from PyQt5.QtWidgets import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QStyleFactory, QVBoxLayout
-    
+elif pyqtversion == 6:
+    from PyQt6 import QtCore
+    from PyQt6.QtWidgets import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QStyleFactory, QVBoxLayout
 
 import argparse, fnmatch, numpy, os, random, signal, sys, time, traceback
 from pychoacoustics import qrc_resources
@@ -79,7 +71,7 @@ def excepthook(except_type, except_val, tbck):
             fName.write("".join(tb))
             fName.close()
     
-    diag = QDialog(None, Qt.CustomizeWindowHint | Qt.WindowCloseButtonHint)
+    diag = QDialog(None, Qt.WindowType.CustomizeWindowHint | Qt.WindowType.WindowCloseButtonHint)
     diag.window().setWindowTitle("Critical Error!")
     siz = QVBoxLayout()
     lay = QVBoxLayout()
@@ -88,7 +80,7 @@ def excepthook(except_type, except_val, tbck):
     lab = QLabel("Sorry, something went wrong. The attached traceback can help you troubleshoot the problem: \n\n" + "".join(tb))
     lab.setMargin(10)
     lab.setWordWrap(True)
-    lab.setTextInteractionFlags(Qt.TextSelectableByMouse)
+    lab.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
     lab.setStyleSheet("QLabel { background-color: white }");
     lay.addWidget(lab)
 
@@ -96,14 +88,14 @@ def excepthook(except_type, except_val, tbck):
     sc.setWidget(lab)
     siz.addWidget(sc) #SCROLLAREA IS A WIDGET SO IT NEEDS TO BE ADDED TO A LAYOUT
 
-    buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
+    buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
 
     buttonBox.accepted.connect(diag.accept)
     buttonBox.rejected.connect(diag.reject)
     siz.addWidget(saveTbButton)
     siz.addWidget(buttonBox)
     diag.setLayout(siz)
-    diag.exec_()
+    diag.exec()
 
     timeStamp = ''+ time.strftime("%d/%m/%y %H:%M:%S", time.localtime()) + ' ' + '\n'
     logMsg = timeStamp + ''.join(tb)
@@ -198,7 +190,7 @@ def main(argv):
         app.installTranslator(appTranslator)
     prm['currentLocale'] = QtCore.QLocale(locale)
     QtCore.QLocale.setDefault(prm['currentLocale'])
-    prm['currentLocale'].setNumberOptions(prm['currentLocale'].OmitGroupSeparator | prm['currentLocale'].RejectGroupSeparator)
+    prm['currentLocale'].setNumberOptions(prm['currentLocale'].NumberOption.OmitGroupSeparator | prm['currentLocale'].NumberOption.RejectGroupSeparator)
 
     if prm['pref']['country'] != "System Settings":
         locale =  prm['pref']['language']  + '_' + prm['pref']['country']#returns a string such as en_US
@@ -210,7 +202,7 @@ def main(argv):
             app.installTranslator(appTranslator)
             prm['currentLocale'] = QtCore.QLocale(locale)
             QtCore.QLocale.setDefault(prm['currentLocale'])
-            prm['currentLocale'].setNumberOptions(prm['currentLocale'].OmitGroupSeparator | prm['currentLocale'].RejectGroupSeparator)
+            prm['currentLocale'].setNumberOptions(prm['currentLocale'].NumberOption.OmitGroupSeparator | prm['currentLocale'].NumberOption.RejectGroupSeparator)
     responseBoxLocale =  prm['pref']['responseBoxLanguage']  + '_' + prm['pref']['responseBoxCountry']#returns a string such as en_US
     responseBoxTranslator = QtCore.QTranslator()
     responseBoxTranslator.load("pychoacoustics_" + responseBoxLocale, ":/translations/")
@@ -231,7 +223,7 @@ def main(argv):
     #app.setStyle("plastique")
     #app.setStyle(QStyleFactory.create('GTK+'))
     x = pychControlWin(parent=None, prm=prm)
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
     
 if __name__ == "__main__":
     main(sys.argv[1:])

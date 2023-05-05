@@ -20,7 +20,6 @@
 A module for generating sounds in python.
 """
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import copy, numpy, multiprocessing, warnings
 from numpy import abs, angle, arange, array, asarray, ceil, concatenate, convolve, cos, cumsum, floor, int_, int64, log, log2, log10, linspace, logspace, mean, ones, pi, real, repeat, sin, sqrt, where, zeros
 from numpy.fft import fft, ifft, irfft, rfft

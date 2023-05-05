@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 #This is an attempt (so far unsuccessful) to make the computations faster by vectorizing
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 import copy, scipy
 import numpy as np
 from numpy import arange, exp, linspace, logspace, log, log2, log10, meshgrid, sqrt

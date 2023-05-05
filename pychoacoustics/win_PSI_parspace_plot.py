@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -20,27 +20,8 @@ import matplotlib
 from cycler import cycler
 
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtGui import QCheckBox, QIcon, QHBoxLayout, QMainWindow, QPushButton, QVBoxLayout, QWidget
-    # import the Qt4Agg FigureCanvas object, that binds Figure to
-    # Qt4Agg backend. It also inherits from QWidget
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    # import the NavigationToolbar Qt4Agg widget
-    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PyQt4"
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtGui import QCheckBox, QIcon, QHBoxLayout, QMainWindow, QPushButton, QVBoxLayout, QWidget
-    # import the Qt4Agg FigureCanvas object, that binds Figure to
-    # Qt4Agg backend. It also inherits from QWidget
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    # import the NavigationToolbar Qt4Agg widget
-    from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-    matplotlib.rcParams['backend'] = "Qt4Agg"
-    matplotlib.rcParams['backend.qt4'] = "PySide"
-elif pyqtversion == 5:
+
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QCheckBox, QHBoxLayout, QMainWindow, QPushButton, QVBoxLayout, QWidget
     from PyQt5.QtGui import QIcon
@@ -50,6 +31,16 @@ elif pyqtversion == 5:
     # import the NavigationToolbar Qt4Agg widget
     from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
     matplotlib.rcParams['backend'] = "Qt5Agg"
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtWidgets import QCheckBox, QHBoxLayout, QMainWindow, QPushButton, QVBoxLayout, QWidget
+    from PyQt6.QtGui import QIcon
+    # import the Qt4Agg FigureCanvas object, that binds Figure to
+    # Qt4Agg backend. It also inherits from QWidget
+    from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+    # import the NavigationToolbar Qt4Agg widget
+    from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
+    matplotlib.rcParams['backend'] = "QtAgg"
 # Matplotlib Figure object
 from matplotlib.figure import Figure
 
@@ -80,7 +71,7 @@ class PSIParSpacePlot(QMainWindow):
     def __init__(self, parent):
         QMainWindow.__init__(self, parent)
         
-        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
         #self.prm = prm
      
             

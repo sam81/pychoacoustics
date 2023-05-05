@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2020 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -16,23 +16,15 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtCore import QLocale, QThread
-    from PyQt4.QtGui import QAbstractItemView, QDialog, QDialogButtonBox, QFileDialog, QGridLayout, QInputDialog, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
-    QFileDialog.getOpenFileName = QFileDialog.getOpenFileNameAndFilter
-    QFileDialog.getOpenFileNames = QFileDialog.getOpenFileNamesAndFilter
-    QFileDialog.getSaveFileName = QFileDialog.getSaveFileNameAndFilter
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtCore import QLocale, QThread
-    from PySide.QtGui import QAbstractItemView, QDialog, QDialogButtonBox, QFileDialog, QGridLayout, QInputDialog, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
-elif pyqtversion == 5:
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, QThread
     from PyQt5.QtWidgets import QAbstractItemView, QDialog, QDialogButtonBox, QFileDialog, QGridLayout, QInputDialog, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtCore import QLocale, QThread
+    from PyQt6.QtWidgets import QAbstractItemView, QDialog, QDialogButtonBox, QFileDialog, QGridLayout, QInputDialog, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
 import copy, pickle
 from numpy import unique
 from .audio_manager import*
@@ -43,7 +35,7 @@ class wavListDialog(QDialog):
         self.prm = self.parent().parent().prm
         self.audioManager = audioManager(self)
         self.currLocale = self.parent().parent().prm['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
         self.isPlaying = False
       
         self.sizer = QGridLayout() 
@@ -51,8 +43,8 @@ class wavListDialog(QDialog):
         
         self.wavsTableWidget = QTableWidget()
         self.wavsTableWidget.setColumnCount(4)
-        self.wavsTableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.wavsTableWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.wavsTableWidget.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.wavsTableWidget.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         
         self.wavsTableWidget.setHorizontalHeaderLabels([self.tr("File"), self.tr('Use'), self.tr("RMS Level"), 'id'])
         self.quidColumn = 3
@@ -108,7 +100,7 @@ class wavListDialog(QDialog):
             self.wavsTableWidget.setItem(currCount-1, n, self.wavsList[thisID]['qid'])
 
      
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Apply|QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
 

@@ -16,21 +16,18 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtCore import QLocale
-    from PyQt4.QtGui import QDialog, QDesktopWidget, QDialogButtonBox, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtCore import QLocale
-    from PySide.QtGui import QDialog, QDesktopWidget, QDialogButtonBox, QFont, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
-elif pyqtversion == 5:
+
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale
     from PyQt5.QtWidgets import QDialog, QDesktopWidget, QDialogButtonBox, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
     from PyQt5.QtGui import QFont
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtCore import QLocale
+    from PyQt6.QtWidgets import QDialog, QDialogButtonBox, QPushButton, QSizePolicy, QTextBrowser, QVBoxLayout
+    from PyQt6.QtGui import QFont
 import random
 
 class dialogShowParDiff(QDialog):
@@ -38,7 +35,7 @@ class dialogShowParDiff(QDialog):
         QDialog.__init__(self, parent)
         self.prm = self.parent().prm
         self.currLocale = self.parent().prm['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
        
         self.vBoxSizer = QVBoxLayout()
         self.browser = QTextBrowser()
@@ -59,14 +56,17 @@ class dialogShowParDiff(QDialog):
         
         self.vBoxSizer.addWidget(self.browser)
 
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Ok)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
         buttonBox.accepted.connect(self.accept)
         self.vBoxSizer.addWidget(buttonBox)
         
         self.setLayout(self.vBoxSizer)
         self.setWindowTitle(self.tr("Diff"))
 
-        screen = QDesktopWidget().screenGeometry()
+        if pyqtversion == 5:
+            screen = QDesktopWidget().screenGeometry()
+        elif pyqtversion == 6:
+            screen = self.screen().geometry()
         wd = int(screen.width()/4)
         ht = int(screen.height()/3)
         self.resize(wd, ht)

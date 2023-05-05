@@ -16,21 +16,18 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
 from .pyqtver import*
-if pyqtversion == 4:
-    from PyQt4 import QtGui, QtCore
-    from PyQt4.QtCore import QLocale, QThread
-    from PyQt4.QtGui import QAbstractItemView, QComboBox, QDesktopWidget, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIcon, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
-elif pyqtversion == -4:
-    from PySide import QtGui, QtCore
-    from PySide.QtCore import QLocale, QThread
-    from PySide.QtGui import QAbstractItemView, QComboBox, QDesktopWidget, QDialog, QDialogButtonBox, QDoubleValidator, QGridLayout, QIcon, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
-elif pyqtversion == 5:
+
+if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, QThread
     from PyQt5.QtWidgets import QAbstractItemView, QComboBox, QDesktopWidget, QDialog, QDialogButtonBox, QGridLayout, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
     from PyQt5.QtGui import QDoubleValidator, QIcon
+elif pyqtversion == 6:
+    from PyQt6 import QtGui, QtCore
+    from PyQt6.QtCore import QLocale, QThread
+    from PyQt6.QtWidgets import QAbstractItemView, QComboBox, QDialog, QDialogButtonBox, QGridLayout, QInputDialog, QLabel, QLineEdit, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout
+    from PyQt6.QtGui import QDoubleValidator, QIcon
 import copy, pickle
 from numpy import unique
 from .audio_manager import*
@@ -43,8 +40,11 @@ class phonesDialog(QDialog):
         QDialog.__init__(self, parent)
         self.prm = self.parent().prm
         self.currLocale = self.parent().prm['currentLocale']
-        self.currLocale.setNumberOptions(self.currLocale.OmitGroupSeparator | self.currLocale.RejectGroupSeparator)
-        screen = QDesktopWidget().screenGeometry()
+        self.currLocale.setNumberOptions(self.currLocale.NumberOption.OmitGroupSeparator | self.currLocale.NumberOption.RejectGroupSeparator)
+        if pyqtversion == 5:
+            screen = QDesktopWidget().screenGeometry()
+        elif pyqtversion == 6:
+            screen = self.screen().geometry()
         self.resize(int(screen.width()/2.5), int(screen.height()/3))
         self.isPlaying = False
         #self.audioManager = audioManager(self)
@@ -57,8 +57,8 @@ class phonesDialog(QDialog):
         
         self.phonesTableWidget = QTableWidget()
         self.phonesTableWidget.setColumnCount(4)
-        self.phonesTableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.phonesTableWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.phonesTableWidget.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.phonesTableWidget.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         
         self.phonesTableWidget.setHorizontalHeaderLabels([self.tr('Phones'), self.tr('Max Level'), self.tr('Default'), 'id'])
         self.phonesTableWidget.hideColumn(3)
@@ -98,13 +98,13 @@ class phonesDialog(QDialog):
             self.phonesList[thisID]['default'] = self.prm['phones']['defaultPhones'][i]
             self.phonesTableWidget.setRowCount(currCount)
             newItem = QTableWidgetItem(self.phonesList[thisID]['label'])
-            newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
             self.phonesTableWidget.setItem(currCount-1, 0, newItem)
             newItem = QTableWidgetItem(self.currLocale.toString(self.phonesList[thisID]['maxLevel']))
-            newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
             self.phonesTableWidget.setItem(currCount-1, 1, newItem)
             newItem = QTableWidgetItem(self.phonesList[thisID]['default'])
-            newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
             self.phonesTableWidget.setItem(currCount-1, 2, newItem)
             self.phonesList[thisID]['qid'] = QTableWidgetItem(thisID)
             self.phonesTableWidget.setItem(currCount-1, 3, self.phonesList[thisID]['qid'])
@@ -158,10 +158,10 @@ class phonesDialog(QDialog):
         else:
             self.stopCalibButton.hide()
         
-        buttonBox = QDialogButtonBox(QDialogButtonBox.Apply|QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
+        buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Apply|QDialogButtonBox.StandardButton.Ok|QDialogButtonBox.StandardButton.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
-        buttonBox.button(QDialogButtonBox.Apply).clicked.connect(self.permanentApply)
+        buttonBox.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(self.permanentApply)
 
         self.sizer.addLayout(self.v1Sizer, 0, 0)
         self.v2Sizer.addLayout(self.calibSizer)
@@ -264,13 +264,13 @@ class phonesDialog(QDialog):
         self.phonesList[thisID]['default'] = "\u2012"
         self.phonesTableWidget.setRowCount(currCount)
         newItem = QTableWidgetItem(self.phonesList[thisID]['label'])
-        newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+        newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
         self.phonesTableWidget.setItem(currCount-1, 0, newItem)
         newItem = QTableWidgetItem(self.currLocale.toString(self.phonesList[thisID]['maxLevel']))
-        newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+        newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
         self.phonesTableWidget.setItem(currCount-1, 1, newItem)
         newItem = QTableWidgetItem(self.phonesList[thisID]['default'])
-        newItem.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+        newItem.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
         self.phonesTableWidget.setItem(currCount-1, 2, newItem)
         self.phonesList[thisID]['qid'] = QTableWidgetItem(thisID)
         self.phonesTableWidget.setItem(currCount-1, 3, self.phonesList[thisID]['qid'])
@@ -280,7 +280,7 @@ class phonesDialog(QDialog):
         if self.phonesTableWidget.rowCount() == 1:
             ret = QMessageBox.warning(self, self.tr("Warning"),
                                             self.tr("Only one phone left. Cannot remove!"),
-                                            QMessageBox.Ok)
+                                            QMessageBox.StandardButton.Ok)
         else:
             ids = self.findSelectedItemIds()
             wasDefault = False

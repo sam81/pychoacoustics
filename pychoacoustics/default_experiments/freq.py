@@ -26,17 +26,15 @@ The available choosers are:
     The ear to which the signal will be presented
 
 """
-from __future__ import nested_scopes, generators, division, absolute_import, with_statement, print_function, unicode_literals
+
 from ..sndlib import*
 from ..pyqtver import*
 from .._version_info import*
 
-if pyqtversion == 4:
-    from PyQt4.QtGui import QApplication
-elif pyqtversion == -4:
-    from PySide.QtGui import QApplication
-elif pyqtversion == 5:
+if pyqtversion == 5:
     from PyQt5.QtWidgets import QApplication
+elif pyqtversion == 6:
+    from PyQt6.QtWidgets import QApplication
 
                                                                               
 def initialize_freq(prm):
