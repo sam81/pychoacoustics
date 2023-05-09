@@ -59,16 +59,12 @@ class audioManager():
     def __init__(self, parent):
         self.parent = parent
         self.prm = parent.prm
-
         if self.prm["pref"]["sound"]["wavmanager"] == "scipy":
             from .wavpy import wavread, wavwrite
         elif self.prm["pref"]["sound"]["wavmanager"] == "soundfile":
             from .wavpy_sndf import wavread, wavwrite
         self.wavwrite = wavwrite
         self.wavread = wavread
-        # if self.prm["pref"]["sound"]["wavmanager"] == "scipy":
-        #     from scipy.io import wavfile
-        #     self.wavfile = wavfile
         self.initializeAudio()
             
     def initializeAudio(self):
@@ -76,9 +72,7 @@ class audioManager():
         self.playCmd = self.prm['pref']['sound']['playCommand']
         
         try: #if alsaaudio device was open close it
-            print("Trying to close alsaaudio device")
             self.device.close()
-            print("Closing alsaaudio device")
         except:
             print(sys.exc_info())
 
@@ -99,7 +93,7 @@ class audioManager():
 
             
     def playSound(self, snd, fs, nbits, writewav, fname):
-        wavmanager = self.prm["pref"]["sound"]["wavmanager"]
+        #wavmanager = self.prm["pref"]["sound"]["wavmanager"]
         playCmd = str(self.playCmd)
         enc = "pcm"+ str(nbits)
         if writewav == True:
@@ -110,14 +104,14 @@ class audioManager():
         if playCmd in ['alsaaudio', 'pyaudio']:#write wav before appending zeros in this case
             if writewav == True:
                 self.wavwrite(snd, fs, nbits, fname)
-                # if wavmanager == "scipy":
-                #     self.scipy_wavwrite(fname, fs, nbits, snd)
+
         if self.prm["pref"]["sound"]["appendSilence"] > 0:
             duration = self.prm["pref"]["sound"]["appendSilence"]/1000 #convert from ms to sec
             nSamples = int(round(duration * fs))
             silenceToAppend = zeros((nSamples, 2))
             snd = concatenate((snd, silenceToAppend), axis=0)
-        #alsaaudio
+            
+        #prep params for alsaaudio or pyaudio
         if playCmd in ['alsaaudio', 'pyaudio']:
             nSamples = snd.shape[0]
             nChannels = snd.shape[1]
@@ -130,45 +124,43 @@ class audioManager():
                 padSize = (nSeg*bufferSize) - nSamples
                 pad = zeros((padSize, nChannels))
                 snd = concatenate((snd, pad), axis=0)
-            
+            if nbits == 16:
+                data = snd*(2**15)
+                data[np.where(data>=2**15)] = 2**15-1
+                data = data.astype(int16)
+            elif nbits == 24:
+                d24_32 = snd*(2**23)
+                d24_32[np.where(d24_32>=2**23)] = 2**23-1
+                d24_32 = d24_32.astype(int32)
+                #Shift first 0 bits, then 8, then 16, to get 24 bit little-endian.
+                d8_triplets = (d24_32.reshape(d24_32.shape + (1,)) >> np.array([0, 8, 16])) & 255  
+                data = d8_triplets.astype(np.uint8)
+            elif nbits == 32:
+                data = snd*(2**31)
+                data[np.where(data>=2**31)] = 2**31-1
+                data = data.astype(int32)
+        
         if playCmd == "alsaaudio":
             device = self.device
             device.setchannels(nChannels)
             device.setrate(fs)
             device.setperiodsize(bufferSize)
             if nbits == 16:
-                data = snd*(2.**15-1)
-                data = data.astype(int16)
+                device.setformat(alsaaudio.PCM_FORMAT_S16_LE)
             elif nbits == 24:
-                d24_32 = (snd*(2.**23-1)).astype(int32)
-                #Shift first 0 bits, then 8, then 16, to get 24 bit little-endian.
-                d8_triplets = (d24_32.reshape(d24_32.shape + (1,)) >> np.array([0, 8, 16])) & 255  
-                data = d8_triplets.astype(np.uint8)
                 device.setformat(alsaaudio.PCM_FORMAT_S24_3LE)
             elif nbits == 32:
-                data = snd*(2.**31-1)
-                data = data.astype(int32)
                 device.setformat(alsaaudio.PCM_FORMAT_S32_LE)
             for i in range(nSeg):
                 thisData = data[i*bufferSize:((i*bufferSize)+bufferSize)][:]
                 device.write(thisData)
-            
         elif playCmd == "pyaudio":
             if nbits == 16:
-                data = snd*(2.**15-1)
-                data = data.astype(int16)
                 sampleFormat = pyaudio.paInt16
             elif nbits == 24:
-                d24_32 = (snd*(2.**23-1)).astype(int32)
-                #Shift first 0 bits, then 8, then 16, to get 24 bit little-endian.
-                d8_triplets = (d24_32.reshape(d24_32.shape + (1,)) >> np.array([0, 8, 16])) & 255  
-                data = d8_triplets.astype(np.uint8)
                 sampleFormat = pyaudio.paInt24
             elif nbits == 32:
-                data = snd*(2.**31-1)
-                data = data.astype(int32)
                 sampleFormat = pyaudio.paInt32
-
             try:
                 self.paStream.start_stream()
             except:
@@ -185,14 +177,9 @@ class audioManager():
                 self.paStream.write(thisData, num_frames=bufferSize)
             #self.paStream.stop_stream()
             #stream.close()
-            #time.sleep((bufferSize/fs)+0.02)
-            #self.stream.close() #stream seems to close before sound finished playing
           
-
         else:
             self.wavwrite(snd, fs, nbits, fname)
-            # if wavmanager == "scipy":
-            #     self.scipy_wavwrite(fname, fs, nbits, snd)
          
             if platform.system() == "Windows":
                 if playCmd == "winsound":
@@ -219,7 +206,6 @@ class audioManager():
         (hnl2, trigon_fname) = mkstemp("trig-on.wav")
         (hnl3, trigoff_fname) = mkstemp("trig-off.wav")
             
-        #self.scipy_wavwrite(snd_fname, fs, nbits, snd)
         self.wavwrite(snd, fs, nbits, snd_fname)
         playCmd = self.playCmd
         if playCmd == "winsound": #does not really play with trigger for the moment
@@ -261,18 +247,7 @@ class audioManager():
 
 
     def loadWavFile(self, fName, desiredLevel, maxLevel, channel, desiredSampleRate=None):
-        # wavmanager = self.prm["pref"]["sound"]["wavmanager"]
-        # if wavmanager == "scipy":
-        #     orig_fs, snd = self.wavfile.read(fName)
-        #     if snd.dtype == "int16":
-        #         snd = snd / (2.**15)
-        #         nbits = 16
-        #     elif snd.dtype == "int32":
-        #         snd = snd / (2.**31)
-        #         nbits = 32
-        #     elif snd.dtype == "float32":
-        #         snd = snd*1
-        #         nbits = 32
+
         snd, orig_fs, nbits = self.wavread(fName)
 
         if snd.ndim == 1:
@@ -312,39 +287,9 @@ class audioManager():
 
         return snd, fs, nbits
 
-    # def read_wav(self, fName):
-    #     wavmanager = self.prm["pref"]["sound"]["wavmanager"]
-    #     if wavmanager == "scipy":
-    #         fs, snd = self.wavfile.read(fName)
-    #         if snd.dtype == "int16":
-    #             snd = snd / (2.**15)
-    #         elif snd.dtype == "int32":
-    #             snd = snd / (2.**31)
-    #     return snd, fs
-
-
-    # def scipy_wavwrite(self, fname, fs, nbits, data):
-    #     if np.max(data) > 1 or np.min(data) < -1:
-    #         print("Warning: clipping")
-    #     if nbits == 16:
-    #         data = data*(2.**15)
-    #         data = data.astype(int16)
-    #     elif nbits == 24:
-    #         raise Exception("error, cannot save 24 bits at the moment")
-    #     elif nbits == 32:
-    #         data = data*(2.**31)
-    #         data = data.astype(int32)
-
-    #     self.wavfile.write(fname, fs, data)
 
     def listAlsaaudioPlaybackCards(self):
-        # playbackCardList = []
-        # for card in alsaaudio.cards():
-        #     try:
-        #         alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, card=card)
-        #         playbackCardList.append(card)
-        #     except:
-        #         pass
+   
         playbackCardList = alsaaudio.pcms(alsaaudio.PCM_PLAYBACK)
         return playbackCardList
         
@@ -355,23 +300,26 @@ class threadedAudioPlayer(QThread):
         self.prm = self.parent().prm
         self.audioManager = audioManager(self)
         self.exiting = False
+        if self.prm["pref"]["sound"]["wavmanager"] == "scipy":
+            from .wavpy import wavread, wavwrite
+        elif self.prm["pref"]["sound"]["wavmanager"] == "soundfile":
+            from .wavpy_sndf import wavread, wavwrite
+        self.wavwrite = wavwrite
+        self.wavread = wavread
     def playThreadedSound(self, snd, sampRate, nbits, playCmd, writewav, fName):
         self.snd = snd
         self.sampRate = sampRate
         self.nbits = nbits
         self.playCmd = playCmd
-        wavmanager = self.prm["pref"]["sound"]["wavmanager"]
+
         if writewav == True: #write the sound before appending zeros
             self.wavwrite(snd, sampRate, nbits, fName)
-            # if wavmanager == "scipy":
-            #     self.audioManager.scipy_wavwrite(fName, sampRate, nbits, snd)
+        
         if self.prm["pref"]["sound"]["appendSilence"] > 0:
             duration = self.prm["pref"]["sound"]["appendSilence"]/1000 #convert from ms to sec
             nSamples = int(round(duration * sampRate))
             silenceToAppend = zeros((nSamples, 2))
             self.snd = concatenate((self.snd, silenceToAppend), axis=0)
-       
-        #self.playCmd = str(self.playCmd)
 
         if self.playCmd in ['alsaaudio', 'pyaudio']:
             nSamples = self.snd.shape[0]
@@ -385,6 +333,21 @@ class threadedAudioPlayer(QThread):
                 padSize = (self.nSeg*self.bufferSize) - nSamples
                 pad = zeros((padSize, nChannels))
                 self.snd = concatenate((self.snd, pad), axis=0)
+            if self.nbits == 16:
+                self.data = self.snd*(2**15)
+                self.data[np.where(self.data>=2**15)] = 2**15-1
+                self.data = self.data.astype(int16)
+            elif nbits == 24:
+                d24_32 = (self.snd*(2**23))
+                d24_32[np.where(d24_32>=2**23)] = 2**23-1
+                d24_32 = d24_32.astype(int32)
+                #Shift first 0 bits, then 8, then 16, to get 24 bit little-endian.
+                d8_triplets = (d24_32.reshape(d24_32.shape + (1,)) >> np.array([0, 8, 16])) & 255  
+                self.data = d8_triplets.astype(np.uint8)
+            elif self.nbits == 32:
+                self.data = self.snd*(2**31)
+                self.data[np.where(self.data>=2**31)] = 2**31-1
+                self.data = self.data.astype(int32)
 
         if playCmd == "alsaaudio":
             self.device = alsaaudio.PCM(type=alsaaudio.PCM_PLAYBACK, mode=alsaaudio.PCM_NORMAL, device=self.prm["pref"]["sound"]["alsaaudioDevice"])
@@ -392,35 +355,19 @@ class threadedAudioPlayer(QThread):
             self.device.setrate(sampRate)
             self.device.setperiodsize(self.bufferSize)
             if self.nbits == 16:
-                self.data = self.snd*(2.**15-1)
-                self.data = self.data.astype(int16)
                 self.device.setformat(alsaaudio.PCM_FORMAT_S16_LE)
             elif nbits == 24:
-                d24_32 = (snd*(2.**23-1)).astype(int32)
-                #Shift first 0 bits, then 8, then 16, to get 24 bit little-endian.
-                d8_triplets = (d24_32.reshape(d24_32.shape + (1,)) >> np.array([0, 8, 16])) & 255  
-                data = d8_triplets.astype(np.uint8)
-                device.setformat(alsaaudio.PCM_FORMAT_S24_3LE)
+                self.device.setformat(alsaaudio.PCM_FORMAT_S24_3LE)
             elif self.nbits == 32:
-                self.data = self.snd*(2.**31-1)
-                self.data = self.data.astype(int32)
                 self.device.setformat(alsaaudio.PCM_FORMAT_S32_LE)
 
         elif playCmd == "pyaudio":
             paManager = pyaudio.PyAudio()
             if self.nbits == 16:
-                self.data = self.snd*(2.**15-1)
-                self.data = self.data.astype(int16)
                 sampleFormat = pyaudio.paInt16
             elif nbits == 24:
-                d24_32 = (snd*(2.**23-1)).astype(int32)
-                #Shift first 0 bits, then 8, then 16, to get 24 bit little-endian.
-                d8_triplets = (d24_32.reshape(d24_32.shape + (1,)) >> np.array([0, 8, 16])) & 255  
-                data = d8_triplets.astype(np.uint8)
                 sampleFormat = pyaudio.paInt24
             elif nbits == 32:
-                self.data = self.snd*(2.**31-1)
-                self.data = self.data.astype(int32)
                 sampleFormat = pyaudio.paInt32
             
             self.stream = paManager.open(format=sampleFormat,

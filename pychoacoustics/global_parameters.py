@@ -93,6 +93,12 @@ try:
 except:
     pandas_available = False
 
+try:
+    import soundfile
+    soundfile_available = True
+except:
+    soundfile_available = False
+
 from . import default_experiments
 from .default_experiments import*
 
@@ -135,7 +141,7 @@ def set_global_parameters(prm):
     prm["nIntervalsChoices"] = ["2", "3", "4", "5", "6", "7", "8", "9", "10"]
     prm["adaptiveTypeChoices"] = [QApplication.translate("","Arithmetic",""), QApplication.translate("","Geometric","")]
     prm['tnpToAverageChoices'] = [QApplication.translate("","All final stepsize (even)",""), QApplication.translate("","First N final stepsize",""), QApplication.translate("","Last N final stepsize","")]
-    prm["nBitsChoices"] = ["16", "32"]
+    prm["nBitsChoices"] = ["16", "24", "32"]
     prm["shuffleChoices"] = [QApplication.translate("","No",""), QApplication.translate("","Ask",""), QApplication.translate("","Auto","")]
     prm["responseModeChoices"] = [QApplication.translate("","Real Listener",""), QApplication.translate("","Automatic",""), QApplication.translate("","Simulated Listener",""), QApplication.translate("","Psychometric","")]
     prm["psyListFunChoices"] = [QApplication.translate("","Logistic",""), QApplication.translate("","Gaussian",""), QApplication.translate("","Gumbel",""), QApplication.translate("","Weibull","")]
@@ -208,7 +214,11 @@ def set_global_parameters(prm):
             prm['appData']['pyaudioAvailable'] = True
         else:
             prm['appData']['pyaudioAvailable'] = False
+
     prm['appData']['wavmanagers'] = ["scipy"]
+    if soundfile_available == True:
+        prm['appData']['wavmanagers'].append("soundfile")
+        prm['appData']['soundfileAvailable'] = True
     
     prm['appData']['available_languages'] = [QApplication.translate("","System Settings",""),
                                       QApplication.translate("","en",""),

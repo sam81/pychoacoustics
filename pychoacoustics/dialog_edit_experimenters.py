@@ -51,7 +51,7 @@ class experimentersDialog(QDialog):
         self.experimenterChooser = QComboBox()
         self.experimenterChooser.addItems(self.tmpPref['experimenter']['experimenter_id'])
         self.sizer.addWidget(self.experimenterChooser, n, 1)
-        self.experimenterChooser.activated[str].connect(self.onExperimenterChange)
+        self.experimenterChooser.textActivated[str].connect(self.onExperimenterChange)
         self.currIdx = self.experimenterChooser.currentIndex()
 
         n = n+1
@@ -131,7 +131,7 @@ class experimentersDialog(QDialog):
         buttonBox.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(self.onClickApplyButton)
         
         self.h1Sizer.addLayout(self.v2Sizer)
-        self.sizer.setAlignment(Qt.AlignTop)
+        self.sizer.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.h1Sizer.addLayout(self.sizer)
         self.v1Sizer.addLayout(self.h1Sizer)
         self.v1Sizer.addWidget(buttonBox)
@@ -223,7 +223,7 @@ class experimentersDialog(QDialog):
                 self.revertChanges()
         if self.experimenterChooser.count() > 1:
             reply = QMessageBox.warning(self, self.tr('Message'),
-                                              "Remove experimenter? This action cannot be undone!", QMessageBox.Yes | 
+                                              "Remove experimenter? This action cannot be undone!", QMessageBox.StandardButton.Yes | 
                                               QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
             if reply == QMessageBox.StandardButton.Yes:
                 self.tmpPref['experimenter']['defaultExperimenter'].pop(self.currIdx)

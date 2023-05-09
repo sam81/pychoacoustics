@@ -2,8 +2,8 @@
 from distutils.core import setup
 import glob
 setup(
-    name="pychoacoustics-pyside",
-    version="0.5.22",
+    name="pychoacoustics-pyqt6",
+    version="0.5.24",
     url="http://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html",
     author="Samuele Carcagno",
     author_email="sam.carcagno@google.com;",
@@ -31,11 +31,12 @@ setup(
         'Topic :: Scientific/Engineering :: Bio-Informatics'
         ],
     license="GPL v3",
-    requires=['PySide (>=1.1.1)', 'numpy (>=1.6.1)', 'scipy (>=0.10.1)'],
-    packages=["pychoacoustics", "pychoacoustics.default_experiments"],
+    requires=['PyQt (>=6.4.2)', 'numpy (>=1.0.0)', 'scipy (>=1.0.0)'],
+    packages=["pychoacoustics", "pychoacoustics.default_experiments", "pychoacoustics.nnresample"],
     scripts = ["pychoacoustics.pyw"],
     package_dir={"pychoacoustics": "pychoacoustics"},
-    package_data={'pychoacoustics': ["qrc_resources.py", "doc/_build/latex/*.pdf",
+    package_data={'pychoacoustics': ["qrc_resources.py",
+                                     "doc/_build/latex/*.pdf",
                                      "doc/_build/html/*.*",
                                      "doc/_build/html/_images/*",
                                      "doc/_build/html/_modules/*",
@@ -47,7 +48,8 @@ setup(
                                      "doc/_build/html/_static/font/*.*",
                                      "doc/_build/html/_static/js/*.*",
                                      "doc/_build/html/_templates/autosummary/*.*",
-                                     "doc/_build/html/_themes/*.*"],},
+                                     "doc/_build/html/_themes/*.*",
+                                     "sounds/*.*"],},
 
     
     data_files = [('share/applications', ['pychoacoustics.desktop']),

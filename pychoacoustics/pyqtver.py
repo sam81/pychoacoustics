@@ -15,4 +15,4 @@
 #    You should have received a copy of the GNU General Public License
 #    along with pychoacoustics.  If not, see <http://www.gnu.org/licenses/>.
 
-pyqtversion = 6
+pyqtversion = 5
