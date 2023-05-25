@@ -19,21 +19,11 @@
 
 import os, sys, platform, pickle, hashlib, base64
 from .pyqtver import*
-# if pyqtversion == 4:
-#     from PyQt4 import QtGui, QtCore
-#     from PyQt4.QtGui import QApplication, QColor, QFont
-#     try:
-#         import matplotlib
-#         matplotlib_available = True
-#         matplotlib.rcParams['backend'] = "Qt4Agg"
-#         matplotlib.rcParams['backend.qt4'] = "PyQt4"
-#     except:
-#         matplotlib_available = False
-#     prefFileSuffix = "-pyqt4"
+
 if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtWidgets import QApplication
-    from PyQt5.QtGui import QColor, QFont
+    from PyQt5.QtGui import QFont
     try:
         import matplotlib
         matplotlib_available = True
@@ -48,11 +38,11 @@ if pyqtversion == 5:
         matplotlib_available = True
     except:
         matplotlib_available = False
-    prefFileSuffix = ""
+    #prefFileSuffix = ""
 elif pyqtversion == 6:
     from PyQt6 import QtGui, QtCore
     from PyQt6.QtWidgets import QApplication
-    from PyQt6.QtGui import QColor, QFont
+    from PyQt6.QtGui import QFont
     try:
         import matplotlib
         matplotlib_available = True
@@ -64,7 +54,7 @@ elif pyqtversion == 6:
         matplotlib_available = True
     except:
         matplotlib_available = False
-    prefFileSuffix = "-pyqt6"
+    #prefFileSuffix = "-pyqt6"
 
 from .utils_redirect_stream_to_file import*
 
@@ -154,66 +144,36 @@ def set_global_parameters(prm):
     if os.path.exists(prm['backupDirectoryName']) == False:
         os.makedirs(prm['backupDirectoryName'])
 
-    prm['appData']['alsaaudioAvailable'] = alsaaudioAvailable
     if matplotlib_available and pandas_available:
         prm['appData']['plotting_available'] = True
     else:
         prm['appData']['plotting_available'] = False    
- 
-    if platform.system() == 'Windows':
-        prm['appData']['available_play_commands'] = ["winsound"]
-        if pyaudioAvailable == True:
-            prm['appData']['available_play_commands'].append("pyaudio")
-            prm['appData']['pyaudioAvailable'] = True
-        else:
-            prm['appData']['pyaudioAvailable'] = False
-        if os.system("where sndfile-play") == 0:
-            prm['appData']['available_play_commands'].append("sndfile-play")
 
-        prm['appData']['available_play_commands'].append(QApplication.translate("","custom",""))
-    elif platform.system() == 'Linux':
+    prm['appData']['alsaaudioAvailable'] = alsaaudioAvailable
+    prm['appData']['pyaudioAvailable'] = pyaudioAvailable
+    
+    if platform.system() == 'Linux':
         prm['appData']['available_play_commands'] = []
-        if alsaaudioAvailable == True:
-            prm['appData']['available_play_commands'].append("alsaaudio")
-        if pyaudioAvailable == True:
-            prm['appData']['available_play_commands'].append("pyaudio")
-            prm['appData']['pyaudioAvailable'] = True
-        else:
-            prm['appData']['pyaudioAvailable'] = False
         if os.system("which aplay") == 0:
             prm['appData']['available_play_commands'].append("aplay")
         if os.system("which play") == 0:
             prm['appData']['available_play_commands'].append("play")
         if os.system("which sndfile-play") == 0:
             prm['appData']['available_play_commands'].append("sndfile-play")
-      
-
-        prm['appData']['available_play_commands'].append(QApplication.translate("","custom",""))
-    elif platform.system() == 'Darwin': #that should be the MAC
+    elif platform.system() == 'Windows':
+        prm['appData']['available_play_commands'] = ["winsound"]
+        if os.system("where sndfile-play") == 0:
+            prm['appData']['available_play_commands'].append("sndfile-play")
+    elif platform.system() == 'Darwin': # that should be the Mac
         prm['appData']['available_play_commands'] = ["afplay"]
-        if pyaudioAvailable == True:
-            prm['appData']['available_play_commands'].append("pyaudio")
-            prm['appData']['pyaudioAvailable'] = True
-        else:
-            prm['appData']['pyaudioAvailable'] = False
-
-        prm['appData']['available_play_commands'].append(QApplication.translate("","custom",""))
     elif platform.system() == 'FreeBSD':
         prm['appData']['available_play_commands'] = ["wavplay"]
-        if pyaudioAvailable == True:
-            prm['appData']['available_play_commands'].append("pyaudio")
-            prm['appData']['pyaudioAvailable'] = True
-        else:
-            prm['appData']['pyaudioAvailable'] = False
 
-        prm['appData']['available_play_commands'].append(QApplication.translate("","custom",""))
-    else:
-        prm['appData']['available_play_commands'] = [QApplication.translate("","custom","")]
-        if pyaudioAvailable == True:
-            prm['appData']['available_play_commands'].append("pyaudio")
-            prm['appData']['pyaudioAvailable'] = True
-        else:
-            prm['appData']['pyaudioAvailable'] = False
+    if alsaaudioAvailable == True:
+        prm['appData']['available_play_commands'].append("alsaaudio")
+    if pyaudioAvailable == True:
+        prm['appData']['available_play_commands'].append("pyaudio")
+    prm['appData']['available_play_commands'].append(QApplication.translate("","custom",""))
 
     prm['appData']['wavmanagers'] = ["scipy"]
     if soundfile_available == True:
@@ -268,11 +228,9 @@ def set_global_parameters(prm):
 
     return prm
 
-
-    
     
 def def_pref(prm):
-
+    #if "pref" in prm == False:
     prm["pref"] = {}
     prm["pref"]["general"] = {}
     #prm["pref"]["phones"] = {}
@@ -281,6 +239,7 @@ def def_pref(prm):
     prm["pref"]["exp"] = {}
     prm["pref"]["interface"] = {}
     prm["pref"]["resp_box"] = {}
+    #if "appearance" in prm["pref"] == False:
     prm["pref"]["appearance"] = {}
 
     prm["pref"]["general"]["triggerONOFF"] = False
@@ -370,20 +329,20 @@ def def_pref(prm):
         prm["pref"]["sound"]["pyaudioDevice"] = 0
 
     prm["pref"]["resp_box"]["responseBoxButtonFont"] = QFont('Sans Serif', 24, QFont.Weight.Bold, False).toString()
-    prm["pref"]["resp_box"]["correctLightColor"] = QColor(0,255,0)
-    prm["pref"]["resp_box"]["incorrectLightColor"] = QColor(255,0,0)
-    prm["pref"]["resp_box"]["neutralLightColor"] = QColor(255,255,255)
-    prm["pref"]["resp_box"]["offLightColor"] = QColor(0,0,0)
+    prm["pref"]["resp_box"]["correctLightColor"] = (0,255,0)
+    prm["pref"]["resp_box"]["incorrectLightColor"] = (255,0,0)
+    prm["pref"]["resp_box"]["neutralLightColor"] = (255,255,255)
+    prm["pref"]["resp_box"]["offLightColor"] = (0,0,0)
     prm["pref"]["resp_box"]["responseLightFont"] = QFont('Sans Serif', 20, QFont.Weight.Bold, False).toString()
 
     prm["pref"]["resp_box"]["correctTextFeedback"] = "CORRECT" #QApplication.translate("","Yes","") #self.tr("CORRECT")
     prm["pref"]["resp_box"]["incorrectTextFeedback"] = "INCORRECT"
     prm["pref"]["resp_box"]["neutralTextFeedback"] = "DONE"
     prm["pref"]["resp_box"]["offTextFeedback"] = ""
-    prm["pref"]["resp_box"]["correctTextColor"] = QColor(255,255,255)
-    prm["pref"]["resp_box"]["incorrectTextColor"] = QColor(255,255,255)
-    prm["pref"]["resp_box"]["neutralTextColor"] = QColor(255,255,255)
-    prm["pref"]["resp_box"]["offTextColor"] = QColor(255,255,255)
+    prm["pref"]["resp_box"]["correctTextColor"] = (255,255,255)
+    prm["pref"]["resp_box"]["incorrectTextColor"] = (255,255,255)
+    prm["pref"]["resp_box"]["neutralTextColor"] = (255,255,255)
+    prm["pref"]["resp_box"]["offTextColor"] = (255,255,255)
 
     prm["pref"]["resp_box"]["correctTextFeedbackUserSet"] = False
     prm["pref"]["resp_box"]["incorrectTextFeedbackUserSet"] = False
@@ -425,7 +384,7 @@ def def_pref(prm):
 
 def get_prefs(prm):
     prm = def_pref(prm)
-    prm['prefFile'] = os.path.expanduser("~") +'/.config/pychoacoustics/preferences'+prefFileSuffix+'.py'
+    prm['prefFile'] = os.path.expanduser("~") +'/.config/pychoacoustics/preferences.py'
     prm['phonesPrefFile'] = os.path.expanduser("~") +'/.config/pychoacoustics/phones.py'
     prm['experimenterPrefFile'] = os.path.expanduser("~") +'/.config/pychoacoustics/experimenter.py'
     if os.path.exists(os.path.expanduser("~") +'/.config/') == False:

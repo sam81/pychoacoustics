@@ -193,7 +193,7 @@ def main(argv):
     prm['currentLocale'].setNumberOptions(prm['currentLocale'].NumberOption.OmitGroupSeparator | prm['currentLocale'].NumberOption.RejectGroupSeparator)
 
     if prm['pref']['country'] != "System Settings":
-        locale =  prm['pref']['language']  + '_' + prm['pref']['country']#returns a string such as en_US
+        locale =  prm['pref']['language']  + '_' + prm['pref']['country'] #returns a string such as en_US
         qtTranslator = QtCore.QTranslator()
         if qtTranslator.load("qt_" + locale, ":/translations/"):
             app.installTranslator(qtTranslator)
@@ -203,7 +203,7 @@ def main(argv):
             prm['currentLocale'] = QtCore.QLocale(locale)
             QtCore.QLocale.setDefault(prm['currentLocale'])
             prm['currentLocale'].setNumberOptions(prm['currentLocale'].NumberOption.OmitGroupSeparator | prm['currentLocale'].NumberOption.RejectGroupSeparator)
-    responseBoxLocale =  prm['pref']['responseBoxLanguage']  + '_' + prm['pref']['responseBoxCountry']#returns a string such as en_US
+    responseBoxLocale =  prm['pref']['responseBoxLanguage']  + '_' + prm['pref']['responseBoxCountry'] #returns a string such as en_US
     responseBoxTranslator = QtCore.QTranslator()
     responseBoxTranslator.load("pychoacoustics_" + responseBoxLocale, ":/translations/")
     respButtTranslator = QtCore.QTranslator()
@@ -216,12 +216,13 @@ def main(argv):
 
     ## call again `get_prefs` to properly set the preferences now that the
     ## translations have been loaded
+    #prm["pref"]["appearance"]["style"] = app.style().objectName()
     prm = global_parameters.get_prefs(prm)
     
     prm = global_parameters.set_global_parameters(prm)
     app.setWindowIcon(QtGui.QIcon(":/Machovka_Headphones.svg"))
-    #app.setStyle("plastique")
-    #app.setStyle(QStyleFactory.create('GTK+'))
+    #print(app.style().objectName())
+    #app.setStyle(QStyleFactory.create(prm["pref"]["appearance"]["style"]))
     x = pychControlWin(parent=None, prm=prm)
     sys.exit(app.exec())
     

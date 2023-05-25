@@ -1,14 +1,14 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, platform, requests, time
+import distro, os, platform, requests, time
 
 pparev = input("ppa revision number: ")
 pparev = '-ppa'+str(pparev)
 
 series = os.popen("lsb_release -c").read().split('\t')[1].strip() #input("distro series: ")
 #series = os.popen("cat /etc/debian_version").read().split('/')[0].strip() #input("distro series: ")
-publish = input("publish ('y'/'n')?: ")
+#publish = input("publish ('y'/'n')?: ")
 package = "pychoacoustics"
 architecture = os.popen("dpkg --print-architecture").read().strip()
 component = "main"
@@ -23,7 +23,7 @@ for i in range(len(ln)):
            ver = ln[i].strip().split('=')[1].strip()
            ver = ver[1:len(ver)-2]
 tarball_path = "../dist/pychoacoustics-" + ver + ".tar.gz"
-buildpath = "../../pkg_build/" + platform.linux_distribution()[0] + '_' + platform.linux_distribution()[1].replace('/', '_') + '_' + platform.uname()[4]
+buildpath = "../../pkg_build/" + distro.id() + '_' + distro.version() + '_' + platform.uname()[4]
 
 if os.path.exists(buildpath) == False:
     os.makedirs(buildpath)
@@ -73,34 +73,34 @@ origdebname = package + "_" + ver +  "_" + architecture + ".deb"
 debname = package + "_" + ver + pparev + "~" + series + "_" + architecture + ".deb"
 os.system("mv" + " " + origdebname + " " + debname)
 
-if publish == 1 or publish == "y":
-    print("###############################")
-    print("Publishing")
-    print("###############################")
-    API_KEY = os.environ["BINTRAY_API_KEY"]
+# if publish == 1 or publish == "y":
+#     print("###############################")
+#     print("Publishing")
+#     print("###############################")
+#     API_KEY = os.environ["BINTRAY_API_KEY"]
 
-    USERNAME = "sam81"
+#     USERNAME = "sam81"
 
-    URL = "https://api.bintray.com/content/sam81/hearinglab/"+ package + "/" + ver + "/pool/" + component + "/"+ package[0] + "/" + package + "/" + debname + "?publish=1"
-    parameters = {"publish": "1"}
-    headers = {
-        "X-Bintray-Debian-Distribution": series,
-        "X-Bintray-Debian-Architecture": architecture,
-        "X-Bintray-Debian-Component": component
-    }
+#     URL = "https://api.bintray.com/content/sam81/hearinglab/"+ package + "/" + ver + "/pool/" + component + "/"+ package[0] + "/" + package + "/" + debname + "?publish=1"
+#     parameters = {"publish": "1"}
+#     headers = {
+#         "X-Bintray-Debian-Distribution": series,
+#         "X-Bintray-Debian-Architecture": architecture,
+#         "X-Bintray-Debian-Component": component
+#     }
 
-    with open(debname, "rb") as package_fp:
-        response = requests.put(
-            URL, auth=(USERNAME, API_KEY), params=parameters,
-            headers=headers, data=package_fp) 
+#     with open(debname, "rb") as package_fp:
+#         response = requests.put(
+#             URL, auth=(USERNAME, API_KEY), params=parameters,
+#             headers=headers, data=package_fp) 
 
-    print("status code: " + str(response.status_code))
-    if response.status_code == 201:
-        print("#####################\n Upload successful!")
-    else:
-        print("#####################\n Upload Unsuccessful.")
-else:
-    print("###############################")
-    print("Not Publishing")
-    print("###############################")
+#     print("status code: " + str(response.status_code))
+#     if response.status_code == 201:
+#         print("#####################\n Upload successful!")
+#     else:
+#         print("#####################\n Upload Unsuccessful.")
+# else:
+#     print("###############################")
+#     print("Not Publishing")
+#     print("###############################")
     

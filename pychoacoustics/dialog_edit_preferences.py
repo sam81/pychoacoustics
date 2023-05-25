@@ -22,14 +22,14 @@ if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import QLocale, QThread, pyqtSignal
     from PyQt5.QtWidgets import QApplication, QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFontDialog, QGridLayout, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QStyleFactory, QWidget, QTabWidget, QVBoxLayout
-    from PyQt5.QtGui import QFont, QIntValidator
+    from PyQt5.QtGui import QColor, QFont, QIntValidator
     QtCore.Signal = QtCore.pyqtSignal
     QtCore.Slot = QtCore.pyqtSlot
 elif pyqtversion == 6:
     from PyQt6 import QtGui, QtCore
     from PyQt6.QtCore import QLocale, QThread, pyqtSignal
     from PyQt6.QtWidgets import QApplication, QCheckBox, QColorDialog, QComboBox, QDialog, QDialogButtonBox, QFontDialog, QGridLayout, QLabel, QLayout, QLineEdit, QSizePolicy, QSpacerItem, QStyleFactory, QWidget, QTabWidget, QVBoxLayout
-    from PyQt6.QtGui import QFont, QIntValidator
+    from PyQt6.QtGui import QColor, QFont, QIntValidator
     QtCore.Signal = QtCore.pyqtSignal
     QtCore.Slot = QtCore.pyqtSlot
     
@@ -394,7 +394,7 @@ class preferencesDialog(QDialog):
         respBoxPrefGrid.addWidget(self.correctLightColorButton, n, 0)
 
         self.correctLightColorSquare = QWidget(self)
-        self.correctLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.correctLightColor.name())
+        self.correctLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.correctLightColor).name())
         respBoxPrefGrid.addWidget(self.correctLightColorSquare, n, 1)
 
         n = n+1
@@ -404,7 +404,7 @@ class preferencesDialog(QDialog):
         respBoxPrefGrid.addWidget(self.incorrectLightColorButton, n, 0)
 
         self.incorrectLightColorSquare = QWidget(self)
-        self.incorrectLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.incorrectLightColor.name())
+        self.incorrectLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.incorrectLightColor).name())
         respBoxPrefGrid.addWidget(self.incorrectLightColorSquare, n, 1)
         n = n+1
         self.neutralLightColor = self.tmpPref['pref']['resp_box']['neutralLightColor']
@@ -413,7 +413,7 @@ class preferencesDialog(QDialog):
         respBoxPrefGrid.addWidget(self.neutralLightColorButton, n, 0)
 
         self.neutralLightColorSquare = QWidget(self)
-        self.neutralLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.neutralLightColor.name())
+        self.neutralLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.neutralLightColor).name())
         respBoxPrefGrid.addWidget(self.neutralLightColorSquare, n, 1)
         n = n+1
         self.offLightColor = self.tmpPref['pref']['resp_box']['offLightColor']
@@ -422,7 +422,7 @@ class preferencesDialog(QDialog):
         respBoxPrefGrid.addWidget(self.offLightColorButton, n, 0)
 
         self.offLightColorSquare = QWidget(self)
-        self.offLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.offLightColor.name())
+        self.offLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.offLightColor).name())
         respBoxPrefGrid.addWidget(self.offLightColorSquare, n, 1)
         
         n = n+1
@@ -483,7 +483,7 @@ class preferencesDialog(QDialog):
         respBoxPrefGrid.addWidget(self.correctTextColorButton, n, 0)
 
         self.correctTextColorSquare = QWidget(self)
-        self.correctTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.correctTextColor.name())
+        self.correctTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.correctTextColor).name())
         respBoxPrefGrid.addWidget(self.correctTextColorSquare, n, 1)
 
         n = n+1
@@ -493,7 +493,7 @@ class preferencesDialog(QDialog):
         respBoxPrefGrid.addWidget(self.incorrectTextColorButton, n, 0)
 
         self.incorrectTextColorSquare = QWidget(self)
-        self.incorrectTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.incorrectTextColor.name())
+        self.incorrectTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.incorrectTextColor).name())
         respBoxPrefGrid.addWidget(self.incorrectTextColorSquare, n, 1)
         n = n+1
         self.neutralTextColor = self.tmpPref['pref']['resp_box']['neutralTextColor']
@@ -502,7 +502,7 @@ class preferencesDialog(QDialog):
         respBoxPrefGrid.addWidget(self.neutralTextColorButton, n, 0)
 
         self.neutralTextColorSquare = QWidget(self)
-        self.neutralTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.neutralTextColor.name())
+        self.neutralTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.neutralTextColor).name())
         respBoxPrefGrid.addWidget(self.neutralTextColorSquare, n, 1)
         # n = n+1
         # self.offTextColor = self.tmpPref['pref']['resp_box']['offTextColor']
@@ -511,7 +511,7 @@ class preferencesDialog(QDialog):
         # respBoxPrefGrid.addWidget(self.offTextColorButton, n, 0)
 
         # self.offTextColorSquare = QWidget(self)
-        # self.offTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.offTextColor.name())
+        # self.offTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.offTextColor).name())
         # respBoxPrefGrid.addWidget(self.offTextColorSquare, n, 1)
 
         #respBoxPrefGrid.addItem(QSpacerItem(10,10,QSizePolicy.Policy.Expanding), n+1, 1)
@@ -573,8 +573,8 @@ class preferencesDialog(QDialog):
             self.responseBoxCountryChooser.removeItem(0)
         self.responseBoxCountryChooser.addItems(self.parent().prm['appData']['available_countries'][self.responseBoxLanguageChooser.currentText()])
 
-    # def onStyleChooserChange(self):
-    #     QApplication.setStyle(QStyleFactory.create(self.styleChooser.currentText()))
+    def onStyleChooserChange(self):
+        QApplication.setStyle(QStyleFactory.create(self.styleChooser.currentText()))
 
     def onPlayChooserChange(self):
         foo = self.playChooser.currentText()
@@ -645,44 +645,44 @@ class preferencesDialog(QDialog):
     def onChangeCorrectLightColor(self):
         col = QColorDialog.getColor()
         if col.isValid():
-            self.correctLightColor = col
-            self.correctLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.correctLightColor.name())
+            self.correctLightColor = (col.red(), col.green(), col.blue())#col
+            self.correctLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.correctLightColor).name())
     def onChangeIncorrectLightColor(self):
         col = QColorDialog.getColor()
         if col.isValid():
-            self.incorrectLightColor = col
-            self.incorrectLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.incorrectLightColor.name())
+            self.incorrectLightColor = (col.red(), col.green(), col.blue())#col
+            self.incorrectLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.incorrectLightColor).name())
     def onChangeNeutralLightColor(self):
         col = QColorDialog.getColor()
         if col.isValid():
-            self.neutralLightColor = col
-            self.neutralLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.neutralLightColor.name())
+            self.neutralLightColor = (col.red(), col.green(), col.blue())#col
+            self.neutralLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.neutralLightColor).name())
     def onChangeOffLightColor(self):
         col = QColorDialog.getColor()
         if col.isValid():
-            self.offLightColor = col
-            self.offLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.offLightColor.name())
+            self.offLightColor = (col.red(), col.green(), col.blue())#col
+            self.offLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.offLightColor).name())
 
     def onChangeCorrectTextColor(self):
         col = QColorDialog.getColor()
         if col.isValid():
-            self.correctTextColor = col
-            self.correctTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.correctTextColor.name())
+            self.correctTextColor = (col.red(), col.green(), col.blue())#col
+            self.correctTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.correctTextColor).name())
     def onChangeIncorrectTextColor(self):
         col = QColorDialog.getColor()
         if col.isValid():
-            self.incorrectTextColor = col
-            self.incorrectTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.incorrectTextColor.name())
+            self.incorrectTextColor = (col.red(), col.green(), col.blue())#col
+            self.incorrectTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.incorrectTextColor).name())
     def onChangeNeutralTextColor(self):
         col = QColorDialog.getColor()
         if col.isValid():
-            self.neutralTextColor = col
-            self.neutralTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.neutralTextColor.name())
+            self.neutralTextColor = (col.red(), col.green(), col.blue())#col
+            self.neutralTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.neutralTextColor).name())
     # def onChangeOffTextColor(self):
     #     col = QColorDialog.getColor()
     #     if col.isValid():
-    #         self.offTextColor = col
-    #         self.offTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.offTextColor.name())
+    #         self.offTextColor = (col.red(), col.green(), col.blue())#col
+    #         self.offTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.offTextColor).name())
             
     def onChangeResponseBoxButtonFont(self):
         tmp = QFont(); tmp.fromString(self.responseBoxButtonFont)
@@ -896,22 +896,22 @@ class preferencesDialog(QDialog):
         self.playEndMessage.setChecked(self.tmpPref["pref"]["general"]["playEndMessage"])
 
         self.correctLightColor = self.tmpPref['pref']['resp_box']['correctLightColor']
-        self.correctLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.correctLightColor.name())
+        self.correctLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.correctLightColor).name())
         self.incorrectLightColor = self.tmpPref['pref']['resp_box']['incorrectLightColor']
-        self.incorrectLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.incorrectLightColor.name())
+        self.incorrectLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.incorrectLightColor).name())
         self.neutralLightColor = self.tmpPref['pref']['resp_box']['neutralLightColor']
-        self.neutralLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.neutralLightColor.name())
+        self.neutralLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.neutralLightColor).name())
         self.offLightColor = self.tmpPref['pref']['resp_box']['offLightColor']
-        self.offLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.offLightColor.name())
+        self.offLightColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.offLightColor).name())
 
         self.correctTextColor = self.tmpPref['pref']['resp_box']['correctTextColor']
-        self.correctTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.correctTextColor.name())
+        self.correctTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.correctTextColor).name())
         self.incorrectTextColor = self.tmpPref['pref']['resp_box']['incorrectTextColor']
-        self.incorrectTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.incorrectTextColor.name())
+        self.incorrectTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.incorrectTextColor).name())
         self.neutralTextColor = self.tmpPref['pref']['resp_box']['neutralTextColor']
-        self.neutralTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.neutralTextColor.name())
+        self.neutralTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.neutralTextColor).name())
         # self.offTextColor = self.tmpPref['pref']['resp_box']['offTextColor']
-        # self.offTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % self.offTextColor.name())
+        # self.offTextColorSquare.setStyleSheet("QWidget { background-color: %s }" % QColor(*self.offTextColor).name())
         
         self.responseLightFont = self.tmpPref['pref']['resp_box']['responseLightFont']
         tmpFont = QFont(); tmpFont.fromString(self.responseLightFont)

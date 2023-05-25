@@ -14,167 +14,167 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="143"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="133"/>
         <source>All final stepsize (even)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="143"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="133"/>
         <source>First N final stepsize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="143"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="133"/>
         <source>Last N final stepsize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="145"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="135"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="303"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="262"/>
         <source>Ask</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="145"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="135"/>
         <source>Auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="304"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="263"/>
         <source>Real Listener</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="146"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="136"/>
         <source>Automatic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="146"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="136"/>
         <source>Simulated Listener</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="146"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="136"/>
         <source>Psychometric</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="147"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="137"/>
         <source>Logistic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="147"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="137"/>
         <source>Gaussian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="147"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="137"/>
         <source>Gumbel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="147"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="137"/>
         <source>Weibull</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="366"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="325"/>
         <source>custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="231"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="191"/>
         <source>System Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="343"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="302"/>
         <source>en</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="225"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="185"/>
         <source>it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="226"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="186"/>
         <source>fr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="227"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="187"/>
         <source>es</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="228"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="188"/>
         <source>el</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="344"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="303"/>
         <source>US</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="233"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="193"/>
         <source>GB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="235"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="195"/>
         <source>IT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="236"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="196"/>
         <source>CH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="237"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="197"/>
         <source>FR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="238"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="198"/>
         <source>CA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="240"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="200"/>
         <source>ES</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="241"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="201"/>
         <source>BO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="242"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="202"/>
         <source>CL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="244"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="204"/>
         <source>GR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="245"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="205"/>
         <source>CY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="420"/>
+        <location filename="../pychoacoustics/global_parameters.py" line="379"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>

@@ -21,7 +21,7 @@ if pyqtversion == 5:
     from PyQt5 import QtGui, QtCore
     from PyQt5.QtCore import Qt, QEvent, QThread, QDate, QRegularExpression, QTime, QDateTime, QRect
     from PyQt5.QtWidgets import QAction, QApplication, QComboBox, QDesktopWidget, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QProgressBar, QPushButton, QScrollArea, QShortcut, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
-    from PyQt5.QtGui import QDoubleValidator, QIcon, QIntValidator, QPainter, QRegularExpressionValidator, QValidator
+    from PyQt5.QtGui import QColor, QDoubleValidator, QIcon, QIntValidator, QPainter, QRegularExpressionValidator, QValidator
     try:
         import matplotlib
         matplotlib_available = True
@@ -37,7 +37,7 @@ elif pyqtversion == 6:
     from PyQt6 import QtGui, QtCore
     from PyQt6.QtCore import Qt, QEvent, QThread, QDate, QRegularExpression, QTime, QDateTime, QRect
     from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFrame, QGridLayout, QInputDialog, QLabel, QLineEdit, QMainWindow, QMessageBox, QProgressBar, QPushButton, QScrollArea, QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QWidgetItem
-    from PyQt6.QtGui import QAction, QDoubleValidator, QIcon, QIntValidator, QPainter, QRegularExpressionValidator, QValidator, QShortcut
+    from PyQt6.QtGui import QAction, QColor, QDoubleValidator, QIcon, QIntValidator, QPainter, QRegularExpressionValidator, QValidator, QShortcut
     try:
         import matplotlib
         matplotlib_available = True
@@ -6170,10 +6170,10 @@ class responseLight(QWidget):
         super(responseLight, self).__init__(parent)
         self.setSizePolicy(QSizePolicy(QSizePolicy.Policy.Expanding,
                                        QSizePolicy.Policy.Expanding))
-        self.correctLightColor = self.parent().parent().prm["pref"]["resp_box"]["correctLightColor"]
-        self.incorrectLightColor = self.parent().parent().prm["pref"]["resp_box"]["incorrectLightColor"]
-        self.neutralLightColor = self.parent().parent().prm["pref"]["resp_box"]["neutralLightColor"]
-        self.offLightColor = self.parent().parent().prm["pref"]["resp_box"]["offLightColor"]
+        self.correctLightColor = QColor(*self.parent().parent().prm["pref"]["resp_box"]["correctLightColor"])
+        self.incorrectLightColor = QColor(*self.parent().parent().prm["pref"]["resp_box"]["incorrectLightColor"])
+        self.neutralLightColor = QColor(*self.parent().parent().prm["pref"]["resp_box"]["neutralLightColor"])
+        self.offLightColor = QColor(*self.parent().parent().prm["pref"]["resp_box"]["offLightColor"])
         
         self.borderColor = Qt.GlobalColor.black
         self.lightColor = self.offLightColor#Qt.black
@@ -6202,10 +6202,10 @@ class responseLight(QWidget):
         QApplication.processEvents()
         
     def setStatus(self, status):
-        self.correctLightColor = self.cw.prm["pref"]["resp_box"]["correctLightColor"]
-        self.incorrectLightColor = self.cw.prm["pref"]["resp_box"]["incorrectLightColor"]
-        self.neutralLightColor = self.cw.prm["pref"]["resp_box"]["neutralLightColor"]
-        self.offLightColor = self.cw.prm["pref"]["resp_box"]["offLightColor"]
+        self.correctLightColor = QColor(*self.cw.prm["pref"]["resp_box"]["correctLightColor"])
+        self.incorrectLightColor = QColor(*self.cw.prm["pref"]["resp_box"]["incorrectLightColor"])
+        self.neutralLightColor = QColor(*self.cw.prm["pref"]["resp_box"]["neutralLightColor"])
+        self.offLightColor = QColor(*self.cw.prm["pref"]["resp_box"]["offLightColor"])
         if self.responseLightType in [self.tr("Light"), self.tr("Light & Text"), self.tr("Light & Smiley"), self.tr("Light & Text & Smiley")]:
             if status == 'correct':
                 self.lightColor = self.correctLightColor#Qt.green
@@ -6221,25 +6221,25 @@ class responseLight(QWidget):
                     self.feedbackText = self.cw.prm["pref"]["resp_box"]["userSetCorrectTextFeedback"]
                 else:
                     self.feedbackText = self.cw.prm['rbTrans'].translate('rb', self.cw.prm["pref"]["resp_box"]["correctTextFeedback"])
-                self.penColor = self.cw.prm["pref"]["resp_box"]["correctTextColor"]
+                self.penColor = QColor(*self.cw.prm["pref"]["resp_box"]["correctTextColor"])
             elif status == 'incorrect':
                 if self.cw.prm["pref"]["resp_box"]["incorrectTextFeedbackUserSet"] == True:
                     self.feedbackText = self.cw.prm["pref"]["resp_box"]["userSetIncorrectTextFeedback"]
                 else:
                     self.feedbackText = self.cw.prm['rbTrans'].translate('rb', self.cw.prm["pref"]["resp_box"]["incorrectTextFeedback"])
-                self.penColor = self.cw.prm["pref"]["resp_box"]["incorrectTextColor"]
+                self.penColor = QColor(*self.cw.prm["pref"]["resp_box"]["incorrectTextColor"])
             elif status == 'neutral':
                 if self.cw.prm["pref"]["resp_box"]["neutralTextFeedbackUserSet"] == True:
                     self.feedbackText = self.cw.prm["pref"]["resp_box"]["userSetNeutralTextFeedback"]
                 else:
                     self.feedbackText = self.cw.prm['rbTrans'].translate('rb', self.cw.prm["pref"]["resp_box"]["neutralTextFeedback"])
-                self.penColor = self.cw.prm["pref"]["resp_box"]["neutralTextColor"]
+                self.penColor = QColor(*self.cw.prm["pref"]["resp_box"]["neutralTextColor"])
             elif status == 'off':
                 if self.cw.prm["pref"]["resp_box"]["offTextFeedbackUserSet"] == True:
                     self.feedbackText = self.cw.prm["pref"]["resp_box"]["userSetOffTextFeedback"]
                 else:
                     self.feedbackText = self.cw.prm['rbTrans'].translate('rb', self.cw.prm["pref"]["resp_box"]["offTextFeedback"])
-                self.penColor = self.cw.prm["pref"]["resp_box"]["offTextColor"]
+                self.penColor = QColor(*self.cw.prm["pref"]["resp_box"]["offTextColor"])
         if self.responseLightType in [self.tr("Smiley"), self.tr("Light & Smiley"), self.tr("Text & Smiley"), self.tr("Light & Text & Smiley")]:
             if status == 'correct':
                 self.feedbackSmiley = self.correctSmiley
