@@ -13,7 +13,7 @@ def main(argv):
         if opt in ("-m", "--message"):
             message = arg
     major_v = 0
-    minor_v = 5
+    minor_v = 6
 
     #read minor minor release number
     f = open('prep-release/minor_minor_number.txt', 'r')
@@ -28,14 +28,14 @@ def main(argv):
     #set git tag
     gittag = str(major_v) + '.' + str(minor_v) + '.' + str(minor_minor_v)
     
-    f = open('setup.py', 'r')
+    f = open('pyproject.toml', 'r')
     ln = f.readlines()
     f.close()
     for i in range(len(ln)):
         if ln[i].strip().split('=')[0].strip() == "version":
-            ln[i] = '    version="' + gittag +'",\n'
+            ln[i] = '    version="' + gittag +'"\n'
 
-    f = open('setup.py', 'w')
+    f = open('pyproject.toml', 'w')
     f.writelines(ln)
     f.close()
 
@@ -50,17 +50,6 @@ def main(argv):
     # f.writelines(ln)
     # f.close()
 
-
-    f = open('setup-pyqt6.py', 'r')
-    ln = f.readlines()
-    f.close()
-    for i in range(len(ln)):
-        if ln[i].strip().split('=')[0].strip() == "version":
-            ln[i] = '    version="' + gittag +'",\n'
-
-    f = open('setup-pyqt6.py', 'w')
-    f.writelines(ln)
-    f.close()
     
 
     f = open('pychoacoustics/_version_info.py', 'r')

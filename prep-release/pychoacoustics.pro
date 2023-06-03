@@ -1,4 +1,4 @@
-SOURCES	     += ../pychoacoustics.pyw
+SOURCES	     += ../pychoacoustics/__main__.py
 SOURCES	     += ../pychoacoustics/audio_manager.py
 SOURCES	     += ../pychoacoustics/control_window.py
 SOURCES	     += ../pychoacoustics/dialog_edit_preferences.py
