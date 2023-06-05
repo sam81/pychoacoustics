@@ -17,13 +17,10 @@ On Linux systems ``pychoacoustics`` can either output sound (numpy
 arrays) directly to the soundcard, or write a ``WAV`` file for each sound
 and call an external command to play it. Currently, sending
 sounds directly to the soundcard is possible only through the
-`alsaaudio <http://pyalsaaudio.sourceforge.net/>`_,
-or through the `pyaudio <http://people.csail.mit.edu/hubert/pyaudio/>`_
-Python modules. These modules are optional, and you need to install them 
-yourself to be able to use them. Note that I've experienced issues (occasional
-pops and crackles) with ``pyaudio`` on the hardware that I have tested.
-Sound output with ``alsaaudio``, on the other hand, has been working very well.
-Once the modules are installed, they will be detected automatically and you will
+`pyaudio <http://people.csail.mit.edu/hubert/pyaudio/>`_ or
+through the `alsaaudio <http://pyalsaaudio.sourceforge.net/>`_ (optional dependency,
+Linux only) Python modules. 
+If these modules are installed, they will be detected automatically and you will
 be able to select one of them as the “Play Command” in the sound preferences 
 dialog. When you select ``alsaaudio`` as the play command, if you have multiple
 soundcards, you can select the device to which the sound will be sent.
@@ -52,17 +49,13 @@ Sound Output on Windows
 
 The command that ``pychoacoustics`` uses by default on Windows is
 ``winsound``. This command supports only 16-bit output. ``pychoacoustics``
-can also use ``pyaudio`` to output sound on Windows. ``pyaudio``,
-however, needs to be manually installed. ``pyaudio`` can use several
-Windows sound APIs, including MME, ASIO, and WASAPI. The ``pyaudio``
-binaries available on the official project
-`website <http://people.csail.mit.edu/hubert/pyaudio/support>`_ support
-only the MME API, which is limited to 16-bit output. ASIO and WASAPI
+can also use ``pyaudio`` to output sound on Windows. ``pyaudio`` can use several
+Windows sound APIs, including MME, ASIO, and WASAPI. The MME API,
+is limited to 16-bit output. ASIO and WASAPI
 on the other hand, can play sounds with full 24-bit resolution.
-In order to have ``pyaudio`` built with ASIO and/or WASAPI support
-you need to either build it from source, enabling these APIs (not for the
-faint of heart), or dowload the unoffical binaries made available by  Christoph 
-Gohlke on his `website <http://www.lfd.uci.edu/~gohlke/pythonlibs/>`_.
+Depending on the source of your pyaudio installation (e.g. pip, conda, conda-forge)
+the WASAPI and ASIO APIs may or may not be activated.
+
 
 Other possible play commands on Windows are ``play``, which is provided by
 `sox <http://sox.sourceforge.net/>`_ and ``sndfile-play``, which is
@@ -77,7 +70,8 @@ Sound Output on macOS
 
 By default ``pychoacoustics`` uses the ``afplay`` command to output sound
 on macOS. If ``pyaudio`` is properly installed and configured for the Python
-distribution used to run ``pychoacoustics`` it can also be used by ``pychoacoustics`` to play sounds on macOS.
+distribution used to run ``pychoacoustics`` it can also be used by ``pychoacoustics``
+to play sounds on macOS.
 
 Sound Output on FreeBSD
 -----------------------
@@ -338,22 +332,22 @@ Table :ref:`tab-pycho_variables`
 
 .. table:: `pychoacoustics` variables
 
-   ==================   =================================
+   ====================   ========================================
 
-   **String**           **Variable**
+   **String**             **Variable**
 
-   ``[resDir]``         Results file directory
-   ``[resFile]``        Plain-text block-summary results file
-   ``[resFileTrial]``   Plain-text trial-summary results file
-   ``[resFileSess]``    Plain-text session-summary results file
-   ``[resTable]``       Tabular block-summary results file
-   ``[resTableTrials]`` Tabular trial-summary results file
-   ``[resTableSess]``   Tabular session-summary results file
-   ``[listener]``       Listener label
-   ``[experimenter]``   Experimenter ID
-   ``[pdfPlot]``        pdf plot file of the session summary
+   ``[resDir]``           Results file directory
+   ``[resFile]``          Plain-text block-summary results file
+   ``[resFileTrial]``     Plain-text trial-summary results file
+   ``[resFileSess]``      Plain-text session-summary results file
+   ``[resTable]``         Tabular block-summary results file
+   ``[resTableTrials]``   Tabular trial-summary results file
+   ``[resTableSess]``     Tabular session-summary results file
+   ``[listener]``         Listener label
+   ``[experimenter]``     Experimenter ID
+   ``[pdfPlot]``          pdf plot file of the session summary
 
-   ==================   =================================
+   ====================   ========================================
 
 
 

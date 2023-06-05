@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pychoacoustics"
+    version="0.6.3"
+
+authors = [
+  { name="Samuele Carcagno", email="sam.carcagno@gmail.com" },
+]
+description = "Python application for running psychoacoustics experiments"
+license = {file = "COPYING.txt"}
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = ["matplotlib (>=3.0.0)",
+                "numpy (>=1.0.0)",
+		"pandas (>=1.0.0)",
+		"PyAudio (>=0.2.11)",
+		"PyQt5 (>=5.12)",
+		"scipy (>=1.0.1)"
+		]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Environment :: X11 Applications :: Qt",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Bio-Informatics"
+]
+[project.urls]
+Homepage = "https://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html"
+"Bug Tracker" = "https://github.com/sam81/pychoacoustics/issues"
+
+[tool.setuptools]
+packages = ["pychoacoustics"]
+include-package-data = true
+
+[tool.setuptools.exclude-package-data]
+pychoacoustics = ["tests/*"]
+
+[project.gui-scripts]
+pychoacoustics = "pychoacoustics.__main__:main"
+
+[project.optional-dependencies]
+dev = ["sphinx-rtd-theme (>=1.0.0)"]
+
+
