@@ -369,9 +369,6 @@
     </message>
 </context>
 <context>
-    <name>emailSender</name>
-</context>
-<context>
     <name>experimentersDialog</name>
     <message>
         <location filename="../pychoacoustics/dialog_edit_experimenters.py" line="49"/>

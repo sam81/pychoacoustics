@@ -36,5 +36,6 @@
 <file alias="face-plain">icons/oem-face-neutral.svg</file>
 <file alias="face-smile">icons/oem-face-smiling.svg</file>
 <file alias="face-sad">icons/oem-face-frowning.svg</file>
+<file alias="manual-pdf">pychoacoustics/doc/_build/latex/pychoacoustics.pdf</file>
 </qresource>
 </RCC>

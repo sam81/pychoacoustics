@@ -15,6 +15,14 @@ def main(argv):
     major_v = 0
     minor_v = 6
 
+    pyqtver = input('pyqtver: ')
+    if pyqtver == 5:
+        os.system("python3 prep-release/switch_pyqt5.py")
+        os.system("python3 prep-release/mkupdate_pyqt5")
+    elif pyqtver == 6:
+        os.system("python3 prep-release/switch_pyqt6.py")
+        os.system("python3 prep-release/mkupdate_pyqt6")
+
     #read minor minor release number
     f = open('prep-release/minor_minor_number.txt', 'r')
     ln = f.readlines()
@@ -87,6 +95,29 @@ def main(argv):
             ln[i] = 'Version = ' + gittag +'\n'
 
     f = open('pychoacoustics.desktop', 'w')
+    f.writelines(ln)
+    f.close()
+
+    f = open('setup_cx.py', 'r')
+    ln = f.readlines()
+    f.close()
+    for i in range(len(ln)):
+        if ln[i].strip().split('=')[0].strip() == "version":
+            ln[i] = '    version="' + gittag +'",\n'
+
+    f = open('setup_cx.py', 'w')
+    f.writelines(ln)
+    f.close()
+
+    f = open('prep-release/win_pychoacoustics.iss', 'r')
+    ln = f.readlines()
+    f.close()
+    for i in range(len(ln)):
+        if len(ln[i].strip().split(" "))>1:
+            if ln[i].strip().split(" ")[1] == "MyAppVersion":
+                ln[i] = "#define MyAppVersion " + '"' + gittag + '"\n'#'    version="' + gittag +'"\n'
+
+    f = open('prep-release/win_pychoacoustics.iss', 'w')
     f.writelines(ln)
     f.close()
 
