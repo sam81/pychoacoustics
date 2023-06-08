@@ -5,8 +5,7 @@ from cx_Freeze import setup, Executable
 build_options = {'packages': ['pychoacoustics',
                               'pychoacoustics.default_experiments',
                               'pychoacoustics.nnresample',
-                              'default_experiments',
-                              'nnresample'],
+                              ],
                  'excludes': ['tkinter',
                               'PyQt5.QtQml',
                               'PyQt5.QtBluetooth',
@@ -28,7 +27,7 @@ executables = [
 ]
 
 setup(name='pychoacoustics',
-    version="0.6.6",
+    version="0.6.7",
       description = '',
       options = {'build_exe': build_options},
       executables = executables)
