@@ -15,6 +15,7 @@
 <file alias="document-open">icons/document-open.svgz</file>
 <file alias="document-save">icons/document-save.svgz</file>
 <file alias="document-save-as">icons/document-save-as.svgz</file>
+<file alias="folder-open">icons/folder-open.svg</file>
 <file alias="go-home">icons/go-home.svgz</file>
 <file alias="go-jump">icons/go-jump.svgz</file>
 <file alias="go-next">icons/go-next.svgz</file>

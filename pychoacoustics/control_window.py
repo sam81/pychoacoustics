@@ -76,7 +76,7 @@ if matplotlib_available == True:
 
 #from redirect_out import*
 from . import default_experiments
-import difflib, fnmatch
+import difflib, fnmatch, os, sys
 from ._version_info import*
 __version__ = pychoacoustics_version
 
@@ -142,10 +142,15 @@ class pychControlWin(QMainWindow):
         self.openResultsButton.setStatusTip(self.tr('Open Results File'))
         self.openResultsButton.triggered.connect(self.onClickOpenResultsButton)
 
+        self.openWorkingDirButton = QAction(QIcon.fromTheme("folder-open", QIcon(":/folder-open")), self.tr('Open Working Directory'), self)
+        self.openWorkingDirButton.setStatusTip(self.tr('Open Working Directory'))
+        self.openWorkingDirButton.triggered.connect(self.onClickOpenWorkingDirButton)
+
         self.processResultsMenu.addAction(self.processResultsLinearButton)
         self.processResultsMenu.addAction(self.processResultsTableButton)
         
         self.fileMenu.addAction(self.openResultsButton)
+        self.fileMenu.addAction(self.openWorkingDirButton)
         self.fileMenu.addAction(self.exitButton)
         
         #EDIT MENU
@@ -208,7 +213,6 @@ class pychControlWin(QMainWindow):
         self.pw = dropFrame(None)
         self.cw.setFrameStyle(QFrame.Shape.StyledPanel|QFrame.Shadow.Sunken)
         self.pw.setFrameStyle(QFrame.Shape.StyledPanel|QFrame.Shadow.Sunken)
-        #self.splitter = QSplitter(QtCore.Qt.Horizontal)
         self.splitter = QSplitter(QtCore.Qt.Orientation.Horizontal)
         self.pw.drpd.connect(self.onDropPrmFile)
 
@@ -229,7 +233,7 @@ class pychControlWin(QMainWindow):
 
         #LISTENER
         self.listenerLabel = QLabel(self.tr('Listener:'), self)
-        self.def_widg_sizer.addWidget(self.listenerLabel,n, 0)
+        self.def_widg_sizer.addWidget(self.listenerLabel, n, 0)
         self.listenerTF = QLineEdit("")
         if 'listener' in self.prm:
             self.listenerTF.setText(self.prm['listener'])
@@ -5795,6 +5799,9 @@ class pychControlWin(QMainWindow):
             ret = QMessageBox.information(self, self.tr("message"),
                                                 self.tr("No results file has been selected"),
                                                 QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
+
+    def onClickOpenWorkingDirButton(self):
+        QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(os.getcwd()))
             
     def onAbout(self):
         if pyqtversion in [4,5,6]:

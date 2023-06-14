@@ -27,7 +27,7 @@ executables = [
 ]
 
 setup(name='pychoacoustics',
-    version="0.6.7",
+    version="0.6.8",
       description = '',
       options = {'build_exe': build_options},
       executables = executables)
