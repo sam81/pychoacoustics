@@ -582,6 +582,50 @@ def logisticPsy(x, alphax, betax, gammax, lambdax):
     out = gammax + (1-gammax-lambdax) *(1/(1+exp(betax*(alphax-x))))
     return out
 
+def logisticPsyWd(x, alphax, width, gammax, lambdax, perc=90):
+    """
+    Compute the logistic psychometric function
+    parametrized in terms of width.
+
+    Parameters
+    ----------
+    x : 
+        Stimulus level(s).
+    alphax:
+        Mid-point(s) of the psychometric function.
+    width:
+        The width of the psychometric function.
+    gammax:
+        Lower limit of the psychometric function (guess rate).
+    lambdax:
+        The lapse rate.
+    perc:
+        The percentage of the psychometric function covered
+        by the width. For example, if `perc` is 90, the width
+        goes from 5% to 95% of the probability range covered by
+        the psychometric function.
+
+    Returns
+    -------
+    pc :
+         Proportion correct at the stimulus level(s) `x`.
+
+    References
+    ----------- 
+    .. [1] Kingdom, F. A. A., & Prins, N. (2010). *Psychophysics: A Practical Introduction*. Academic Press.
+
+    .. [2] Alcalá-Quintana, R., & García-Pérez, M. A. (2004). The Role of Parametric Assumptions in Adaptive Bayesian Estimation. Psychological Methods, 9(2), 250–271. https://doi.org/10.1037/1082-989X.9.2.250
+
+    .. [3] Kuss, M., Jäkel, F., & Wichmann, F. A. (2005). Bayesian inference for psychometric functions. Journal of Vision, 5(5), 8. https://doi.org/10.1167/5.5.8
+
+    """
+    
+    betax = psychWidthToSlope(width, perc, sigmoid="logistic")
+    out = logisticPsy(x, alphax, betax, gammax, lambdax)
+    
+    return out
+
+
 def invLogisticPsy(p, alphax, betax, gammax, lambdax):
     """
     Compute the inverse logistic psychometric function.
@@ -613,6 +657,51 @@ def invLogisticPsy(p, alphax, betax, gammax, lambdax):
 
     x = alphax - (1/betax)*log((1-gammax-lambdax)/(p-gammax) - 1)
     return x
+
+def invLogisticPsyWd(p, alphax, width, gammax, lambdax, perc=90):
+    """
+    Compute the inverse logistic psychometric function
+    parametrized by width.
+
+    Parameters
+    ----------
+    p : 
+        Proportion correct on the psychometric function.
+    alphax:
+        Mid-point(s) of the psychometric function.
+    width:
+        The width of the psychometric function.
+    gammax:
+        Lower limit of the psychometric function.
+    lambdax:
+        The lapse rate.
+    perc:
+        The percentage of the psychometric function covered
+        by the width. For example, if `perc` is 90, the width
+        goes from 5% to 95% of the probability range covered by
+        the psychometric function.
+
+    Returns
+    -------
+    x :
+         Stimulus level at which proportion correct equals `p`
+         for the listener specified by the function.
+    
+    References
+    ----------- 
+    .. [1] Kingdom, F. A. A., & Prins, N. (2010). *Psychophysics: A Practical Introduction*. Academic Press.
+
+    .. [2] Alcalá-Quintana, R., & García-Pérez, M. A. (2004). The Role of Parametric Assumptions in Adaptive Bayesian Estimation. Psychological Methods, 9(2), 250–271. https://doi.org/10.1037/1082-989X.9.2.250
+
+    .. [3] Kuss, M., Jäkel, F., & Wichmann, F. A. (2005). Bayesian inference for psychometric functions. Journal of Vision, 5(5), 8. https://doi.org/10.1167/5.5.8
+    
+    """
+    
+    betax = psychWidthToSlope(width, perc, sigmoid="logistic")
+    out = invLogisticPsy(p, alphax, betax, gammax, lambdax)
+    
+    return out
+
 
 def logisticLikelihood(lev, response, alphax, betax, gammax, lambdax):
 
@@ -809,3 +898,79 @@ def invGumbelPsy(p, alphax, betax, gammax, lambdax):
     """
     out = alphax + (log10(-log(1 - (p-gammax)/(1-gammax-lambdax))))/betax
     return out
+
+
+def psychSlopeToWidth(sl, perc=90, sigmoid="logistic"):
+    """
+    Convert psychometric function slope to width. Currently
+    works only for a logistic psychometric function.
+
+    Parameters
+    ----------
+    sl : 
+        Psychometric function slope.
+    perc:
+        The percentage of the psychometric function covered
+        by the width. For example, if `perc` is 90, the width
+        goes from 5% to 95% of the probability range covered by
+        the psychometric function.
+    sigmoid:
+        The psychometric function shape. Currently only
+        logistic psychometric functions are accepted.
+
+    Returns
+    -------
+    width :
+         The psychometric function width.
+
+    References
+    ----------- 
+    .. [1] Alcalá-Quintana, R., & García-Pérez, M. A. (2004). The Role of Parametric Assumptions in Adaptive Bayesian Estimation. Psychological Methods, 9(2), 250–271. https://doi.org/10.1037/1082-989X.9.2.250
+
+    .. [2] Kuss, M., Jäkel, F., & Wichmann, F. A. (2005). Bayesian inference for psychometric functions. Journal of Vision, 5(5), 8. https://doi.org/10.1167/5.5.8
+    
+    """
+    pTail = (1-perc/100)/2
+    
+    if sigmoid == "logistic":
+        out = (2*log(1/pTail-1)) / sl
+    
+    return out
+
+def psychWidthToSlope(wd, perc=90, sigmoid="logistic"):
+    """
+    Convert psychometric function width to slope. Currently
+    works only for a logistic psychometric function.
+
+    Parameters
+    ----------
+    wd : 
+        Psychometric function width.
+    perc:
+        The percentage of the psychometric function covered
+        by the width. For example, if `perc` is 90, the width
+        goes from 5% to 95% of the probability range covered by
+        the psychometric function.
+    sigmoid:
+        The psychometric function shape. Currently only
+        logistic psychometric functions are accepted.
+
+    Returns
+    -------
+    slope :
+         The psychometric function slope.
+
+    References
+    ----------- 
+    .. [1] Alcalá-Quintana, R., & García-Pérez, M. A. (2004). The Role of Parametric Assumptions in Adaptive Bayesian Estimation. Psychological Methods, 9(2), 250–271. https://doi.org/10.1037/1082-989X.9.2.250
+
+    .. [2] Kuss, M., Jäkel, F., & Wichmann, F. A. (2005). Bayesian inference for psychometric functions. Journal of Vision, 5(5), 8. https://doi.org/10.1167/5.5.8
+    
+    """
+    pTail = (1-perc/100)/2
+    
+    if sigmoid == "logistic":
+        out = (2*log(1/pTail-1)) / wd
+    
+    return out
+
