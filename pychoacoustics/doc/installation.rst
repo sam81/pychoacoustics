@@ -26,7 +26,7 @@ Note that the program needs to be launched in the same Python environment in whi
 - matplotlib 
 - PyAudio 
 
-if you're using Linux you can also install `pyalsaaudio` to have an addition sound output option. If you're using conda on Windows I'd recommend installing PyAudio via pip because the PyAudio version available on conda is not built with support for the WASAPI output interface (at least that was the case the last time I checked). 
+if you're using Linux you can also install `pyalsaaudio` to have an additional sound output option. If you're using conda on Windows I'd recommend installing PyAudio via pip because the PyAudio version available on conda is not built with support for the WASAPI output interface (at least that was the case the last time I checked). 
 
 
 

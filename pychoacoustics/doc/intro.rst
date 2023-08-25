@@ -39,11 +39,11 @@ Some of the main features of pychoacoustics are that:
 - experimental variables can be easily manipulated, stored, and retrieved using a graphical user interface
 - pychoacoustics takes care of stimulus presentation, including setting up interval lights and response buttons
 - pychoacoustics takes care of collecting responses, computing summary measures such as threshold estimates, and *d'*, and storing them as CSV files so that they can be readily visualized and processed using statistics programs (R, SPSS, etc...), or spreadsheet applications (Excel, Libreoffice Calc, etc...)
-- pychoacoustics supports the most commonly used stimulus presentation procedures, such as the transformed up-down, same-different, and ABX procedures. It also supports less known and cutting-edge procedures such as the update maximum likelihood and the PSI+ and PSI-marginal procedures
-- for many procedures pychoacoustics provides graphical summaries of the results 
+- pychoacoustics supports the most commonly used stimulus presentation procedures, such as the transformed up-down, same-different, and ABX procedures. It also supports less known and cutting-edge procedures such as the updated maximum likelihood (UML) and the PSI+ and PSI-marginal procedures
+- for many procedures pychoacoustics can provide graphical summaries of the results 
 - pychoacoustics stores all important information, including names and values of experimental parameters, timestamps, participant identification codes (if provided), version of the software used to run the experiment, etc..., so that no important information is accidentally lost
-- pychoacoustics allows you to present standardized written instructions to participants at the beginning of the experiment, or the beginning of specific blocks of trials. Participants can also get an idea of how much of an experiment they have completed through optional progress bars.
-- pychoacoustics includes `sndlib.py` a library that lets you easily generate experimental stimuli commonly used in psychoacoustics experiments (pure tones, complex tones, noise, etc...)
+- pychoacoustics allows you to present standardized written instructions to participants at the beginning of the experiment, or at the beginning of specific blocks of trials. Participants can also get an idea of how much of an experiment they have completed through optional progress bars.
+- pychoacoustics includes `sndlib.py`, a library that lets you easily generate experimental stimuli commonly used in psychoacoustics experiments (pure tones, complex tones, noise, etc...)
 
   
 I started writing ``pychoacoustics`` for fun and for the sake of
