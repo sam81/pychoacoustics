@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2024 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -703,10 +703,10 @@ class preferencesDialog(QDialog):
            
             
     def tryApply(self):
-        self.tmpPref['pref']['language'] = self.tr(self.languageChooser.currentText())
-        self.tmpPref['pref']['country'] = self.tr(self.countryChooser.currentText())
-        self.tmpPref['pref']['responseBoxLanguage'] = self.tr(self.responseBoxLanguageChooser.currentText())
-        self.tmpPref['pref']['responseBoxCountry'] = self.tr(self.responseBoxCountryChooser.currentText())
+        self.tmpPref['pref']['language'] = self.languageChooser.currentText()
+        self.tmpPref['pref']['country'] = self.countryChooser.currentText()
+        self.tmpPref['pref']['responseBoxLanguage'] = self.responseBoxLanguageChooser.currentText()
+        self.tmpPref['pref']['responseBoxCountry'] = self.responseBoxCountryChooser.currentText()
         self.tmpPref['pref']['general']['csvSeparator'] = self.csvSeparatorWidget.text()
         self.tmpPref['pref']['general']['ONTrigger'] = self.currLocale.toInt(self.ONTriggerWidget.text())[0]
         self.tmpPref['pref']['general']['OFFTrigger'] = self.currLocale.toInt(self.OFFTriggerWidget.text())[0]
@@ -843,7 +843,6 @@ class preferencesDialog(QDialog):
             
     def revertChanges(self):
         self.languageChooser.setCurrentIndex(self.languageChooser.findText(self.tmpPref['pref']['language']))
-        #self.styleChooser.setCurrentIndex(self.styleChooser.findText(self.tmpPref['pref']['appearance']['style']))
         self.countryChooser.setCurrentIndex(self.countryChooser.findText(self.tmpPref['pref']['country']))
         self.responseBoxLanguageChooser.setCurrentIndex(self.responseBoxLanguageChooser.findText(self.tmpPref['pref']['responseBoxLanguage']))
         self.responseBoxCountryChooser.setCurrentIndex(self.responseBoxCountryChooser.findText(self.tmpPref['pref']['responseBoxCountry']))

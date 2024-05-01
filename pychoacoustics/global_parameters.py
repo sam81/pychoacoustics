@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2024 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -180,29 +180,29 @@ def set_global_parameters(prm):
         prm['appData']['wavmanagers'].append("soundfile")
         prm['appData']['soundfileAvailable'] = True
     
-    prm['appData']['available_languages'] = [QApplication.translate("","System Settings",""),
-                                      QApplication.translate("","en",""),
-                                      QApplication.translate("","it",""),
-                                      QApplication.translate("","fr",""),
-                                      QApplication.translate("","es",""),
-                                      QApplication.translate("","el","")]
+    prm['appData']['available_languages'] = ["System Settings",
+                                             "en",
+                                             "it",
+                                             "fr",
+                                             "es",
+                                             "el"]
 
     prm['appData']['available_countries'] = {}
-    prm['appData']['available_countries'][QApplication.translate("","System Settings","")] = [QApplication.translate("","System Settings","")]
-    prm['appData']['available_countries']['en'] = [QApplication.translate("","US",""),
-                                                         QApplication.translate("","GB","")]
+    prm['appData']['available_countries']["System Settings"] = ["System Settings"]
+    prm['appData']['available_countries']['en'] = ["US",
+                                                   "GB"]
 
-    prm['appData']['available_countries']['it'] = [QApplication.translate("","IT",""),
-                                                         QApplication.translate("","CH","")]
-    prm['appData']['available_countries']['fr'] = [QApplication.translate("","FR",""),
-                                                         QApplication.translate("","CA","")]
+    prm['appData']['available_countries']['it'] = ["IT",
+                                                   "CH"]
+    prm['appData']['available_countries']['fr'] = ["FR",
+                                                   "CA"]
 
-    prm['appData']['available_countries']['es'] = [QApplication.translate("","ES",""),
-                                                         QApplication.translate("","BO",""),
-                                                         QApplication.translate("","CL","")]
+    prm['appData']['available_countries']['es'] = ["ES",
+                                                   "BO",
+                                                   "CL"]
 
-    prm['appData']['available_countries']['el'] = [QApplication.translate("","GR",""),
-                                                         QApplication.translate("","CY","")]
+    prm['appData']['available_countries']['el'] = ["GR",
+                                                   "CY"]
 
    
 
@@ -297,10 +297,10 @@ def def_pref(prm):
     prm["pref"]["email"]['fromPassword'] = encoded_passwd
    
 
-    prm['pref']['language'] = QApplication.translate("","en","")
-    prm['pref']['country'] = QApplication.translate("","US","")
-    prm['pref']['responseBoxLanguage'] = QApplication.translate("","en","")
-    prm['pref']['responseBoxCountry'] = QApplication.translate("","US","")
+    prm['pref']['language'] = "en"
+    prm['pref']['country'] = "US"
+    prm['pref']['responseBoxLanguage'] = "en"
+    prm['pref']['responseBoxCountry'] = "US"
 
     #Appearance
     #prm["pref"]["appearance"]["style"] = QApplication.translate("","Default","")

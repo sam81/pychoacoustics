@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2008-2023 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2008-2024 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pychoacoustics
 
 #    pychoacoustics is free software: you can redistribute it and/or modify
@@ -191,7 +191,7 @@ def main():
     prm['currentLocale'] = QtCore.QLocale(locale)
     QtCore.QLocale.setDefault(prm['currentLocale'])
     prm['currentLocale'].setNumberOptions(prm['currentLocale'].NumberOption.OmitGroupSeparator | prm['currentLocale'].NumberOption.RejectGroupSeparator)
-
+    
     if prm['pref']['country'] != "System Settings":
         locale =  prm['pref']['language']  + '_' + prm['pref']['country'] #returns a string such as en_US
         qtTranslator = QtCore.QTranslator()
@@ -203,7 +203,10 @@ def main():
             prm['currentLocale'] = QtCore.QLocale(locale)
             QtCore.QLocale.setDefault(prm['currentLocale'])
             prm['currentLocale'].setNumberOptions(prm['currentLocale'].NumberOption.OmitGroupSeparator | prm['currentLocale'].NumberOption.RejectGroupSeparator)
-    responseBoxLocale =  prm['pref']['responseBoxLanguage']  + '_' + prm['pref']['responseBoxCountry'] #returns a string such as en_US
+    if prm['pref']['responseBoxLanguage'] != "System Settings":
+        responseBoxLocale = prm['pref']['responseBoxLanguage'] + '_' + prm['pref']['responseBoxCountry'] #returns a string such as en_US
+    else:
+        responseBoxLocale = QtCore.QLocale().system().name()
     responseBoxTranslator = QtCore.QTranslator()
     responseBoxTranslator.load("pychoacoustics_" + responseBoxLocale, ":/translations/")
     respButtTranslator = QtCore.QTranslator()
@@ -225,6 +228,8 @@ def main():
     #app.setStyle(QStyleFactory.create(prm["pref"]["appearance"]["style"]))
     x = pychControlWin(parent=None, prm=prm)
     sys.exit(app.exec())
+    return 0
     
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
+

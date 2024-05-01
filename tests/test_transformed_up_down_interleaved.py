@@ -11,7 +11,7 @@ class TestTransformedUpDown(unittest.TestCase):
         resFileRoot = "res_geometric"
         removePreviousResFiles(rootPath + "transformed_up-down_interleaved/"+resFileRoot)
 
-        cmdStr = "python3 ../pychoacoustics.pyw -f" + rootPath + "transformed_up-down_interleaved/transformed_up-down_interleaved_geometric.prm -a -q -o --seed 2033 -r" + rootPath + "transformed_up-down_interleaved/"+resFileRoot  + ".txt"
+        cmdStr = "PYTHONPATH='/media/ntfsShared/lin_home/auditory/code/pychoacoustics_exp/:/media/ntfsShared/lin_home/auditory/code/pychoacoustics/' python3 ../pychoacoustics/__main__.py -f" + rootPath + "transformed_up-down_interleaved/transformed_up-down_interleaved_geometric.prm -a -q -o --seed 2033 -r" + rootPath + "transformed_up-down_interleaved/"+resFileRoot  + ".txt"
         x = os.system(cmdStr)
         assert(x==0)
         storedRes = pd.read_csv(rootPath + "transformed_up-down_interleaved/results/res_geometric_table.csv", sep=";")
@@ -34,7 +34,7 @@ class TestTransformedUpDown(unittest.TestCase):
         resFileRoot = "res_arithmetic"
         removePreviousResFiles(rootPath + "transformed_up-down_interleaved/"+resFileRoot)
 
-        cmdStr = "python3 ../pychoacoustics.pyw -f" + rootPath +  "transformed_up-down_interleaved/transformed_up-down_interleaved_arithmetic.prm -a -q -o --seed 2033 -r" + rootPath + "transformed_up-down_interleaved/"+resFileRoot  + ".txt"
+        cmdStr = "PYTHONPATH='/media/ntfsShared/lin_home/auditory/code/pychoacoustics_exp/:/media/ntfsShared/lin_home/auditory/code/pychoacoustics/' python3 ../pychoacoustics/__main__.py -f" + rootPath +  "transformed_up-down_interleaved/transformed_up-down_interleaved_arithmetic.prm -a -q -o --seed 2033 -r" + rootPath + "transformed_up-down_interleaved/"+resFileRoot  + ".txt"
         x = os.system(cmdStr)
         assert(x==0)
         storedRes = pd.read_csv(rootPath + "transformed_up-down_interleaved/results/res_arithmetic_table.csv", sep=";")

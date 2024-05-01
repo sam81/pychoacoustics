@@ -12,7 +12,7 @@ class TestUML(unittest.TestCase):
         resFileRoot = "res_geometric"
         removePreviousResFiles(rootPath + "UML/"+resFileRoot)
 
-        cmdStr = "python3 ../pychoacoustics.pyw -f" + rootPath + "UML/UML_geometric.prm -a -q -o --seed 2033 -r" + rootPath + "UML/"+resFileRoot  + ".txt"
+        cmdStr = "PYTHONPATH='/media/ntfsShared/lin_home/auditory/code/pychoacoustics_exp/:/media/ntfsShared/lin_home/auditory/code/pychoacoustics/' python3 ../pychoacoustics/__main__.py -f" + rootPath + "UML/UML_geometric.prm -a -q -o --seed 2033 -r" + rootPath + "UML/"+resFileRoot  + ".txt"
         x = os.system(cmdStr)
         assert(x==0)
         storedRes = pd.read_csv(rootPath + "UML/results/res_geometric_table.csv", sep=";")
@@ -26,7 +26,7 @@ class TestUML(unittest.TestCase):
         resFileRoot = "res_arithmetic"
         removePreviousResFiles(rootPath + "UML/"+resFileRoot)
 
-        cmdStr = "python3 ../pychoacoustics.pyw -f" + rootPath + "UML/UML_arithmetic.prm -a -q -o --seed 2033 -r" + rootPath + "UML/"+resFileRoot  + ".txt"
+        cmdStr = "PYTHONPATH='/media/ntfsShared/lin_home/auditory/code/pychoacoustics_exp/:/media/ntfsShared/lin_home/auditory/code/pychoacoustics/' python3 ../pychoacoustics/__main__.py -f" + rootPath + "UML/UML_arithmetic.prm -a -q -o --seed 2033 -r" + rootPath + "UML/"+resFileRoot  + ".txt"
         x = os.system(cmdStr)
         assert(x == 0)
         storedRes = pd.read_csv(rootPath + "UML/results/res_arithmetic_table.csv", sep=";")

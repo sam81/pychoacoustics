@@ -133,6 +133,13 @@ def doTrial_audiogram(parent):
     channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(QApplication.translate("","Ear:",""))]
     sndType = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index(QApplication.translate("","Signal Type:",""))]
 
+    if channel == QApplication.translate("","Right",""):
+        channel = "Right"
+    elif channel == QApplication.translate("","Left",""):
+        channel = "Left"
+    elif channel == QApplication.translate("","Both",""):
+        channel = "Both"
+
     if sndType == QApplication.translate("","Narrowband Noise",""):
         if bandwidth > 0:
             parent.stimulusCorrect = steepNoise(frequency-(bandwidth/2), frequency+(bandwidth/2), correctLevel - (10*log10(bandwidth)),

@@ -82,7 +82,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'pychoacoustics'
-copyright = '2008-2023, Samuele Carcagno'
+copyright = '2008-2024, Samuele Carcagno'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -218,17 +218,19 @@ htmlhelp_basename = 'pychoacousticsdoc'
 # -- Options for LaTeX output --------------------------------------------------
 
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
-'papersize': 'letterpaper',
+    # The paper size ('letterpaper' or 'a4paper').
+    'papersize': 'a4paper',
 
-# The font size ('10pt', '11pt' or '12pt').
-'pointsize': '11pt',
+    # The font size ('10pt', '11pt' or '12pt').
+    'pointsize': '12pt',
 
-#'fontpkg': '\\usepackage{mathpazo,bm}',
-#'fontpkg': '\\usepackage[default]{gfsneohellenic}',
-
-# Additional stuff for the LaTeX preamble.
-#'preamble': '',
+    #'fontpkg': '\\usepackage{mathpazo,bm}',
+    #'fontpkg': '\\usepackage[default]{gfsneohellenic}',
+    'fncychap': r'\usepackage[Bjornstrup]{fncychap}',
+    #'fncychap': '',
+    'extraclassoptions': 'openany,oneside'
+    # Additional stuff for the LaTeX preamble.
+    #'preamble': '',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -299,7 +301,7 @@ texinfo_documents = [
 epub_title = 'pychoacoustics'
 epub_author = 'Samuele Carcagno'
 epub_publisher = 'Samuele Carcagno'
-epub_copyright = '2008-2023, Samuele Carcagno'
+epub_copyright = '2008-2024, Samuele Carcagno'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.

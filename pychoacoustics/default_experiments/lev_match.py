@@ -62,7 +62,9 @@ def select_default_parameters_lev_match(parent, par):
     fieldLabel.append(parent.tr("Ramps (ms)"))
     field.append(10)
 
-    chooserOptions.append(["Right", "Left", "Both"])
+    chooserOptions.append([QApplication.translate("","Right",""),
+                           QApplication.translate("","Left",""),
+                           QApplication.translate("","Both","")])
     chooserLabel.append(QApplication.translate("","Ear:",""))
     chooser.append(QApplication.translate("","Both",""))
 
@@ -94,6 +96,12 @@ def doTrial_lev_match(parent):
     ramps = parent.prm[currBlock]['field'][parent.prm['fieldLabel'].index("Ramps (ms)")]
     phase = 0
     channel = parent.prm[currBlock]['chooser'][parent.prm['chooserLabel'].index("Ear:")]
+    if channel == QApplication.translate("","Right",""):
+        channel = "Right"
+    elif channel == QApplication.translate("","Left",""):
+        channel = "Left"
+    elif channel == QApplication.translate("","Both",""):
+        channel = "Both"
 
     comparisonLevel = parent.prm['adaptiveParam'][parent.prm['currentDifference']]
 

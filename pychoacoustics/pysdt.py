@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#   Copyright (C) 2012-2023 Samuele Carcagno <sam.carcagno@gmail.com>
+#   Copyright (C) 2012-2024 Samuele Carcagno <sam.carcagno@gmail.com>
 #   This file is part of pysdt
 
 #    pysdt is free software: you can redistribute it and/or modify
@@ -27,7 +27,6 @@ http://cran.r-project.org/web/packages/psyphy/index.html
 from scipy.stats import norm
 from scipy.integrate import quad
 from scipy.special import erf, erfinv
-from scipy import Inf
 import numpy, scipy
 from numpy import exp, log, log10, sign, sqrt
 import numpy as np
@@ -134,7 +133,7 @@ def dprime_mAFC(Pc, m):
         def pr(x):
             return (norm.pdf(x-dp) * (norm.cdf(x)**(m-1)))
         
-        return (Pc - quad(pr, -Inf, Inf)[0])
+        return (Pc - quad(pr, -np.inf, np.inf)[0])
     try:
         dprime = scipy.optimize.brentq(est_dp, -10, 10)#scipy.optimize.newton(est_dp, 1)
     except:
@@ -311,7 +310,7 @@ def dprime_oddity(prCorr, meth="diff"):
 
                 return out
 
-            out2 = prCorr - quad(pr, 0, Inf)[0] 
+            out2 = prCorr - quad(pr, 0, np.inf)[0] 
 
             return out2
         try:
@@ -325,7 +324,7 @@ def dprime_oddity(prCorr, meth="diff"):
             def pr2(x):
                 return norm.pdf(x)*(1-norm.cdf(x+dp))**2
 
-            out = prCorr - (norm.cdf(dp/2)**3 + quad(pr1, -Inf, -dp/2)[0] + (1-norm.cdf(dp/2))**3 + quad(pr2, -dp/2, Inf)[0])
+            out = prCorr - (norm.cdf(dp/2)**3 + quad(pr1, -np.inf, -dp/2)[0] + (1-norm.cdf(dp/2))**3 + quad(pr2, -dp/2, np.inf)[0])
 
             return out
 

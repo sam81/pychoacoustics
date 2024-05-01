@@ -11,7 +11,7 @@ class TestWeightedUpDown(unittest.TestCase):
         resFileRoot = "res_geometric"
         removePreviousResFiles(rootPath + "weighted_up-down/"+resFileRoot)
 
-        cmdStr = "python3 ../pychoacoustics.pyw -f" + rootPath + "weighted_up-down/weighted_up-down_geometric.prm -a -q -o --seed 2033 -r" + rootPath + "weighted_up-down/"+resFileRoot  + ".txt"
+        cmdStr = "PYTHONPATH='/media/ntfsShared/lin_home/auditory/code/pychoacoustics_exp/:/media/ntfsShared/lin_home/auditory/code/pychoacoustics/' python3 ../pychoacoustics/__main__.py -f" + rootPath + "weighted_up-down/weighted_up-down_geometric.prm -a -q -o --seed 2033 -r" + rootPath + "weighted_up-down/"+resFileRoot  + ".txt"
         x = os.system(cmdStr)
         assert(x==0)
         storedRes = pd.read_csv(rootPath + "weighted_up-down/results/res_geometric_table.csv", sep=";")
@@ -29,7 +29,7 @@ class TestWeightedUpDown(unittest.TestCase):
         resFileRoot = "res_arithmetic"
         removePreviousResFiles(rootPath + "weighted_up-down/"+resFileRoot)
 
-        cmdStr = "python3 ../pychoacoustics.pyw -f" + rootPath +  "weighted_up-down/weighted_up-down_arithmetic.prm -a -q -o --seed 2033 -r" + rootPath + "weighted_up-down/"+resFileRoot  + ".txt"
+        cmdStr = "PYTHONPATH='/media/ntfsShared/lin_home/auditory/code/pychoacoustics_exp/:/media/ntfsShared/lin_home/auditory/code/pychoacoustics/' python3 ../pychoacoustics/__main__.py -f" + rootPath +  "weighted_up-down/weighted_up-down_arithmetic.prm -a -q -o --seed 2033 -r" + rootPath + "weighted_up-down/"+resFileRoot  + ".txt"
         x = os.system(cmdStr)
         assert(x==0)
         storedRes = pd.read_csv(rootPath + "weighted_up-down/results/res_arithmetic_table.csv", sep=";")

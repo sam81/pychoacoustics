@@ -12,7 +12,7 @@ class TestSigDetectMulti(unittest.TestCase):
         resFileRoot = "res"
         removePreviousResFiles(rootPath + "sig_detect_multi/"+resFileRoot)
 
-        cmdStr = "python3 ../pychoacoustics.pyw -f" + rootPath +  "sig_detect_multi/sig_detect_multi.prm -a -q -o --seed 1933 -r" + rootPath + "sig_detect_multi/"+resFileRoot  + ".txt"
+        cmdStr = "PYTHONPATH='/media/ntfsShared/lin_home/auditory/code/pychoacoustics/' python3 ../pychoacoustics/__main__.py -f" + rootPath +  "sig_detect_multi/sig_detect_multi.prm -a -q -o --seed 1933 -r" + rootPath + "sig_detect_multi/"+resFileRoot  + ".txt"
         x = os.system(cmdStr)
         assert(x==0)
         storedRes = pd.read_csv(rootPath + "sig_detect_multi/results/res_table.csv", sep=";").sort_values("condition")

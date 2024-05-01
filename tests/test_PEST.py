@@ -11,7 +11,7 @@ class TestPEST(unittest.TestCase):
         resFileRoot = "res_geometric"
         removePreviousResFiles(rootPath + "PEST/"+resFileRoot)
 
-        cmdStr = "python3 ../pychoacoustics.pyw -f" + rootPath + "PEST/PEST_geometric.prm -a -q -o --seed 2033 -r" + rootPath + "PEST/"+resFileRoot  + ".txt"
+        cmdStr = "PYTHONPATH='/media/ntfsShared/lin_home/auditory/code/pychoacoustics_exp/:/media/ntfsShared/lin_home/auditory/code/pychoacoustics/' python3 ../pychoacoustics/__main__.py -f" + rootPath + "PEST/PEST_geometric.prm -a -q -o --seed 2033 -r" + rootPath + "PEST/"+resFileRoot  + ".txt"
         x = os.system(cmdStr)
         assert(x==0)
         storedRes = pd.read_csv(rootPath + "PEST/results/res_geometric_table.csv", sep=";")
@@ -29,7 +29,7 @@ class TestPEST(unittest.TestCase):
         resFileRoot = "res_arithmetic"
         removePreviousResFiles(rootPath + "PEST/"+resFileRoot)
 
-        cmdStr = "python3 ../pychoacoustics.pyw -f" + rootPath +  "PEST/PEST_arithmetic.prm -a -q -o --seed 2033 -r" + rootPath + "PEST/"+resFileRoot  + ".txt"
+        cmdStr = "PYTHONPATH='/media/ntfsShared/lin_home/auditory/code/pychoacoustics_exp/:/media/ntfsShared/lin_home/auditory/code/pychoacoustics/' python3 ../pychoacoustics/__main__.py -f" + rootPath +  "PEST/PEST_arithmetic.prm -a -q -o --seed 2033 -r" + rootPath + "PEST/"+resFileRoot  + ".txt"
         x = os.system(cmdStr)
         assert(x==0)
         storedRes = pd.read_csv(rootPath + "PEST/results/res_arithmetic_table.csv", sep=";")

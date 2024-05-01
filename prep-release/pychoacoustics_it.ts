@@ -89,91 +89,6 @@
         <translation type="unfinished">personalizzato</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="191"/>
-        <source>System Settings</source>
-        <translation type="unfinished">Setting del sistema</translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="302"/>
-        <source>en</source>
-        <translation type="unfinished">en</translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="185"/>
-        <source>it</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="186"/>
-        <source>fr</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="187"/>
-        <source>es</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="188"/>
-        <source>el</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="303"/>
-        <source>US</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="193"/>
-        <source>GB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="195"/>
-        <source>IT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="196"/>
-        <source>CH</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="197"/>
-        <source>FR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="198"/>
-        <source>CA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="200"/>
-        <source>ES</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="201"/>
-        <source>BO</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="202"/>
-        <source>CL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="204"/>
-        <source>GR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/global_parameters.py" line="205"/>
-        <source>CY</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../pychoacoustics/global_parameters.py" line="379"/>
         <source>Yes</source>
         <translation type="unfinished">Sì</translation>
@@ -239,17 +154,17 @@
         <translation type="unfinished">Rampe (ms)</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="97"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="148"/>
         <source>Right</source>
         <translation type="unfinished">Destro</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="93"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="150"/>
         <source>Left</source>
         <translation type="unfinished">Sinistro</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="93"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="152"/>
         <source>Both</source>
         <translation type="unfinished">Entrambi</translation>
     </message>
@@ -259,12 +174,12 @@
         <translation type="unfinished">Orecchio:</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="154"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="161"/>
         <source>Sinusoid</source>
         <translation type="unfinished">Sinusoide</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="148"/>
+        <location filename="../pychoacoustics/default_experiments/audiogram_mf.py" line="155"/>
         <source>Narrowband Noise</source>
         <translation type="unfinished">Rumore a banda stretta</translation>
     </message>
@@ -322,7 +237,7 @@
 <context>
     <name>@default</name>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="1019"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="1018"/>
         <source>pychoacoustics test e-mail</source>
         <translation type="unfinished"></translation>
     </message>
@@ -350,7 +265,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="1088"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="1087"/>
         <source>e-mail sent successfully</source>
         <translation type="unfinished"></translation>
     </message>
@@ -376,6 +291,14 @@
         <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="27"/>
         <source>Ask</source>
         <translation type="obsolete">Chiedi</translation>
+    </message>
+</context>
+<context>
+    <name>app</name>
+    <message>
+        <location filename="../pychoacoustics/default_experiments/wav_sameDifferent.py" line="27"/>
+        <source>System Settings</source>
+        <translation type="obsolete">Setting del sistema</translation>
     </message>
 </context>
 <context>
@@ -473,6 +396,9 @@
         <source>Type:</source>
         <translation type="obsolete">Tipo:</translation>
     </message>
+</context>
+<context>
+    <name>emailSender</name>
 </context>
 <context>
     <name>experimentersDialog</name>
@@ -936,7 +862,7 @@
         <translation type="unfinished">Comando:</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="885"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="884"/>
         <source>custom</source>
         <translation type="unfinished">personalizzato</translation>
     </message>
@@ -1101,7 +1027,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="939"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="938"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1176,7 +1102,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="964"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="963"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1196,7 +1122,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="964"/>
+        <location filename="../pychoacoustics/dialog_edit_preferences.py" line="963"/>
         <source>There are unsaved changes. Apply Changes?</source>
         <translation type="unfinished">Ci sono modifiche non registrate. Applicare le modifiche?</translation>
     </message>
@@ -1251,6 +1177,11 @@
     <message>
         <location filename="../pychoacoustics/control_window.py" line="142"/>
         <source>Open Results File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../pychoacoustics/control_window.py" line="146"/>
+        <source>Open Working Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2997,77 +2928,77 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>Control Window</source>
         <translation type="obsolete">Finestra dei controlli</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>ISI:</source>
         <translation type="obsolete">ISI:</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>Sample Rate:</source>
         <translation type="obsolete">Frequenza di Campionamento:</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>Pre-Trial Interval (ms):</source>
         <translation type="obsolete">Intervallo pre-trial:</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>Adaptive</source>
         <translation type="obsolete">Adattivo</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>No. Comparisons:</source>
         <translation type="obsolete">No. di comparazioni:</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>Feedback ON</source>
         <translation type="obsolete">Feedback ON</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>Feedback Duration (ms):</source>
         <translation type="obsolete">Durata feedback (ms):</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>Save Results</source>
         <translation type="obsolete">Salva risultati</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>Adaptive Type:</source>
         <translation type="obsolete">Procedura:</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>Start</source>
         <translation type="obsolete">Inizia</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>Constant</source>
         <translation type="obsolete">Costante</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>Constant2</source>
         <translation type="obsolete">Costante2</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>Weighted Up/Down</source>
         <translation type="obsolete">Pesato su/giù</translation>
     </message>
     <message>
-        <location filename="../pychoacoustics/control_window.py" line="5913"/>
+        <location filename="../pychoacoustics/control_window.py" line="5920"/>
         <source>Adaptive Interleaved</source>
         <translation type="obsolete">Adattivo interleaved</translation>
     </message>
@@ -3115,11 +3046,6 @@
         <location filename="../pychoacoustics/control_window.py" line="4962"/>
         <source>Phones stored in prm file {} not found in database
  Leaving phones chooser untouched</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../pychoacoustics/control_window.py" line="146"/>
-        <source>Open Working Directory</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3286,7 +3212,7 @@
     <message>
         <location filename="../pychoacoustics/response_box.py" line="130"/>
         <source>Show/Hide Control Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra/nascondi la finestra di controllo</translation>
     </message>
     <message>
         <location filename="../pychoacoustics/response_box.py" line="140"/>
