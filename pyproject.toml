@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pychoacoustics"
-    version="0.6.8"
+    version="0.6.9"
 
 authors = [
   { name="Samuele Carcagno", email="sam.carcagno@gmail.com" },
@@ -17,7 +17,7 @@ dependencies = ["matplotlib (>=3.0.0)",
                 "numpy (>=1.0.0)",
 		"pandas (>=1.0.0)",
 		"PyAudio (>=0.2.11)",
-		"PyQt5 (>=5.12)",
+		"PyQt6 (>=6.6.0)",
 		"scipy (>=1.0.1)"
 		]
 

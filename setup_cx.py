@@ -7,12 +7,31 @@ build_options = {'packages': ['pychoacoustics',
                               'pychoacoustics.nnresample',
                               ],
                  'excludes': ['tkinter',
+                              'PyQt5',
+                              'PyQt5.QtCore',
+                              'PyQt5.QtGui',
+                              'PyQt5.QtWidgets',
                               'PyQt5.QtQml',
                               'PyQt5.QtBluetooth',
                               'PyQt5.QtQuickWidgets',
                               'PyQt5.QtSensors',
                               'PyQt5.QtSerialPort',
-                              'PyQt5.QtSql'
+                              'PyQt6.QtSql',
+                              'PyQt6.QtQml',
+                              'PyQt6.QtBluetooth',
+                              'PyQt6.QtQuickWidgets',
+                              'PyQt6.QtSensors',
+                              'PyQt6.QtSerialPort',
+                              'PyQt6.QtSql',
+                              'PyQt6.QtQuick',
+                              'PyQt6.QtQuick3D',
+                              'PyQt6.QtQuickWidgets',
+                              'PyQt6.QtDesigner',
+                              'PyQt6.QtPdf',
+                              'PyQt6.QtPdfWidgets',
+                              'PyQt6.QtSensors',
+                              'PyQt6.QtTest',
+                              'PyQt6.QtTextToSpeech',
                               ]}
 
 
@@ -27,7 +46,7 @@ executables = [
 ]
 
 setup(name='pychoacoustics',
-    version="0.6.8",
+    version="0.6.9",
       description = '',
       options = {'build_exe': build_options},
       executables = executables)

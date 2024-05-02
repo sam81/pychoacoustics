@@ -16,12 +16,14 @@ def main(argv):
     minor_v = 6
 
     pyqtver = input('pyqtver: ')
-    if pyqtver == 5:
-        os.system("python3 prep-release/switch_pyqt5.py")
-        os.system("python3 prep-release/mkupdate_pyqt5")
-    elif pyqtver == 6:
-        os.system("python3 prep-release/switch_pyqt6.py")
-        os.system("python3 prep-release/mkupdate_pyqt6")
+    os.chdir('prep-release/')
+    if pyqtver == '5':
+        os.system("python3 switch_pyqt5.py")
+        os.system("./mkupdate_pyqt5")
+    elif pyqtver == '6':
+        os.system("python3 switch_pyqt6.py")
+        os.system("./mkupdate_pyqt6")
+    os.chdir('../')
 
     #read minor minor release number
     f = open('prep-release/minor_minor_number.txt', 'r')
