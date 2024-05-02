@@ -23,7 +23,7 @@ class redirectStreamToFile():
     def __init__(self, logfile):
         timeStamp = ''+ time.strftime("%d/%m/%y %H:%M:%S", time.localtime()) + ' ' + '\n'
         self.stdout = sys.stdout
-        self.log = open(logfile, 'a')
+        self.log = open(logfile, 'a', encoding="utf-8")
         self.log.write("**********")
         self.log.write(timeStamp)
  

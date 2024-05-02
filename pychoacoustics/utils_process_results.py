@@ -155,7 +155,7 @@ def makeDatsProSkeleton(dCols, keysNotToCheck):
     return datsPro
 
 def writeResTable(fNameOut, separator, datsPro, resKeys):
-    fout = open(fNameOut, 'w')
+    fout = open(fNameOut, 'w', encoding="utf-8")
     nRows = len(datsPro['paradigm'])
     standardKeys = ['condition', 'listener', 'experimentLabel', 'experiment']
     keys = list(datsPro.keys())
@@ -191,7 +191,7 @@ def procResTableAdaptive(fName, fout=None, separator=';', last=None, block_range
         fNameOut = fout
     
     if len(fldict) > 1:
-        fout = open(fNameOut, 'w')
+        fout = open(fNameOut, 'w', encoding="utf-8")
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
         return
@@ -254,7 +254,7 @@ def procResTableAdaptiveInterleaved(fName, fout=None, separator=';', last=None, 
         fNameOut = fout
     
     if len(fldict) > 1:
-        fout = open(fNameOut, 'w')
+        fout = open(fNameOut, 'w', encoding="utf-8")
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
         return
@@ -332,7 +332,7 @@ def procResTableConstantMIntNAlt(fName, fout=None, separator=';', last=None, blo
         fNameOut = fout
     
     if len(fldict) > 1:
-        fout = open(fNameOut, 'w')
+        fout = open(fNameOut, 'w', encoding="utf-8")
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
         return
@@ -395,7 +395,7 @@ def procResTableMultipleConstantsMIntNAlt(fName, fout=None, separator=';', last=
         fNameOut = fout
     
     if len(fldict) > 1:
-        fout = open(fNameOut, 'w')
+        fout = open(fNameOut, 'w', encoding="utf-8")
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
         return
@@ -492,7 +492,7 @@ def procResTableConstant1Int2Alt(fName, fout=None, separator=';', last=None, blo
         fNameOut = fout
     
     if len(fldict) > 1:
-        fout = open(fNameOut, 'w')
+        fout = open(fNameOut, 'w', encoding="utf-8")
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
         return
@@ -567,7 +567,7 @@ def procResTableMultipleConstants1Int2Alt(fName, fout=None, separator=';', last=
         fNameOut = fout
     
     if len(fldict) > 1:
-        fout = open(fNameOut, 'w')
+        fout = open(fNameOut, 'w', encoding="utf-8")
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
         return
@@ -697,7 +697,7 @@ def procResTableConstant1PairSameDifferent(fName, fout=None, separator=';', last
         fNameOut = fout
     
     if len(fldict) > 1:
-        fout = open(fNameOut, 'w')
+        fout = open(fNameOut, 'w', encoding="utf-8")
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
         return
@@ -773,7 +773,7 @@ def procResTableMultipleConstants1PairSameDifferent(fName, fout=None, separator=
         fNameOut = fout
     
     if len(fldict) > 1:
-        fout = open(fNameOut, 'w')
+        fout = open(fNameOut, 'w', encoding="utf-8")
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
         return
@@ -868,7 +868,7 @@ def procResTableMultipleConstantsABX(fName, fout=None, separator=';', last=None,
         fNameOut = fout
     
     if len(fldict) > 1:
-        fout = open(fNameOut, 'w')
+        fout = open(fNameOut, 'w', encoding="utf-8")
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
         return
@@ -963,7 +963,7 @@ def procResTableMultipleConstantsOddOneOut(fName, fout=None, separator=';', last
         fNameOut = fout
     
     if len(fldict) > 1:
-        fout = open(fNameOut, 'w')
+        fout = open(fNameOut, 'w', encoding="utf-8")
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
         return
@@ -1105,7 +1105,7 @@ def processResultsAdaptive(fName, fout=None, last=None, block_range=None):
             parameters.append(allLines[i])
 
     
-    fout = open(foutPath, 'w')
+    fout = open(foutPath, 'w', encoding="utf-8")
     cndM = []
     cndSe = []
     for i in range(len(conditions)):
@@ -1210,7 +1210,7 @@ def processResultsAdaptiveInterleaved(fName, fout=None, last=None, block_range=N
     cndM = []
     cndSe = []
 
-    fout = open(foutPath, 'w')
+    fout = open(foutPath, 'w', encoding="utf-8")
     for i in range(len(conditions)):
         start, stop = getBlockRangeToProcess(last, block_range, conditionMeans[i][0])
         cndM.append([])
@@ -1317,7 +1317,7 @@ def processResultsConstantMIntervalsNAlternatives(fName, fout=None, last=None, b
     cndCorrect = []
     cndTotal = []
     cndPropCorrect = []
-    fout = open(foutPath, 'w')
+    fout = open(foutPath, 'w', encoding="utf-8")
     for i in range(len(conditions)):
         start, stop = getBlockRangeToProcess(last, block_range, correctList[i])
         cndCorrect.append(sum(correctList[i][start:stop]))
@@ -1430,7 +1430,7 @@ def processResultsMultipleConstantsMIntervalsNAlternatives(fName, fout=None, las
         if readParameters == True:
             parameters.append(allLines[i])
 
-    fout = open(foutPath, 'w')
+    fout = open(foutPath, 'w', encoding="utf-8")
     cndCorrect = []
     cndTotal = []
     cndPropCorrect = []
@@ -1554,7 +1554,7 @@ def processResultsConstant1Interval2Alternatives(fName, fout=None, last=None, bl
     start = []
     stop = []
 
-    fout = open(foutPath, 'w')
+    fout = open(foutPath, 'w', encoding="utf-8")
 
     for i in range(len(conditions)):
         start, stop = getBlockRangeToProcess(last, block_range, A_C[i])
@@ -1695,7 +1695,7 @@ def processResultsMultipleConstants1Interval2Alternatives(fName, fout=None, last
     start = []
     stop = []
 
-    fout = open(foutPath, 'w')
+    fout = open(foutPath, 'w', encoding="utf-8")
 
     for i in range(len(conditions)):
         start, stop = getBlockRangeToProcess(last, block_range, A_C[i][0])
@@ -1826,7 +1826,7 @@ def processResultsConstant1PairSameDifferent(fName, fout=None, last=None, block_
     start = []
     stop = []
 
-    fout = open(foutPath, 'w')
+    fout = open(foutPath, 'w', encoding="utf-8")
 
     for i in range(len(conditions)):
         start, stop = getBlockRangeToProcess(last, block_range, A_C[i])
@@ -1904,7 +1904,7 @@ def processResultsTableAdaptive(fName, fout=None, separator=';', last=None, bloc
             else:
                 raise DifferentProceduresError("The files appear to contain data from different procedures. Cannot process.")
 
-    fout = open(fNameOut, 'w')
+    fout = open(fNameOut, 'w', encoding="utf-8")
     if checkMixedProceduresInTableFile(allLines, separator):
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
@@ -2044,7 +2044,7 @@ def processResultsTableAdaptiveInterleaved(fName, fout=None, separator=';', last
                 raise DifferentProceduresError("The files appear to contain data from different procedures. Cannot process.")
 
    
-    fout = open(fNameOut, 'w')
+    fout = open(fNameOut, 'w', encoding="utf-8")
     if checkMixedProceduresInTableFile(allLines, separator):
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
@@ -2192,7 +2192,7 @@ def processResultsTableConstantMIntNAlt(fName, fout=None, separator=';', last=No
                 raise DifferentProceduresError("The files appear to contain data from different procedures. Cannot process.")
 
 
-    fout = open(fNameOut, 'w')
+    fout = open(fNameOut, 'w', encoding="utf-8")
     if checkMixedProceduresInTableFile(allLines, separator):
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
@@ -2336,7 +2336,7 @@ def processResultsTableMultipleConstantsMIntNAlt(fName, fout=None, separator=';'
             else:
                 raise DifferentProceduresError("The files appear to contain data from different procedures. Cannot process.")
             
-    fout = open(fNameOut, 'w')
+    fout = open(fNameOut, 'w', encoding="utf-8")
     if checkMixedProceduresInTableFile(allLines, separator):
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
@@ -2526,7 +2526,7 @@ def processResultsTableConstant1Int2Alt(fName, fout=None, separator=';', last=No
                 raise DifferentProceduresError("The files appear to contain data from different procedures. Cannot process.")
     
     
-    fout = open(fNameOut, 'w')
+    fout = open(fNameOut, 'w', encoding="utf-8")
     if checkMixedProceduresInTableFile(allLines, separator):
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
@@ -2672,7 +2672,7 @@ def processResultsTableMultipleConstants1Int2Alt(fName, fout=None, separator=';'
                 raise DifferentProceduresError("The files appear to contain data from different procedures. Cannot process.")
     
     
-    fout = open(fNameOut, 'w')
+    fout = open(fNameOut, 'w', encoding="utf-8")
     if checkMixedProceduresInTableFile(allLines, separator):
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()
@@ -2880,7 +2880,7 @@ def processResultsTableConstant1PairSameDifferent(fName, fout=None, separator=';
             else:
                 raise DifferentProceduresError("The files appear to contain data from different procedures. Cannot process.")
 
-    fout = open(fNameOut, 'w')
+    fout = open(fNameOut, 'w', encoding="utf-8")
     if checkMixedProceduresInTableFile(allLines, separator):
         fout.write("The table files appear to contain multiple headers.\n Usually this happens because they contain results from different experiments/procedures or \n different check box selections. These table processing functions cannot process these type of \n files, and automatic plots are not supported."+separator)
         fout.close()

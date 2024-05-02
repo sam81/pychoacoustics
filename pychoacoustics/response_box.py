@@ -539,7 +539,7 @@ class responseBox(QMainWindow):
     def onAskSaveResultsButton(self):
         ftow = QFileDialog.getSaveFileName(self, self.tr('Choose file to write results'), "", self.tr('All Files (*)'), "", QFileDialog.DontConfirmOverwrite)[0]
         if os.path.exists(ftow) == False and len(ftow) > 0:
-                fName = open(ftow, 'w')
+                fName = open(ftow, 'w', encoding="utf-8")
                 fName.write('')
                 fName.close()
         if len(ftow) > 0:
@@ -1097,7 +1097,7 @@ class responseBox(QMainWindow):
                 self.prm['resultsFile'] = self.prm['pref']['general']['resFileFixedString']
                 resFileToOpen = copy.copy(self.prm['pref']['general']['resFileFixedString'])
 
-                fName = open(resFileToOpen, 'a')
+                fName = open(resFileToOpen, 'a', encoding="utf-8")
                 fName.write('')
                 fName.close()
             elif self.prm['pref']['general']['resFileFormat'] == 'variable':
@@ -5292,14 +5292,14 @@ class responseBox(QMainWindow):
         if fileType == 'log':
             resLogFilePath = self.prm['backupDirectoryName']  + time.strftime("%y-%m-%d_%H-%M-%S", time.localtime()) + '_' + self.prm['listener'] + '_log'
             resLogFullFilePath = self.prm['backupDirectoryName']  + time.strftime("%y-%m-%d_%H-%M-%S", time.localtime()) + '_' + self.prm['listener'] + 'full_log'
-            self.resFileLog = open(resLogFilePath, 'a')
-            self.fullFileLog = open(resLogFullFilePath, 'a')
+            self.resFileLog = open(resLogFilePath, 'a', encoding="utf-8")
+            self.fullFileLog = open(resLogFullFilePath, 'a', encoding="utf-8")
             filesToWrite = [self.resFileLog, self.fullFileLog]
         elif fileType == 'standard':
             resFilePath = self.prm['resultsFile']
             fullFilePath = self.prm['resultsFile'].split('.txt')[0] + self.prm['pref']["general"]["fullFileSuffix"] + '.txt'
-            self.resFile = open(resFilePath, 'a')
-            self.fullFile = open(fullFilePath, 'a')
+            self.resFile = open(resFilePath, 'a', encoding="utf-8")
+            self.fullFile = open(fullFilePath, 'a', encoding="utf-8")
             filesToWrite = [self.resFile, self.fullFile]
             
         currBlock = 'b' + str(self.prm['currentBlock'])
@@ -5745,12 +5745,12 @@ class responseBox(QMainWindow):
               
         headerToWrite = headerToWrite + '\n'
         if os.path.exists(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+'.csv') == False: #case 1 file does not exist yet
-            self.resFileSummary = open(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+'.csv', 'w')
+            self.resFileSummary = open(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+'.csv', 'w', encoding="utf-8")
             self.resFileSummary.write(headerToWrite)
             self.resFileSummary.write(resultsLine)
             self.resFileSummary.close()
         else:
-            self.resFileSummary = open(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+'.csv', 'r')
+            self.resFileSummary = open(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+'.csv', 'r', encoding="utf-8")
             allLines = self.resFileSummary.readlines()
             self.resFileSummary.close()
             try:
@@ -5777,7 +5777,7 @@ class responseBox(QMainWindow):
             elif headerPresent == False:
                 allLines.append(headerToWrite)
                 allLines.append(resultsLine)
-            self.resFileSummary = open(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+'.csv', 'w')
+            self.resFileSummary = open(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+'.csv', 'w', encoding="utf-8")
             self.resFileSummary.writelines(allLines)
             self.resFileSummary.close()
 
@@ -5937,12 +5937,12 @@ class responseBox(QMainWindow):
               
         headerToWrite = headerToWrite + '\n'
         if os.path.exists(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+self.prm["pref"]["general"]["fullFileSuffix"]+'.csv') == False: #case 1 file does not exist yet
-            self.resFileSummaryFull = open(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+self.prm["pref"]["general"]["fullFileSuffix"]+'.csv', 'w')
+            self.resFileSummaryFull = open(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+self.prm["pref"]["general"]["fullFileSuffix"]+'.csv', 'w', encoding="utf-8")
             self.resFileSummaryFull.write(headerToWrite)
             self.resFileSummaryFull.write(resultsLine)
             self.resFileSummaryFull.close()
         else:
-            self.resFileSummaryFull = open(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+self.prm["pref"]["general"]["fullFileSuffix"]+'.csv', 'r')
+            self.resFileSummaryFull = open(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+self.prm["pref"]["general"]["fullFileSuffix"]+'.csv', 'r', encoding="utf-8")
             allLines = self.resFileSummaryFull.readlines()
             self.resFileSummaryFull.close()
             try:
@@ -5969,7 +5969,7 @@ class responseBox(QMainWindow):
             elif headerPresent == False:
                 allLines.append(headerToWrite)
                 allLines.append(resultsLine)
-            self.resFileSummaryFull = open(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+self.prm["pref"]["general"]["fullFileSuffix"]+'.csv', 'w')
+            self.resFileSummaryFull = open(self.prm['resultsFile'].split('.txt')[0]+ self.prm['pref']["general"]["resTableFileSuffix"]+self.prm["pref"]["general"]["fullFileSuffix"]+'.csv', 'w', encoding="utf-8")
             self.resFileSummaryFull.writelines(allLines)
             self.resFileSummaryFull.close()
             
