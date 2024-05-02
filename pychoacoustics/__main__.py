@@ -26,7 +26,7 @@ elif pyqtversion == 6:
     from PyQt6 import QtCore
     from PyQt6.QtWidgets import QApplication, QDialog, QDialogButtonBox, QFileDialog, QPushButton, QScrollArea, QStyleFactory, QVBoxLayout
 
-import argparse, fnmatch, numpy, os, random, signal, sys, time, traceback
+import argparse, fnmatch, numpy, os, platform, random, signal, sys, time, traceback
 from pychoacoustics import qrc_resources
 from pychoacoustics import global_parameters
 from pychoacoustics.control_window import*
@@ -226,6 +226,8 @@ def main():
     app.setWindowIcon(QtGui.QIcon(":/Machovka_Headphones.svg"))
     #print(app.style().objectName())
     #app.setStyle(QStyleFactory.create(prm["pref"]["appearance"]["style"]))
+    if platform.system() == "Windows":
+        app.setStyle('Fusion')
     x = pychControlWin(parent=None, prm=prm)
     sys.exit(app.exec())
     return 0
