@@ -19,10 +19,10 @@ def main(argv):
     os.chdir('prep-release/')
     if pyqtver == '5':
         os.system("python3 switch_pyqt5.py")
-        os.system("./mkupdate_pyqt5")
+        os.system("./mkupdate_pyqt5.sh")
     elif pyqtver == '6':
         os.system("python3 switch_pyqt6.py")
-        os.system("./mkupdate_pyqt6")
+        os.system("./mkupdate_pyqt6.sh")
     os.chdir('../')
 
     #read minor minor release number
