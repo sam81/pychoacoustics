@@ -75,6 +75,7 @@ if matplotlib_available == True:
 
 
 #from redirect_out import*
+from pathlib import Path
 from . import default_experiments
 import difflib, fnmatch, os, sys
 from ._version_info import*
@@ -138,20 +139,27 @@ class pychControlWin(QMainWindow):
         self.processResultsTableButton.triggered.connect(self.processResultsTableDialog)
 
 
-        self.openResultsButton = QAction(QIcon.fromTheme("document-open", QIcon(":/document-open")), self.tr('Open Results File'), self)
-        self.openResultsButton.setStatusTip(self.tr('Open Results File'))
+        self.openResultsButton = QAction(QIcon.fromTheme("document-open", QIcon(":/document-open")), self.tr('Open results file'), self)
+        self.openResultsButton.setStatusTip(self.tr('Open results file'))
         self.openResultsButton.triggered.connect(self.onClickOpenResultsButton)
 
-        self.openWorkingDirButton = QAction(QIcon.fromTheme("folder-open", QIcon(":/folder-open")), self.tr('Open Working Directory'), self)
-        self.openWorkingDirButton.setStatusTip(self.tr('Open Working Directory'))
+        self.openWorkingDirButton = QAction(QIcon.fromTheme("folder-open", QIcon(":/folder-open")), self.tr('Open working directory'), self)
+        self.openWorkingDirButton.setStatusTip(self.tr('Open working directory'))
         self.openWorkingDirButton.triggered.connect(self.onClickOpenWorkingDirButton)
+
+        self.openHomeExpPathButton = QAction(QIcon.fromTheme("folder-open", QIcon(":/folder-open")), self.tr('Open custom experiments path'), self)
+        self.openHomeExpPathButton.setStatusTip(self.tr('Open custom experiments path'))
+        self.openHomeExpPathButton.triggered.connect(self.onClickHomeExpPathButton)
 
         self.processResultsMenu.addAction(self.processResultsLinearButton)
         self.processResultsMenu.addAction(self.processResultsTableButton)
         
         self.fileMenu.addAction(self.openResultsButton)
         self.fileMenu.addAction(self.openWorkingDirButton)
+        self.fileMenu.addAction(self.openHomeExpPathButton)
         self.fileMenu.addAction(self.exitButton)
+
+
         
         #EDIT MENU
         self.editMenu = self.menubar.addMenu(self.tr('&Edit'))
@@ -5802,6 +5810,13 @@ class pychControlWin(QMainWindow):
 
     def onClickOpenWorkingDirButton(self):
         QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(os.getcwd()))
+        
+
+    def onClickHomeExpPathButton(self):
+        print(homeExperimentsPath)
+        Path(homeExperimentsPath+'/labexp').mkdir(parents=True, exist_ok=True)
+        QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(homeExperimentsPath+'/labexp'))
+
             
     def onAbout(self):
         if pyqtversion in [4,5,6]:
