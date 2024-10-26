@@ -30,7 +30,7 @@ Note that the program needs to be launched in the same Python environment in whi
 if you're using Linux you can also install `pyalsaaudio` to have an additional sound output option. If you're using conda on Windows I'd recommend installing PyAudio via pip because the PyAudio version available on conda is not built with support for the WASAPI output interface (at least that was the case the last time I checked). 
 
 
-
+An experimental installer for Windows is available on SourceForge. Currently this experimental installer does not support extensions with user-written experiments. If you would like to extend pychoacoustics with your own experiments on Windows you should install it via pip.
    
 
 

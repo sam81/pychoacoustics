@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "pychoacoustics"
-#define MyAppVersion "0.6.13"
+#define MyAppVersion "0.6.14"
 #define MyAppPublisher "Samuele Carcagno"
 #define MyAppURL "https://samcarcagno.altervista.org/pychoacoustics/pychoacoustics.html"
 #define MyAppExeName "pychoacoustics.exe"
@@ -30,6 +30,7 @@ OutputBaseFilename=pychoacoustics-{#MyAppVersion}_setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+SetupIconFile=Z:\media\ntfsShared\lin_home\auditory\code\pychoacoustics\icons\Machovka_Headphones.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

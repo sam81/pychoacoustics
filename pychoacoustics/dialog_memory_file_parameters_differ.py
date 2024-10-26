@@ -48,7 +48,7 @@ class dialogMemoryFileParametersDiffer(QDialog):
         self.noButt = QPushButton(self.tr("No"), self)
         self.showDiffButt = QPushButton(self.tr("Show Differences"), self)
         self.cancelButt = QPushButton(self.tr("Cancel"), self)
-        self.hBoxSizer.addItem(QSpacerItem(10,10, QSizePolicy.Expanding))
+        self.hBoxSizer.addItem(QSpacerItem(10,10, QSizePolicy.Policy.Expanding))
         self.hBoxSizer.addWidget(self.yesButt)
         self.hBoxSizer.addWidget(self.noButt)
         self.hBoxSizer.addWidget(self.showDiffButt)
